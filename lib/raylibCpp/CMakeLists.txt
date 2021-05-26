@@ -14,11 +14,23 @@ set(NAME raylibcpp)
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
 
 ## INCLUDES
-include_directories(./include)
+include_directories(./include ./src)
 
 ## SOURCES
 set(SRCS
-    #./src/file.cpp
+    
+    ./src/Audio/Music.cpp
+    ./src/Audio/Sound.cpp
+    ./src/Camera/Camera.cpp
+    ./src/Data/Const.cpp
+    ./src/File/Save.cpp
+    ./src/Model/Animation.cpp
+    ./src/Model/Model.cpp
+    ./src/Shape/Rectangle.cpp
+    ./src/Solid/Cube.cpp
+    ./src/Text/Text.cpp
+    ./src/Texture/Texture.cpp
+    ./src/Window/Window.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
