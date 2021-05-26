@@ -23,6 +23,7 @@ set(SRCS
 add_library(${NAME} SHARED ${SRCS})
 
 ## LIB
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "cmake")
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 find_package(raylib REQUIRED)
 target_link_libraries(${NAME} raylib)
