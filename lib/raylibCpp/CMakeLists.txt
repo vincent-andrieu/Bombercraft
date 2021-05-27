@@ -35,6 +35,13 @@ set(SRCS
     ./src/Data/MyVector/MyVector3.cpp
     ./src/Data/MyVector/MyVector4.cpp
     ./src/Input/Input.cpp
+    ./src/Collision/Collision.cpp
+    ./src/Collision/ObjectType/ObjectRectangle.cpp
+    ./src/Collision/ObjectType/ObjectTriangle.cpp
+    ./src/Collision/ObjectType/ObjectCircle.cpp
+    ./src/Collision/ObjectType/ObjectSphere.cpp
+    ./src/Collision/ObjectType/ObjectLine.cpp
+    ./src/Collision/ObjectType/ObjectBox.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
