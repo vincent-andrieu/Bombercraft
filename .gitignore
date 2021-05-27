@@ -7,6 +7,7 @@ tests
 build
 *.pdf
 .idea
+bomberman
 ### C ###
 # Prerequisites
 *.d
