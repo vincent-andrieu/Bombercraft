@@ -1,0 +1,28 @@
+name: Check compilation
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  compilation:
+    runs-on: ubuntu-20.04
+    container: epitechcontent/epitest-docker:devel
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: build
+        run: cmake ..
+
+      - name: Run make
+        working-directory: build
+        run: make
