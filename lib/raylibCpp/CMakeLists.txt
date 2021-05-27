@@ -34,6 +34,7 @@ set(SRCS
     ./src/Data/MyVector/MyVector2.cpp
     ./src/Data/MyVector/MyVector3.cpp
     ./src/Data/MyVector/MyVector4.cpp
+    ./src/Input/Input.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
