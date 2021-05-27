@@ -8,7 +8,7 @@
 #ifndef OBJECTTRIANGLE_HPP
 #define OBJECTTRIANGLE_HPP
 
-#include "Data/MyVector/MyVector3.hpp"
+#include "Data/MyVector/MyVector2.hpp"
 
 using namespace raylib;
 
@@ -17,13 +17,17 @@ namespace ObjectType
     class ObjectTriangle
     {
         public:
-            ObjectTriangle(MyVector3 triangle);
+            ObjectTriangle(MyVector2 a, MyVector2 b, MyVector2 c);
             ~ObjectTriangle();
-            void setTriangle(MyVector3 triangle);
-            MyVector3 getTriangle() const;
+            void setTriangle(MyVector2 a, MyVector2 b, MyVector2 c);
+            MyVector2 getPointA() const;
+            MyVector2 getPointB() const;
+            MyVector2 getPointC() const;
 
         private:
-            MyVector3 _triangle;
+            MyVector2 _a;
+            MyVector2 _b;
+            MyVector2 _c;
     };
 };
 
