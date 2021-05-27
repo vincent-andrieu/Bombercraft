@@ -26,3 +26,30 @@ MyVector2::MyVector2(const MyVector2 &src)
     this->a = src.a;
     this->b = src.b;
 }
+
+MyVector2 operator+(MyVector2 const &first, MyVector2 const &second)
+{
+    return MyVector2(first.a + second.a, first.b + second.b);
+}
+
+MyVector2 operator-(MyVector2 const &first, MyVector2 const &second)
+{
+    return MyVector2(first.a - second.a, first.b - second.b);
+}
+
+MyVector2 operator*(MyVector2 const &first, MyVector2 const &second)
+{
+    return MyVector2(first.a * second.a, first.b * second.b);
+}
+
+MyVector2 operator/(MyVector2 const &first, MyVector2 const &second)
+{
+    float one = 0;
+    float two = 0;
+
+    if (second.a)
+        one = first.a / second.a;
+    if (second.b)
+        two = first.b / second.b;
+    return MyVector2(one, two);
+}

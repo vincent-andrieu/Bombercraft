@@ -32,3 +32,36 @@ MyVector4::MyVector4(const MyVector4 &src)
     this->c = src.c;
     this->d = src.d;
 }
+
+MyVector4 operator+(MyVector4 const &first, MyVector4 const &second)
+{
+    return MyVector4(first.a + second.a, first.b + second.b, first.c + second.c, first.d + second.d);
+}
+
+MyVector4 operator-(MyVector4 const &first, MyVector4 const &second)
+{
+    return MyVector4(first.a - second.a, first.b - second.b, first.c - second.c, first.d - second.d);
+}
+
+MyVector4 operator*(MyVector4 const &first, MyVector4 const &second)
+{
+    return MyVector4(first.a * second.a, first.b * second.b, first.c * second.c, first.d * second.d);
+}
+
+MyVector4 operator/(MyVector4 const &first, MyVector4 const &second)
+{
+    float one = 0;
+    float two = 0;
+    float three = 0;
+    float four = 0;
+
+    if (second.a)
+        one = first.a / second.a;
+    if (second.b)
+        two = first.b / second.b;
+    if (second.c)
+        two = first.c / second.c;
+    if (second.d)
+        two = first.d / second.d;
+    return MyVector4(one, two, three, four);
+}

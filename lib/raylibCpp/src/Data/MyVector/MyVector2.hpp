@@ -21,6 +21,10 @@ namespace raylib
             float a;
             float b;
     };
+    MyVector2 operator+(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator-(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator*(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator/(MyVector2 const &first, MyVector2 const &second);
 };
 
 #endif
