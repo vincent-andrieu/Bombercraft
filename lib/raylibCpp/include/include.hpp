@@ -23,6 +23,8 @@
 
 #include "../src/Data/Enum.hpp"
 #include "../src/Data/Const.hpp"
-#include "../src/Data/Struct.hpp"
+#include "../src/Data/MyVector/MyVector2.hpp"
+#include "../src/Data/MyVector/MyVector3.hpp"
+#include "../src/Data/MyVector/MyVector4.hpp"
 
 #endif // INCLUDE_HPP

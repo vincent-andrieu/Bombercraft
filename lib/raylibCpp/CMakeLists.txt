@@ -31,6 +31,9 @@ set(SRCS
     ./src/Text/Text.cpp
     ./src/Texture/Texture.cpp
     ./src/Window/Window.cpp
+    ./src/Data/MyVector/MyVector2.cpp
+    ./src/Data/MyVector/MyVector3.cpp
+    ./src/Data/MyVector/MyVector4.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
