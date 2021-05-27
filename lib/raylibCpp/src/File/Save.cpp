@@ -5,6 +5,7 @@
 ** Save
 */
 
+#include <cstring>
 #include "Save.hpp"
 
 raylib::Save::Save(const std::string &path)
@@ -17,15 +18,25 @@ raylib::Save::Save(const std::string &path)
 
 raylib::Save::~Save()
 {
+    char *cstr = nullptr;
+
     if (FileExists(_path.data())) {
-        UnloadFileText(_data);
+        cstr = new char[this->_data.length() + 1];
+        std::strcpy(cstr, this->_data.c_str());
+        UnloadFileText((char *) _data.c_str());
+        delete [] cstr;
     }
 }
 
 void raylib::Save::setPath(const std::string &path)
 {
+    char *cstr = nullptr;
+
     if (FileExists(_path.data())) {
-        UnloadFileText(_data);
+        cstr = new char[this->_data.length() + 1];
+        std::strcpy(cstr, this->_data.c_str());
+        UnloadFileText((char *) _data.c_str());
+        delete [] cstr;
     }
     _path = path;
     if (FileExists(_path.data())) {
@@ -33,14 +44,19 @@ void raylib::Save::setPath(const std::string &path)
     }
 }
 
-char *raylib::Save::getData()
+std::string raylib::Save::getData()
 {
     return _data;
 }
 
-void raylib::Save::updateData(char *data)
+void raylib::Save::updateData(std::string data)
 {
+    char *cstr = nullptr;
+
     if (FileExists(_path.data())) {
-        SaveFileText(_path.data(), data);
+        cstr = new char[this->_data.length() + 1];
+        std::strcpy(cstr, this->_data.c_str());
+        SaveFileText(_path.data(), cstr);
+        delete [] cstr;
     }
 }

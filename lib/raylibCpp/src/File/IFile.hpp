@@ -19,9 +19,9 @@ namespace raylib
 
             virtual void setPath(const std::string &path) = 0;
 
-            virtual char *getData() = 0;
+            virtual std::string getData() = 0;
 
-            virtual void updateData(char *data) = 0;
+            virtual void updateData(std::string data) = 0;
     };
 };
 

@@ -22,13 +22,13 @@ namespace raylib
 
             void setPath(const std::string &path);
 
-            char *getData();
+            std::string getData();
 
-            void updateData(char *data);
+            void updateData(std::string data);
 
         private :
             std::string _path;
-            char *_data;
+            std::string _data;
     };
 };
 
