@@ -7,7 +7,7 @@
 
 #include "Animation.hpp"
 
-raylib::Animation::Animation(std::shared_ptr<ITexture> texture, const std::string &path,
+raylib::Animation::Animation(std::shared_ptr<ITexture> texture, const std::string &dirpath,
 MyVector3 position, RColor color)
 {
     char **filenames = nullptr;
@@ -18,7 +18,7 @@ MyVector3 position, RColor color)
     _scale = 1.0f;
     _color = color;
     _texture = texture;
-    _path = path;
+    _path = dirpath;
     _currentFrame = 0;
     filenames = GetDirectoryFiles(_path.data(), &count);
     for (size_t i = 0; i < (size_t) count; i++) {

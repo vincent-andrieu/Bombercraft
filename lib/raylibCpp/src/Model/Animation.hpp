@@ -19,7 +19,7 @@ namespace raylib
     class Animation : public IModel
     {
         public :
-            Animation(std::shared_ptr<ITexture> texture, const std::string &path,
+            Animation(std::shared_ptr<ITexture> texture, const std::string &dirpath,
             MyVector3 position, RColor color);
             ~Animation();
 

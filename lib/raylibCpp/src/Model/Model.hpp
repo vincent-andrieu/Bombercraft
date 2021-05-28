@@ -19,7 +19,7 @@ namespace raylib
     class Model : public IModel
     {
         public :
-            Model(std::shared_ptr<ITexture> texture, const std::string &path,
+            Model(std::shared_ptr<ITexture> texture, const std::string &filepath,
             MyVector3 position, RColor color);
             ~Model();
 

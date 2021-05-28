@@ -7,7 +7,7 @@
 
 #include "Model.hpp"
 
-raylib::Model::Model(std::shared_ptr<ITexture> texture, const std::string &path,
+raylib::Model::Model(std::shared_ptr<ITexture> texture, const std::string &filepath,
 MyVector3 position, RColor color)
 {
     _position = position;
@@ -15,8 +15,8 @@ MyVector3 position, RColor color)
     _scale = 1.0f;
     _color = color;
     _texture = texture;
-    _path = path;
-    _model = LoadModel(path.data());
+    _path = filepath;
+    _model = LoadModel(filepath.data());
 }
 
 raylib::Model::~Model()
