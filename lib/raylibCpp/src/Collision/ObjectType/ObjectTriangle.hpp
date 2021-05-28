@@ -14,6 +14,7 @@ using namespace raylib;
 
 namespace ObjectType
 {
+    class ObjectLine;
     class ObjectTriangle
     {
         public:

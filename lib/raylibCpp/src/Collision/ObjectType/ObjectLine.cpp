@@ -7,8 +7,6 @@
 
 #include "ObjectLine.hpp"
 
-using namespace ObjectType;
-
 ObjectLine::ObjectLine(MyVector2 a, MyVector2 b) : _a(a), _b(b)
 {
 }
@@ -31,4 +29,9 @@ MyVector2 ObjectLine::getPointA() const
 MyVector2 ObjectLine::getPointB() const
 {
     return this->_b;
+}
+
+bool ObjectLine::checkCollisionWith(const ObjectLine &line)
+{
+    return Collision::checkCollision(*this, line);
 }

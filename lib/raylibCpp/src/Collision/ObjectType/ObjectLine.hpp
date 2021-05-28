@@ -8,6 +8,7 @@
 #ifndef OBJECTLINE_HPP
 #define OBJECTLINE_HPP
 
+#include "../Collision.hpp"
 #include "Data/MyVector/MyVector2.hpp"
 
 using namespace raylib;
@@ -22,6 +23,7 @@ namespace ObjectType
             void setLine(MyVector2 a, MyVector2 b);
             MyVector2 getPointA() const;
             MyVector2 getPointB() const;
+            bool checkCollisionWith(const ObjectLine &line);
 
         private:
             MyVector2 _a;

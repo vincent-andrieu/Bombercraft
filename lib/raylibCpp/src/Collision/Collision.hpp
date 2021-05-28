@@ -8,32 +8,36 @@
 #ifndef COLLISION_HPP
 #define COLLISION_HPP
 
-#include "ICollision.hpp"
+#include "ObjectType/ObjectBox.hpp"
+#include "ObjectType/ObjectLine.hpp"
+#include "ObjectType/ObjectCircle.hpp"
+#include "ObjectType/ObjectSphere.hpp"
+#include "ObjectType/ObjectTriangle.hpp"
+#include "ObjectType/ObjectRectangle.hpp"
 #include "raylib.h"
+
+using namespace ObjectType;
 
 namespace raylib
 {
-    class Collision : public ICollision
+    class Collision
     {
         public:
-            Collision();
-            ~Collision();
-
             // 2D
-            bool checkCollision(const ObjectRectangle &first, const ObjectRectangle &second) const;
-            bool checkCollision(const ObjectCircle &first, const ObjectCircle &second) const;
-            bool checkCollision(const ObjectLine &first, const ObjectLine &second) const;
-            bool checkCollision(const ObjectCircle &circle, const ObjectRectangle &rect) const;
+            static bool checkCollision(const ObjectLine &first, const ObjectLine &second);
+            static bool checkCollision(const ObjectCircle &first, const ObjectCircle &second);
+            static bool checkCollision(const ObjectCircle &circle, const ObjectRectangle &rect);
+            static bool checkCollision(const ObjectRectangle &first, const ObjectRectangle &second);
 
             // 3D
-            bool checkCollision(const ObjectSphere &first, const ObjectSphere &second) const;
-            bool checkCollision(const ObjectBox &first, const ObjectBox &second) const;
-            bool checkCollision(const ObjectBox &box, const ObjectSphere &sphere) const;
+            static bool checkCollision(const ObjectSphere &first, const ObjectSphere &second);
+            static bool checkCollision(const ObjectBox &first, const ObjectBox &second);
+            static bool checkCollision(const ObjectBox &box, const ObjectSphere &sphere);
         
         private:
-            Rectangle convertObjectRegtangle(const ObjectRectangle &src) const;
-            Vector2 convertMyVector2(const MyVector2 &src) const;
-            Vector3 convertMyVector3(const MyVector3 &src) const;
+            static Rectangle convertObjectRegtangle(const ObjectRectangle &src);
+            static Vector2 convertMyVector2(const MyVector2 &src);
+            static Vector3 convertMyVector3(const MyVector3 &src);
     };
 };
 

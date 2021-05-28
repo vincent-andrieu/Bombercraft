@@ -7,8 +7,6 @@
 
 #include "ObjectSphere.hpp"
 
-using namespace ObjectType;
-
 ObjectSphere::ObjectSphere(MyVector3 center, float radius) : _center(center), _radius(radius)
 {
 }
@@ -31,4 +29,14 @@ MyVector3 ObjectSphere::getSphereCenter() const
 float ObjectSphere::getSphereRadius() const
 {
     return this->_radius;
+}
+
+bool ObjectSphere::checkCollisionWith(const ObjectSphere &sphere)
+{
+    return Collision::checkCollision(*this, sphere);
+}
+
+bool ObjectSphere::checkCollisionWith(const ObjectBox &box)
+{
+    return Collision::checkCollision(box, *this);
 }

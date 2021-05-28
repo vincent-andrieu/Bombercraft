@@ -8,12 +8,14 @@
 #ifndef OBJECTCIRCLE_HPP
 #define OBJECTCIRCLE_HPP
 
+#include "../Collision.hpp"
 #include "Data/MyVector/MyVector2.hpp"
 
 using namespace raylib;
 
 namespace ObjectType
 {
+    class ObjectRectangle;
     class ObjectCircle
     {
         public:
@@ -22,6 +24,8 @@ namespace ObjectType
             void setCircle(MyVector2 center, float radius);
             MyVector2 getCircleCenter() const;
             float getCircleRadius() const;
+            bool checkCollisionWith(const ObjectCircle &circle);
+            bool checkCollisionWith(const ObjectRectangle &rectangle);
 
         private:
             MyVector2 _center;
