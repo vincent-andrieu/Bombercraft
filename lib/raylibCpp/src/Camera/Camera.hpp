@@ -18,7 +18,7 @@ namespace raylib
     {
         public :
             Camera(MyVector3 position, MyVector3 target, MyVector3 up,
-            float fovy);
+            float fovy = 90);
             ~Camera();
 
             void start();

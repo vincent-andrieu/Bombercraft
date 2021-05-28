@@ -18,7 +18,7 @@ namespace raylib
     {
         public :
             Cuboid(std::shared_ptr<ITexture> texture, MyVector3 position,
-            MyVector3 size, RColor color);
+            MyVector3 size, RColor color = RColor::RWHITE);
             ~Cuboid();
 
             void draw();

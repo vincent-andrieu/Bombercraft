@@ -18,7 +18,7 @@ namespace raylib
     {
         public :
             Rectangle(MyVector2 position,
-            MyVector2 size, RColor color);
+            MyVector2 size, RColor color = RColor::RWHITE);
             ~Rectangle();
 
             void draw();

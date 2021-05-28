@@ -17,8 +17,8 @@ namespace raylib
     class Texture : public ITexture
     {
         public :
-            Texture(const std::string &path, MyVector2 position,
-            RColor color);
+            Texture(const std::string &path, MyVector2 position = {0, 0},
+            RColor color = RColor::RWHITE);
             ~Texture();
 
             void draw();

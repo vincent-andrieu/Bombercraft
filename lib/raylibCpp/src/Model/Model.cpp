@@ -8,7 +8,7 @@
 #include "Model.hpp"
 
 raylib::Model::Model(std::shared_ptr<ITexture> texture, const std::string &filepath,
-MyVector3 position, RColor color)
+MyVector3 position = {0, 0, 0}, RColor color = RColor::RWHITE)
 {
     _position = position;
     _rotation = {0.0f, 0.0f, 0.0f};

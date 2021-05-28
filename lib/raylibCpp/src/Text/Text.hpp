@@ -17,8 +17,8 @@ namespace raylib
     class Text : public IText
     {
         public :
-            Text(const std::string &text, MyVector2 position,
-            size_t size, RColor color);
+            Text(const std::string &text, MyVector2 position = {0, 0},
+            size_t size = 1, RColor color = RColor::RWHITE);
             ~Text();
 
             void draw();

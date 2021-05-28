@@ -19,7 +19,7 @@ namespace raylib
     class Sound : public IAudio
     {
         public :
-            Sound(const std::string &path, float volume, float pitch);
+            Sound(const std::string &path, float volume = 100, float pitch = 100);
             ~Sound();
 
             void play();
