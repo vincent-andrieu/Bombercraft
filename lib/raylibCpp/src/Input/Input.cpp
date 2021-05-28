@@ -9,7 +9,7 @@
 
 using namespace raylib;
 
-Input::Input()
+Input::Input() : _previousMousePos(0, 0)
 {
 }
 
@@ -51,4 +51,13 @@ bool Input::isMousseRightPressed(void) const
 bool Input::isMousseMiddlePressed(void) const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE);
+}
+
+bool Input::isMousseMoved(void)
+{
+    MyVector2 mouse_pos = this->getMousePos();
+    MyVector2 previous_mouse_pos = this->_previousMousePos;
+    this->_previousMousePos = mouse_pos;
+
+    return mouse_pos == previous_mouse_pos;
 }

@@ -25,8 +25,10 @@ namespace raylib
             bool isMousseLeftPressed(void) const;
             bool isMousseRightPressed(void) const;
             bool isMousseMiddlePressed(void) const;
+            bool isMousseMoved(void);
 
         private:
+            MyVector2 _previousMousePos;
             std::unordered_map<KeyBoard, int> _keyList = {
                 {raylib::KeyBoard::IKEY_A, KEY_A},
                 {raylib::KeyBoard::IKEY_B, KEY_B},

@@ -21,6 +21,7 @@ namespace raylib
         virtual bool isMousseLeftPressed(void) const = 0;
         virtual bool isMousseRightPressed(void) const = 0;
         virtual bool isMousseMiddlePressed(void) const = 0;
+        virtual bool isMousseMoved(void) = 0;
     };
 };
 
