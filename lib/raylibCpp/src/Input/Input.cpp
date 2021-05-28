@@ -38,26 +38,46 @@ MyVector2 Input::getMousePos(void) const
     return MyVector2(pos.x, pos.y);
 }
 
-bool Input::isMousseLeftPressed(void) const
+bool Input::isMouseLeftPressed(void) const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 }
 
-bool Input::isMousseRightPressed(void) const
+bool Input::isMouseRightPressed(void) const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
 }
 
-bool Input::isMousseMiddlePressed(void) const
+bool Input::isMouseMiddlePressed(void) const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE);
 }
 
-bool Input::isMousseMoved(void)
+bool Input::isMouseMoved(void)
 {
     MyVector2 mouse_pos = this->getMousePos();
     MyVector2 previous_mouse_pos = this->_previousMousePos;
     this->_previousMousePos = mouse_pos;
 
     return !(mouse_pos == previous_mouse_pos);
+}
+
+bool Input::MouseIsOver(MyVector2 pos, MyVector2 size) const
+{
+    MyVector2 mouse_pos = this->getMousePos();
+
+    if (mouse_pos.a >= pos.a && mouse_pos.b >= pos.b) {
+        if (mouse_pos.a <= pos.a + size.a && mouse_pos.b <= pos.b + size.b) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Input::MouseIsOverClicked(MyVector2 pos, MyVector2 size) const
+{
+    bool isOver = this->MouseIsOver(pos, size);
+    bool isPressed = this->isMouseLeftPressed();
+
+    return isOver && isPressed;
 }

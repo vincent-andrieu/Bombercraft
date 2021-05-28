@@ -22,10 +22,12 @@ namespace raylib
             bool isKeyPressed(KeyBoard key) const;
             bool isKeyReleased(KeyBoard key) const;
             MyVector2 getMousePos(void) const;
-            bool isMousseLeftPressed(void) const;
-            bool isMousseRightPressed(void) const;
-            bool isMousseMiddlePressed(void) const;
-            bool isMousseMoved(void);
+            bool isMouseLeftPressed(void) const;
+            bool isMouseRightPressed(void) const;
+            bool isMouseMiddlePressed(void) const;
+            bool isMouseMoved(void);
+            bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
+            bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
 
         private:
             MyVector2 _previousMousePos;
