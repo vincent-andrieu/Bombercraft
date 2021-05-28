@@ -23,8 +23,8 @@ namespace raylib
             void open();
             void close();
 
-            void start();
-            void stop();
+            void clear();
+            void refresh();
 
             void setSize(MyVector2 size);
             void setColor(RColor color);

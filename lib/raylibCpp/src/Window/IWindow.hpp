@@ -22,8 +22,8 @@ namespace raylib
             virtual void open() = 0;
             virtual void close() = 0;
 
-            virtual void start() = 0;
-            virtual void stop() = 0;
+            virtual void clear() = 0;
+            virtual void refresh() = 0;
 
             virtual void setSize(MyVector2 size) = 0;
             virtual void setColor(RColor color) = 0;

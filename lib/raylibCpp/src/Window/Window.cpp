@@ -27,13 +27,13 @@ void raylib::Window::close()
     CloseWindow();
 }
 
-void raylib::Window::start()
+void raylib::Window::clear()
 {
     BeginDrawing();
     ClearBackground(_matchingColors.at(_color));
 }
 
-void raylib::Window::stop()
+void raylib::Window::refresh()
 {
     EndDrawing();
 }
