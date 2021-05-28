@@ -27,6 +27,7 @@ namespace raylib
     MyVector4 operator-(MyVector4 const &first, MyVector4 const &second);
     MyVector4 operator*(MyVector4 const &first, MyVector4 const &second);
     MyVector4 operator/(MyVector4 const &first, MyVector4 const &second);
+    bool operator==(MyVector4 const &first, MyVector4 const &second);
 };
 
 #endif

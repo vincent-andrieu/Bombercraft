@@ -53,3 +53,11 @@ MyVector2 operator/(MyVector2 const &first, MyVector2 const &second)
         two = first.b / second.b;
     return MyVector2(one, two);
 }
+
+bool operator==(MyVector2 const &first, MyVector2 const &second)
+{
+    bool a = first.a == second.a;
+    bool b = first.b == second.b;
+
+    return a && b;
+}

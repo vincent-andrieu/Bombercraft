@@ -65,3 +65,13 @@ MyVector4 operator/(MyVector4 const &first, MyVector4 const &second)
         two = first.d / second.d;
     return MyVector4(one, two, three, four);
 }
+
+bool operator==(MyVector4 const &first, MyVector4 const &second)
+{
+    bool a = first.a == second.a;
+    bool b = first.b == second.b;
+    bool c = first.c == second.c;
+    bool d = first.d == second.d;
+
+    return a && b && c && d;
+}

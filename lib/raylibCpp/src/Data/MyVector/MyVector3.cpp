@@ -59,3 +59,12 @@ MyVector3 operator/(MyVector3 const &first, MyVector3 const &second)
         two = first.c / second.c;
     return MyVector3(one, two, three);
 }
+
+bool operator==(MyVector3 const &first, MyVector3 const &second)
+{
+    bool a = first.a == second.a;
+    bool b = first.b == second.b;
+    bool c = first.c == second.c;
+
+    return a && b && c;
+}
