@@ -42,6 +42,7 @@ set(SRCS
     ./src/Collision/ObjectType/ObjectLine.cpp
     ./src/Collision/ObjectType/ObjectBox.cpp
     ./src/Font/Font.cpp
+    ./src/ShaderManage/ShaderManage.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
