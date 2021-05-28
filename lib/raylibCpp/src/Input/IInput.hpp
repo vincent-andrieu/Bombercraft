@@ -15,6 +15,7 @@ namespace raylib
 {
     class IInput
     {
+        virtual ~IInput() = default;
         virtual bool isKeyPressed(KeyBoard key) const = 0;
         virtual bool isKeyReleased(KeyBoard key) const = 0;
         virtual MyVector2 getMousePos(void) const = 0;
