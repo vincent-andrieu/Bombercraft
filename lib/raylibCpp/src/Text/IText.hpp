@@ -10,6 +10,8 @@
 
 #include "../../include/include.hpp"
 
+#include "../Font/IFont.hpp"
+
 namespace raylib
 {
     class IText

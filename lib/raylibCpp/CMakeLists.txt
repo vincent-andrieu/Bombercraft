@@ -18,7 +18,6 @@ include_directories(./include ./src)
 
 ## SOURCES
 set(SRCS
-    
     ./src/Audio/Music.cpp
     ./src/Audio/Sound.cpp
     ./src/Camera/Camera.cpp
@@ -42,6 +41,7 @@ set(SRCS
     ./src/Collision/ObjectType/ObjectSphere.cpp
     ./src/Collision/ObjectType/ObjectLine.cpp
     ./src/Collision/ObjectType/ObjectBox.cpp
+    ./src/Font/Font.cpp
 )
 add_library(${NAME} SHARED ${SRCS})
 
