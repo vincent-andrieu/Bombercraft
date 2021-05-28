@@ -54,8 +54,8 @@ void raylib::Save::updateData(std::string data)
     char *cstr = nullptr;
 
     if (FileExists(_path.data())) {
-        cstr = new char[this->_data.length() + 1];
-        std::strcpy(cstr, this->_data.c_str());
+        cstr = new char[data.length() + 1];
+        std::strcpy(cstr, data.c_str());
         SaveFileText(_path.data(), cstr);
         delete [] cstr;
     }
