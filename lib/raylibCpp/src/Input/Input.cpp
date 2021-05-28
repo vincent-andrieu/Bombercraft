@@ -59,5 +59,5 @@ bool Input::isMousseMoved(void)
     MyVector2 previous_mouse_pos = this->_previousMousePos;
     this->_previousMousePos = mouse_pos;
 
-    return mouse_pos == previous_mouse_pos;
+    return !(mouse_pos == previous_mouse_pos);
 }
