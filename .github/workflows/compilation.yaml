@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  compilation:
+  linux:
     runs-on: ubuntu-20.04
     container: epitechcontent/epitest-docker:devel
     steps:
@@ -26,3 +26,26 @@ jobs:
       - name: Run make
         working-directory: build
         run: make
+
+      - name: Check if binary exist
+        run: ls bomberman
+
+
+  windows:
+    runs-on: windows-2019
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: build
+        run: cmake ..
+
+      - name: Check if binary exist
+        working-directory: build
+        run: ls bomberman.sln
