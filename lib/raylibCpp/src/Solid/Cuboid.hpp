@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** IndieStudio
 ** File description:
-** Cube
+** Cuboid
 */
 
-#ifndef CUBE_HPP
-#define CUBE_HPP
+#ifndef CUBOID_HPP
+#define CUBOID_HPP
 
 #include "../../include/include.hpp"
 
@@ -14,12 +14,12 @@
 
 namespace raylib
 {
-    class Cube : public ISolid
+    class Cuboid : public ISolid
     {
         public :
-            Cube(std::shared_ptr<ITexture> texture, MyVector3 position,
+            Cuboid(std::shared_ptr<ITexture> texture, MyVector3 position,
             MyVector3 size, RColor color);
-            ~Cube();
+            ~Cuboid();
 
             void draw();
 
@@ -36,4 +36,4 @@ namespace raylib
     };
 };
 
-#endif // CUBE_HPP
+#endif // Cuboid_HPP

@@ -2,12 +2,12 @@
 ** EPITECH PROJECT, 2021
 ** IndieStudio
 ** File description:
-** Cube
+** Cuboid
 */
 
-#include "Cube.hpp"
+#include "Cuboid.hpp"
 
-raylib::Cube::Cube(std::shared_ptr<ITexture> texture, MyVector3 position,
+raylib::Cuboid::Cuboid(std::shared_ptr<ITexture> texture, MyVector3 position,
 MyVector3 size, RColor color)
 {
     _texture = texture;
@@ -16,12 +16,12 @@ MyVector3 size, RColor color)
     _color = color;
 }
 
-raylib::Cube::~Cube()
+raylib::Cuboid::~Cuboid()
 {
 
 }
 
-void raylib::Cube::draw()
+void raylib::Cuboid::draw()
 {
     Vector3 rayPos = {_position.a, _position.b, _position.c};
 
@@ -33,22 +33,22 @@ void raylib::Cube::draw()
     }
 }
 
-void raylib::Cube::setPosition(MyVector3 position)
+void raylib::Cuboid::setPosition(MyVector3 position)
 {
     _position = position;
 }
 
-void raylib::Cube::setSize(MyVector3 size)
+void raylib::Cuboid::setSize(MyVector3 size)
 {
     _size = size;
 }
 
-void raylib::Cube::setColor(RColor color)
+void raylib::Cuboid::setColor(RColor color)
 {
     _color = color;
 }
 
-void raylib::Cube::setTexture(std::shared_ptr<ITexture> &texture)
+void raylib::Cuboid::setTexture(std::shared_ptr<ITexture> &texture)
 {
     _texture = texture;
 }

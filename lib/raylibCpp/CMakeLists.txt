@@ -27,7 +27,7 @@ set(SRCS
     ./src/Model/Animation.cpp
     ./src/Model/Model.cpp
     ./src/Shape/Rectangle.cpp
-    ./src/Solid/Cube.cpp
+    ./src/Solid/Cuboid.cpp
     ./src/Text/Text.cpp
     ./src/Texture/Texture.cpp
     ./src/Window/Window.cpp
