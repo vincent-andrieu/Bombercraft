@@ -5,8 +5,8 @@
 ** Text
 */
 
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef TEXT_HPP
+#define TEXT_HPP
 
 #include "../../include/include.hpp"
 
@@ -25,7 +25,7 @@ namespace raylib
 
             void setText(const std::string &text);
             void setPosition(MyVector2 position);
-            void setFont(const std::string &path);
+            void setFont(const std::string &font);
             void setColor(RColor color);
             void setFontSize(size_t size);
             void setLimit(MyVector4 limit);
@@ -36,12 +36,11 @@ namespace raylib
         private :
             std::string _text;
             MyVector2 _position;
-            Font _font;
+            std::shared_ptr<IFont> _font;
             RColor _color;
             size_t _size;
             Rectangle _limit;
-            bool _hasFont;
     };
 };
 
-#endif // MODEL_HPP
+#endif // TEXT_HPP

@@ -24,6 +24,7 @@ namespace raylib
             virtual void setPath(const std::string &path) = 0;
 
             virtual Texture2D getTexture() const = 0;
+            virtual std::string getPath() const = 0;
     };
 };
 

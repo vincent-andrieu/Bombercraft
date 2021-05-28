@@ -12,19 +12,13 @@ raylib::Text::Text(const std::string &text, MyVector2 position,
 {
     _text = text;
     _position = position;
-    _font = GetFontDefault();
+    _font = nullptr;
     _color = color;
     _size = size;
     _limit = {-1, -1, -1, -1};
-    _hasFont = false;
 }
 
-raylib::Text::~Text()
-{
-    if (_hasFont) {
-        UnloadFont(_font);
-    }
-}
+raylib::Text::~Text() {}
 
 void raylib::Text::draw()
 {
@@ -35,10 +29,10 @@ void raylib::Text::draw()
         spacing = 1;
     }
     if (_limit.height == -1) {
-        DrawTextEx(_font, _text.data(), rayPos,
+        DrawTextEx(_font->getFont(), _text.data(), rayPos,
         _size, spacing, _matchingColors.at(_color));
     } else {
-        DrawTextRec(_font, _text.data(), _limit,
+        DrawTextRec(_font->getFont(), _text.data(), _limit,
         _size, spacing, true, _matchingColors.at(_color));
     }
 }
@@ -53,13 +47,9 @@ void raylib::Text::setPosition(MyVector2 position)
     _position = position;
 }
 
-void raylib::Text::setFont(const std::string &path)
+void raylib::Text::setFont(const std::string &font)
 {
-    if (_hasFont) {
-        UnloadFont(_font);
-    }
-    _font = LoadFont(path.data());
-    _hasFont = true;
+    _font->setPath(font);
 }
 
 void raylib::Text::setColor(RColor color)
@@ -82,10 +72,7 @@ void raylib::Text::setLimit(MyVector4 limit)
 
 void raylib::Text::removeFont()
 {
-    if (_hasFont) {
-        _hasFont = false;
-        UnloadFont(_font);
-    }
+    _font->reset();
 }
 
 void raylib::Text::removeLimit()

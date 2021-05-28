@@ -17,8 +17,23 @@
 #include "../src/Camera/ICamera.hpp"
 #include "../src/Camera/Camera.hpp"
 
+#include "../src/Collision/ICollision.hpp"
+#include "../src/Collision/Collision.hpp"
+#include "../src/Collision/ObjectType/ObjectBox.hpp"
+#include "../src/Collision/ObjectType/ObjectCircle.hpp"
+#include "../src/Collision/ObjectType/ObjectLine.hpp"
+#include "../src/Collision/ObjectType/ObjectRectangle.hpp"
+#include "../src/Collision/ObjectType/ObjectSphere.hpp"
+#include "../src/Collision/ObjectType/ObjectTriangle.hpp"
+
 #include "../src/File/IFile.hpp"
 #include "../src/File/Save.hpp"
+
+#include "../src/Font/IFont.hpp"
+#include "../src/Font/Font.hpp"
+
+#include "../src/Input/IInput.hpp"
+#include "../src/Input/Input.hpp"
 
 #include "../src/Model/IModel.hpp"
 #include "../src/Model/Model.hpp"
@@ -28,7 +43,7 @@
 #include "../src/Shape/Rectangle.hpp"
 
 #include "../src/Solid/ISolid.hpp"
-#include "../src/Solid/Cube.hpp"
+#include "../src/Solid/Cuboid.hpp"
 
 #include "../src/Text/IText.hpp"
 #include "../src/Text/Text.hpp"
