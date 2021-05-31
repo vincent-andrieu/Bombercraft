@@ -12,7 +12,7 @@
 #include "System/System.hpp"
 #include "entity.hpp"
 #include "IComponentContainer.hpp"
-#include "EntityContainer/EntityContainer.hpp"
+#include "EntityContainer/EntityRegister.hpp"
 #include "System/System.hpp"
 #include "ComponentContainer/ComponentContainer.hpp"
 #include "Component/Component.hpp"
@@ -48,10 +48,10 @@ class EntityManager {
     {
         for (std::size_t i = 0; i < ComponentCount; i++) {
             if (_componentContainers[i]) {
-                _componentContainers[i]->reserve(size);
+                _componentContainers[i]->allocate(size);
             }
         }
-        _entities.reserve(size);
+        _entities.allocate(size);
     }
 
     Entity createEntity()
@@ -134,7 +134,7 @@ class EntityManager {
 
   private:
     std::array<std::shared_ptr<IComponentContainer>, ComponentCount> _componentContainers;
-    EntityContainer _entities;
+    EntityRegister _entities;
     std::vector<std::shared_ptr<System<ComponentCount, SystemCount>>> _systems;
 
     template <typename T>

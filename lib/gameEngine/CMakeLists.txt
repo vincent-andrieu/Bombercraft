@@ -21,21 +21,13 @@ include_directories(
 
 ## SOURCES
 set(SRCS
-    ./src/main.cpp
-    ./src/EntityContainer/EntityRegister.cpp
+        src/EntityContainer/EntityRegister.cpp
     ./src/Component/Component.cpp
+    ./src/main.cpp
     ./src/system/PhysicsSystem/PhysicsSystem.cpp
-    ./src/AbstractSystem/AbstractSystem.cpp
-    ./src/EntityManager/EntityManager.cpp
-    ./src/SystemManager/SystemManager.cpp
-        )
+)
 #add_library(${NAME} SHARED ${SRCS})
 add_executable(${NAME} ${SRCS}) # DEBUG
 
 ## LIB
 # TODO : load cpp raylib
-add_library(raylibcpp SHARED IMPORTED)
-set_property(TARGET raylibcpp PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../raylibCpp/libraylibcpp.so")
-include_directories(${PROJECT_SOURCE_DIR}/../raylibCpp/include)
-target_link_libraries(${NAME} raylibcpp)
-

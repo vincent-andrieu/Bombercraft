@@ -7,8 +7,6 @@
 
 #include "EntityRegister.hpp"
 
-using namespace Engine;
-
 void EntityRegister::allocate(std::size_t size)
 {
     _freeEntities.resize(size);
@@ -16,12 +14,12 @@ void EntityRegister::allocate(std::size_t size)
     _entitySignatures.resize(size);
 }
 
-std::vector<Signature> &EntityRegister::getEntitySignatures()
+std::vector<Signature> &EntityRegister::getEntityToBitset()
 {
     return _entitySignatures;
 }
 
-const Signature &EntityRegister::getSignature(Entity entity) const
+const Signature &EntityRegister::getBitset(Entity entity) const
 {
     return _entitySignatures[entity];
 }
