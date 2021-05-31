@@ -8,10 +8,12 @@
 #ifndef VELOCITY_HPP
 #define VELOCITY_HPP
 
-struct Velocity : public Component<Velocity>
+namespace Engine
 {
-    float x;
-    float y;
-};
+    struct Velocity : public Component<Velocity> {
+        float x;
+        float y;
+    };
+}
 
 #endif // VELOCITY_HPP

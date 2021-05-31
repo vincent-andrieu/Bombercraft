@@ -7,6 +7,8 @@
 
 #include "PhysicsSystem.hpp"
 
+using namespace Engine;
+
 PhysicsSystem::PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager)
     : _entityManager(entityManager)
 {
