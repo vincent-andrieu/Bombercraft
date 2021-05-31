@@ -7,9 +7,11 @@
 
 #include "AbstractSystem.hpp"
 
+using namespace Engine;
+
 const std::size_t AbstractSystem::type = generateSystemType();
 
-std::size_t generateSystemType()
+std::size_t Engine::generateSystemType()
 {
     static std::size_t count = 0;
 

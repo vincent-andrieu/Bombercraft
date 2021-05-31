@@ -7,7 +7,7 @@
 
 #include "Component.hpp"
 
-std::size_t generateComponentType()
+std::size_t Engine::generateComponentType()
 {
     static std::size_t counter = 0;
 

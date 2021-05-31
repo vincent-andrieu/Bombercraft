@@ -7,6 +7,8 @@
 
 #include "EntityRegister.hpp"
 
+using namespace Engine;
+
 void EntityRegister::allocate(std::size_t size)
 {
     _freeEntities.resize(size);

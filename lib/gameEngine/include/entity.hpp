@@ -13,12 +13,15 @@
 #include <bitset>
 #include "env.hpp"
 
-using Entity = uint32_t;
+namespace Engine
+{
+    using Entity = uint32_t;
 
-using Index = uint32_t;
+    using Index = uint32_t;
 
-static constexpr auto InvalidIndex = std::numeric_limits<Index>::max();
+    static constexpr auto InvalidIndex = std::numeric_limits<Index>::max();
 
-typedef std::bitset<MAX_COMPONENT> Signature;
+    typedef std::bitset<MAX_COMPONENT> Signature;
+}
 
 #endif // ENTITY_HPP

@@ -10,9 +10,10 @@
 
 #include <vector>
 
-class IEventManager {
-    public:
-
+namespace Engine
+{
+    class IEventManager {
+      public:
         virtual ~IEventManager() = default;
 
         virtual bool isKeyPressed(int key) = 0;
@@ -24,6 +25,7 @@ class IEventManager {
         virtual bool isMouseMiddleClick() = 0;
 
         std::vector<int> getMousePos();
-};
+    };
+}
 
 #endif /* !IEVENTMANAGER_HPP_ */

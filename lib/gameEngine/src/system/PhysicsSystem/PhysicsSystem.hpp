@@ -14,18 +14,21 @@
 #include "components/Velocity.hpp"
 #include "EntityManager/EntityManager.hpp"
 
-class PhysicsSystem : public AbstractSystem {
-  public:
-    PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager);
+namespace Engine
+{
+    class PhysicsSystem : public AbstractSystem {
+      public:
+        PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager);
 
-    void update(float dt);
+        void update(float dt);
 
-    virtual void onManagedEntityAdded(Entity entity);
+        virtual void onManagedEntityAdded(Entity entity);
 
-    virtual void onManagedEntityRemoved(Entity entity);
+        virtual void onManagedEntityRemoved(Entity entity);
 
-  private:
-    EntityManager<MAX_COMPONENT>& _entityManager;
-};
+      private:
+        EntityManager<MAX_COMPONENT> &_entityManager;
+    };
+}
 
 #endif // PHYSICSSYSTEM_HPP

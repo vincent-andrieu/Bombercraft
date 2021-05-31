@@ -10,10 +10,12 @@
 
 #include "Component/Component.hpp"
 
-struct Position : public Component<Position>
+namespace Engine
 {
-    float x;
-    float y;
-};
+    struct Position : public Component<Position> {
+        float x;
+        float y;
+    };
+}
 
 #endif // POSITION_HPP
