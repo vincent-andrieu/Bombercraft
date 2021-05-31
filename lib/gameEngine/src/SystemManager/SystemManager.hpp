@@ -30,7 +30,8 @@ namespace Engine
         std::vector<std::shared_ptr<AbstractSystem>> _systems;
     };
 
-    template <typename T, typename... Args> T *SystemManager::createSystem(Args &&...args)
+    template <typename T, typename... Args>
+    T *SystemManager::createSystem(Args &&...args)
     {
         auto &system = _systems.emplace_back(std::make_shared<T>(std::forward<Args>(args)...));
         return static_cast<T *>(system.get());

@@ -18,7 +18,7 @@ namespace Engine
 {
     class AbstractSystem {
       public:
-        AbstractSystem() = default;
+        AbstractSystem();
         virtual ~AbstractSystem() = default;
 
         void onEntityUpdated(Entity entity, const Signature &components);
@@ -36,8 +36,9 @@ namespace Engine
 
         virtual void onManagedEntityRemoved(Entity entity) = 0;
 
-        static const std::size_t type;
+        const std::size_t type;
 
+        static std::size_t instanceCounter;
       protected:
         const std::vector<Entity> &getManagedEntities() const;
 
@@ -46,8 +47,6 @@ namespace Engine
         std::vector<Entity> _managedEntities;
         std::unordered_map<Entity, Index> _entityToManagedEntity;
     };
-
-    std::size_t generateSystemType();
 }
 
 #endif // ABSTRACTSYSTEM_HPP
