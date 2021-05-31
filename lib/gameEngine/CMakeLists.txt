@@ -21,7 +21,7 @@ include_directories(
 
 ## SOURCES
 set(SRCS
-    ./src/EntityContainer/EntityContainer.cpp
+        src/EntityContainer/EntityRegister.cpp
     ./src/Component/Component.cpp
     ./src/main.cpp
     ./src/system/PhysicsSystem/PhysicsSystem.cpp

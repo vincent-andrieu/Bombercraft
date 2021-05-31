@@ -14,7 +14,7 @@
 
 #include "Component/Component.hpp"
 #include "ComponentContainer/ComponentContainer.hpp"
-#include "EntityContainer/EntityContainer.hpp"
+#include "EntityContainer/EntityRegister.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "System/System.hpp"
 
