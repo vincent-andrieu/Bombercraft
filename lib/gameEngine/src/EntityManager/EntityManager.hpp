@@ -12,9 +12,9 @@
 #include "System/System.hpp"
 #include "entity.hpp"
 #include "IComponentContainer.hpp"
-#include "EntityContainer/EntityContainer.hpp"
+#include "EntityContainer/EntityRegister.hpp"
 #include "System/System.hpp"
-#include "ComponentContainer/ComponentContainer.hpp"
+#include "ComponentContainer/ComponentTypeRegister.hpp"
 #include "Component/Component.hpp"
 
 template <std::size_t ComponentCount, std::size_t SystemCount>
@@ -30,7 +30,7 @@ class EntityManager {
     void registerComponent()
     {
         this->template checkComponentType<T>();
-        _componentContainers[T::type] = std::make_shared<ComponentContainer<T, ComponentCount, SystemCount>>(
+        _componentContainers[T::type] = std::make_shared<ComponentTypeRegister<T>>(
             _entities.getEntityToBitset()
             );
     }
@@ -48,10 +48,10 @@ class EntityManager {
     {
         for (std::size_t i = 0; i < ComponentCount; i++) {
             if (_componentContainers[i]) {
-                _componentContainers[i]->reserve(size);
+                _componentContainers[i]->allocate(size);
             }
         }
-        _entities.reserve(size);
+        _entities.allocate(size);
     }
 
     Entity createEntity()
@@ -134,7 +134,7 @@ class EntityManager {
 
   private:
     std::array<std::shared_ptr<IComponentContainer>, ComponentCount> _componentContainers;
-    EntityContainer _entities;
+    EntityRegister _entities;
     std::vector<std::shared_ptr<System<ComponentCount, SystemCount>>> _systems;
 
     template <typename T>
@@ -149,16 +149,14 @@ class EntityManager {
         (this->template checkComponentType<Ts>(), ...);
     }
 
-    template <typename T>
-    ComponentContainer<T, ComponentCount, SystemCount> * getComponentContainer()
+    template <typename T> ComponentTypeRegister<T> * getComponentContainer()
     {
-        return static_cast<ComponentContainer<T, ComponentCount, SystemCount> *>(_componentContainers[T::type].get());
+        return static_cast<ComponentTypeRegister<T> *>(_componentContainers[T::type].get());
     }
 
-    template <typename T>
-    ComponentContainer<T, ComponentCount, SystemCount> * getComponentContainer() const
+    template <typename T> ComponentTypeRegister<T> * getComponentContainer() const
     {
-        return static_cast<ComponentContainer<T, ComponentCount, SystemCount> *>(_componentContainers[T::type].get());
+        return static_cast<ComponentTypeRegister<T> *>(_componentContainers[T::type].get());
     }
 };
 

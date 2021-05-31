@@ -13,8 +13,8 @@
 #include "IComponentContainer.hpp"
 
 #include "Component/Component.hpp"
-#include "ComponentContainer/ComponentContainer.hpp"
-#include "EntityContainer/EntityContainer.hpp"
+#include "ComponentContainer/ComponentTypeRegister.hpp"
+#include "EntityContainer/EntityRegister.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "System/System.hpp"
 
