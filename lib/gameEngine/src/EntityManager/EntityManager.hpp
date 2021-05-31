@@ -9,46 +9,31 @@
 #define ENTITYMANAGER_HPP
 
 #include <memory>
-#include "System/System.hpp"
+#include "SystemManager/SystemManager.hpp"
 #include "entity.hpp"
-#include "IComponentContainer.hpp"
+#include "IComponentTypeRegister.hpp"
 #include "EntityContainer/EntityRegister.hpp"
-#include "System/System.hpp"
-#include "ComponentContainer/ComponentTypeRegister.hpp"
+#include "ComponentTypeRegister/ComponentTypeRegister.hpp"
 #include "Component/Component.hpp"
 
-template <std::size_t ComponentCount, std::size_t SystemCount>
-class System;
-
-template <std::size_t ComponentCount, std::size_t SystemCount>
+template <std::size_t ComponentCount>
 class EntityManager {
   public:
-    EntityManager() = default;
+    EntityManager(SystemManager &sysManager) : _systemManager(sysManager) {}
     ~EntityManager() = default;
 
     template <typename T>
     void registerComponent()
     {
         this->template checkComponentType<T>();
-        _componentContainers[T::type] = std::make_shared<ComponentTypeRegister<T>>(
-            _entities.getEntityToBitset()
-            );
+        _componentRegisters[T::type] = std::make_shared<ComponentTypeRegister<T>>(_entities.getEntitySignatures());
     }
 
-    template <typename T, typename ...Args>
-    T *createSystem(Args&& ...args)
-    {
-        Index type = _systems.size();
-        auto &system = _systems.emplace_back(std::make_shared<T>(std::forward<Args>(args)...));
-        system->setUp(type);
-        return static_cast<T*>(system.get());
-    }
-
-    void reserve(std::size_t size)
+    void allocate(std::size_t size)
     {
         for (std::size_t i = 0; i < ComponentCount; i++) {
-            if (_componentContainers[i]) {
-                _componentContainers[i]->allocate(size);
+            if (_componentRegisters[i]) {
+                _componentRegisters[i]->allocate(size);
             }
         }
         _entities.allocate(size);
@@ -68,7 +53,7 @@ class EntityManager {
     bool hasComponent(Entity entity)
     {
         this->checkComponentType<T>();
-        return _entities.getBitset(entity)[T::type];
+        return _entities.getSignature(entity)[T::type];
     }
 
     template <typename ...Ts>
@@ -77,7 +62,7 @@ class EntityManager {
         (this->checkComponentTypes<Ts>(), ...);
         auto requirements = std::bitset<ComponentCount>();
         (requirements.set(Ts::type), ...);
-        return (requirements & _entities.getBitset(entity)) == requirements;
+        return (requirements & _entities.getSignature(entity)) == requirements;
     }
 
     template <typename T>
@@ -107,10 +92,8 @@ class EntityManager {
         this->checkComponentType<T>();
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
         // Send message to system
-        const auto &bitset = _entities.getBitset(entity);
-        for (auto &system : _systems) {
-            system->onEntityUpdated(entity, bitset);
-        }
+        const Signature &signature = _entities.getSignature(entity);
+        this->_systemManager.onEntityUpdated(entity, signature);
     }
 
     template <typename T>
@@ -119,10 +102,8 @@ class EntityManager {
         this->checkComponentType<T>();
         this->getComponentContainer<T>()->remove(entity);
         // Send message to systems
-        const auto &bitset = _entities.getBitset(entity);
-        for (auto &system : _systems) {
-            system->onEntityUpdated(entity, bitset);
-        }
+        const auto &signature = _entities.getSignature(entity);
+        this->_systemManager.onEntityUpdated(entity, signature);
     }
 
     template <typename T>
@@ -133,9 +114,9 @@ class EntityManager {
     }
 
   private:
-    std::array<std::shared_ptr<IComponentContainer>, ComponentCount> _componentContainers;
+    std::array<std::shared_ptr<IComponentTypeRegister>, ComponentCount> _componentRegisters;
     EntityRegister _entities;
-    std::vector<std::shared_ptr<System<ComponentCount, SystemCount>>> _systems;
+    SystemManager &_systemManager;
 
     template <typename T>
     void checkComponentType() const
@@ -149,14 +130,16 @@ class EntityManager {
         (this->template checkComponentType<Ts>(), ...);
     }
 
-    template <typename T> ComponentTypeRegister<T> * getComponentContainer()
+    template <typename T>
+    ComponentTypeRegister<T> * getComponentContainer()
     {
-        return static_cast<ComponentTypeRegister<T> *>(_componentContainers[T::type].get());
+        return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
 
-    template <typename T> ComponentTypeRegister<T> * getComponentContainer() const
+    template <typename T>
+    ComponentTypeRegister<T> * getComponentContainer() const
     {
-        return static_cast<ComponentTypeRegister<T> *>(_componentContainers[T::type].get());
+        return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
 };
 

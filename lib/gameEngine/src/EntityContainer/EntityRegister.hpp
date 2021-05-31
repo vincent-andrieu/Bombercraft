@@ -21,8 +21,8 @@ class EntityRegister {
     ~EntityRegister() = default;
 
     void allocate(std::size_t size);
-    std::vector<Signature> &getEntityToBitset();
-    const Signature &getBitset(Entity entity) const;
+    std::vector<Signature> &getEntitySignatures();
+    const Signature &getSignature(Entity entity) const;
     Entity create();
     void remove(Entity entity);
 

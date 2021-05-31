@@ -8,7 +8,7 @@
 #ifndef COMPONENTTYPEREGISTER_HPP
 #define COMPONENTTYPEREGISTER_HPP
 
-#include "IComponentContainer.hpp"
+#include "IComponentTypeRegister.hpp"
 #include "entity.hpp"
 
 #include <vector>
@@ -16,7 +16,7 @@
 #include <bitset>
 
 template <typename T>
-class ComponentTypeRegister : public IComponentContainer {
+class ComponentTypeRegister : public IComponentTypeRegister {
   public:
     ComponentTypeRegister(std::vector<Signature> &entityToBitset);
 

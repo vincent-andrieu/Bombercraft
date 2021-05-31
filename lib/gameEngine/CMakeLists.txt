@@ -21,11 +21,13 @@ include_directories(
 
 ## SOURCES
 set(SRCS
-        src/EntityContainer/EntityRegister.cpp
-    ./src/Component/Component.cpp
     ./src/main.cpp
+    ./src/EntityContainer/EntityRegister.cpp
+    ./src/Component/Component.cpp
     ./src/system/PhysicsSystem/PhysicsSystem.cpp
-)
+    ./src/AbstractSystem/AbstractSystem.cpp
+    ./src/SystemManager/SystemManager.cpp
+        )
 #add_library(${NAME} SHARED ${SRCS})
 add_executable(${NAME} ${SRCS}) # DEBUG
 
