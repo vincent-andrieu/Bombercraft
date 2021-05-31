@@ -7,7 +7,7 @@
 
 #include "PhysicsSystem.hpp"
 
-PhysicsSystem::PhysicsSystem(EntityManager<32, 8> &entityManager)
+PhysicsSystem::PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager)
     : _entityManager(entityManager)
 {
     this->setRequirements<Position, Velocity>();
@@ -15,9 +15,16 @@ PhysicsSystem::PhysicsSystem(EntityManager<32, 8> &entityManager)
 
 void PhysicsSystem::update(float dt)
 {
-    for (const auto &entity : this->getManagedEntities()) {
+    for (const Entity &entity : this->getManagedEntities()) {
         auto [position, velocity] = _entityManager.getComponents<Position, Velocity>(entity);
         position.x += velocity.x * dt;
         position.y += velocity.y * dt;
     }
+}
+
+void PhysicsSystem::onManagedEntityAdded(Entity entity)
+{
+}
+void PhysicsSystem::onManagedEntityRemoved(Entity entity)
+{
 }
