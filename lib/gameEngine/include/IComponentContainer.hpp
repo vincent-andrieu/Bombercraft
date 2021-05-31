@@ -15,7 +15,7 @@ class IComponentContainer {
   public:
     virtual ~IComponentContainer() = default;
 
-    virtual void reserve(std::size_t size) = 0;
+    virtual void allocate(std::size_t size) = 0;
     virtual bool tryRemove(Entity entity) = 0;
 };
 
