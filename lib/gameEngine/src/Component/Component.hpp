@@ -19,7 +19,7 @@ namespace Engine
         ~Component() = default;
 
         /**
-     * type : index of the bit (bitset) that identify the component in the Signature (entity.hpp)
+          * type : index of the bit (bitset) that identify the component in the Signature (entity.hpp)
          */
         static const std::size_t type;
     };
