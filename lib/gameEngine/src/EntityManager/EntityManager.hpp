@@ -57,6 +57,11 @@ namespace Engine
             return _entities.getSignature(entity)[T::type];
         }
 
+        SystemManager &getSystemManager()
+        {
+            return _systemManager;
+        }
+
         template <typename... Ts> bool hasComponents(Entity entity)
         {
             (this->checkComponentTypes<Ts>(), ...);
