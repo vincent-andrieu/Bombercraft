@@ -15,20 +15,23 @@
 #include "env.hpp"
 #include "entity.hpp"
 
-class EntityRegister {
-  public:
-    EntityRegister() = default;
-    ~EntityRegister() = default;
+namespace Engine
+{
+    class EntityRegister {
+      public:
+        EntityRegister() = default;
+        ~EntityRegister() = default;
 
-    void allocate(std::size_t size);
-    std::vector<Signature> &getEntitySignatures();
-    const Signature &getSignature(Entity entity) const;
-    Entity create();
-    void remove(Entity entity);
+        void allocate(std::size_t size);
+        std::vector<Signature> &getEntitySignatures();
+        const Signature &getSignature(Entity entity) const;
+        Entity create();
+        void remove(Entity entity);
 
-  private:
-    std::vector<Signature> _entitySignatures;
-    std::vector<Entity> _freeEntities;
-};
+      private:
+        std::vector<Signature> _entitySignatures;
+        std::vector<Entity> _freeEntities;
+    };
+}
 
 #endif // ENTITYREGISTER_HPP

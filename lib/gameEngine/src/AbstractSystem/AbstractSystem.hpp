@@ -14,37 +14,40 @@
 #include "env.hpp"
 #include "entity.hpp"
 
-class AbstractSystem {
-  public:
-    AbstractSystem() = default;
-    virtual ~AbstractSystem() = default;
+namespace Engine
+{
+    class AbstractSystem {
+      public:
+        AbstractSystem() = default;
+        virtual ~AbstractSystem() = default;
 
-    void onEntityUpdated(Entity entity, const Signature &components);
+        void onEntityUpdated(Entity entity, const Signature &components);
 
-    template <typename... Ts>
-    void setRequirements()
-    {
-        (_requirements.set(Ts::type), ...);
-    }
+        template <typename... Ts> void setRequirements()
+        {
+            (_requirements.set(Ts::type), ...);
+        }
 
-    void onEntityRemoved(Entity entity);
-    void addEntity(Entity entity);
-    void removeEntity(Entity entity);
+        void onEntityRemoved(Entity entity);
+        void addEntity(Entity entity);
+        void removeEntity(Entity entity);
 
-    virtual void onManagedEntityAdded(Entity entity) = 0;
+        virtual void onManagedEntityAdded(Entity entity) = 0;
 
-    virtual void onManagedEntityRemoved(Entity entity) = 0;
+        virtual void onManagedEntityRemoved(Entity entity) = 0;
 
-    static const std::size_t type;
-  protected:
-    const std::vector<Entity> &getManagedEntities() const;
+        static const std::size_t type;
 
-  private:
-    Signature _requirements;
-    std::vector<Entity> _managedEntities;
-    std::unordered_map<Entity, Index> _entityToManagedEntity;
-};
+      protected:
+        const std::vector<Entity> &getManagedEntities() const;
 
-std::size_t generateSystemType();
+      private:
+        Signature _requirements;
+        std::vector<Entity> _managedEntities;
+        std::unordered_map<Entity, Index> _entityToManagedEntity;
+    };
+
+    std::size_t generateSystemType();
+}
 
 #endif // ABSTRACTSYSTEM_HPP

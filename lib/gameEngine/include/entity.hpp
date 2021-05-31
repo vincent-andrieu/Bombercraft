@@ -24,6 +24,4 @@ namespace Engine
     typedef std::bitset<MAX_COMPONENT> Signature;
 }
 
-typedef std::bitset<MAX_COMPONENT> Signature;
-
 #endif // ENTITY_HPP
