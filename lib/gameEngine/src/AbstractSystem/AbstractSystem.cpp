@@ -9,13 +9,11 @@
 
 using namespace Engine;
 
-const std::size_t AbstractSystem::type = generateSystemType();
+std::size_t AbstractSystem::instanceCounter = 0;
 
-std::size_t Engine::generateSystemType()
+AbstractSystem::AbstractSystem() : type(AbstractSystem::instanceCounter)
 {
-    static std::size_t count = 0;
-
-    return count++;
+    AbstractSystem::instanceCounter++;
 }
 
 void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)
