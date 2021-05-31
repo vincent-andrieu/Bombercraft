@@ -17,18 +17,16 @@ namespace raylib
     class Save : public IFile
     {
         public :
-            Save(const std::string &path);
+            Save(const std::string &filepath);
             ~Save();
-
-            void setPath(const std::string &path);
-
-            std::string getData();
-
-            void updateData(std::string data);
+            void setPath(const std::string &filepath);
+            std::shared_ptr<void *> readData(std::size_t &read_size);
+            void writeData(std::shared_ptr<void *> data, std::size_t objectSize);
 
         private :
-            std::string _path;
-            std::string _data;
+            std::string _filepath;
+            std::shared_ptr<void *> _data;
+            std::size_t _readSize;
     };
 };
 
