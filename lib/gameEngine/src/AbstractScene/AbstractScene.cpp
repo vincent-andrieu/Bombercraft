@@ -7,8 +7,6 @@
 
 #include "AbstractScene.hpp"
 
-using namespace Engine;
-
 AbstractScene::AbstractScene(IEventManager &events, SystemManager &systemManager, EntityManager<MAX_COMPONENT, MAX_SYSTEM> &entityManager) :
     _events(events), _systemManager(systemManager), _entityManager(entityManager)
 {
