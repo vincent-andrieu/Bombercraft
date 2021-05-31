@@ -7,12 +7,13 @@
 
 #include "AbstractSystem.hpp"
 
-using namespace Engine;
+const std::size_t AbstractSystem::type = generateSystemType();
 
-AbstractSystem::AbstractSystem(EntityManager &entityManager)
-    : _entityManager(entityManager)
+std::size_t generateSystemType()
 {
+    static std::size_t count = 0;
 
+    return count++;
 }
 
 void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)

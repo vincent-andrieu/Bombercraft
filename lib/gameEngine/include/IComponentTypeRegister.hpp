@@ -11,15 +11,12 @@
 #include <cstddef>
 #include "entity.hpp"
 
-namespace Engine
-{
-    class IComponentTypeRegister {
-      public:
-        virtual ~IComponentTypeRegister() = default;
+class IComponentTypeRegister {
+  public:
+    virtual ~IComponentTypeRegister() = default;
 
-        virtual void allocate(std::size_t size) = 0;
-        virtual bool tryRemove(Entity entity) = 0;
-    };
-}
+    virtual void allocate(std::size_t size) = 0;
+    virtual bool tryRemove(Entity entity) = 0;
+};
 
 #endif // ICOMPONENTTYPEREGISTER_HPP

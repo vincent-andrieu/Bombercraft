@@ -14,12 +14,12 @@ void EntityRegister::allocate(std::size_t size)
     _entitySignatures.resize(size);
 }
 
-std::vector<Signature> &EntityRegister::getEntityToBitset()
+std::vector<Signature> &EntityRegister::getEntitySignatures()
 {
     return _entitySignatures;
 }
 
-const Signature &EntityRegister::getBitset(Entity entity) const
+const Signature &EntityRegister::getSignature(Entity entity) const
 {
     return _entitySignatures[entity];
 }

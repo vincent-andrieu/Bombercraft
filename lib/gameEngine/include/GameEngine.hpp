@@ -10,13 +10,13 @@
 
 #include "env.hpp"
 #include "entity.hpp"
-#include "IComponentContainer.hpp"
+#include "IComponentTypeRegister.hpp"
 
 #include "Component/Component.hpp"
-#include "ComponentContainer/ComponentTypeRegister.hpp"
+#include "ComponentTypeRegister/ComponentTypeRegister.hpp"
 #include "EntityContainer/EntityRegister.hpp"
 #include "EntityManager/EntityManager.hpp"
-#include "System/System.hpp"
+#include "AbstractSystem/AbstractSystem.hpp"
 
 #include "components/Position.hpp"
 #include "components/Velocity.hpp"

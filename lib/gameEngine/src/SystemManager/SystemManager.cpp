@@ -7,8 +7,6 @@
 
 #include "SystemManager.hpp"
 
-using namespace Engine;
-
 void SystemManager::onEntityUpdated(Entity entity, const Signature &signature)
 {
     for (auto &system : _systems) {

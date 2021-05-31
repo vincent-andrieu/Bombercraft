@@ -8,71 +8,39 @@
 #ifndef SYSTEMMANAGER_HPP
 #define SYSTEMMANAGER_HPP
 
+#include "AbstractSystem/AbstractSystem.hpp"
 #include "entity.hpp"
 #include <vector>
 #include <memory>
-#include <typeinfo>
-#include <algorithm>
-#include <exception>
-#include <iostream>
-#include <iterator>
 
-namespace Engine
-{
-    class AbstractSystem;
+class SystemManager {
+  public:
+    SystemManager() = default;
+    ~SystemManager() = default;
 
-    class SystemManager {
-      public:
-        SystemManager() = default;
-        ~SystemManager() = default;
+    template <typename T, typename ...Args>
+    T *createSystem(Args&& ...args);
 
-        template <typename T, typename... Args> T *createSystem(Args &&...args);
-
-        void onEntityUpdated(Entity entity, const Signature &signature);
-
-        template <typename T> T &getSystem();
-
-      private:
-        std::vector<std::unique_ptr<AbstractSystem>> _systems;
-        std::vector<std::reference_wrapper<const std::type_info>> _types;
-    };
-}
-
-#include "AbstractSystem/AbstractSystem.hpp"
-
-namespace Engine {
-    template <typename T, typename... Args>
-    T *SystemManager::createSystem(Args &&...args)
-    {
-        const std::type_info &type = typeid(T);
-
-        if (std::find_if(_types.begin(), _types.end(),
-                [&type](auto &sysType) {
-                    return sysType.get() == type;
-                })
-            != _types.end()) {
-            throw std::exception();
-        }
-        auto &system = _systems.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-        _types.emplace_back(typeid(T));
-        return static_cast<T *>(system.get());
-    }
+    void onEntityUpdated(Entity entity, const Signature &signature);
 
     template <typename T>
-    T &SystemManager::getSystem()
-    {
-        std::size_t index = 0;
-        const std::type_info &type = typeid(T);
-        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sysType) {
-            return sysType.get() == type;
-        });
+    T &getSystem();
 
-        if (type_it == _types.end()) {
-            throw std::exception();
-        }
-        index = std::distance(_types.begin(), type_it);
-        return *(static_cast<T *>(_systems[index].get()));
-    }
-} // namespace Engine
+  private:
+    std::vector<std::shared_ptr<AbstractSystem>> _systems;
+};
+
+template <typename T, typename... Args>
+T *SystemManager::createSystem(Args &&...args)
+{
+    auto &system = _systems.emplace_back(std::make_shared<T>(std::forward<Args>(args)...));
+    return static_cast<T*>(system.get());
+}
+
+template <typename T>
+T &SystemManager::getSystem()
+{
+    return _systems[T::type];
+}
 
 #endif // SYSTEMMANAGER_HPP
