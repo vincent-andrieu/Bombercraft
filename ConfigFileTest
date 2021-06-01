@@ -1,0 +1,27 @@
+##
+##      config file
+##
+
+# EASY TEST
+"LoadInt": 1
+"LoadFloat": 1.1
+"LoadString": "yo bg"
+
+# WHITESPACE TEST
+  "LoadIntWhite":           1
+  "LoadFloatWhite":         1.1
+  "LoadStringWhite":        "yo bg"
+
+# COMMENT TEST
+"LoadIntCom": 1 #lol
+"LoadFloatCom": 1.1 #lol
+"LoadStringCom": "yo bg" #lol
+
+# WRONG TEST
+"LoadIntWrong":
+"LoadFloatWrong": #1.1
+"LoadStringWrong" "yo bg"
+
+"LoadIntWrongType": "lol"
+"LoadFloatWrongType"
+"LoadStringWrongType": "yo bg
