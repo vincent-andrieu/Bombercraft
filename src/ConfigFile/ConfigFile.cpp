@@ -24,7 +24,7 @@ void ConfigFile::loadFile(const std::string &filename)
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
             if (!std::regex_search(line, isAscii) && !line.empty()) {
-                break;
+                throw ParserExceptions("The file doesn't contains only ASCII characters !");
             } else {
                 _fileContent.push_back(line);
             }
