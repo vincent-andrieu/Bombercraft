@@ -34,3 +34,8 @@ add_executable(${NAME} ${SRCS}) # DEBUG
 
 ## LIB
 # TODO : load cpp raylib
+add_library(raylibcpp SHARED IMPORTED)
+set_property(TARGET raylibcpp PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../raylibCpp/libraylibcpp.so")
+include_directories(${PROJECT_SOURCE_DIR}/../raylibCpp/include)
+target_link_libraries(${NAME} raylibcpp)
+
