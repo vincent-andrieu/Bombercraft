@@ -20,6 +20,8 @@ include_directories(./include)
 set(SRCS
         ./src/main.cpp
         ./src/Game/ProceduralMap/ProceduralMap.cpp
+        ./src/ConfigFile/ConfigFile.cpp
+        ./src/Exceptions/Exceptions.cpp
         )
 add_executable(${NAME} ${SRCS})
 

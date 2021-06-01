@@ -22,6 +22,10 @@ class ConfigFile : public IConfigFile
         float getFloat(const std::string name) const;
         std::string getString(const std::string name) const;
 
+    private:
+        void cleanLine(std::string &str);
+        void commentManagingLine(std::string line);
+
     protected:
     private:
         std::vector<std::string> _fileContent;

@@ -7,11 +7,13 @@
 
 #include <memory>
 #include <iostream>
+#include "ConfigFile/ConfigFile.hpp"
 #include "Game/ProceduralMap/ProceduralMap.hpp"
 
 int main(void)
 {
-    std::unique_ptr<IProceduralMap> map = std::make_unique<ProceduralMap>();
+    std::unique_ptr<IConfigFile> map = std::make_unique<ConfigFile>("./ConfigFileTest");
+    /*std::unique_ptr<IProceduralMap> map = std::make_unique<ProceduralMap>();
     MapType end;
 
     map->setMapModel({
@@ -45,6 +47,6 @@ int main(void)
             }
         }
         std::cout << std::endl;
-    }
+    }*/
     return EXIT_SUCCESS;
 }

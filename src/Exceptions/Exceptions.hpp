@@ -14,6 +14,7 @@
 class ParserExceptions : public std::exception {
     public:
         ParserExceptions(std::string const &message);
+        ~ParserExceptions();
 
         const char *what() const noexcept override;
         private:
