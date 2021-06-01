@@ -1,3 +1,0 @@
-/home/arthur/Epitek/Epi_workinonit/indieStudio/lib/gameEngine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/arthur/Epitek/Epi_workinonit/indieStudio/lib/gameEngine/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/arthur/Epitek/Epi_workinonit/indieStudio/lib/gameEngine/cmake-build-debug/CMakeFiles/gameEngine.dir
