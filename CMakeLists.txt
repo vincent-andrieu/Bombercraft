@@ -29,6 +29,5 @@ set_target_properties(${NAME}
         )
 
 ## LIBS
-
-# TODO link game engine lib
-# TODO link raylibCpp lib
+# add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/raylibCpp)
