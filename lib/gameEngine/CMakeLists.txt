@@ -27,9 +27,15 @@ set(SRCS
     ./src/system/PhysicsSystem/PhysicsSystem.cpp
     ./src/AbstractSystem/AbstractSystem.cpp
     ./src/SystemManager/SystemManager.cpp
+    ./src/SaveManager/SaveManager.cpp
         )
 #add_library(${NAME} SHARED ${SRCS})
 add_executable(${NAME} ${SRCS}) # DEBUG
+
+set_target_properties(${NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        )
 
 ## LIB
 # TODO : load cpp raylib
