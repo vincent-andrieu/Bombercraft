@@ -9,8 +9,9 @@
 #define CONFIGFILE_HPP_
 
 #include "IConfigFile.hpp"
+#include "../Exceptions/Exceptions.hpp"
 
-class ConfigFile : public IConfigFile 
+class ConfigFile : public IConfigFile
 {
     public:
         ConfigFile();
