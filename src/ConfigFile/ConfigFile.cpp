@@ -37,10 +37,6 @@ void ConfigFile::loadFile(const std::string &filename)
     } else {
         throw std::invalid_argument("File close");
     }
-    for (auto it : this->_fileContent) {
-        std::cout << it << std::endl;
-    }
-    
 }
 
 int ConfigFile::getInt(const std::string name) const
