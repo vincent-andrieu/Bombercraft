@@ -28,10 +28,9 @@ int main(void)
         {TileDisponibility::TILE_FORCE_EMPTY, TileDisponibility::TILE_FORCE_EMPTY, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_AVAILABLE, TileDisponibility::TILE_FORCE_EMPTY, TileDisponibility::TILE_FORCE_EMPTY},
     });
     map->setModelSettings({
-        {TileType::TILE_BONUS, 25},
-        {TileType::TILE_EMPTY, 25},
-        {TileType::TILE_HARD, 25},
-        {TileType::TILE_SOFT, 25},
+        {TileType::TILE_BONUS, 5},
+        {TileType::TILE_EMPTY, 10},
+        {TileType::TILE_SOFT, 85},
     });
     end = map->getProceduralMap();
     for (auto it_y : end) {

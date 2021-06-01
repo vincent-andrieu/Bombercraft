@@ -152,8 +152,7 @@ float ProceduralMap::getPerlinNoise(size_t x, size_t y) const
         etaloned_x *= 2;
         etaloned_y *= 2;
     }
-    std::cout << "noise val: " << noise_val << std::endl;
-    return noise_val;
+    return (noise_val <= 1) ? noise_val : 1;
 }
 
 float ProceduralMap::getNoise(float x, float y) const
@@ -162,10 +161,10 @@ float ProceduralMap::getNoise(float x, float y) const
     int int_y = std::floor(y);
     float dec_x = (float) x - int_x;
     float dec_y = (float) y - int_y;
-    int vector_one = this->_hash[(int_x + this->_hash[int_y % 256]) % 256];
-    int vector_two = this->_hash[((int_x + 1) + this->_hash[(int_y + 1) % 256]) % 256];
-    int vector_three = this->_hash[((int_x + 1) + this->_hash[int_y % 256]) % 256];
-    int vector_four = this->_hash[(int_x + this->_hash[(int_y + 1) % 256]) % 256];
+    float vector_one = (float) this->_hash[(int_x + this->_hash[int_y % 256]) % 256] / 256;
+    float vector_two = (float) this->_hash[((int_x + 1) + this->_hash[(int_y + 1) % 256]) % 256] / 256;
+    float vector_three = (float) this->_hash[((int_x + 1) + this->_hash[int_y % 256]) % 256] / 256;
+    float vector_four = (float) this->_hash[(int_x + this->_hash[(int_y + 1) % 256]) % 256] / 256;
     float one = this->applyNoiseFunc(vector_one, vector_three, dec_x);
     float two = this->applyNoiseFunc(vector_two, vector_four, dec_x);
 
