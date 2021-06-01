@@ -49,7 +49,7 @@ int main(void)
     {
         auto entity = entityManager.createEntity();
         entityManager.addComponent<Engine::Position>(entity);
-        entityManager.addComponent<Engine::Velocity>(entity);
+        entityManager.addComponent<Engine::Velocity>(entity, 2, 2);
     }
     // LOOP
     auto dt = 1.0f / 60.0f;
