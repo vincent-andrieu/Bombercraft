@@ -7,7 +7,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME bomberman)
 
@@ -19,6 +19,7 @@ include_directories(./include)
 ## SOURCES
 set(SRCS
         ./src/main.cpp
+        ./src/Game/ProceduralMap/ProceduralMap.cpp
         )
 add_executable(${NAME} ${SRCS})
 
@@ -28,6 +29,5 @@ set_target_properties(${NAME}
         )
 
 ## LIBS
-
-# TODO link game engine lib
-# TODO link raylibCpp lib
+# add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/raylibCpp)
