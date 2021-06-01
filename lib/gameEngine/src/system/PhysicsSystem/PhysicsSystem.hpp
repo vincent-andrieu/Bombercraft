@@ -18,7 +18,7 @@ namespace Engine
 {
     class PhysicsSystem : public AbstractSystem {
       public:
-        PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager);
+        PhysicsSystem(EntityManager &entityManager);
 
         void update(float dt);
 
@@ -27,7 +27,6 @@ namespace Engine
         virtual void onManagedEntityRemoved(Entity entity);
 
       private:
-        EntityManager<MAX_COMPONENT> &_entityManager;
     };
 }
 

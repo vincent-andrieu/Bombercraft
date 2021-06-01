@@ -26,6 +26,7 @@ set(SRCS
     ./src/Component/Component.cpp
     ./src/system/PhysicsSystem/PhysicsSystem.cpp
     ./src/AbstractSystem/AbstractSystem.cpp
+    ./src/EntityManager/EntityManager.cpp
     ./src/SystemManager/SystemManager.cpp
         )
 #add_library(${NAME} SHARED ${SRCS})

@@ -9,8 +9,7 @@
 
 using namespace Engine;
 
-PhysicsSystem::PhysicsSystem(EntityManager<MAX_COMPONENT> &entityManager)
-    : _entityManager(entityManager)
+PhysicsSystem::PhysicsSystem(EntityManager &entityManager) : AbstractSystem(entityManager)
 {
     this->setRequirements<Position, Velocity>();
 }
