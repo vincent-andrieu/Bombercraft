@@ -17,6 +17,7 @@
 #include <vector>
 #include <array>
 #include <map>
+#include <unordered_map>
 
 #include "raylib.h"
 #include "raymath.h"

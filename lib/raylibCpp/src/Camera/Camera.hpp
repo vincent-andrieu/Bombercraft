@@ -21,8 +21,8 @@ namespace raylib
             float fovy = 90);
             ~Camera();
 
-            void start();
-            void stop();
+            void begin3D();
+            void end3D();
 
             void setPosition(MyVector3 position);
             void setTarget(MyVector3 target);

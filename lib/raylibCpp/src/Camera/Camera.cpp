@@ -20,14 +20,14 @@ float fovy)
 
 raylib::Camera::~Camera() {}
 
-void raylib::Camera::start()
+void raylib::Camera::begin3D()
 {
     BeginMode3D(_camera);
 }
 
-void raylib::Camera::stop()
+void raylib::Camera::end3D()
 {
-    EndMode3D;
+    EndMode3D();
 }
 
 void raylib::Camera::setPosition(MyVector3 position)

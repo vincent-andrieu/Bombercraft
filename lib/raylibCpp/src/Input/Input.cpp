@@ -23,7 +23,7 @@ bool Input::isKeyPressed(KeyBoard key) const
 
     if (keyLine == this->_keyList.end())
         throw std::invalid_argument("isKeyPressed: key not found.");
-    return IsKeyDown(keyLine->second);
+    return IsKeyPressed(keyLine->second);
 }
 
 bool Input::isKeyReleased(KeyBoard key) const

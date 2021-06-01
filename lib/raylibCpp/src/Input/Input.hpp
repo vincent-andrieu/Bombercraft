@@ -8,9 +8,8 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include <unordered_map>
 #include "IInput.hpp"
-#include "raylib.h"
+#include "include.hpp"
 
 namespace raylib
 {
@@ -48,7 +47,7 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_N, KEY_N},
                 {raylib::KeyBoard::IKEY_O, KEY_O},
                 {raylib::KeyBoard::IKEY_P, KEY_P},
-                {raylib::KeyBoard::IKEY_K, KEY_Q},
+                {raylib::KeyBoard::IKEY_Q, KEY_Q},
                 {raylib::KeyBoard::IKEY_R, KEY_R},
                 {raylib::KeyBoard::IKEY_S, KEY_S},
                 {raylib::KeyBoard::IKEY_T, KEY_T},
