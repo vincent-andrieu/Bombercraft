@@ -5,11 +5,40 @@ on:
     branches:
       - master
 
+env:
+  PROJECT_RAYLIBCPP: lib/raylibCpp
 
 jobs:
-  linux:
+  linux-raylibcpp:
     runs-on: ubuntu-20.04
     container: epitechcontent/epitest-docker:devel
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: cmake ..
+
+      - name: Run make
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: make
+
+      - name: Check if binary exist
+        run: ls libraylibcpp.so
+
+  linux-bomberman:
+    runs-on: ubuntu-20.04
+    container: epitechcontent/epitest-docker:devel
+    needs: linux-raylibcpp
     steps:
       # Checkout code
       - name: Checkout code
@@ -31,8 +60,31 @@ jobs:
         run: ls bomberman
 
 
-  windows:
+  windows-raylibcpp:
     runs-on: windows-2019
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: cmake ..
+
+      - name: Check if binary exist
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: ls raylibcpp.sln
+
+  windows-bomberman:
+    runs-on: windows-2019
+    needs: windows-raylibcpp
     steps:
       # Checkout code
       - name: Checkout code
