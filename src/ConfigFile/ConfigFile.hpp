@@ -8,18 +8,18 @@
 #ifndef CONFIGFILE_HPP_
 #define CONFIGFILE_HPP_
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <regex>
-#include <fstream>
+#include "IConfigFile.hpp"
 
-class ConfigFile {
+class ConfigFile : public IConfigFile 
+{
     public:
         ConfigFile();
+        ConfigFile(const std::string &filename);
         ~ConfigFile();
-
-        void ConfigFile::loadFile(const std::string &filename);
+        void loadFile(const std::string &filename);
+        int getInt(const std::string name) const;
+        float getFloat(const std::string name) const;
+        std::string getString(const std::string name) const;
 
     protected:
     private:
