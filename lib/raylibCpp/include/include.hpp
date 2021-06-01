@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 #include <unistd.h>
 #include <stdlib.h>

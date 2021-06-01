@@ -13,20 +13,19 @@
 
 namespace raylib
 {
-    class Input : public IInput
-    {
-        public:
-            Input();
-            ~Input();
-            bool isKeyPressed(KeyBoard key) const;
-            bool isKeyReleased(KeyBoard key) const;
-            MyVector2 getMousePos(void) const;
-            bool isMouseLeftPressed(void) const;
-            bool isMouseRightPressed(void) const;
-            bool isMouseMiddlePressed(void) const;
-            bool isMouseMoved(void);
-            bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
-            bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
+    class Input : public IInput {
+      public:
+        Input();
+        ~Input();
+        bool isKeyPressed(KeyBoard key) const;
+        bool isKeyReleased(KeyBoard key) const;
+        MyVector2 getMousePos(void) const;
+        bool isMouseLeftPressed(void) const;
+        bool isMouseRightPressed(void) const;
+        bool isMouseMiddlePressed(void) const;
+        bool isMouseMoved(void);
+        bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
+        bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
 
         private:
             MyVector2 _previousMousePos;
@@ -63,6 +62,6 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_LEFT, KEY_LEFT},
             };
     };
-};
+}; // namespace raylib
 
 #endif
