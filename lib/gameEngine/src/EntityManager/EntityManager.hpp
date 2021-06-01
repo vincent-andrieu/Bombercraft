@@ -116,6 +116,7 @@ namespace Engine
         std::array<std::shared_ptr<IComponentTypeRegister>, ComponentCount> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
+        SaveManager _save_manager;
 
         template <typename T> void checkComponentType() const
         {

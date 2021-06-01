@@ -5,8 +5,10 @@ bootstrap
 B-YEP-400_resources
 tests
 build
+cmake-build-debug
 *.pdf
 .idea
+bomberman
 cmake-build-debug
 bomberman
 ### C ###
