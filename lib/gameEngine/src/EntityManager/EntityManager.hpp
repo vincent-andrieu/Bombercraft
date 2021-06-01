@@ -15,6 +15,7 @@
 #include "EntityContainer/EntityRegister.hpp"
 #include "ComponentTypeRegister/ComponentTypeRegister.hpp"
 #include "Component/Component.hpp"
+#include "SaveManager/SaveManager.hpp"
 
 namespace Engine
 {
@@ -112,11 +113,13 @@ namespace Engine
             return this->getComponentContainer<T>()->getOwner(component);
         }
 
+        void save();
+
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, ComponentCount> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
-        SaveManager _save_manager;
+        Engine::SaveManager _save_manager;
 
         template <typename T> void checkComponentType() const
         {
@@ -138,6 +141,6 @@ namespace Engine
             return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
         }
     };
-}
+} // namespace Engine
 
 #endif // ENTITYMANAGER_HPP

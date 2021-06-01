@@ -9,6 +9,7 @@
 #define COMPONENT_HPP
 
 #include <cctype>
+#include "SaveManager/SaveManager.hpp"
 
 namespace Engine
 {
@@ -22,6 +23,8 @@ namespace Engine
           * type : index of the bit (bitset) that identify the component in the Signature (entity.hpp)
          */
         static const std::size_t type;
+
+        void save(const SaveManager &saver) const;
     };
 
     std::size_t generateComponentType();
