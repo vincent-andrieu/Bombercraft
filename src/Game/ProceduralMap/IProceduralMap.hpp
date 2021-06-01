@@ -14,6 +14,7 @@
 namespace GameModule
 {
     enum class TileType {
+        TILE_DEFAULT,
         TILE_EMPTY,
         TILE_BONUS,
         TILE_SOFT,
@@ -38,8 +39,8 @@ namespace GameModule
         virtual MapType getProceduralMap() = 0;
         virtual void regenerateProceduralMap() = 0;
         virtual void setMapModel(MapDisponibility model) = 0;
-        virtual std::vector<unsigned char> getHashList() = 0;
-        virtual void setHashList(std::vector<unsigned char> hashList) = 0;
+        virtual unsigned int getSeed() = 0;
+        virtual void setSeed(unsigned int seed) = 0;
         virtual void setModelSettings(std::unordered_map<TileType, unsigned char> linkList) = 0;
     };
 }

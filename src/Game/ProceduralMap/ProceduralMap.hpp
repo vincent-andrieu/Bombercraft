@@ -23,23 +23,24 @@ namespace GameModule
             MapType getProceduralMap();
             void regenerateProceduralMap();
             void setMapModel(MapDisponibility model);
-            std::vector<unsigned char> getHashList();
-            void setHashList(std::vector<unsigned char> hashList);
+            unsigned int getSeed();
+            void setSeed(unsigned int seed);
             void setModelSettings(std::unordered_map<TileType, unsigned char> linkList);
 
         private:
-            void generateHash();
+            void modelApply();
             void generateMap();
+            void mapInitEmpty();
             bool isCorrectProba() const;
-            TileType getTile(TileDisponibility tileType, size_t x, size_t y) const;
-            float getPerlinNoise(size_t x, size_t y) const;
-            float getNoise(float x, float y) const;
-            float applyNoiseFunc(float x, float y, float dec) const;
+            void randomFill(float prob, TileType type);
+            size_t getTotalTile() const;
+            size_t getTotalEmptyTile() const;
+            void clearMap();
 
         private:
             MapType _mapProcedural;
             MapDisponibility _mapModel;
-            std::vector<unsigned char> _hash;
+            unsigned int _seed;
             std::unordered_map<TileType, unsigned char> _mapProba;
     };
 }

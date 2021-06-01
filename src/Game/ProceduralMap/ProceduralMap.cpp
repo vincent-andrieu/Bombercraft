@@ -12,10 +12,9 @@
 #include <algorithm>
 #include "ProceduralMap.hpp"
 
-ProceduralMap::ProceduralMap(size_t seed)
+ProceduralMap::ProceduralMap(size_t seed) : _seed((seed) ? seed : std::time(nullptr))
 {
-    std::srand((seed) ? seed : std::time(nullptr));
-    this->generateHash();
+    std::srand(this->_seed);
 }
 
 ProceduralMap::~ProceduralMap()
@@ -25,10 +24,10 @@ ProceduralMap::~ProceduralMap()
 
 void ProceduralMap::reset()
 {
-    this->_hash.clear();
     this->_mapProcedural.clear();
     this->_mapModel.clear();
     this->_mapProba.clear();
+    this->_seed = 0;
 }
 
 void ProceduralMap::regenerateProceduralMap()
@@ -48,17 +47,17 @@ void ProceduralMap::setMapModel(MapDisponibility model)
     this->_mapModel = model;
 }
 
-std::vector<unsigned char> ProceduralMap::getHashList()
+unsigned int ProceduralMap::getSeed()
 {
-    return this->_hash;
+    return this->_seed;
 }
 
-void ProceduralMap::setHashList(std::vector<unsigned char> hashList)
+void ProceduralMap::setSeed(unsigned int seed)
 {
-    if (hashList.size() != 256)
-        throw std::invalid_argument("Invalide hash list size");
-    this->_hash = hashList;
+    this->_seed = seed;
+    std::srand(this->_seed);
 }
+
 
 void ProceduralMap::setModelSettings(std::unordered_map<TileType, unsigned char> linkList)
 {
@@ -66,45 +65,68 @@ void ProceduralMap::setModelSettings(std::unordered_map<TileType, unsigned char>
     this->_mapProba = linkList;
 }
 
-void ProceduralMap::generateHash()
-{
-    unsigned char tmp = 0;
-    std::vector<unsigned char>::const_iterator it;
-
-    this->_hash.clear();
-    for (size_t i = 0; i < 256; i++) {
-        do {
-            tmp = std::rand() % 256;
-            it = std::find(this->_hash.begin(), this->_hash.end(), tmp);
-        } while (it != this->_hash.end());
-        this->_hash.push_back(tmp);
-    }
-}
-
 void ProceduralMap::generateMap()
 {
-    size_t x = 0;
-    size_t y = 0;
-    std::vector<TileType> list;
-
-    if (this->_hash.size() != 256)
-        throw std::invalid_argument("Invalide hash size");
     if (!this->_mapModel.size())
         throw std::invalid_argument("Invalide empty model");
     if (!this->isCorrectProba())
         throw std::invalid_argument("Invalide probability");
-
     this->_mapProcedural.clear();
-    for (auto it_y : this->_mapModel) {
-        x = 0;
-        list.clear();
-        for (auto it_x : it_y) {
-            list.push_back(this->getTile(it_x, x++, y));
-        }
-        this->_mapProcedural.push_back(list);
-        y++;
+    this->mapInitEmpty();
+    for (auto proba : this->_mapProba) {
+        this->randomFill(proba.second, proba.first);
     }
-    
+    this->clearMap();
+    this->modelApply();
+}
+
+void ProceduralMap::randomFill(float prob, TileType type)
+{
+    size_t totalTile = this->getTotalTile();
+    size_t nb = (prob / 100) * totalTile;
+    size_t endTile = this->getTotalEmptyTile();
+    size_t random = 0;
+    GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();
+    std::vector<GameModule::TileType>::iterator map_it_x = map_it_y->begin();
+
+    while (map_it_y != this->_mapProcedural.end()) {
+        map_it_x = map_it_y->begin();
+        while (map_it_x != map_it_y->end()) {
+            if (!nb)
+                return;
+            if (*map_it_x == TileType::TILE_DEFAULT) {
+                random = rand() % 100;
+                if (nb >= endTile || random <= prob) {
+                    *map_it_x = type;
+                    nb--;
+                }
+                endTile--;
+            }
+            map_it_x++;
+        }
+        map_it_y++;
+    }
+}
+
+void ProceduralMap::modelApply()
+{
+    auto map_it_y = this->_mapProcedural.begin();
+    auto map_it_x = map_it_y->begin();
+
+    for (auto it_y : this->_mapModel) {
+        map_it_x = map_it_y->begin();
+        for (auto it_x : it_y) {
+            switch (it_x)
+            {
+                case TileDisponibility::TILE_FORCE_EMPTY: *map_it_x = TileType::TILE_EMPTY; break;
+                case TileDisponibility::TILE_FORCE_HARD: *map_it_x = TileType::TILE_HARD; break;
+                case TileDisponibility::TILE_FORCE_SOFT: *map_it_x = TileType::TILE_SOFT; break;
+                case TileDisponibility::TILE_FORCE_BONUS: *map_it_x = TileType::TILE_BONUS; break;
+            }
+            map_it_x++;
+        }
+        map_it_y++;
+    }
 }
 
 bool ProceduralMap::isCorrectProba() const
@@ -116,65 +138,54 @@ bool ProceduralMap::isCorrectProba() const
     return (prob == 100) ? true : false;
 }
 
-TileType ProceduralMap::getTile(TileDisponibility tileType, size_t x, size_t y) const
+void ProceduralMap::mapInitEmpty()
 {
-    float tmp;
-    float perlin = 0;
-    size_t prob_pos = 0;
+    std::vector<TileType> list;
 
-    switch (tileType)
-    {
-        case TileDisponibility::TILE_FORCE_EMPTY: return TileType::TILE_EMPTY; break;
-        case TileDisponibility::TILE_FORCE_HARD: return TileType::TILE_HARD; break;
-        case TileDisponibility::TILE_FORCE_SOFT: return TileType::TILE_SOFT; break;
-        case TileDisponibility::TILE_FORCE_BONUS: return TileType::TILE_BONUS; break;
+    for (auto it_y : this->_mapModel) {
+        list.clear();
+        for (auto it_x : it_y) {
+            list.push_back(TileType::TILE_DEFAULT);
+        }
+        this->_mapProcedural.push_back(list);
     }
-    perlin = getPerlinNoise(x, y);
-    for (auto it : this->_mapProba) {
-        prob_pos += it.second;
-        tmp = (float) prob_pos / 100;
-        if (tmp > perlin)
-            return it.first;
-    }
-    return TileType::TILE_EMPTY;
 }
 
-float ProceduralMap::getPerlinNoise(size_t x, size_t y) const
+size_t ProceduralMap::getTotalTile() const
 {
-    float etaloned_x = (float) x / 20;
-    float etaloned_y = (float) y / 20;
-    float noise_val = 0;
-    float amplitude = 1;
+    size_t cnt = 0;
 
-    for (size_t i = 0; i < 4; i++) {
-        noise_val += this->getNoise(etaloned_x, etaloned_y) * amplitude;
-        amplitude /= 2;
-        etaloned_x *= 2;
-        etaloned_y *= 2;
+    for (auto it_y : this->_mapProcedural) {
+        cnt += it_y.size();
     }
-    return (noise_val <= 1) ? noise_val : 1;
+    return cnt;
 }
 
-float ProceduralMap::getNoise(float x, float y) const
+size_t ProceduralMap::getTotalEmptyTile() const
 {
-    int int_x = std::floor(x);
-    int int_y = std::floor(y);
-    float dec_x = (float) x - int_x;
-    float dec_y = (float) y - int_y;
-    float vector_one = (float) this->_hash[(int_x + this->_hash[int_y % 256]) % 256] / 256;
-    float vector_two = (float) this->_hash[((int_x + 1) + this->_hash[(int_y + 1) % 256]) % 256] / 256;
-    float vector_three = (float) this->_hash[((int_x + 1) + this->_hash[int_y % 256]) % 256] / 256;
-    float vector_four = (float) this->_hash[(int_x + this->_hash[(int_y + 1) % 256]) % 256] / 256;
-    float one = this->applyNoiseFunc(vector_one, vector_three, dec_x);
-    float two = this->applyNoiseFunc(vector_two, vector_four, dec_x);
+    size_t cnt = 0;
 
-    return this->applyNoiseFunc(one, two, dec_y);
+    for (auto it_y : this->_mapProcedural) {
+        for (auto it_x : it_y) {
+            if (it_x == TileType::TILE_DEFAULT)
+                cnt++;
+        }
+    }
+    return cnt;
 }
 
-float ProceduralMap::applyNoiseFunc(float x, float y, float dec) const
+void ProceduralMap::clearMap()
 {
-    float tmp = (float) dec * dec * 3 - 2 * dec * dec * dec;
+    GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();
+    std::vector<GameModule::TileType>::iterator map_it_x = map_it_y->begin();
 
-    tmp = tmp * (y - x) + x;
-    return tmp;
+    while (map_it_y != this->_mapProcedural.end()) {
+        map_it_x = map_it_y->begin();
+        while (map_it_x != map_it_y->end()) {
+            if (*map_it_x == TileType::TILE_DEFAULT)
+                *map_it_x = TileType::TILE_EMPTY;
+            map_it_x++;
+        }
+        map_it_y++;
+    }
 }
