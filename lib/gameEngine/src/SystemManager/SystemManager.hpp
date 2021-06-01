@@ -8,7 +8,6 @@
 #ifndef SYSTEMMANAGER_HPP
 #define SYSTEMMANAGER_HPP
 
-#include "AbstractSystem/AbstractSystem.hpp"
 #include "entity.hpp"
 #include <vector>
 #include <memory>
@@ -20,6 +19,8 @@
 
 namespace Engine
 {
+    class AbstractSystem;
+
     class SystemManager {
       public:
         SystemManager() = default;
@@ -35,7 +36,11 @@ namespace Engine
         std::vector<std::unique_ptr<AbstractSystem>> _systems;
         std::vector<std::reference_wrapper<const std::type_info>> _types;
     };
+}
 
+#include "AbstractSystem/AbstractSystem.hpp"
+
+namespace Engine {
     template <typename T, typename... Args>
     T *SystemManager::createSystem(Args &&...args)
     {

@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -17,6 +18,7 @@
 #include <vector>
 #include <array>
 #include <map>
+#include <unordered_map>
 
 #include "raylib.h"
 #include "raymath.h"

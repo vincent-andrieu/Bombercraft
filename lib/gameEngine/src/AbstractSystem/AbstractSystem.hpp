@@ -16,17 +16,16 @@
 
 namespace Engine
 {
+    class EntityManager;
+
     class AbstractSystem {
       public:
-        AbstractSystem() = default;
+        AbstractSystem(EntityManager &entityManager);
         virtual ~AbstractSystem() = default;
 
         void onEntityUpdated(Entity entity, const Signature &components);
 
-        template <typename... Ts> void setRequirements()
-        {
-            (_requirements.set(Ts::type), ...);
-        }
+        template <typename... Ts> void setRequirements();
 
         void onEntityRemoved(Entity entity);
         void addEntity(Entity entity);
@@ -38,6 +37,7 @@ namespace Engine
 
       protected:
         const std::vector<Entity> &getManagedEntities() const;
+        EntityManager &_entityManager;
 
       private:
         Signature _requirements;
@@ -45,5 +45,15 @@ namespace Engine
         std::unordered_map<Entity, Index> _entityToManagedEntity;
     };
 }
+
+#include "EntityManager/EntityManager.hpp"
+
+namespace Engine {
+    template <typename... Ts> void AbstractSystem::setRequirements()
+    {
+        (_requirements.set(Ts::type), ...);
+    }
+}
+
 
 #endif // ABSTRACTSYSTEM_HPP

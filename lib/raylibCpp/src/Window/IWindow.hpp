@@ -29,6 +29,7 @@ namespace raylib
             virtual void setColor(RColor color) = 0;
             virtual void setTitle(const std::string &title) = 0;
             virtual void setCamera(std::shared_ptr<ICamera> &camera) = 0;
+            virtual void setFPS(int fps) = 0;
 
             virtual std::shared_ptr<ICamera> getCamera() const = 0;
 

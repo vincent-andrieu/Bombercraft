@@ -7,8 +7,9 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(OpenGL_GL_PREFERENCE GLVND)
 set(NAME raylibcpp)
 
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
@@ -16,22 +17,6 @@ project(${NAME} VERSION 0.1 LANGUAGES CXX)
 ## INCLUDES
 include_directories(
     ./include
-    ./src/Audio
-    ./src/Camera
-    ./src/Collision
-    ./src/Collision/ObjectType
-    ./src/Data
-    ./src/Data/MyVector
-    ./src/File
-    ./src/Font
-    ./src/Input
-    ./src/Model
-    ./src/ShaderManage
-    ./src/Shape
-    ./src/Solid
-    ./src/Text
-    ./src/Texture
-    ./src/Window
 )
 
 ## SOURCES
@@ -65,6 +50,8 @@ set(SRCS
 )
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_library(${NAME} SHARED ${SRCS})
 

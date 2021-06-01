@@ -11,9 +11,32 @@
 namespace raylib
 {
     enum class RColor {
+        RLIGHTGRAY,
+        RGRAY,
+        RDARKGRAY,
+        RYELLOW,
+        RGOLD,
+        RORANGE,
+        RPINK,
+        RRED,
+        RMAROON,
+        RGREEN,
+        RLIME,
+        RDARKGREEN,
+        RSKYBLUE,
         RBLUE,
+        RDARKBLUE,
+        RPURPLE,
+        RVIOLET,
+        RDARKPURPLE,
+        RBEIGE,
+        RBROWN,
+        RDARKBROWN,
         RWHITE,
-        RRED
+        RBLACK,
+        RBLANK,
+        RMAGENTA,
+        RRAYWHITE
     };
 
     enum class KeyBoard {

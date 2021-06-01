@@ -11,6 +11,9 @@
 namespace Engine
 {
     struct Velocity : public Component<Velocity> {
+        Velocity(float x, float y) : x(x), y(y) {}
+        Velocity() : x(0), y(0) {}
+
         float x;
         float y;
     };

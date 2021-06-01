@@ -8,26 +8,24 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include <unordered_map>
 #include "IInput.hpp"
-#include "raylib.h"
+#include "include.hpp"
 
 namespace raylib
 {
-    class Input : public IInput
-    {
-        public:
-            Input();
-            ~Input();
-            bool isKeyPressed(KeyBoard key) const;
-            bool isKeyReleased(KeyBoard key) const;
-            MyVector2 getMousePos(void) const;
-            bool isMouseLeftPressed(void) const;
-            bool isMouseRightPressed(void) const;
-            bool isMouseMiddlePressed(void) const;
-            bool isMouseMoved(void);
-            bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
-            bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
+    class Input : public IInput {
+      public:
+        Input();
+        ~Input();
+        bool isKeyPressed(KeyBoard key) const;
+        bool isKeyReleased(KeyBoard key) const;
+        MyVector2 getMousePos(void) const;
+        bool isMouseLeftPressed(void) const;
+        bool isMouseRightPressed(void) const;
+        bool isMouseMiddlePressed(void) const;
+        bool isMouseMoved(void);
+        bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
+        bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
 
         private:
             MyVector2 _previousMousePos;
@@ -48,7 +46,7 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_N, KEY_N},
                 {raylib::KeyBoard::IKEY_O, KEY_O},
                 {raylib::KeyBoard::IKEY_P, KEY_P},
-                {raylib::KeyBoard::IKEY_K, KEY_Q},
+                {raylib::KeyBoard::IKEY_Q, KEY_Q},
                 {raylib::KeyBoard::IKEY_R, KEY_R},
                 {raylib::KeyBoard::IKEY_S, KEY_S},
                 {raylib::KeyBoard::IKEY_T, KEY_T},
@@ -64,6 +62,6 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_LEFT, KEY_LEFT},
             };
     };
-};
+}; // namespace raylib
 
 #endif

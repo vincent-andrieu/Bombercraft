@@ -63,7 +63,7 @@ namespace Engine
         return _components[_ownersIndex[entity]];
     }
 
-    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args &&...args)
+    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args && ...args)
     {
         auto index = static_cast<Index>(_components.size());
 

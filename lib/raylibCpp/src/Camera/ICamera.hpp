@@ -17,8 +17,8 @@ namespace raylib
         public :
             virtual ~ICamera() {};
 
-            virtual void start() = 0;
-            virtual void stop() = 0;
+            virtual void begin3D() = 0;
+            virtual void end3D() = 0;
 
             virtual void setPosition(MyVector3 position) = 0;
             virtual void setTarget(MyVector3 position) = 0;
