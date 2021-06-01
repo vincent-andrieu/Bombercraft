@@ -30,6 +30,6 @@ void ConfigFile::loadFile(const std::string &filename)
             }
         }
     } else {
-        std::cout << "File closed" << std::endl;
+        throw std::invalid_argument("File close");
     }
 }
