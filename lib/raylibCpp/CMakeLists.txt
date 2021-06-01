@@ -17,22 +17,6 @@ project(${NAME} VERSION 0.1 LANGUAGES CXX)
 ## INCLUDES
 include_directories(
     ./include
-    ./src/Audio
-    ./src/Camera
-    ./src/Collision
-    ./src/Collision/ObjectType
-    ./src/Data
-    ./src/Data/MyVector
-    ./src/File
-    ./src/Font
-    ./src/Input
-    ./src/Model
-    ./src/ShaderManage
-    ./src/Shape
-    ./src/Solid
-    ./src/Text
-    ./src/Texture
-    ./src/Window
 )
 
 ## SOURCES

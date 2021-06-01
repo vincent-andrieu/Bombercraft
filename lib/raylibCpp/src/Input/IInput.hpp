@@ -8,8 +8,7 @@
 #ifndef IINPUT_HPP
 #define IINPUT_HPP
 
-#include "Enum.hpp"
-#include "MyVector2.hpp"
+#include "include.hpp"
 
 namespace raylib
 {
