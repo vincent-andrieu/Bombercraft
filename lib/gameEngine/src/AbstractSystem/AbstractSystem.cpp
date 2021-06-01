@@ -9,13 +9,6 @@
 
 using namespace Engine;
 
-std::size_t AbstractSystem::instanceCounter = 0;
-
-AbstractSystem::AbstractSystem() : type(AbstractSystem::instanceCounter)
-{
-    AbstractSystem::instanceCounter++;
-}
-
 void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)
 {
     bool satisfied = (_requirements & components) == _requirements;
