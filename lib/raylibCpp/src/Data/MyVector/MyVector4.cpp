@@ -33,22 +33,22 @@ MyVector4::MyVector4(const MyVector4 &src)
     this->d = src.d;
 }
 
-MyVector4 operator+(MyVector4 const &first, MyVector4 const &second)
+MyVector4 raylib::operator+(MyVector4 const &first, MyVector4 const &second)
 {
     return MyVector4(first.a + second.a, first.b + second.b, first.c + second.c, first.d + second.d);
 }
 
-MyVector4 operator-(MyVector4 const &first, MyVector4 const &second)
+MyVector4 raylib::operator-(MyVector4 const &first, MyVector4 const &second)
 {
     return MyVector4(first.a - second.a, first.b - second.b, first.c - second.c, first.d - second.d);
 }
 
-MyVector4 operator*(MyVector4 const &first, MyVector4 const &second)
+MyVector4 raylib::operator*(MyVector4 const &first, MyVector4 const &second)
 {
     return MyVector4(first.a * second.a, first.b * second.b, first.c * second.c, first.d * second.d);
 }
 
-MyVector4 operator/(MyVector4 const &first, MyVector4 const &second)
+MyVector4 raylib::operator/(MyVector4 const &first, MyVector4 const &second)
 {
     float one = 0;
     float two = 0;
@@ -66,7 +66,7 @@ MyVector4 operator/(MyVector4 const &first, MyVector4 const &second)
     return MyVector4(one, two, three, four);
 }
 
-bool operator==(MyVector4 const &first, MyVector4 const &second)
+bool raylib::operator==(MyVector4 const &first, MyVector4 const &second)
 {
     bool a = first.a == second.a;
     bool b = first.b == second.b;

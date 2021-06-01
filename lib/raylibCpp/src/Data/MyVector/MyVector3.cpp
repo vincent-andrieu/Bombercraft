@@ -30,22 +30,22 @@ MyVector3::MyVector3(const MyVector3 &src)
     this->c = src.c;
 }
 
-MyVector3 operator+(MyVector3 const &first, MyVector3 const &second)
+MyVector3 raylib::operator+(MyVector3 const &first, MyVector3 const &second)
 {
     return MyVector3(first.a + second.a, first.b + second.b, first.c + second.c);
 }
 
-MyVector3 operator-(MyVector3 const &first, MyVector3 const &second)
+MyVector3 raylib::operator-(MyVector3 const &first, MyVector3 const &second)
 {
     return MyVector3(first.a - second.a, first.b - second.b, first.c - second.c);
 }
 
-MyVector3 operator*(MyVector3 const &first, MyVector3 const &second)
+MyVector3 raylib::operator*(MyVector3 const &first, MyVector3 const &second)
 {
     return MyVector3(first.a * second.a, first.b * second.b, first.c * second.c);
 }
 
-MyVector3 operator/(MyVector3 const &first, MyVector3 const &second)
+MyVector3 raylib::operator/(MyVector3 const &first, MyVector3 const &second)
 {
     float one = 0;
     float two = 0;
@@ -60,7 +60,7 @@ MyVector3 operator/(MyVector3 const &first, MyVector3 const &second)
     return MyVector3(one, two, three);
 }
 
-bool operator==(MyVector3 const &first, MyVector3 const &second)
+bool raylib::operator==(MyVector3 const &first, MyVector3 const &second)
 {
     bool a = first.a == second.a;
     bool b = first.b == second.b;

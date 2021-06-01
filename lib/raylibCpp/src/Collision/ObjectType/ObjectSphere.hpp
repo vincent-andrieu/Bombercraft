@@ -9,7 +9,7 @@
 #define OBJECTSPHERE_HPP
 
 #include "../Collision.hpp"
-#include "Data/MyVector/MyVector3.hpp"
+#include "../../Data/MyVector/MyVector3.hpp"
 
 using namespace raylib;
 

@@ -14,10 +14,29 @@ set(NAME raylibcpp)
 project(${NAME} VERSION 0.1 LANGUAGES CXX)
 
 ## INCLUDES
-include_directories(./include ./src)
+include_directories(
+    ./include
+    ./src/Audio
+    ./src/Camera
+    ./src/Collision
+    ./src/Collision/ObjectType
+    ./src/Data
+    ./src/Data/MyVector
+    ./src/File
+    ./src/Font
+    ./src/Input
+    ./src/Model
+    ./src/ShaderManage
+    ./src/Shape
+    ./src/Solid
+    ./src/Text
+    ./src/Texture
+    ./src/Window
+)
 
 ## SOURCES
 set(SRCS
+#    ./src/main.cpp
     ./src/Audio/Music.cpp
     ./src/Audio/Sound.cpp
     ./src/Camera/Camera.cpp
@@ -44,10 +63,16 @@ set(SRCS
     ./src/Font/Font.cpp
     ./src/ShaderManage/ShaderManage.cpp
 )
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 add_library(${NAME} SHARED ${SRCS})
 
 ## LIB
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 find_package(raylib REQUIRED)
+
+#add_executable(${NAME} ${SRCS})
+
 target_link_libraries(${NAME} raylib)

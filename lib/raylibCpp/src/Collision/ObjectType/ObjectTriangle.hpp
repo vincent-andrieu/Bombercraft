@@ -8,7 +8,7 @@
 #ifndef OBJECTTRIANGLE_HPP
 #define OBJECTTRIANGLE_HPP
 
-#include "Data/MyVector/MyVector2.hpp"
+#include "../../Data/MyVector/MyVector2.hpp"
 
 using namespace raylib;
 

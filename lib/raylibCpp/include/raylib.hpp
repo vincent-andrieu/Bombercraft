@@ -17,7 +17,6 @@
 #include "../src/Camera/ICamera.hpp"
 #include "../src/Camera/Camera.hpp"
 
-#include "../src/Collision/ICollision.hpp"
 #include "../src/Collision/Collision.hpp"
 #include "../src/Collision/ObjectType/ObjectBox.hpp"
 #include "../src/Collision/ObjectType/ObjectCircle.hpp"

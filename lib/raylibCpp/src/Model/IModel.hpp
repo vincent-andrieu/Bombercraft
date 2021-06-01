@@ -17,7 +17,7 @@ namespace raylib
     class IModel
     {
         public :
-            virtual ~IModel();
+            virtual ~IModel() = default;
 
             virtual void draw() = 0;
 
