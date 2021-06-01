@@ -18,9 +18,14 @@ include_directories(./include)
 
 ## SOURCES
 set(SRCS
-    ./src/main.cpp
-)
+        ./src/main.cpp
+        )
 add_executable(${NAME} ${SRCS})
+
+set_target_properties(${NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        )
 
 ## LIBS
 
