@@ -13,6 +13,10 @@
 int main(void)
 {
     std::unique_ptr<IConfigFile> map = std::make_unique<ConfigFile>("./ConfigFileTest");
+
+    //std::cout << "1 == " << map->getInt("loadInt") << std::endl;
+    //std::cout << "1.1 == " << map->getFloat("loadFloat") << std::endl;
+    //std::cout << "? == " << map->getString("loadString") << std::endl;
     /*std::unique_ptr<IProceduralMap> map = std::make_unique<ProceduralMap>();
     MapType end;
 

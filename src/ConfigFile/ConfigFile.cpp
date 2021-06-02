@@ -18,6 +18,7 @@ ConfigFile::ConfigFile(const std::string &filename)
 
 ConfigFile::~ConfigFile()
 {
+    this->_fileContent.clear();
 }
 
 std::string ConfigFile::getLineByName(const std::string name) const
@@ -38,6 +39,7 @@ void ConfigFile::loadFile(const std::string &filename)
     std::regex isAscii ("^[\\x00-\\x7F]+$");
 
     if (myfile.is_open()) {
+        this->_fileContent.clear();
         while (getline(myfile, line)) {
             if (!std::regex_search(line, isAscii) && !line.empty()) {
                 throw ParserExceptions("The file doesn't contains only ASCII characters !");
@@ -45,6 +47,7 @@ void ConfigFile::loadFile(const std::string &filename)
                 this->commentManagingLine(line);
             }
         }
+        this->objInline();
     } else {
         throw std::invalid_argument("File close");
     }
@@ -91,5 +94,30 @@ void ConfigFile::cleanLine(std::string &str)
             str.erase(it);
         } else
             it++;
+    }
+}
+
+void ConfigFile::objInline()
+{
+    std::vector<std::string>::iterator next = this->_fileContent.begin();
+    bool stat = false;
+    size_t cnt = 0;
+
+    for (auto it = this->_fileContent.begin(); it != this->_fileContent.end(); it++) {
+        if (it->back() == '{') {
+            cnt = 1;
+            do {
+                next = it + 1;
+                if (next == this->_fileContent.end())
+                    throw ParserExceptions("The file incorrect");
+                if (next->back() == '{')
+                    cnt++;
+                stat = next->back() == '}';
+                if (stat)
+                    cnt--;
+                it->append(*next);
+                this->_fileContent.erase(next);
+            } while (!stat || cnt != 0);
+        }
     }
 }

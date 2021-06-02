@@ -2,6 +2,16 @@
 ##      config file
 ##
 
+"objTest": {
+  "oui": "oui"
+}
+
+"objTest2": {  
+  "oui": {
+    "oui": 1
+  }
+  }
+
 # EASY TEST
 "LoadInt": 1
 "LoadFloat": 1.1
