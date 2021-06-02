@@ -16,7 +16,7 @@
 
 namespace Engine
 {
-    #define SCRIPT_HANDLER std::function<void(EntityManager, SceneManager, Entity)>
+    #define SCRIPT_HANDLER std::function<void(Engine::EntityManager, Engine::SceneManager, const Engine::Entity)>
 
     class Script : public Component<Script> {
       public:
@@ -26,7 +26,7 @@ namespace Engine
 
         ~Script() = default;
 
-        void trigger(Entity entity)
+        void trigger(const Entity entity)
         {
             handler(_entityManager, _sceneManager, entity);
         }
