@@ -57,7 +57,7 @@ void ConfigFile::loadFile(const std::string &filename)
 int ConfigFile::getInt(const std::string name) const
 {
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": \\d*$");
+    std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*$");
 
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for INT: " + line);
@@ -67,7 +67,7 @@ int ConfigFile::getInt(const std::string name) const
 float ConfigFile::getFloat(const std::string name) const
 {
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": \\d*(.)\\d$");
+    std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*(.)\\d$");
 
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
