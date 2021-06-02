@@ -10,7 +10,7 @@
 
 #include "AbstractScene/AbstractScene.hpp"
 #include "IEventManager.hpp"
-#include "EntityManager.hpp"
+#include "EntityManager/EntityManager.hpp"
 #include "env.hpp"
 #include <vector>
 
@@ -18,13 +18,13 @@ namespace Engine
 {
     class SceneManager {
         public:
-            SceneManager(IEventManager &events, EntityManager<MAX_COMPONENT> &entityManager);
+            SceneManager(IEventManager &events, EntityManager &entityManager);
             ~SceneManager();
 
         void run();
 
         template <typename T, typename... Args>
-        void createScene(Args &&...args);
+        void createScene(Args &&...sceneType);
 
         template <typename T>
         void remove();
@@ -32,14 +32,12 @@ namespace Engine
         template <typename T>
         void setScene();
 
-        protected:
         private:
-            IEventManager &_events;
-            EntityManager<MAX_COMPONENT> &_entityManager;
+            IEventManager &_eventManager;
+            EntityManager &_entityManager;
+            std::shared_ptr<AbstractScene> _currentScene;
             std::vector<std::shared_ptr<AbstractScene>> _scenes;
             std::vector<std::reference_wrapper<const std::type_info>> _types;
-            std::shared_ptr<AbstractScene> _scene;
-            std::string sceneName;
     };
 
     template <typename T, typename... Args>
@@ -48,16 +46,16 @@ namespace Engine
         const std::type_info &type = typeid(T);
 
         if (std::find_if(_types.begin(), _types.end(),
-                [&type](auto &sysType) {
-                    return systType.get() == type;
-                }))
-            != _types.end() {
+                [&type](auto &sceneType) {
+                    return sceneType.get() == type;
+                })
+            != _types.end()) {
                 throw std::exception();
         }
         auto &scene = _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
         _types.emplace_back(typeid(T));
-        if (_scene == nullptr)
-            _scene = _scenes.back();
+        if (_currentScene == nullptr)
+            _currentScene = _scenes.back();
     }
 
     template <typename T>
@@ -65,37 +63,37 @@ namespace Engine
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
-        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sysType) {
-            return sysType.get() == type;
+        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sceneType) {
+            return sceneType.get() == type;
         });
 
         if (type_it == _types.end()) {
             throw std::exception();
         }
-        index = std:distance(_types.begin(), type_it);
-        if (_scene == _scenes[index]) {
-            _scene = (_scenes.size()) ? _scenes.front() : nullptr;
+        index = std::distance(_types.begin(), type_it);
+        if (_currentScene == _scenes[index]) {
+            _currentScene = (_scenes.size()) ? _scenes.front() : nullptr;
         }
         _types[index] = _types.back();
         _types.pop_back();
-        _scene[index] = _types.back();
-        _scene.pop_back();
+        _scenes[index] = _scenes.back();
+        _scenes.pop_back();
     }
 
     template <typename T>
-    void SceneManager:setScene()
+    void SceneManager::setScene()
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
-        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sysType) {
-            return sysType.get() == type;
+        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sceneType) {
+            return sceneType.get() == type;
         });
 
         if (type_it == _types.end()) {
             throw std::exception();
         }
-        index = std:distance(_types.begin(), type_it);
-        _scene = _scenes[index];
+        index = std::distance(_types.begin(), type_it);
+        _currentScene = _scenes[index];
     }
 
 }
