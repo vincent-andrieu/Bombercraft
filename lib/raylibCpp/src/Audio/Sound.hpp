@@ -26,6 +26,7 @@ namespace raylib
             void stop();
             void resume();
             void pause();
+            void update();
 
             void setPath(const std::string &path);
             void setVolume(const float volume);

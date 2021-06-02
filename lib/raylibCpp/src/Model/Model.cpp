@@ -17,6 +17,8 @@ const MyVector3 position = {0, 0, 0}, const RColor color = RColor::RWHITE)
     _texture = texture;
     _path = filepath;
     _model = LoadModel(filepath.data());
+    if (_texture != nullptr)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
 }
 
 raylib::Model::~Model()
@@ -73,7 +75,8 @@ void raylib::Model::setPath(const std::string &path)
 void raylib::Model::setTexture(const std::shared_ptr<ITexture> &texture)
 {
     _texture = texture;
-    SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, texture->getTexture());
+    if (_texture != nullptr)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
 }
 
 std::string raylib::Model::getPath() const

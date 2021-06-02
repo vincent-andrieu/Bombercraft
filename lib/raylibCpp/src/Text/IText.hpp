@@ -11,6 +11,7 @@
 #include "../../include/include.hpp"
 
 #include "../Font/IFont.hpp"
+#include "../Font/Font.hpp"
 
 namespace raylib
 {

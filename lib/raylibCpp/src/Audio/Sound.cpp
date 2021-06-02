@@ -40,6 +40,8 @@ void raylib::Sound::pause()
     PauseSound(_sound);
 }
 
+void raylib::Sound::update() {}
+
 void raylib::Sound::setPath(const std::string &path)
 {
     _path = path;

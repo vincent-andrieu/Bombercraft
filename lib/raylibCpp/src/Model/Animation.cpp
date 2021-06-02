@@ -12,6 +12,7 @@ const MyVector3 position, const RColor color)
 {
     char **filenames = nullptr;
     int count = 0;
+    const char *workingDirectory = GetWorkingDirectory();
 
     _position = position;
     _rotation = {0.0f, 0.0f, 0.0f};
@@ -20,11 +21,22 @@ const MyVector3 position, const RColor color)
     _texture = texture;
     _path = dirpath;
     _currentFrame = 0;
-    filenames = GetDirectoryFiles(_path.data(), &count);
-    for (size_t i = 0; i < (size_t) count; i++) {
-        _models.push_back(LoadModel(filenames[i]));
+    start = std::chrono::system_clock::now();
+    if (DirectoryExists(_path.data())) {
+        filenames = GetDirectoryFiles(_path.data(), &count);
+        ChangeDirectory(_path.data());
+        for (size_t i = 0; i < (size_t) count; i++) {
+            if (IsFileExtension(filenames[i], ".obj"))
+                _models.push_back(LoadModel(filenames[i]));
+        }
+        ClearDirectoryFiles();
+        ChangeDirectory(workingDirectory);
     }
-    ClearDirectoryFiles();
+    if (_texture == nullptr)
+        return;
+    for (size_t i = 0; i < _models.size(); i++) {
+        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, texture->getTexture());
+    }
 }
 
 raylib::Animation::~Animation()
@@ -38,9 +50,18 @@ raylib::Animation::~Animation()
 void raylib::Animation::draw()
 {
     Vector3 rayPos = {_position.a, _position.b, _position.c};
+    std::chrono::milliseconds timeElapsed(0);
+    std::chrono::milliseconds waitTime(100);
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 
-    DrawModel(_models[_currentFrame], rayPos, _scale, _matchingColors.at(_color));
-    _currentFrame = (_currentFrame + 1) % _models.size();
+    timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - start.time_since_epoch());
+    if (timeElapsed >= waitTime) {
+        _currentFrame = (_currentFrame + 1) % _models.size();
+        start = std::chrono::system_clock::now();
+    }
+    if (_models.size() > 0) {
+        DrawModel(_models[_currentFrame], rayPos, _scale, _matchingColors.at(_color));        
+    }
 }
 
 void raylib::Animation::setPosition(const MyVector3 position)
@@ -98,6 +119,8 @@ void raylib::Animation::setPath(const std::string &path)
 void raylib::Animation::setTexture(const std::shared_ptr<ITexture> &texture)
 {
     _texture = texture;
+    if (_texture == nullptr)
+        return;
     for (size_t i = 0; i < _models.size(); i++) {
         SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, texture->getTexture());
     }

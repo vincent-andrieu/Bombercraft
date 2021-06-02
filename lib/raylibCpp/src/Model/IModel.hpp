@@ -12,6 +12,8 @@
 
 #include "../Texture/ITexture.hpp"
 
+typedef Model RModel;
+
 namespace raylib
 {
     class IModel

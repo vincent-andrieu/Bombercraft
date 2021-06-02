@@ -12,8 +12,6 @@
 
 #include "IModel.hpp"
 
-typedef Model RModel;
-
 namespace raylib
 {
     class Animation : public IModel
@@ -43,6 +41,7 @@ namespace raylib
             std::string _path;
             std::vector<RModel> _models;
             size_t _currentFrame;
+            std::chrono::system_clock::time_point start;
     };
 };
 

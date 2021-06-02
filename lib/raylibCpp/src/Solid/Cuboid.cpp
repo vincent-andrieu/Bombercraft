@@ -16,10 +16,7 @@ const MyVector3 size, const RColor color)
     _color = color;
 }
 
-raylib::Cuboid::~Cuboid()
-{
-
-}
+raylib::Cuboid::~Cuboid() {}
 
 void raylib::Cuboid::draw()
 {

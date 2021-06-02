@@ -22,11 +22,13 @@ raylib::Window::~Window() {}
 void raylib::Window::open()
 {
     InitWindow(_size.a, _size.b, _title.data());
+    InitAudioDevice();
     SetTargetFPS(_fps);
 }
 
 void raylib::Window::close()
 {
+    CloseAudioDevice();
     CloseWindow();
 }
 

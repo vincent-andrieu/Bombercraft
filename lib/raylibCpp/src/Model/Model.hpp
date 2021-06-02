@@ -12,8 +12,6 @@
 
 #include "IModel.hpp"
 
-typedef Model RModel;
-
 namespace raylib
 {
     class Model : public IModel

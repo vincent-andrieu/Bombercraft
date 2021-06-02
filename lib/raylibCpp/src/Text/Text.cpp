@@ -12,7 +12,7 @@ const size_t size, const RColor color)
 {
     _text = text;
     _position = position;
-    _font = nullptr;
+    _font = std::make_shared<raylib::Font>();
     _color = color;
     _size = size;
     _limit = {-1, -1, -1, -1};
