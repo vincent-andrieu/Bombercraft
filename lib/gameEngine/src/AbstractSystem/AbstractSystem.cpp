@@ -9,6 +9,12 @@
 
 using namespace Engine;
 
+AbstractSystem::AbstractSystem(EntityManager &entityManager)
+    : _entityManager(entityManager)
+{
+
+}
+
 void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)
 {
     bool satisfied = (_requirements & components) == _requirements;
