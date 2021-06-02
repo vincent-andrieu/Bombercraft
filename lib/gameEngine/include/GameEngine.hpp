@@ -20,6 +20,11 @@
 
 #include "components/Position.hpp"
 #include "components/Velocity.hpp"
+#include "components/Event.hpp"
+#include "components/Render2D.hpp"
+#include "components/Render3D.hpp"
+#include "components/Script.hpp"
+#include "components/Timer.hpp"
 
 #include "system/PhysicsSystem/PhysicsSystem.hpp"
 
