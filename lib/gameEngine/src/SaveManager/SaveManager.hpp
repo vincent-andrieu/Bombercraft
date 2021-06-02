@@ -12,6 +12,7 @@
 #include <array>
 #include <memory>
 #include <fstream>
+#include <map>
 #include <unordered_map>
 #include "GameEngine.hpp"
 
@@ -47,6 +48,26 @@ namespace Engine
 
             for (const auto &elem : value)
                 file.write((char *) &elem, sizeof(T));
+        }
+
+        template <typename Key, typename T> void write(const string filepath, const std::map<Key, T> &value)
+        {
+            ofstream &file = this->_getFile(filepath);
+
+            for (const auto &elem : value) {
+                file.write((char *) &elem.first, sizeof(T));
+                file.write((char *) &elem.second, sizeof(T));
+            }
+        }
+
+        template <typename Key, typename T> void write(const string filepath, const std::unordered_map<Key, T> &value)
+        {
+            ofstream &file = this->_getFile(filepath);
+
+            for (const auto &elem : value) {
+                file.write((char *) &elem.first, sizeof(Key));
+                file.write((char *) &elem.second, sizeof(T));
+            }
         }
 
         template <typename T> void write(const string filepath, const std::unique_ptr<T> &value)
