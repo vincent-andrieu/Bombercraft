@@ -20,6 +20,17 @@ ConfigFile::~ConfigFile()
 {
 }
 
+std::string ConfigFile::getLineByName(const std::string name) const
+{
+    const std::string startLine("\"" + name + "\"");
+    
+    for (auto it = std::begin(_fileContent); it != std::end(_fileContent); ++it) {
+        if ((*it).compare(0, startLine.size(), startLine) == 0)
+            return (*it);
+    }
+    return std::string("");
+}
+
 void ConfigFile::loadFile(const std::string &filename)
 {
     std::string line;
