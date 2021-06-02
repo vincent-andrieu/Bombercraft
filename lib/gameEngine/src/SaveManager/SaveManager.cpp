@@ -22,6 +22,22 @@ SaveManager::~SaveManager()
         file.second.close();
 }
 
+inline bool SaveManager::directoryExists(const std::string &dirname)
+{
+    if (std::filesystem::exists(dirname) && std::filesystem::is_directory(dirname)) {
+        return true;
+    }
+    return false;
+}
+
+inline bool SaveManager::fileExists(const std::string &dirname)
+{
+    if (std::filesystem::exists(dirname) && std::filesystem::is_regular_file(dirname)) {
+        return true;
+    }
+    return false;
+}
+
 inline void SaveManager::createDirectory(const std::string &dirname)
 {
     std::filesystem::path my_path(getFileDir(dirname));
@@ -34,7 +50,7 @@ void SaveManager::setWorkingDirectory(const std::string &dirname)
     _workingDirectory /= dirname;
     _workingDirectory = std::filesystem::canonical(_workingDirectory);
 
-    if (!std::filesystem::exists(_workingDirectory) || !std::filesystem::is_directory(_workingDirectory)) {
+    if (!directoryExists(_workingDirectory)) {
         unsetWorkingDirectory();
         throw std::filesystem::filesystem_error("No such directory", std::make_error_code(std::errc(ENOENT)));
     }
@@ -61,7 +77,7 @@ void SaveManager::setWritingFile(const std::string &filename)
 {
     std::filesystem::path my_tmp_path(getFileDir(filename));
 
-    if (!std::filesystem::exists(my_tmp_path) || !std::filesystem::is_regular_file(my_tmp_path))
+    if (!fileExists(my_tmp_path))
         throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
     _writingFiles.insert(std::make_pair(my_tmp_path, std::ofstream(my_tmp_path)));
     if (!_writingFiles.at(my_tmp_path).is_open()) {

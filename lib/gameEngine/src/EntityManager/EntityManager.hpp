@@ -51,6 +51,8 @@ namespace Engine
 
         template <typename T> Entity getOwner(const T &component) const;
 
+        //        void save(SaveManager &saver) const;
+
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
@@ -153,6 +155,11 @@ namespace Engine
     {
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
+
+    //    void EntityManager::save(SaveManager &saver) const
+    //    {
+    //    }
+
 } // namespace Engine
 
 #endif // ENTITYMANAGER_HPP

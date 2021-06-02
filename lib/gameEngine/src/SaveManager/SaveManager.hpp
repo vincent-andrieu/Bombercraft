@@ -30,6 +30,9 @@ namespace Engine
 
         std::filesystem::path getFileDir(const std::string &filename);
 
+        static bool directoryExists(const std::string &dirname);
+        static bool fileExists(const std::string &dirname);
+
         /**
          * @brief Create a Directory from the current working directory
          * @param dirname The name of the directory to be created
@@ -61,6 +64,11 @@ namespace Engine
          */
         void closeWritingFile();
         void closeFile(const std::string &filename);
+
+        template <typename T> void writeActFile(const T value)
+        {
+            write(_writingFiles.begin()->first, value);
+        }
 
         template <typename T> void write(const std::string &filename, const T &value)
         {

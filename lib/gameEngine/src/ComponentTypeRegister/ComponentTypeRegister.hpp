@@ -40,10 +40,10 @@ namespace Engine
         std::unordered_map<Entity, Index> _ownersIndex;
         std::vector<Signature> &_entitySignatures;
 
-        void saveOwnersIndex(Engine::SaveManager &saver);
-        void saveEntities(Engine::SaveManager &saver);
-        void saveEntity(Engine::SaveManager &saver, Entity owner);
-        void saveEntityComponents(Engine::SaveManager &saver, Entity owner);
+        void saveEntities(Engine::SaveManager &saver) const;
+        void saveEntity(Engine::SaveManager &saver, Entity owner) const;
+        void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
+        void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
     };
 
     template <typename T>
@@ -106,42 +106,46 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::save(Engine::SaveManager &saver) const
     {
-        //        saver.createFolder("game_" + saver.getGameNb());
-        saveOwnersIndex(saver);
+        //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+        //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
         saveEntities(saver);
     }
 
-    template <typename T> void ComponentTypeRegister<T>::saveOwnersIndex(Engine::SaveManager &saver)
+    template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver) const
     {
-        const std::string filename("EntityToComponent");
-
-        saver.createFile(filename);
-        saver.write(filename, _ownersIndex);
-    }
-
-    template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver)
-    {
-        const std::string dirPrefix("Entity_");
-
         for (const auto &owner : _componentOwners) {
-            saver.createDirectory(dirPrefix + std::to_string(owner));
             saveEntity(saver, owner);
         }
     }
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntity(Engine::SaveManager &saver, Entity owner)
+    template <typename T> void ComponentTypeRegister<T>::saveEntity(Engine::SaveManager &saver, Entity owner) const
     {
+        const std::string dirPrefix("Entity_");
+        const std::string dirname(dirPrefix + std::to_string(owner));
+
+        if (!Engine::SaveManager::directoryExists(dirname))
+            saver.createDirectory(dirname);
+        saver.setWorkingDirectory(dirname);
+        saveEntitySignature(saver, owner);
         saveEntityComponents(saver, owner);
+        saver.unsetWorkingDirectory();
     }
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner)
+    template <typename T> void ComponentTypeRegister<T>::saveEntitySignature(Engine::SaveManager &saver, Entity owner) const
     {
-        for (const auto &entity_component : _ownersIndex) {
-            if (entity_component.first == owner) {
-                _components[entity_component].second->save();
-            }
-        }
+        const std::string filename("EntitySignature");
+
+        saver.createFile(filename);
+        saver.setWritingFile(filename);
+        saver.writeActFile(_entitySignatures[owner]);
+        saver.closeFile(filename);
     }
+
+    template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner) const
+    {
+        //        _components.at(_ownersIndex.at(owner)).save(saver);
+    }
+
 } // namespace Engine
 
 #endif // COMPONENTTYPEREGISTER_HPP
