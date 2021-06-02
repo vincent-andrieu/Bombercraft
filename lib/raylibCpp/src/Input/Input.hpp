@@ -9,7 +9,7 @@
 #define INPUT_HPP
 
 #include "IInput.hpp"
-#include "include.hpp"
+#include "object.hpp"
 
 namespace raylib
 {

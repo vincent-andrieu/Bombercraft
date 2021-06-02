@@ -8,7 +8,7 @@
 #ifndef RECTANGLE_HPP
 #define RECTANGLE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IShape.hpp"
 

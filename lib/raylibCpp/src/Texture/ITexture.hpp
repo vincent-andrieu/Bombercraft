@@ -8,11 +8,12 @@
 #ifndef ITEXTURE_HPP
 #define ITEXTURE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 namespace raylib
 {
-    class ITexture
+    class ITexture : public IRenderable
     {
         public :
             virtual ~ITexture() {};

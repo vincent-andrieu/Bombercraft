@@ -9,7 +9,7 @@
 #define SHADERMANAGE_HPP
 
 #include "IShaderManage.hpp"
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 #include <unistd.h>
 #include <unordered_map>
 

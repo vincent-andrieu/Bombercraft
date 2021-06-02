@@ -8,7 +8,7 @@
 #ifndef ICAMERA_HPP
 #define ICAMERA_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 namespace raylib
 {
