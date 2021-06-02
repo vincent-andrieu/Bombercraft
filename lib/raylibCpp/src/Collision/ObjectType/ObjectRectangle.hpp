@@ -10,13 +10,17 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector2.hpp"
+#include "../../Collidable/ICollidable.hpp"
+
+#include <functional>
 
 using namespace raylib;
 
 namespace ObjectType
 {
     class ObjectCircle;
-    class ObjectRectangle
+    class ObjectBox;
+    class ObjectRectangle : public ICollidable
     {
         public:
             ObjectRectangle(const MyVector2 origin, const MyVector2 size);
@@ -26,6 +30,8 @@ namespace ObjectType
             MyVector2 getRectangleSize() const;
             bool checkCollisionWith(const ObjectCircle &circle);
             bool checkCollisionWith(const ObjectRectangle &rectangle);
+
+            bool boxCollider(const ObjectType::ObjectBox &box);
 
         private:
             MyVector2 _origin;

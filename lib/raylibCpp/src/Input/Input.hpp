@@ -9,23 +9,23 @@
 #define INPUT_HPP
 
 #include "IInput.hpp"
-#include "include.hpp"
+#include "object.hpp"
 
 namespace raylib
 {
     class Input : public IInput {
       public:
         Input();
-        ~Input();
-        bool isKeyPressed(KeyBoard key) const;
-        bool isKeyReleased(KeyBoard key) const;
-        MyVector2 getMousePos(void) const;
-        bool isMouseLeftPressed(void) const;
-        bool isMouseRightPressed(void) const;
-        bool isMouseMiddlePressed(void) const;
-        bool isMouseMoved(void);
-        bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
-        bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
+        ~Input() = default;
+        [[nodiscard]] bool isKeyPressed(KeyBoard key) const;
+        [[nodiscard]] bool isKeyReleased(KeyBoard key) const;
+        [[nodiscard]] MyVector2 getMousePos(void) const;
+        [[nodiscard]] bool isMouseLeftPressed(void) const;
+        [[nodiscard]] bool isMouseRightPressed(void) const;
+        [[nodiscard]] bool isMouseMiddlePressed(void) const;
+        [[nodiscard]] bool isMouseMoved(void);
+        [[nodiscard]] bool MouseIsOver(MyVector2 pos, MyVector2 size) const;
+        [[nodiscard]] bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const;
 
         private:
             MyVector2 _previousMousePos;

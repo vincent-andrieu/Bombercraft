@@ -9,8 +9,9 @@
 
 using namespace Engine;
 
-AbstractScene::AbstractScene(IEventManager &events, SystemManager &systemManager, EntityManager<MAX_COMPONENT, MAX_SYSTEM> &entityManager) :
-    _events(events), _systemManager(systemManager), _entityManager(entityManager)
+AbstractScene::AbstractScene(IEventManager &eventManager, SystemManager &systemManager,
+    EntityManager &entityManager)
+    : _eventManager(eventManager), _systemManager(systemManager), _entityManager(entityManager)
 {
 }
 

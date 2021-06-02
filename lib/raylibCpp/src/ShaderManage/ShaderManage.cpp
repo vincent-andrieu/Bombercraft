@@ -20,9 +20,9 @@ ShaderManage::~ShaderManage()
     this->_shaderList.clear();
 }
 
-void ShaderManage::startShaderMode(std::string shaderName) const
+void ShaderManage::startShaderMode(string shaderName) const
 {
-    std::unordered_map<std::string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
+    std::unordered_map<string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
 
     if (it == this->_shaderList.end())
         throw std::invalid_argument("Shader " + shaderName + "are not loaded.");
@@ -34,9 +34,9 @@ void ShaderManage::endShaderMode() const
     EndShaderMode();
 }
 
-void ShaderManage::addShader(std::string filepath, std::string shaderName)
+void ShaderManage::addShader(string filepath, string shaderName)
 {
-    std::unordered_map<std::string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
+    std::unordered_map<string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
 
     if (shaderName == "")
         shaderName = filepath;
@@ -47,9 +47,9 @@ void ShaderManage::addShader(std::string filepath, std::string shaderName)
     this->_shaderList[shaderName] = LoadShader(NULL, TextFormat(filepath.c_str(), GLSL_VERSION));
 }
 
-void ShaderManage::removeShader(std::string shaderName)
+void ShaderManage::removeShader(string shaderName)
 {
-    std::unordered_map<std::string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
+    std::unordered_map<string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
 
     if (it == this->_shaderList.end())
         throw std::invalid_argument("Shader " + shaderName + "didn't exist.");

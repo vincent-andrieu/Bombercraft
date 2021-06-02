@@ -8,15 +8,15 @@
 #ifndef IMODEL_HPP
 #define IMODEL_HPP
 
-#include "../../include/include.hpp"
-
 #include "../Texture/ITexture.hpp"
+#include "../../include/object.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 typedef Model RModel;
 
 namespace raylib
 {
-    class IModel
+    class IModel : public IRenderable
     {
         public :
             virtual ~IModel() = default;

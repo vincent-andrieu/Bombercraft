@@ -40,3 +40,11 @@ bool ObjectRectangle::checkCollisionWith(const ObjectRectangle &rectangle)
 {
     return Collision::checkCollision(*this, rectangle);
 }
+
+bool ObjectRectangle::boxCollider(const ObjectType::ObjectBox &box)
+{
+    //return this->checkCollisionWith(box);
+    (void) box;
+    throw std::bad_function_call();
+    return false;
+}

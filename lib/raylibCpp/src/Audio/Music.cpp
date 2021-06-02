@@ -7,37 +7,37 @@
 
 #include "Music.hpp"
 
-raylib::Music::Music(const std::string &path, const float volume, const float pitch)
+raylib::Music::Music(const string &path, const float volume, const float pitch)
 {
-    _path = path;
-    _volume = volume;
-    _pitch = pitch;
-    _music = LoadMusicStream(path.data());
+    this->_path = path;
+    this->_volume = volume;
+    this->_pitch = pitch;
+    this->_music = LoadMusicStream(path.data());
 }
 
 raylib::Music::~Music()
 {
-    UnloadMusicStream(_music);
+    UnloadMusicStream(this->_music);
 }
 
 void raylib::Music::play()
 {
-    PlayMusicStream(_music);
+    PlayMusicStream(this->_music);
 }
 
 void raylib::Music::stop()
 {
-    StopMusicStream(_music);
+    StopMusicStream(this->_music);
 }
 
 void raylib::Music::resume()
 {
-    ResumeMusicStream(_music);
+    ResumeMusicStream(this->_music);
 }
 
 void raylib::Music::pause()
 {
-    PauseMusicStream(_music);
+    PauseMusicStream(this->_music);
 }
 
 void raylib::Music::update()
@@ -47,19 +47,19 @@ void raylib::Music::update()
 
 void raylib::Music::setPath(const std::string &path)
 {
-    _path = path;
-    UnloadMusicStream(_music);
-    _music = LoadMusicStream(_path.data());
+    this->_path = path;
+    UnloadMusicStream(this->_music);
+    this->_music = LoadMusicStream(this->_path.data());
 }
 
 void raylib::Music::setVolume(const float volume)
 {
-    _volume = volume;
-    SetMusicVolume(_music, _volume);
+    this->_volume = volume;
+    SetMusicVolume(this->_music, this->_volume);
 }
 
 void raylib::Music::setPitch(const float pitch)
 {
-    _pitch = pitch;
-    SetMusicPitch(_music, _pitch);
+    this->_pitch = pitch;
+    SetMusicPitch(this->_music, this->_pitch);
 }

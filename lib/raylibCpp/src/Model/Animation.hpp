@@ -8,7 +8,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IModel.hpp"
 
@@ -30,7 +30,7 @@ namespace raylib
             void setPath(const std::string &path);
             void setTexture(const std::shared_ptr<ITexture> &texture);
 
-            std::string getPath() const;
+            [[nodiscard]] std::string getPath() const;
 
         private :
             MyVector3 _position;
@@ -41,8 +41,8 @@ namespace raylib
             std::string _path;
             std::vector<RModel> _models;
             size_t _currentFrame;
-            std::chrono::system_clock::time_point start;
+            std::chrono::system_clock::time_point _start;
     };
-};
+}; // namespace raylib
 
 #endif // ANIMATION_HPP

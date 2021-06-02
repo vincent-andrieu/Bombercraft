@@ -8,7 +8,7 @@
 #ifndef SOUND_HPP
 #define SOUND_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IAudio.hpp"
 
@@ -38,6 +38,6 @@ namespace raylib
             float _pitch;
             RSound _sound;
     };
-};
+}; // namespace raylib
 
 #endif // SOUND_HPP
