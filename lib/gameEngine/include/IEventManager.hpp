@@ -24,7 +24,7 @@ namespace Engine
         virtual bool isMouseRightClick() = 0;
         virtual bool isMouseMiddleClick() = 0;
 
-        std::vector<int> getMousePos();
+        virtual std::vector<int> getMousePos() = 0;
     };
 }
 
