@@ -8,16 +8,28 @@
 #ifndef SAVE_MANAGER_HPP
 #define SAVE_MANAGER_HPP
 
+#include <iostream>
+#include <sstream>
+#include <memory>
+#include <string>
+#include <fstream>
 #include <vector>
 #include <array>
-#include <fstream>
 #include <map>
 #include <unordered_map>
 #include <filesystem>
 #include <system_error>
-#include "GameEngine.hpp"
 
-using namespace Engine;
+typedef std::string string;
+typedef std::size_t size_t;
+typedef std::stringstream stringstream;
+typedef std::fstream fstream;
+typedef std::ofstream ofstream;
+typedef std::ifstream ifstream;
+#define charette_ptr(T) std::shared_ptr<T>
+#define toString(str)   std::to_string(str)
+#define toInteger(str)  std::stoi(str)
+#define toSize_t(str)   std::stoul(str)
 
 namespace Engine
 {
@@ -87,9 +99,9 @@ namespace Engine
                 file.write((char *) &elem, sizeof(T));
         }
 
-        template <typename Key, typename T> void write(const string &filepath, const std::map<Key, T> &value)
+        template <typename Key, typename T> void write(const string &filename, const std::map<Key, T> &value)
         {
-            ofstream &file = this->_getFile(filepath);
+            ofstream &file = this->_getFile(filename);
 
             for (const auto &elem : value) {
                 file.write((char *) &elem.first, sizeof(T));
@@ -97,9 +109,9 @@ namespace Engine
             }
         }
 
-        template <typename Key, typename T> void write(const string &filepath, const std::unordered_map<Key, T> &value)
+        template <typename Key, typename T> void write(const string &filename, const std::unordered_map<Key, T> &value)
         {
-            ofstream &file = this->_getFile(filepath);
+            ofstream &file = this->_getFile(filename);
 
             for (const auto &elem : value) {
                 file.write((char *) &elem.first, sizeof(Key));
@@ -107,7 +119,7 @@ namespace Engine
             }
         }
 
-        template <typename T> void write(const string &filepath, const std::unique_ptr<T> &value)
+        template <typename T> void write(const string &filename, const std::unique_ptr<T> &value)
         {
             std::ofstream &file = this->_getFile(filename);
 
