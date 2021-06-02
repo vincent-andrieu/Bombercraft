@@ -7,54 +7,54 @@
 
 #include "Sound.hpp"
 
-raylib::Sound::Sound(const std::string &path, const float volume, const float pitch)
+raylib::Sound::Sound(const string &path, const float volume, const float pitch)
 {
-    _path = path;
-    _volume = volume;
-    _pitch = pitch;
-    _sound = LoadSound(path.data());
+    this->_path = path;
+    this->_volume = volume;
+    this->_pitch = pitch;
+    this->_sound = LoadSound(path.data());
 }
 
 raylib::Sound::~Sound()
 {
-    UnloadSound(_sound);
+    UnloadSound(this->_sound);
 }
 
 void raylib::Sound::play()
 {
-    PlaySound(_sound);
+    PlaySound(this->_sound);
 }
 
 void raylib::Sound::stop()
 {
-    StopSound(_sound);
+    StopSound(this->_sound);
 }
 
 void raylib::Sound::resume()
 {
-    ResumeSound(_sound);
+    ResumeSound(this->_sound);
 }
 
 void raylib::Sound::pause()
 {
-    PauseSound(_sound);
+    PauseSound(this->_sound);
 }
 
-void raylib::Sound::setPath(const std::string &path)
+void raylib::Sound::setPath(const string &path)
 {
-    _path = path;
-    UnloadSound(_sound);
-    _sound = LoadSound(_path.data());
+    this->_path = path;
+    UnloadSound(this->_sound);
+    this->_sound = LoadSound(this->_path.data());
 }
 
 void raylib::Sound::setVolume(const float volume)
 {
-    _volume = volume;
-    SetSoundVolume(_sound, _volume);
+    this->_volume = volume;
+    SetSoundVolume(this->_sound, this->_volume);
 }
 
 void raylib::Sound::setPitch(const float pitch)
 {
-    _pitch = pitch;
-    SetSoundPitch(_sound, _pitch);
+    this->_pitch = pitch;
+    SetSoundPitch(this->_sound, this->_pitch);
 }

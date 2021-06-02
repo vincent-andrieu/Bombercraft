@@ -7,35 +7,29 @@
 
 #include "Rectangle.hpp"
 
-raylib::Rectangle::Rectangle(const MyVector2 position,
-const MyVector2 size, const RColor color)
+raylib::Rectangle::Rectangle(const MyVector2 position, const MyVector2 size, const RColor color)
 {
-    _position = position;
-    _size = size;
-    _color = color;
-}
-
-raylib::Rectangle::~Rectangle()
-{
-
+    this->_position = position;
+    this->_size = size;
+    this->_color = color;
 }
 
 void raylib::Rectangle::draw()
 {
-    DrawRectangle(_position.a, _position.b, _size.a, _size.b, _matchingColors.at(_color));
+    DrawRectangle(this->_position.a, this->_position.b, this->_size.a, this->_size.b, _matchingColors.at(this->_color));
 }
 
 void raylib::Rectangle::setPosition(const MyVector2 position)
 {
-    _position = position;
+    this->_position = position;
 }
 
 void raylib::Rectangle::setSize(const MyVector2 size)
 {
-    _size = size;
+    this->_size = size;
 }
 
 void raylib::Rectangle::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }

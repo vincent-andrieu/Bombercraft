@@ -8,35 +8,32 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "ITexture.hpp"
 
 namespace raylib
 {
-    class Texture : public ITexture
-    {
-        public :
-            Texture(const std::string &path, const MyVector2 position = {0, 0},
-            const RColor color = RColor::RWHITE);
-            ~Texture();
+    class Texture : public ITexture {
+      public:
+        Texture(const string &path, const MyVector2 position = {0, 0}, const RColor color = RColor::RWHITE);
+        ~Texture();
 
-            void draw();
+        void draw();
 
-            void setPosition(const MyVector2 position);
-            void setColor(const RColor color);
-            void setPath(const std::string &path);
+        void setPosition(const MyVector2 position);
+        void setColor(const RColor color);
+        void setPath(const string &path);
 
-            Texture2D getTexture() const;
-            std::string getPath() const;
-        
-        private :
-            MyVector2 _position;
-            RColor _color;
-            std::string _path;
-            Texture2D _texture;
+        [[nodiscard]] Texture2D getTexture() const;
+        [[nodiscard]] string getPath() const;
 
+      private:
+        MyVector2 _position;
+        RColor _color;
+        string _path;
+        Texture2D _texture;
     };
-};
+}; // namespace raylib
 
 #endif // TEXTURE_HPP

@@ -8,7 +8,7 @@
 #ifndef CONST_HPP
 #define CONST_HPP
 
-#include "include.hpp"
+#include "object.hpp"
 
 namespace raylib
 {

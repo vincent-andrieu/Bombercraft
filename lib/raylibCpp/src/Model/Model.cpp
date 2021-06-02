@@ -7,33 +7,33 @@
 
 #include "Model.hpp"
 
-raylib::Model::Model(const std::shared_ptr<ITexture> texture, const std::string &filepath,
-const MyVector3 position = {0, 0, 0}, const RColor color = RColor::RWHITE)
+raylib::Model::Model(const std::shared_ptr<ITexture> texture, const string &filepath, const MyVector3 position = {0, 0, 0},
+    const RColor color = RColor::RWHITE)
 {
-    _position = position;
-    _rotation = {0.0f, 0.0f, 0.0f};
-    _scale = 1.0f;
-    _color = color;
-    _texture = texture;
-    _path = filepath;
-    _model = LoadModel(filepath.data());
+    this->_position = position;
+    this->_rotation = {0.0f, 0.0f, 0.0f};
+    this->_scale = 1.0f;
+    this->_color = color;
+    this->_texture = texture;
+    this->_path = filepath;
+    this->_model = LoadModel(filepath.data());
 }
 
 raylib::Model::~Model()
 {
-    UnloadModel(_model);
+    UnloadModel(this->_model);
 }
 
 void raylib::Model::draw()
 {
-    Vector3 rayPos = {_position.a, _position.b, _position.c};
+    Vector3 rayPos = {this->_position.a, this->_position.b, this->_position.c};
 
-    DrawModel(_model, rayPos, _scale, _matchingColors.at(_color));
+    DrawModel(this->_model, rayPos, this->_scale, _matchingColors.at(this->_color));
 }
 
 void raylib::Model::setPosition(const MyVector3 position)
 {
-    _position = position;
+    this->_position = position;
 }
 
 void raylib::Model::setRotation(const MyVector3 rotation)
@@ -42,41 +42,39 @@ void raylib::Model::setRotation(const MyVector3 rotation)
     float yam = rotation.b;
     float roll = rotation.c;
 
-    _rotation = rotation;
-    _model.transform =
-    MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+    this->_rotation = rotation;
+    this->_model.transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
 }
 
 void raylib::Model::setScale(const float scale)
 {
-    _scale = scale;
+    this->_scale = scale;
 }
 
 void raylib::Model::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }
 
-void raylib::Model::setPath(const std::string &path)
+void raylib::Model::setPath(const string &path)
 {
-    float pitch = _rotation.a;
-    float yam = _rotation.b;
-    float roll = _rotation.c;
+    float pitch = this->_rotation.a;
+    float yam = this->_rotation.b;
+    float roll = this->_rotation.c;
 
-    _path = path;
-    UnloadModel(_model);
-    _model = LoadModel(path.data());
-    _model.transform =
-    MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+    this->_path = path;
+    UnloadModel(this->_model);
+    this->_model = LoadModel(path.data());
+    this->_model.transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
 }
 
 void raylib::Model::setTexture(const std::shared_ptr<ITexture> &texture)
 {
-    _texture = texture;
-    SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, texture->getTexture());
+    this->_texture = texture;
+    SetMaterialTexture(&this->_model.materials[0], MAP_DIFFUSE, texture->getTexture());
 }
 
-std::string raylib::Model::getPath() const
+string raylib::Model::getPath() const
 {
-    return _path;
+    return this->_path;
 }

@@ -8,26 +8,25 @@
 #ifndef SAVE_HPP
 #define SAVE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IFile.hpp"
 
 namespace raylib
 {
-    class Save : public IFile
-    {
-        public :
-            Save(const std::string &filepath);
-            ~Save();
-            void setPath(const std::string &filepath);
-            std::shared_ptr<void *> readData(std::size_t &read_size);
-            void writeData(std::shared_ptr<void *> data, std::size_t objectSize);
+    class Save : public IFile {
+      public:
+        Save(const string &filepath);
+        ~Save();
+        void setPath(const string &filepath);
+        std::shared_ptr<void *> readData(size_t &read_size);
+        void writeData(std::shared_ptr<void *> data, size_t objectSize);
 
-        private :
-            std::string _filepath;
-            std::shared_ptr<void *> _data;
-            std::size_t _readSize;
+      private:
+        string _filepath;
+        std::shared_ptr<void *> _data;
+        size_t _readSize;
     };
-};
+}; // namespace raylib
 
 #endif // SAVE_HPP

@@ -10,12 +10,16 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector2.hpp"
+#include "../../Collidable/ICollidable.hpp"
+
+#include <functional>
 
 using namespace raylib;
 
 namespace ObjectType
 {
-    class ObjectLine
+    class ObjectBox;
+    class ObjectLine : public ICollidable
     {
         public:
             ObjectLine(const MyVector2 a, const MyVector2 b);
@@ -24,6 +28,8 @@ namespace ObjectType
             MyVector2 getPointA() const;
             MyVector2 getPointB() const;
             bool checkCollisionWith(const ObjectLine &line);
+
+            bool boxCollider(const ObjectType::ObjectBox &box);
 
         private:
             MyVector2 _a;
