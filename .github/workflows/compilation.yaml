@@ -65,7 +65,7 @@ jobs:
   linux-bomberman:
     runs-on: ubuntu-20.04
     container: epitechcontent/epitest-docker:devel
-    needs: linux-raylibcpp linux-gameengine
+    needs: [linux-raylibcpp, linux-gameengine]
     steps:
       # Checkout code
       - name: Checkout code
@@ -133,7 +133,7 @@ jobs:
 
   windows-bomberman:
     runs-on: windows-2019
-    needs: windows-raylibcpp windows-gameengine
+    needs: [windows-raylibcpp, windows-gameengine]
     steps:
       # Checkout code
       - name: Checkout code
