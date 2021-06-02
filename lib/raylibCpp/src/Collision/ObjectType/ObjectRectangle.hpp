@@ -19,9 +19,9 @@ namespace ObjectType
     class ObjectRectangle
     {
         public:
-            ObjectRectangle(MyVector2 origin, MyVector2 size);
+            ObjectRectangle(const MyVector2 origin, const MyVector2 size);
             ~ObjectRectangle();
-            void setRectangle(MyVector2 origin, MyVector2 size);
+            void setRectangle(const MyVector2 origin, const MyVector2 size);
             MyVector2 getRectangleOrigin() const;
             MyVector2 getRectangleSize() const;
             bool checkCollisionWith(const ObjectCircle &circle);

@@ -7,7 +7,7 @@
 
 #include "ObjectBox.hpp"
 
-ObjectBox::ObjectBox(MyVector3 origin, MyVector3 size) : _origin(origin), _size(size)
+ObjectBox::ObjectBox(const MyVector3 origin, const MyVector3 size) : _origin(origin), _size(size)
 {
 }
 
@@ -15,7 +15,7 @@ ObjectBox::~ObjectBox()
 {
 }
 
-void ObjectBox::setSphere(MyVector3 origin, MyVector3 size)
+void ObjectBox::setSphere(const MyVector3 origin, const MyVector3 size)
 {
     this->_origin = origin;
     this->_size = size;

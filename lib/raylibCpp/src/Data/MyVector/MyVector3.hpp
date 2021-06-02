@@ -14,7 +14,7 @@ namespace raylib
     {
         public:
             MyVector3();
-            MyVector3(float a, float b, float c);
+            MyVector3(const float a, const float b, const float c);
             MyVector3(const MyVector3 &src);
 
         public:

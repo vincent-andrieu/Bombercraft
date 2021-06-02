@@ -7,7 +7,7 @@
 
 #include "ObjectLine.hpp"
 
-ObjectLine::ObjectLine(MyVector2 a, MyVector2 b) : _a(a), _b(b)
+ObjectLine::ObjectLine(const MyVector2 a, const MyVector2 b) : _a(a), _b(b)
 {
 }
 
@@ -15,7 +15,7 @@ ObjectLine::~ObjectLine()
 {
 }
 
-void ObjectLine::setLine(MyVector2 a, MyVector2 b)
+void ObjectLine::setLine(const MyVector2 a, const MyVector2 b)
 {
     this->_a = a;
     this->_b = b;

@@ -7,8 +7,8 @@
 
 #include "Animation.hpp"
 
-raylib::Animation::Animation(std::shared_ptr<ITexture> texture, const std::string &dirpath,
-MyVector3 position, RColor color)
+raylib::Animation::Animation(const std::shared_ptr<ITexture> texture, const std::string &dirpath,
+const MyVector3 position, const RColor color)
 {
     char **filenames = nullptr;
     int count = 0;
@@ -43,12 +43,12 @@ void raylib::Animation::draw()
     _currentFrame = (_currentFrame + 1) % _models.size();
 }
 
-void raylib::Animation::setPosition(MyVector3 position)
+void raylib::Animation::setPosition(const MyVector3 position)
 {
     _position = position;
 }
 
-void raylib::Animation::setRotation(MyVector3 rotation)
+void raylib::Animation::setRotation(const MyVector3 rotation)
 {
     float pitch = rotation.a;
     float yam = rotation.b;
@@ -61,12 +61,12 @@ void raylib::Animation::setRotation(MyVector3 rotation)
     }
 }
 
-void raylib::Animation::setScale(float scale)
+void raylib::Animation::setScale(const float scale)
 {
     _scale = scale;
 }
 
-void raylib::Animation::setColor(RColor color)
+void raylib::Animation::setColor(const RColor color)
 {
     _color = color;
 }
@@ -95,7 +95,7 @@ void raylib::Animation::setPath(const std::string &path)
     }
 }
 
-void raylib::Animation::setTexture(std::shared_ptr<ITexture> &texture)
+void raylib::Animation::setTexture(const std::shared_ptr<ITexture> &texture)
 {
     _texture = texture;
     for (size_t i = 0; i < _models.size(); i++) {

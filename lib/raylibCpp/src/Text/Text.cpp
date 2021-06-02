@@ -7,8 +7,8 @@
 
 #include "Text.hpp"
 
-raylib::Text::Text(const std::string &text, MyVector2 position,
-            size_t size, RColor color)
+raylib::Text::Text(const std::string &text, const MyVector2 position,
+const size_t size, const RColor color)
 {
     _text = text;
     _position = position;
@@ -42,7 +42,7 @@ void raylib::Text::setText(const std::string &text)
     _text = text;
 }
 
-void raylib::Text::setPosition(MyVector2 position)
+void raylib::Text::setPosition(const MyVector2 position)
 {
     _position = position;
 }
@@ -52,17 +52,17 @@ void raylib::Text::setFont(const std::string &font)
     _font->setPath(font);
 }
 
-void raylib::Text::setColor(RColor color)
+void raylib::Text::setColor(const RColor color)
 {
     _color = color;
 }
 
-void raylib::Text::setFontSize(size_t size)
+void raylib::Text::setFontSize(const size_t size)
 {
     _size = size;
 }
 
-void raylib::Text::setLimit(MyVector4 limit)
+void raylib::Text::setLimit(const MyVector4 limit)
 {
     _limit.x = limit.a;
     _limit.y = limit.b;

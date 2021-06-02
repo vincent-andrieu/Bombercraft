@@ -18,9 +18,9 @@ namespace ObjectType
     class ObjectLine
     {
         public:
-            ObjectLine(MyVector2 a, MyVector2 b);
+            ObjectLine(const MyVector2 a, const MyVector2 b);
             ~ObjectLine();
-            void setLine(MyVector2 a, MyVector2 b);
+            void setLine(const MyVector2 a, const MyVector2 b);
             MyVector2 getPointA() const;
             MyVector2 getPointB() const;
             bool checkCollisionWith(const ObjectLine &line);

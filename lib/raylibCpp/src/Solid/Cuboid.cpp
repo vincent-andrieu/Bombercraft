@@ -7,8 +7,8 @@
 
 #include "Cuboid.hpp"
 
-raylib::Cuboid::Cuboid(std::shared_ptr<ITexture> texture, MyVector3 position,
-MyVector3 size, RColor color)
+raylib::Cuboid::Cuboid(const std::shared_ptr<ITexture> texture, const MyVector3 position,
+const MyVector3 size, const RColor color)
 {
     _texture = texture;
     _position = position;
@@ -33,22 +33,22 @@ void raylib::Cuboid::draw()
     }
 }
 
-void raylib::Cuboid::setPosition(MyVector3 position)
+void raylib::Cuboid::setPosition(const MyVector3 position)
 {
     _position = position;
 }
 
-void raylib::Cuboid::setSize(MyVector3 size)
+void raylib::Cuboid::setSize(const MyVector3 size)
 {
     _size = size;
 }
 
-void raylib::Cuboid::setColor(RColor color)
+void raylib::Cuboid::setColor(const RColor color)
 {
     _color = color;
 }
 
-void raylib::Cuboid::setTexture(std::shared_ptr<ITexture> &texture)
+void raylib::Cuboid::setTexture(const std::shared_ptr<ITexture> &texture)
 {
     _texture = texture;
 }

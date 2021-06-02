@@ -23,8 +23,8 @@ namespace raylib
             virtual void pause() = 0;
 
             virtual void setPath(const std::string &path) = 0;
-            virtual void setVolume(float volume) = 0;
-            virtual void setPitch(float pitch) = 0;
+            virtual void setVolume(const float volume) = 0;
+            virtual void setPitch(const float pitch) = 0;
     };
 };
 

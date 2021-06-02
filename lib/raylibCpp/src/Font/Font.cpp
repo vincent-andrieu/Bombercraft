@@ -7,7 +7,7 @@
 
 #include "Font.hpp"
 
-raylib::Font::Font(std::string path)
+raylib::Font::Font(const std::string path)
 {
     _path = path;
     if (_path.compare("") != 0) {

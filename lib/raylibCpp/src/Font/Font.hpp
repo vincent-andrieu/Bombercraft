@@ -5,8 +5,8 @@
 ** Font
 */
 
-#ifndef TEXTURE_HPP
-#define TEXTURE_HPP
+#ifndef FONT_HPP
+#define FONT_HPP
 
 #include "../../include/include.hpp"
 
@@ -17,7 +17,7 @@ namespace raylib
     class Font : public IFont
     {
         public :
-            Font(std::string path = "");
+            Font(const std::string path = "");
             ~Font();
 
             void setPath(const std::string &path);
@@ -34,4 +34,4 @@ namespace raylib
     };
 };
 
-#endif // TEXTURE_HPP
+#endif // FONT_HPP

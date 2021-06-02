@@ -7,8 +7,8 @@
 
 #include "Window.hpp"
 
-raylib::Window::Window(MyVector2 size, const std::string &title, RColor color,
-int fps)
+raylib::Window::Window(const MyVector2 size, const std::string &title, const RColor color,
+const int fps)
 {
     _size = size;
     _title = title;
@@ -41,7 +41,7 @@ void raylib::Window::refresh()
     EndDrawing();
 }
 
-void raylib::Window::setSize(MyVector2 size)
+void raylib::Window::setSize(const MyVector2 size)
 {
     if (size.a <= 0 || size.b <= 0)
         return;
@@ -49,7 +49,7 @@ void raylib::Window::setSize(MyVector2 size)
     SetWindowSize(_size.a, _size.b);
 }
 
-void raylib::Window::setColor(RColor color)
+void raylib::Window::setColor(const RColor color)
 {
     _color = color;
 }
@@ -60,12 +60,12 @@ void raylib::Window::setTitle(const std::string &title)
     SetWindowTitle(_title.data());
 }
 
-void raylib::Window::setCamera(std::shared_ptr<ICamera> &camera)
+void raylib::Window::setCamera(const std::shared_ptr<ICamera> &camera)
 {
     _camera = camera;
 }
 
-void raylib::Window::setFPS(int fps)
+void raylib::Window::setFPS(const int fps)
 {
     _fps = fps;
     SetTargetFPS(_fps);
