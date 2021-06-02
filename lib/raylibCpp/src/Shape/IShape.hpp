@@ -8,13 +8,14 @@
 #ifndef ISHAPE_HPP
 #define ISHAPE_HPP
 
-#include "../../include/include.hpp"
 
 #include "../Texture/ITexture.hpp"
+#include "../../include/include.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 namespace raylib
 {
-    class IShape
+    class IShape : public IRenderable
     {
         public :
             virtual ~IShape() {};

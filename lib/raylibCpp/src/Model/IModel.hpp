@@ -8,13 +8,13 @@
 #ifndef IMODEL_HPP
 #define IMODEL_HPP
 
-#include "../../include/include.hpp"
-
 #include "../Texture/ITexture.hpp"
+#include "../../include/include.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 namespace raylib
 {
-    class IModel
+    class IModel : public IRenderable
     {
         public :
             virtual ~IModel() = default;

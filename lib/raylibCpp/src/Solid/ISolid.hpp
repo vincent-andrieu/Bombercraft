@@ -8,13 +8,13 @@
 #ifndef ISOLID_HPP
 #define ISOLID_HPP
 
-#include "../../include/include.hpp"
-
 #include "../Texture/ITexture.hpp"
+#include "../../include/include.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 namespace raylib
 {
-    class ISolid
+    class ISolid : public IRenderable
     {
         public :
             virtual ~ISolid() {};
