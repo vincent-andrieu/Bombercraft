@@ -7,7 +7,7 @@
 
 #include "Sound.hpp"
 
-raylib::Sound::Sound(const std::string &path, const float volume, const float pitch)
+raylib::Sound::Sound(const string &path, const float volume, const float pitch)
 {
     _path = path;
     _volume = volume;
@@ -40,7 +40,7 @@ void raylib::Sound::pause()
     PauseSound(_sound);
 }
 
-void raylib::Sound::setPath(const std::string &path)
+void raylib::Sound::setPath(const string &path)
 {
     _path = path;
     UnloadSound(_sound);

@@ -14,17 +14,16 @@ typedef Font RFont;
 
 namespace raylib
 {
-    class IFont
-    {
-        public :
-            virtual ~IFont() {};
+    class IFont {
+      public:
+        virtual ~IFont(){};
 
-            virtual void setPath(const std::string &path) = 0;
+        virtual void setPath(const string &path) = 0;
 
-            virtual RFont getFont() const = 0;
+        virtual RFont getFont() const = 0;
 
-            virtual void reset() = 0;
+        virtual void reset() = 0;
     };
-};
+}; // namespace raylib
 
 #endif // IFONT_HPP

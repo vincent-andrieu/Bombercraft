@@ -7,8 +7,8 @@
 
 #include "Animation.hpp"
 
-raylib::Animation::Animation(const std::shared_ptr<ITexture> texture, const std::string &dirpath,
-const MyVector3 position, const RColor color)
+raylib::Animation::Animation(
+    const std::shared_ptr<ITexture> texture, const string &dirpath, const MyVector3 position, const RColor color)
 {
     char **filenames = nullptr;
     int count = 0;
@@ -56,8 +56,7 @@ void raylib::Animation::setRotation(const MyVector3 rotation)
 
     _rotation = rotation;
     for (size_t i = 0; i < _models.size(); i++) {
-        _models[i].transform =
-        MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+        _models[i].transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
     }
 }
 
@@ -71,7 +70,7 @@ void raylib::Animation::setColor(const RColor color)
     _color = color;
 }
 
-void raylib::Animation::setPath(const std::string &path)
+void raylib::Animation::setPath(const string &path)
 {
     float pitch = _rotation.a;
     float yam = _rotation.b;
@@ -90,8 +89,7 @@ void raylib::Animation::setPath(const std::string &path)
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < _models.size(); i++) {
-        _models[i].transform =
-        MatrixRotateXYZ((Vector3){ DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+        _models[i].transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
     }
 }
 
@@ -103,7 +101,7 @@ void raylib::Animation::setTexture(const std::shared_ptr<ITexture> &texture)
     }
 }
 
-std::string raylib::Animation::getPath() const
+string raylib::Animation::getPath() const
 {
     return _path;
 }

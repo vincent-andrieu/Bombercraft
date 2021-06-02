@@ -7,8 +7,7 @@
 
 #include "Texture.hpp"
 
-raylib::Texture::Texture(const std::string &path, const MyVector2 position,
-const RColor color)
+raylib::Texture::Texture(const string &path, const MyVector2 position, const RColor color)
 {
     _path = path;
     _position = position;
@@ -36,7 +35,7 @@ void raylib::Texture::setColor(const RColor color)
     _color = color;
 }
 
-void raylib::Texture::setPath(const std::string &path)
+void raylib::Texture::setPath(const string &path)
 {
     _path = path;
     UnloadTexture(_texture);
@@ -48,7 +47,7 @@ Texture2D raylib::Texture::getTexture() const
     return _texture;
 }
 
-std::string raylib::Texture::getPath() const
+string raylib::Texture::getPath() const
 {
     return _path;
 }

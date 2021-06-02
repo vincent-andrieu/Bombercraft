@@ -7,8 +7,7 @@
 
 #include "Text.hpp"
 
-raylib::Text::Text(const std::string &text, const MyVector2 position,
-const size_t size, const RColor color)
+raylib::Text::Text(const string &text, const MyVector2 position, const size_t size, const RColor color)
 {
     _text = text;
     _position = position;
@@ -18,26 +17,26 @@ const size_t size, const RColor color)
     _limit = {-1, -1, -1, -1};
 }
 
-raylib::Text::~Text() {}
+raylib::Text::~Text()
+{
+}
 
 void raylib::Text::draw()
 {
     Vector2 rayPos = {_position.a, _position.b};
-    int spacing = _size/10;
+    int spacing = _size / 10;
 
     if (_size < 10) {
         spacing = 1;
     }
     if (_limit.height == -1) {
-        DrawTextEx(_font->getFont(), _text.data(), rayPos,
-        _size, spacing, _matchingColors.at(_color));
+        DrawTextEx(_font->getFont(), _text.data(), rayPos, _size, spacing, _matchingColors.at(_color));
     } else {
-        DrawTextRec(_font->getFont(), _text.data(), _limit,
-        _size, spacing, true, _matchingColors.at(_color));
+        DrawTextRec(_font->getFont(), _text.data(), _limit, _size, spacing, true, _matchingColors.at(_color));
     }
 }
 
-void raylib::Text::setText(const std::string &text)
+void raylib::Text::setText(const string &text)
 {
     _text = text;
 }
@@ -47,7 +46,7 @@ void raylib::Text::setPosition(const MyVector2 position)
     _position = position;
 }
 
-void raylib::Text::setFont(const std::string &font)
+void raylib::Text::setFont(const string &font)
 {
     _font->setPath(font);
 }

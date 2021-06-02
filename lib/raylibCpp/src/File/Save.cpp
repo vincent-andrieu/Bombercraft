@@ -8,7 +8,7 @@
 #include <cstring>
 #include "Save.hpp"
 
-raylib::Save::Save(const std::string &filepath) : _filepath(filepath), _data(nullptr), _readSize(0)
+raylib::Save::Save(const string &filepath) : _filepath(filepath), _data(nullptr), _readSize(0)
 {
     unsigned int read_size = 0;
     void *filedata = nullptr;
@@ -27,7 +27,7 @@ raylib::Save::~Save()
         UnloadFileData((unsigned char *) this->_data.get());
 }
 
-void raylib::Save::setPath(const std::string &filepath)
+void raylib::Save::setPath(const string &filepath)
 {
     unsigned int read_size = 0;
     void *filedata = nullptr;
@@ -44,7 +44,7 @@ void raylib::Save::setPath(const std::string &filepath)
     }
 }
 
-std::shared_ptr<void *> raylib::Save::readData(std::size_t &read_size)
+std::shared_ptr<void *> raylib::Save::readData(size_t &read_size)
 {
     if (this->_data && this->_readSize) {
         read_size = this->_readSize;
@@ -54,7 +54,7 @@ std::shared_ptr<void *> raylib::Save::readData(std::size_t &read_size)
     }
 }
 
-void raylib::Save::writeData(std::shared_ptr<void *> data, std::size_t objectSize)
+void raylib::Save::writeData(std::shared_ptr<void *> data, size_t objectSize)
 {
     if (FileExists(this->_filepath.c_str())) {
         if (!objectSize)
