@@ -9,7 +9,7 @@
 #define OBJECTTRIANGLE_HPP
 
 #include "../../Data/MyVector/MyVector2.hpp"
-#include "../../Collisionable/ICollisionable.hpp"
+#include "../../Collidable/ICollidable.hpp"
 
 #include <functional>
 

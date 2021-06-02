@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** IndieStudio
 ** File description:
-** ICollisionable
+** ICollidable
 */
 
-#ifndef ICOLLISIONABLE_HPP
-#define ICOLLISIONABLE_HPP
+#ifndef ICOLLIDABLE_HPP
+#define ICOLLIDABLE_HPP
 
 namespace ObjectType
 {
@@ -15,10 +15,10 @@ namespace ObjectType
 
 namespace raylib
 {
-    class ICollisionable
+    class ICollidable
     {
         public :
-            virtual ~ICollisionable() {};
+            virtual ~ICollidable() {};
             virtual bool boxCollider(const ObjectType::ObjectBox &box) = 0;
     };
 };

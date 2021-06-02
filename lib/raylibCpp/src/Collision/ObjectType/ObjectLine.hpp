@@ -10,7 +10,7 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector2.hpp"
-#include "../../Collisionable/ICollisionable.hpp"
+#include "../../Collidable/ICollidable.hpp"
 
 #include <functional>
 
@@ -19,7 +19,7 @@ using namespace raylib;
 namespace ObjectType
 {
     class ObjectBox;
-    class ObjectLine : public ICollisionable
+    class ObjectLine : public ICollidable
     {
         public:
             ObjectLine(const MyVector2 a, const MyVector2 b);

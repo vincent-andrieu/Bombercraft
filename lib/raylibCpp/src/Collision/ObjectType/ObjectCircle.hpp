@@ -10,7 +10,7 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector2.hpp"
-#include "../../Collisionable/ICollisionable.hpp"
+#include "../../Collidable/ICollidable.hpp"
 
 #include <functional>
 
@@ -20,7 +20,7 @@ namespace ObjectType
 {
     class ObjectRectangle;
     class ObjectBox;
-    class ObjectCircle : public ICollisionable
+    class ObjectCircle : public ICollidable
     {
         public:
             ObjectCircle(const MyVector2 center, const float radius);
