@@ -9,9 +9,7 @@
 #define SAVE_MANAGER_HPP
 
 #include <iostream>
-#include <sstream>
 #include <memory>
-#include <string>
 #include <fstream>
 #include <vector>
 #include <array>
@@ -22,14 +20,9 @@
 
 typedef std::string string;
 typedef std::size_t size_t;
-typedef std::stringstream stringstream;
-typedef std::fstream fstream;
+typedef std::streamsize streamsize;
 typedef std::ofstream ofstream;
 typedef std::ifstream ifstream;
-#define charette_ptr(T) std::shared_ptr<T>
-#define toString(str)   std::to_string(str)
-#define toInteger(str)  std::stoi(str)
-#define toSize_t(str)   std::stoul(str)
 
 namespace Engine
 {
@@ -78,69 +71,182 @@ namespace Engine
 
         template <typename T> void write(const string &filename, const T &value)
         {
-            std::ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
 
             file.write((char *) &value, sizeof(T));
         }
 
         template <typename T> void write(const string &filename, const std::vector<T> &value)
         {
-            std::ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
+            size_t size = value.size();
 
-            for (const auto &elem : value)
-                file.write((char *) &elem, sizeof(T));
+            file.write((char *) &size, sizeof(size_t));
+            for (size_t i = 0; i < size; i++)
+                file.write((char *) &value[i], sizeof(T));
         }
 
         template <typename T, size_t N> void write(const string &filename, const std::array<T, N> &value)
         {
-            std::ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
 
             for (const auto &elem : value)
                 file.write((char *) &elem, sizeof(T));
         }
 
-        template <typename Key, typename T> void write(const string &filename, const std::map<Key, T> &value)
-        {
-            ofstream &file = this->_getFile(filename);
-
-            for (const auto &elem : value) {
-                file.write((char *) &elem.first, sizeof(T));
-                file.write((char *) &elem.second, sizeof(T));
-            }
-        }
-
-        template <typename Key, typename T> void write(const string &filename, const std::unordered_map<Key, T> &value)
-        {
-            ofstream &file = this->_getFile(filename);
-
-            for (const auto &elem : value) {
-                file.write((char *) &elem.first, sizeof(Key));
-                file.write((char *) &elem.second, sizeof(T));
-            }
-        }
-
         template <typename T> void write(const string &filename, const std::unique_ptr<T> &value)
         {
-            std::ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
 
             file.write(value.get(), sizeof(T));
         }
 
         template <typename T> void write(const string &filename, const std::shared_ptr<T> &value)
         {
-            std::ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
 
             file.write(value.get(), sizeof(T));
         }
 
-        void write(const string &filename, const void *value, std::streamsize size);
+        template <typename Key, typename T> void write(const string &filename, const std::map<Key, T> &value)
+        {
+            ofstream &file = this->_getWritingFile(filename);
+            size_t size = value.size();
+
+            file.write((char *) &size, sizeof(size_t));
+            for (const auto &elem : value) {
+                file.write((char *) &elem.first, sizeof(Key));
+                file.write((char *) &elem.second, sizeof(T));
+            }
+        }
+
+        template <typename Key, typename T> void write(const string &filename, const std::unordered_map<Key, T> &value)
+        {
+            ofstream &file = this->_getWritingFile(filename);
+            size_t size = value.size();
+
+            file.write((char *) &size, sizeof(size_t));
+            for (const auto &elem : value) {
+                file.write((char *) &elem.first, sizeof(Key));
+                file.write((char *) &elem.second, sizeof(T));
+            }
+        }
+
+        void write(const string &filename, const void *value, streamsize size);
         void write(const string &filename, const string &value);
 
+        template <typename T> void read(const string &filename, T &value)
+        {
+            ifstream &file = this->_getReadingFile(filename);
+
+            file.read((char *) &value, sizeof(T));
+        }
+
+        /**
+         * @brief This method need an empty constructor of T
+         *
+         * @tparam T
+         * @param filename
+         * @param value
+         */
+        template <typename T> void read(const string &filename, std::vector<T> &value)
+        {
+            value.clear();
+            ifstream &file = this->_getReadingFile(filename);
+            size_t size = 0;
+            T elem;
+
+            file.read((char *) &size, sizeof(size_t));
+            for (size_t i = 0; i < size; i++) {
+                file.read((char *) &elem, sizeof(T));
+                value.push_back(elem);
+            }
+        }
+
+        template <typename T, size_t N> void read(const string &filename, std::array<T, N> &value)
+        {
+            ifstream &file = this->_getReadingFile(filename);
+
+            for (auto &elem : value)
+                file.read((char *) &elem, sizeof(T));
+        }
+
+        /**
+         * @brief This method need an empty constructor of T. And a copy constructor of T.
+         *
+         * @tparam T
+         * @param filename
+         * @param value
+         */
+        template <typename T> void read(const string &filename, std::unique_ptr<T> &value)
+        {
+            ifstream &file = this->_getReadingFile(filename);
+            T elem;
+
+            file.read(&elem, sizeof(T));
+            value.reset();
+            value = std::make_unique<T>(elem);
+        }
+
+        /**
+         * @brief This method need an empty constructor of T. And a copy constructor of T.
+         *
+         * @tparam T
+         * @param filename
+         * @param value
+         */
+        template <typename T> void read(const string &filename, std::shared_ptr<T> &value)
+        {
+            ifstream &file = this->_getReadingFile(filename);
+            T elem;
+
+            file.read(&elem, sizeof(T));
+            value.reset();
+            value = std::make_shared<T>(elem);
+        }
+
+        template <typename Key, typename T> void read(const string &filename, std::map<Key, T> &value)
+        {
+            value.clear();
+            ifstream &file = this->_getReadingFile(filename);
+            size_t size = 0;
+            Key key;
+            T elem;
+
+            file.read((char *) &size, sizeof(size_t));
+            for (size_t i = 0; i < size; i++) {
+                file.read((char *) &key, sizeof(Key));
+                file.read((char *) &elem, sizeof(T));
+                value[key] = elem;
+            }
+        }
+
+        template <typename Key, typename T> void read(const string &filename, std::unordered_map<Key, T> &value)
+        {
+            value.clear();
+            ifstream &file = this->_getReadingFile(filename);
+            size_t size = 0;
+            Key key;
+            T elem;
+
+            file.read((char *) &size, sizeof(size_t));
+            for (size_t i = 0; i < size; i++) {
+                file.read((char *) &key, sizeof(Key));
+                file.read((char *) &elem, sizeof(T));
+                value[key] = elem;
+            }
+        }
+
+        void read(const string &filename, void *value);
+        void read(const string &filename, string &value);
+
       private:
-        [[nodiscard]] std::ofstream &_getFile(const string &filename);
+        [[nodiscard]] ofstream &_getWritingFile(const string &filename);
+        [[nodiscard]] ifstream &_getReadingFile(const string &filename);
 
         std::filesystem::path _workingDirectory;
-        std::map<std::filesystem::path, std::ofstream> _writingFiles{};
+        std::map<std::filesystem::path, ofstream> _writingFiles{};
+        std::map<std::filesystem::path, ifstream> _readingFiles{};
     };
 } // namespace Engine
 
