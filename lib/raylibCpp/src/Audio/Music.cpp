@@ -7,7 +7,7 @@
 
 #include "Music.hpp"
 
-raylib::Music::Music(const std::string &path, float volume, float pitch)
+raylib::Music::Music(const std::string &path, const float volume, const float pitch)
 {
     _path = path;
     _volume = volume;
@@ -47,13 +47,13 @@ void raylib::Music::setPath(const std::string &path)
     _music = LoadMusicStream(_path.data());
 }
 
-void raylib::Music::setVolume(float volume)
+void raylib::Music::setVolume(const float volume)
 {
     _volume = volume;
     SetMusicVolume(_music, _volume);
 }
 
-void raylib::Music::setPitch(float pitch)
+void raylib::Music::setPitch(const float pitch)
 {
     _pitch = pitch;
     SetMusicPitch(_music, _pitch);

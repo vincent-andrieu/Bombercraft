@@ -5,8 +5,8 @@
 ** Save
 */
 
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef SAVE_HPP
+#define SAVE_HPP
 
 #include "../../include/include.hpp"
 
@@ -30,4 +30,4 @@ namespace raylib
     };
 };
 
-#endif // MODEL_HPP
+#endif // SAVE_HPP

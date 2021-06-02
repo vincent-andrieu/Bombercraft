@@ -42,8 +42,8 @@ namespace Engine
 
         void saveOwnersIndex(Engine::SaveManager &saver);
         void saveEntities(Engine::SaveManager &saver);
-        void saveEntity(Engine::SaveManager &saver, Entity toSave);
-        void saveEntityComponents(Engine::SaveManager &saver, Entity toSave);
+        void saveEntity(Engine::SaveManager &saver, Entity owner);
+        void saveEntityComponents(Engine::SaveManager &saver, Entity owner);
     };
 
     template <typename T>
@@ -63,7 +63,7 @@ namespace Engine
         return _components[_ownersIndex[entity]];
     }
 
-    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args && ...args)
+    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args &&...args)
     {
         auto index = static_cast<Index>(_components.size());
 
@@ -107,7 +107,6 @@ namespace Engine
     template <typename T> void ComponentTypeRegister<T>::save(Engine::SaveManager &saver) const
     {
         //        saver.createFolder("game_" + saver.getGameNb());
-        //        saver.createFile("EntityToComponent");
         saveOwnersIndex(saver);
         saveEntities(saver);
     }
@@ -116,14 +115,16 @@ namespace Engine
     {
         const std::string filename("EntityToComponent");
 
-        //        saver.createFile(filename);
-        //        saver.write(filename, _ownersIndex);
+        saver.createFile(filename);
+        saver.write(filename, _ownersIndex);
     }
 
     template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver)
     {
+        const std::string dirPrefix("Entity_");
+
         for (const auto &owner : _componentOwners) {
-            //        saver.createFolder("Entity_" + owner);
+            saver.createDirectory(dirPrefix + std::to_string(owner));
             saveEntity(saver, owner);
         }
     }

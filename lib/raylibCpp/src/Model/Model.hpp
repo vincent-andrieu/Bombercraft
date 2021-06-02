@@ -19,18 +19,18 @@ namespace raylib
     class Model : public IModel
     {
         public :
-            Model(std::shared_ptr<ITexture> texture, const std::string &filepath,
-            MyVector3 position, RColor color);
+            Model(const std::shared_ptr<ITexture> texture, const std::string &filepath,
+            const MyVector3 position, const RColor color);
             ~Model();
 
             void draw();
 
-            void setPosition(MyVector3 position);
-            void setRotation(MyVector3 rotation);
-            void setScale(float scale);
-            void setColor(RColor color);
+            void setPosition(const MyVector3 position);
+            void setRotation(const MyVector3 rotation);
+            void setScale(const float scale);
+            void setColor(const RColor color);
             void setPath(const std::string &path);
-            void setTexture(std::shared_ptr<ITexture> &texture);
+            void setTexture(const std::shared_ptr<ITexture> &texture);
 
             std::string getPath() const;
 

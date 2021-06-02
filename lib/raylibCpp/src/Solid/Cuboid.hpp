@@ -17,16 +17,16 @@ namespace raylib
     class Cuboid : public ISolid
     {
         public :
-            Cuboid(std::shared_ptr<ITexture> texture, MyVector3 position,
-            MyVector3 size, RColor color = RColor::RWHITE);
+            Cuboid(const std::shared_ptr<ITexture> texture, const MyVector3 position,
+            const MyVector3 size, const RColor color = RColor::RWHITE);
             ~Cuboid();
 
             void draw();
 
-            void setPosition(MyVector3 position);
-            void setSize(MyVector3 size);
-            void setColor(RColor color);
-            void setTexture(std::shared_ptr<ITexture> &texture);
+            void setPosition(const MyVector3 position);
+            void setSize(const MyVector3 size);
+            void setColor(const RColor color);
+            void setTexture(const std::shared_ptr<ITexture> &texture);
         
         private :
             MyVector3 _position;

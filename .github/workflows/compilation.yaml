@@ -7,6 +7,7 @@ on:
 
 env:
   PROJECT_RAYLIBCPP: lib/raylibCpp
+  PROJECT_GAMEENGINE: lib/gameEngine
 
 jobs:
   linux-raylibcpp:
@@ -35,10 +36,36 @@ jobs:
       - name: Check if binary exist
         run: ls libraylibcpp.so
 
+  linux-gameengine:
+    runs-on: ubuntu-20.04
+    container: epitechcontent/epitest-docker:devel
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: cmake ..
+
+      - name: Run make
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: make
+
+      - name: Check if binary exist
+        run: ls libgameEngine.so
+
   linux-bomberman:
     runs-on: ubuntu-20.04
     container: epitechcontent/epitest-docker:devel
-    needs: linux-raylibcpp
+    needs: [linux-raylibcpp, linux-gameengine]
     steps:
       # Checkout code
       - name: Checkout code
@@ -82,9 +109,31 @@ jobs:
         working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
         run: ls raylibcpp.sln
 
+  windows-gameengine:
+    runs-on: windows-2019
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: cmake ..
+
+      - name: Check if binary exist
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: ls gameEngine.sln
+
   windows-bomberman:
     runs-on: windows-2019
-    needs: windows-raylibcpp
+    needs: [windows-raylibcpp, windows-gameengine]
     steps:
       # Checkout code
       - name: Checkout code

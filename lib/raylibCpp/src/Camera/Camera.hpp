@@ -17,17 +17,17 @@ namespace raylib
     class Camera : public ICamera
     {
         public :
-            Camera(MyVector3 position, MyVector3 target, MyVector3 up,
-            float fovy = 90);
+            Camera(const MyVector3 position, const MyVector3 target, const MyVector3 up,
+            const float fovy = 90);
             ~Camera();
 
             void begin3D();
             void end3D();
 
-            void setPosition(MyVector3 position);
-            void setTarget(MyVector3 target);
-            void setUp(MyVector3 up);
-            void setFovy(float fovy);
+            void setPosition(const MyVector3 position);
+            void setTarget(const MyVector3 target);
+            void setUp(const MyVector3 up);
+            void setFovy(const float fovy);
         
         private :
             Camera3D _camera;

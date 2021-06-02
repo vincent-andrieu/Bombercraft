@@ -19,9 +19,9 @@ namespace ObjectType
     class ObjectCircle
     {
         public:
-            ObjectCircle(MyVector2 center, float radius);
+            ObjectCircle(const MyVector2 center, const float radius);
             ~ObjectCircle();
-            void setCircle(MyVector2 center, float radius);
+            void setCircle(const MyVector2 center, const float radius);
             MyVector2 getCircleCenter() const;
             float getCircleRadius() const;
             bool checkCollisionWith(const ObjectCircle &circle);

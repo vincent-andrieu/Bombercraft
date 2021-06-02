@@ -20,10 +20,10 @@ namespace raylib
             virtual void begin3D() = 0;
             virtual void end3D() = 0;
 
-            virtual void setPosition(MyVector3 position) = 0;
-            virtual void setTarget(MyVector3 position) = 0;
-            virtual void setUp(MyVector3 position) = 0;
-            virtual void setFovy(float fovy) = 0;
+            virtual void setPosition(const MyVector3 position) = 0;
+            virtual void setTarget(const MyVector3 position) = 0;
+            virtual void setUp(const MyVector3 position) = 0;
+            virtual void setFovy(const float fovy) = 0;
     };
 };
 

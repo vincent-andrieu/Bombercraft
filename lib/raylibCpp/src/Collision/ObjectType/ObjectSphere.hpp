@@ -19,9 +19,9 @@ namespace ObjectType
     class ObjectSphere
     {
         public:
-            ObjectSphere(MyVector3 center, float radius);
+            ObjectSphere(const MyVector3 center, const float radius);
             ~ObjectSphere();
-            void setSphere(MyVector3 center, float radius);
+            void setSphere(const MyVector3 center, const float radius);
             MyVector3 getSphereCenter() const;
             float getSphereRadius() const;
             bool checkCollisionWith(const ObjectSphere &sphere);

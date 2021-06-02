@@ -17,8 +17,8 @@ namespace raylib
     class Window : public IWindow
     {
         public :
-            Window(MyVector2 size, const std::string &title, RColor color,
-            int fps = 60);
+            Window(const MyVector2 size, const std::string &title, const RColor color,
+            const int fps = 60);
             ~Window();
 
             void open();
@@ -27,11 +27,11 @@ namespace raylib
             void clear();
             void refresh();
 
-            void setSize(MyVector2 size);
-            void setColor(RColor color);
+            void setSize(const MyVector2 size);
+            void setColor(const RColor color);
             void setTitle(const std::string &title);
-            void setCamera(std::shared_ptr<ICamera> &camera);
-            void setFPS(int fps);
+            void setCamera(const std::shared_ptr<ICamera> &camera);
+            void setFPS(const int fps);
 
             std::shared_ptr<ICamera> getCamera() const;
 

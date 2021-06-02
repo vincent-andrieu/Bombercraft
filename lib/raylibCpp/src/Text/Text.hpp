@@ -17,18 +17,18 @@ namespace raylib
     class Text : public IText
     {
         public :
-            Text(const std::string &text, MyVector2 position = {0, 0},
-            size_t size = 1, RColor color = RColor::RWHITE);
+            Text(const std::string &text, const MyVector2 position = {0, 0},
+            const size_t size = 1, const RColor color = RColor::RWHITE);
             ~Text();
 
             void draw();
 
             void setText(const std::string &text);
-            void setPosition(MyVector2 position);
+            void setPosition(const MyVector2 position);
             void setFont(const std::string &font);
-            void setColor(RColor color);
-            void setFontSize(size_t size);
-            void setLimit(MyVector4 limit);
+            void setColor(const RColor color);
+            void setFontSize(const size_t size);
+            void setLimit(const MyVector4 limit);
 
             void removeFont();
             void removeLimit();

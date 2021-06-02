@@ -9,8 +9,8 @@
 
 using namespace Engine;
 
-SceneManager::SceneManager(IEventManager &events, EntityManager<MAX_COMPONENT> &entityManager) :
-    _events(events), _entityManager(entityManager), _scene(nullptr)
+SceneManager::SceneManager(IEventManager &events, EntityManager &entityManager)
+    : _eventManager(events), _entityManager(entityManager), _currentScene(nullptr)
 {
 }
 
@@ -18,3 +18,9 @@ SceneManager::~SceneManager()
 {
 }
 
+void SceneManager::run()
+{
+    if (_currentScene != nullptr) {
+        _currentScene->update();
+    }
+}
