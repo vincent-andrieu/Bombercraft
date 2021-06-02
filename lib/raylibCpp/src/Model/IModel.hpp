@@ -9,7 +9,7 @@
 #define IMODEL_HPP
 
 #include "../Texture/ITexture.hpp"
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 #include "../Renderable/IRenderable.hpp"
 
 namespace raylib

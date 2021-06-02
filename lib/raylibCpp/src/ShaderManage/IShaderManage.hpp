@@ -8,7 +8,7 @@
 #ifndef ISHADERMANAGE_HPP
 #define ISHADERMANAGE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 namespace raylib
 {

@@ -8,7 +8,7 @@
 #ifndef IWINDOW_HPP
 #define IWINDOW_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "../Camera/ICamera.hpp"
 

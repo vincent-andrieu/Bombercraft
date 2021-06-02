@@ -8,7 +8,7 @@
 #ifndef FONT_HPP
 #define FONT_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IFont.hpp"
 

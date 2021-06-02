@@ -8,7 +8,7 @@
 #ifndef IAUDIO_HPP
 #define IAUDIO_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 namespace raylib
 {
