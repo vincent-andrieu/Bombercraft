@@ -45,3 +45,18 @@ void EntityRegister::remove(Entity entity)
 {
     _freeEntities.push_back(entity);
 }
+
+void EntityRegister::save(SaveManager &saver) const
+{
+    saveFreeEntities(saver);
+}
+
+void EntityRegister::saveFreeEntities(SaveManager &saver) const
+{
+    const std::string filename("FreeEntities");
+
+    saver.createFile(filename);
+    saver.setWritingFile(filename);
+    saver.writeActFile(_freeEntities);
+    saver.closeWritingFile();
+}

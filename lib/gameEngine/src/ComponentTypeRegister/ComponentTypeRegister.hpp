@@ -43,6 +43,7 @@ namespace Engine
         void saveEntities(Engine::SaveManager &saver) const;
         void saveEntity(Engine::SaveManager &saver, Entity owner) const;
         void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
+        void saveEntityComponentIndex(Engine::SaveManager &saver, Entity owner) const;
         void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
     };
 
@@ -141,9 +142,20 @@ namespace Engine
         saver.closeFile(filename);
     }
 
+    //    template <typename T> void ComponentTypeRegister<T>::saveEntityComponentIndex(Engine::SaveManager &saver, Entity owner)
+    //    const
+    //    {
+    //        const std::string filename("EntityComponentIndex");
+    //
+    //        saver.createFile(filename);
+    //        saver.setWritingFile(filename);
+    //        saver.writeActFile(_ownersIndex.at(owner));
+    //        saver.closeFile(filename);
+    //}
+
     template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner) const
     {
-        //        _components.at(_ownersIndex.at(owner)).save(saver);
+        _components.at(_ownersIndex.at(owner)).save(saver);
     }
 
 } // namespace Engine

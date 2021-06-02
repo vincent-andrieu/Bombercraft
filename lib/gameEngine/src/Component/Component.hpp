@@ -13,24 +13,22 @@
 
 namespace Engine
 {
-    template <typename T>
-    class Component {
+    template <typename T> class Component {
       public:
         Component() = default;
         ~Component() = default;
 
         /**
-          * type : index of the bit (bitset) that identify the component in the Signature (entity.hpp)
+         * type : index of the bit (bitset) that identify the component in the Signature (entity.hpp)
          */
         static const std::size_t type;
 
-        void save(const SaveManager &saver) const;
+        virtual void save(SaveManager &saver) const;
     };
 
     std::size_t generateComponentType();
 
-    template <typename T>
-    const std::size_t Component<T>::type = Engine::generateComponentType();
-}
+    template <typename T> const std::size_t Component<T>::type = Engine::generateComponentType();
+} // namespace Engine
 
 #endif // COMPONENT_HPP

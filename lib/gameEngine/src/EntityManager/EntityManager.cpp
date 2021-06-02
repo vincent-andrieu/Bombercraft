@@ -37,3 +37,11 @@ SystemManager &EntityManager::getSystemManager()
 {
     return _systemManager;
 }
+
+void EntityManager::save()
+{
+    _entities.save(_saver);
+    for (const auto &component_register : _componentRegisters) {
+        component_register->save(_saver);
+    }
+}

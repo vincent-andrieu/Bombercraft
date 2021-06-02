@@ -13,3 +13,12 @@ std::size_t Engine::generateComponentType()
 
     return counter++;
 }
+
+template <typename T> void Engine::Component<T>::save(SaveManager &saver) const
+{
+    const std::string filename("Entity_" + std::to_string(type));
+
+    saver.createFile(filename);
+    saver.setWritingFile(filename);
+    saver.writeActFile(type);
+}
