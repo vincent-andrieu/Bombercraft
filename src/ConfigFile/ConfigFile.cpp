@@ -59,6 +59,8 @@ int ConfigFile::getInt(const std::string name) const
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*$");
 
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for INT: " + line);
     return std::stoi(this->getAfterMatch(line, ": "));
@@ -69,6 +71,8 @@ float ConfigFile::getFloat(const std::string name) const
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*(.)\\d$");
 
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
     return std::stof(this->getAfterMatch(line, ": "));
@@ -80,6 +84,8 @@ std::string ConfigFile::getString(const std::string name) const
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z]+\": \".*\"$");
 
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for STRING: " + line);
     value = this->getAfterMatch(line, ": \"");
