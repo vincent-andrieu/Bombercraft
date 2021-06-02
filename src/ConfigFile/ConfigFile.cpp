@@ -18,12 +18,15 @@ ConfigFile::ConfigFile(const std::string &filename)
 
 ConfigFile::~ConfigFile()
 {
+    for (auto it : this->_fileContent) {
+        std::cout << it << std::endl;
+    }
     this->_fileContent.clear();
 }
 
 std::string ConfigFile::getLineByName(const std::string name) const
 {
-    const std::string startLine("\"" + name + "\"");
+    const std::string startLine("\"" + name + "\": ");
     
     for (auto it = std::begin(_fileContent); it != std::end(_fileContent); ++it) {
         if ((*it).compare(0, startLine.size(), startLine) == 0)
@@ -48,6 +51,7 @@ void ConfigFile::loadFile(const std::string &filename)
             }
         }
         this->objInline();
+        this->correctFile();
     } else {
         throw std::invalid_argument("File close");
     }
@@ -109,7 +113,7 @@ void ConfigFile::objInline()
             do {
                 next = it + 1;
                 if (next == this->_fileContent.end())
-                    throw ParserExceptions("The file incorrect");
+                    throw ParserExceptions("The file incorrect: not find }");
                 if (next->back() == '{')
                     cnt++;
                 stat = next->back() == '}';
@@ -119,5 +123,15 @@ void ConfigFile::objInline()
                 this->_fileContent.erase(next);
             } while (!stat || cnt != 0);
         }
+    }
+}
+
+void ConfigFile::correctFile()
+{
+    std::regex regexp("\"[a-zA-Z]+\": .*");
+
+    for (auto it : this->_fileContent) {
+        if (!std::regex_search(it, regexp))
+            throw ParserExceptions("Incorrect line: " + it);
     }
 }

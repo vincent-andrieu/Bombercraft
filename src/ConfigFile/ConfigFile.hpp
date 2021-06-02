@@ -27,6 +27,7 @@ class ConfigFile : public IConfigFile
         std::string getLineByName(const std::string name) const;
         void commentManagingLine(std::string line);
         void objInline();
+        void correctFile();
 
     protected:
     private:
