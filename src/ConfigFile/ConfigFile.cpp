@@ -18,9 +18,6 @@ ConfigFile::ConfigFile(const std::string &filename)
 
 ConfigFile::~ConfigFile()
 {
-    for (auto it : this->_fileContent) {
-        std::cout << it << std::endl;
-    }
     this->_fileContent.clear();
 }
 
@@ -64,7 +61,7 @@ int ConfigFile::getInt(const std::string name) const
 
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for INT: " + line);
-    return 0;
+    return std::stoi(this->getAfterMatch(line, ": "));
 }
 
 float ConfigFile::getFloat(const std::string name) const
@@ -74,17 +71,20 @@ float ConfigFile::getFloat(const std::string name) const
 
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
-    return 0.0;
+    return std::stof(this->getAfterMatch(line, ": "));
 }
 
 std::string ConfigFile::getString(const std::string name) const
 {
+    std::string value;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z]+\": \".*\"$");
 
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for STRING: " + line);
-    return std::string("");
+    value = this->getAfterMatch(line, ": \"");
+    value.pop_back();
+    return value;
 }
 
 void ConfigFile::commentManagingLine(std::string line)
@@ -149,4 +149,9 @@ void ConfigFile::correctFile()
         if (!std::regex_search(it, regexp))
             throw ParserExceptions("Incorrect line: " + it);
     }
+}
+
+std::string ConfigFile::getAfterMatch(std::string line, std::string match) const
+{
+    return line.substr(line.find(match) + match.length(), line.length());
 }

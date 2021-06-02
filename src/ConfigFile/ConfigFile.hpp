@@ -28,6 +28,7 @@ class ConfigFile : public IConfigFile
         void commentManagingLine(std::string line);
         void objInline();
         void correctFile();
+        std::string getAfterMatch(std::string line, std::string match) const;
 
     protected:
     private:

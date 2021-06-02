@@ -13,7 +13,7 @@
   }
 
 # EASY TEST
-"LoadInt": 1
+"LoadInt": 123
 "LoadFloat": 1.1
 "LoadString": "yo bg"
 
@@ -28,10 +28,10 @@
 "LoadStringCom": "yo bg" #lol
 
 # WRONG TEST
-"LoadIntWrong":
-"LoadFloatWrong": #1.1
-"LoadStringWrong" "yo bg"
+#"LoadIntWrong":
+#"LoadFloatWrong": #1.1
+#"LoadStringWrong" "yo bg"
 
 "LoadIntWrongType": "lol"
-"LoadFloatWrongType"
+#"LoadFloatWrongType"
 "LoadStringWrongType": "yo bg
