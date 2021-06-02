@@ -10,13 +10,14 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector3.hpp"
+#include "../../Collisionable/ICollisionable.hpp"
 
 using namespace raylib;
 
 namespace ObjectType
 {
     class ObjectBox;
-    class ObjectSphere
+    class ObjectSphere : public ICollisionable
     {
         public:
             ObjectSphere(const MyVector3 center, const float radius);
@@ -26,6 +27,8 @@ namespace ObjectType
             float getSphereRadius() const;
             bool checkCollisionWith(const ObjectSphere &sphere);
             bool checkCollisionWith(const ObjectBox &box);
+
+            bool boxCollider(const ObjectType::ObjectBox &box);
 
         private:
             MyVector3 _center;

@@ -40,3 +40,8 @@ bool ObjectBox::checkCollisionWith(const ObjectSphere &sphere)
 {
     return Collision::checkCollision(*this, sphere);
 }
+
+bool ObjectBox::boxCollider(const ObjectType::ObjectBox &box)
+{
+    return this->checkCollisionWith(box);
+}

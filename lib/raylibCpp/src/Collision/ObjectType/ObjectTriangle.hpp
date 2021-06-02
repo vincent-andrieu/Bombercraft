@@ -9,12 +9,16 @@
 #define OBJECTTRIANGLE_HPP
 
 #include "../../Data/MyVector/MyVector2.hpp"
+#include "../../Collisionable/ICollisionable.hpp"
+
+#include <functional>
 
 using namespace raylib;
 
 namespace ObjectType
 {
     class ObjectLine;
+    class ObjectBox;
     class ObjectTriangle
     {
         public:
@@ -24,6 +28,8 @@ namespace ObjectType
             MyVector2 getPointA() const;
             MyVector2 getPointB() const;
             MyVector2 getPointC() const;
+
+            bool boxCollider(const ObjectType::ObjectBox &box);
 
         private:
             MyVector2 _a;
