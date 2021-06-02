@@ -22,7 +22,7 @@ namespace Engine
 
         virtual void update() = 0;
 
-      private:
+      protected:
         IEventManager &_eventManager;
         SystemManager &_systemManager;
         EntityManager &_entityManager;
