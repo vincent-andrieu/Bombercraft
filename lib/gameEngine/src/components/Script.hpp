@@ -9,18 +9,32 @@
 #define SCRIPT_HPP
 
 #include "Component/Component.hpp"
+#include "EntityManager/EntityManager.hpp"
+#include "SceneManager/SceneManager.hpp"
+#include "entity.hpp"
+#include <functional>
 
 namespace Engine
 {
-    template <typename... Args>
-    class Script : public Component<Script<Args>> {
-      public:
-        Event(std::function<void(Args...)> &handler) : handler(handler)
-        {
-        }
-        ~Event() = default;
+    #define SCRIPT_HANDLER std::function<void(EntityManager, SceneManager, Entity)>
 
-        std::function<void(Args...)> &handler;
+    class Script : public Component<Script> {
+      public:
+        Script(EntityManager &entityManager, SceneManager &sceneManager, SCRIPT_HANDLER &handler)
+            : handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
+        {}
+
+        ~Script() = default;
+
+        void trigger(Entity entity)
+        {
+            handler(_entityManager, _sceneManager, entity);
+        }
+
+      private:
+        SCRIPT_HANDLER &handler;
+        EntityManager &_entityManager;
+        SceneManager &_sceneManager;
     };
 }
 

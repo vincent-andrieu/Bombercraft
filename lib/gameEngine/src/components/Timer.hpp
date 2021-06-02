@@ -14,34 +14,35 @@
 
 namespace Engine
 {
-    template <typename... Args>
-    class Timer : public Component {
+    class Timer : public Component<Timer> {
       public:
-        Timer(std::size_t time) : interval(time), start(std::chrono::system_clock::now()) {}
+        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, SCRIPT_HANDLER &handler)
+            : interval(time), startTime(std::chrono::system_clock::now()), script(entityManager, sceneManager, handler)
+        {}
         ~Timer() = default;
 
         void start()
         {
-            start = std::chrono::system_clock::now();
+            startTime = std::chrono::system_clock::now();
         }
 
         bool eval(Entity entity)
         {
-            std::chrono::system_clock now = std::chrono::system_clock::now();
+            std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
             std::chrono::milliseconds t = std::chrono::duration_cast<std::chrono::milliseconds>(
-                now.time_since_epoch() - start.time_since_epoch());
+                now.time_since_epoch() - startTime.time_since_epoch());
 
             if (t >= interval) {
-                start = std::chrono::system_clock::now();
-                script(entity);
+                startTime = std::chrono::system_clock::now();
+                script.trigger(entity);
                 return true;
             }
             return false;
         }
 
         std::chrono::milliseconds interval;
-        std::chrono::system_clock::time_point start;
-        Script<Args> script;
+        std::chrono::system_clock::time_point startTime;
+        Script script;
     };
 }
 
