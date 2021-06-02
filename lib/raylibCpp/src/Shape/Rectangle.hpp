@@ -17,15 +17,15 @@ namespace raylib
     class Rectangle : public IShape
     {
         public :
-            Rectangle(MyVector2 position,
-            MyVector2 size, RColor color = RColor::RWHITE);
+            Rectangle(const MyVector2 position,
+            const MyVector2 size, const RColor color = RColor::RWHITE);
             ~Rectangle();
 
             void draw();
 
-            void setPosition(MyVector2 position);
-            void setSize(MyVector2 size);
-            void setColor(RColor color);
+            void setPosition(const MyVector2 position);
+            void setSize(const MyVector2 size);
+            void setColor(const RColor color);
 
         private :
             MyVector2 _position;

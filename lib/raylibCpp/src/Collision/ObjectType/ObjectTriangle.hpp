@@ -18,9 +18,9 @@ namespace ObjectType
     class ObjectTriangle
     {
         public:
-            ObjectTriangle(MyVector2 a, MyVector2 b, MyVector2 c);
+            ObjectTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
             ~ObjectTriangle();
-            void setTriangle(MyVector2 a, MyVector2 b, MyVector2 c);
+            void setTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
             MyVector2 getPointA() const;
             MyVector2 getPointB() const;
             MyVector2 getPointC() const;

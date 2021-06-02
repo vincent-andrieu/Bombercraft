@@ -7,7 +7,7 @@
 
 #include "ObjectSphere.hpp"
 
-ObjectSphere::ObjectSphere(MyVector3 center, float radius) : _center(center), _radius(radius)
+ObjectSphere::ObjectSphere(const MyVector3 center, const float radius) : _center(center), _radius(radius)
 {
 }
 
@@ -15,7 +15,7 @@ ObjectSphere::~ObjectSphere()
 {
 }
 
-void ObjectSphere::setSphere(MyVector3 center, float radius)
+void ObjectSphere::setSphere(const MyVector3 center, const float radius)
 {
     this->_center = center;
     this->_radius = radius;

@@ -5,8 +5,8 @@
 ** Animation
 */
 
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef ANIMATION_HPP
+#define ANIMATION_HPP
 
 #include "../../include/include.hpp"
 
@@ -19,18 +19,18 @@ namespace raylib
     class Animation : public IModel
     {
         public :
-            Animation(std::shared_ptr<ITexture> texture, const std::string &dirpath,
-            MyVector3 position, RColor color);
+            Animation(const std::shared_ptr<ITexture> texture, const std::string &dirpath,
+            const MyVector3 position, const RColor color);
             ~Animation();
 
             void draw();
 
-            void setPosition(MyVector3 position);
-            void setRotation(MyVector3 rotation);
-            void setScale(float scale);
-            void setColor(RColor color);
+            void setPosition(const MyVector3 position);
+            void setRotation(const MyVector3 rotation);
+            void setScale(const float scale);
+            void setColor(const RColor color);
             void setPath(const std::string &path);
-            void setTexture(std::shared_ptr<ITexture> &texture);
+            void setTexture(const std::shared_ptr<ITexture> &texture);
 
             std::string getPath() const;
 
@@ -46,4 +46,4 @@ namespace raylib
     };
 };
 
-#endif // MODEL_HPP
+#endif // ANIMATION_HPP

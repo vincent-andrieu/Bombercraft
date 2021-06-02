@@ -17,7 +17,7 @@ MyVector4::MyVector4()
     this->d = 0;
 }
 
-MyVector4::MyVector4(float a, float b, float c, float d)
+MyVector4::MyVector4(const float a, const float b, const float c, const float d)
 {
     this->a = a;
     this->b = b;

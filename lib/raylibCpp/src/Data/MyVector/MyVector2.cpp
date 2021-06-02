@@ -15,7 +15,7 @@ MyVector2::MyVector2()
     this->b = 0;
 }
 
-MyVector2::MyVector2(float a, float b)
+MyVector2::MyVector2(const float a, const float b)
 {
     this->a = a;
     this->b = b;

@@ -17,14 +17,14 @@ namespace raylib
     class Texture : public ITexture
     {
         public :
-            Texture(const std::string &path, MyVector2 position = {0, 0},
-            RColor color = RColor::RWHITE);
+            Texture(const std::string &path, const MyVector2 position = {0, 0},
+            const RColor color = RColor::RWHITE);
             ~Texture();
 
             void draw();
 
-            void setPosition(MyVector2 position);
-            void setColor(RColor color);
+            void setPosition(const MyVector2 position);
+            void setColor(const RColor color);
             void setPath(const std::string &path);
 
             Texture2D getTexture() const;

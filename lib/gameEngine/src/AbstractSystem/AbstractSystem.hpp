@@ -44,16 +44,16 @@ namespace Engine
         std::vector<Entity> _managedEntities;
         std::unordered_map<Entity, Index> _entityToManagedEntity;
     };
-}
+} // namespace Engine
 
 #include "EntityManager/EntityManager.hpp"
 
-namespace Engine {
+namespace Engine
+{
     template <typename... Ts> void AbstractSystem::setRequirements()
     {
         (_requirements.set(Ts::type), ...);
     }
-}
-
+} // namespace Engine
 
 #endif // ABSTRACTSYSTEM_HPP

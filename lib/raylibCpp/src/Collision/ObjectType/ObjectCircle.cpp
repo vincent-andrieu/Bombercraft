@@ -7,7 +7,7 @@
 
 #include "ObjectCircle.hpp"
 
-ObjectCircle::ObjectCircle(MyVector2 center, float radius) : _center(center), _radius(radius)
+ObjectCircle::ObjectCircle(const MyVector2 center, const float radius) : _center(center), _radius(radius)
 {
 }
 
@@ -15,7 +15,7 @@ ObjectCircle::~ObjectCircle()
 {
 }
 
-void ObjectCircle::setCircle(MyVector2 center, float radius)
+void ObjectCircle::setCircle(const MyVector2 center, const float radius)
 {
     this->_center = center;
     this->_radius = radius;

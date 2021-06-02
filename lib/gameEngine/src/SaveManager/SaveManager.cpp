@@ -7,37 +7,114 @@
 
 #include "SaveManager.hpp"
 
+using namespace Engine;
+
+SaveManager::SaveManager(const std::string &dirname) : _workingDirectory(std::filesystem::canonical(dirname))
+{
+    if (!std::filesystem::exists(_workingDirectory) || !std::filesystem::is_directory(_workingDirectory)) {
+        createDirectory(_workingDirectory);
+    }
+}
+
 SaveManager::~SaveManager()
 {
-    for (auto &file : this->_files)
+    for (auto &file : this->_writingFiles)
         file.second.close();
 }
 
-void SaveManager::closeFile(const string filepath)
+inline void SaveManager::createDirectory(const std::string &dirname)
 {
-    this->_files[filepath].close();
-    this->_files.erase(filepath);
+    std::filesystem::path my_path(getFileDir(dirname));
+
+    std::filesystem::create_directory(my_path);
 }
 
-void SaveManager::write(const string filepath, const void *value, size_t size)
+void SaveManager::setWorkingDirectory(const std::string &dirname)
 {
-    ofstream &file = this->_getFile(filepath);
+    _workingDirectory /= dirname;
+    _workingDirectory = std::filesystem::canonical(_workingDirectory);
+
+    if (!std::filesystem::exists(_workingDirectory) || !std::filesystem::is_directory(_workingDirectory)) {
+        unsetWorkingDirectory();
+        throw std::filesystem::filesystem_error("No such directory", std::make_error_code(std::errc(ENOENT)));
+    }
+}
+
+inline void SaveManager::unsetWorkingDirectory()
+{
+    _workingDirectory.replace_filename("");
+}
+
+void SaveManager::createFile(const std::string &filename)
+{
+    std::filesystem::path my_tmp_path(getFileDir(filename));
+    std::ofstream my_stream;
+
+    my_stream.open(my_tmp_path);
+    if (!my_stream.is_open())
+        throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
+    // TODO add magic number and header
+    my_stream.close();
+}
+
+void SaveManager::setWritingFile(const std::string &filename)
+{
+    std::filesystem::path my_tmp_path(getFileDir(filename));
+
+    if (!std::filesystem::exists(my_tmp_path) || !std::filesystem::is_regular_file(my_tmp_path))
+        throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
+    _writingFiles.insert(std::make_pair(my_tmp_path, std::ofstream(my_tmp_path)));
+    if (!_writingFiles.at(my_tmp_path).is_open()) {
+        _writingFiles.erase(my_tmp_path);
+        throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
+    }
+}
+
+void SaveManager::closeWritingFile()
+{
+    std::ofstream &my_stream(_writingFiles.begin()->second);
+
+    if (my_stream.is_open()) {
+        my_stream.close();
+    }
+    _writingFiles.erase(_writingFiles.begin());
+}
+
+inline std::filesystem::path SaveManager::getFileDir(const std::string &filename)
+{
+    std::filesystem::path my_path(_workingDirectory);
+
+    my_path /= filename;
+    return my_path;
+}
+
+void SaveManager::closeFile(const std::string &filename)
+{
+    std::filesystem::path my_path(getFileDir(filename));
+
+    this->_writingFiles[filename].close();
+    this->_writingFiles.erase(filename);
+}
+
+void SaveManager::write(const std::string &filename, const void *value, std::streamsize size)
+{
+    std::ofstream &file = this->_getFile(filename);
 
     file.write((const char *) value, size);
 }
 
-void SaveManager::write(const string filepath, const string value)
+void SaveManager::write(const std::string &filename, const std::string &value)
 {
-    ofstream &file = this->_getFile(filepath);
+    std::ofstream &file = this->_getFile(filename);
 
     file.write(value.c_str(), value.length());
 }
 
-ofstream &SaveManager::_getFile(const string &filepath)
+std::ofstream &SaveManager::_getFile(const std::string &filename)
 {
-    if (this->_files.find(filepath) != this->_files.end())
-        return this->_files[filepath];
+    if (this->_writingFiles.find(filename) != this->_writingFiles.end())
+        return this->_writingFiles[filename];
 
-    this->_files[filepath] = ofstream(filepath);
-    return this->_files[filepath];
+    this->_writingFiles[filename] = std::ofstream(filename);
+    return this->_writingFiles[filename];
 }

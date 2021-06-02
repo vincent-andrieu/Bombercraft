@@ -27,7 +27,7 @@
 #include "components/Position.hpp"
 #include "components/Velocity.hpp"
 
-#include "system/PhysicsSystem/PhysicsSystem.hpp"
+#include "systems/PhysicsSystem/PhysicsSystem.hpp"
 
 typedef std::string string;
 typedef std::size_t size_t;

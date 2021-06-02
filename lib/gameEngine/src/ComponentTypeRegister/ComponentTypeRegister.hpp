@@ -10,6 +10,7 @@
 
 #include "IComponentTypeRegister.hpp"
 #include "entity.hpp"
+#include "SaveManager/SaveManager.hpp"
 
 #include <vector>
 #include <unordered_map>
@@ -31,15 +32,22 @@ namespace Engine
         virtual bool tryRemove(Entity entity) override;
         Entity getOwner(const T &component);
 
+        void save(Engine::SaveManager &saver) const;
+
       private:
         std::vector<T> _components;
         std::vector<Entity> _componentOwners;
         std::unordered_map<Entity, Index> _ownersIndex;
         std::vector<Signature> &_entitySignatures;
+
+        void saveOwnersIndex(Engine::SaveManager &saver);
+        void saveEntities(Engine::SaveManager &saver);
+        void saveEntity(Engine::SaveManager &saver, Entity owner);
+        void saveEntityComponents(Engine::SaveManager &saver, Entity owner);
     };
 
     template <typename T>
-    ComponentTypeRegister<T>::ComponentTypeRegister(std::vector<Signature> & entityToBitset) : _entitySignatures(entityToBitset)
+    ComponentTypeRegister<T>::ComponentTypeRegister(std::vector<Signature> &entityToBitset) : _entitySignatures(entityToBitset)
     {
     }
 
@@ -55,7 +63,7 @@ namespace Engine
         return _components[_ownersIndex[entity]];
     }
 
-    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args && ...args)
+    template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args &&...args)
     {
         auto index = static_cast<Index>(_components.size());
 
@@ -95,6 +103,45 @@ namespace Engine
         auto index = static_cast<std::size_t>(&component - begin);
         return _componentOwners[index];
     }
-}
+
+    template <typename T> void ComponentTypeRegister<T>::save(Engine::SaveManager &saver) const
+    {
+        //        saver.createFolder("game_" + saver.getGameNb());
+        saveOwnersIndex(saver);
+        saveEntities(saver);
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::saveOwnersIndex(Engine::SaveManager &saver)
+    {
+        const std::string filename("EntityToComponent");
+
+        saver.createFile(filename);
+        saver.write(filename, _ownersIndex);
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver)
+    {
+        const std::string dirPrefix("Entity_");
+
+        for (const auto &owner : _componentOwners) {
+            saver.createDirectory(dirPrefix + std::to_string(owner));
+            saveEntity(saver, owner);
+        }
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::saveEntity(Engine::SaveManager &saver, Entity owner)
+    {
+        saveEntityComponents(saver, owner);
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner)
+    {
+        for (const auto &entity_component : _ownersIndex) {
+            if (entity_component.first == owner) {
+                _components[entity_component].second->save();
+            }
+        }
+    }
+} // namespace Engine
 
 #endif // COMPONENTTYPEREGISTER_HPP

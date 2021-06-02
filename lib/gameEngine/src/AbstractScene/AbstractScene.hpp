@@ -9,25 +9,23 @@
 #define ABSTRACTSCENE_HPP_
 
 #include "IEventManager.hpp"
-#include "EntityManager.hpp"
-#include "SceneManager.hpp"
-#include "SystemManager.hpp"
+#include "EntityManager/EntityManager.hpp"
+#include "SystemManager/SystemManager.hpp"
 
 namespace Engine
 {
     class AbstractScene {
       public:
         AbstractScene(
-            IEventManager &events, SystemManager &systemManager, EntityManager<MAX_COMPONENT, MAX_SYSTEM> &entityManager);
+            IEventManager &eventManager, SystemManager &systemManager, EntityManager &entityManager);
         ~AbstractScene();
 
         virtual void update() = 0;
 
-      protected:
       private:
-        IEventManager &_events;
+        IEventManager &_eventManager;
         SystemManager &_systemManager;
-        EntityManager<MAX_COMPONENT, MAX_SYSTEM> &_entityManager;
+        EntityManager &_entityManager;
     };
 }
 

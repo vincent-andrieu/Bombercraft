@@ -19,9 +19,9 @@ namespace ObjectType
     class ObjectBox
     {
         public:
-            ObjectBox(MyVector3 origin, MyVector3 size);
+            ObjectBox(const MyVector3 origin, const MyVector3 size);
             ~ObjectBox();
-            void setSphere(MyVector3 origin, MyVector3 size);
+            void setSphere(const MyVector3 origin, const MyVector3 size);
             MyVector3 getBoxOrigin() const;
             MyVector3 getBoxSize() const;
             bool checkCollisionWith(const ObjectBox &box);
