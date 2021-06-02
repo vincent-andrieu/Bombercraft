@@ -8,7 +8,7 @@
 #ifndef TEXT_HPP
 #define TEXT_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IText.hpp"
 

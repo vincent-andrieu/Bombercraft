@@ -8,7 +8,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "ICamera.hpp"
 

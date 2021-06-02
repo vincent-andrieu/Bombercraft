@@ -8,7 +8,7 @@
 #ifndef MUSIC_HPP
 #define MUSIC_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IAudio.hpp"
 

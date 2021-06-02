@@ -2,26 +2,46 @@
 ** EPITECH PROJECT, 2021
 ** IndieStudio
 ** File description:
-** Include
+** Object
 */
 
-#ifndef INCLUDE_HPP
-#define INCLUDE_HPP
+#ifndef OBJECT_HPP
+#define OBJECT_HPP
+
+/*
+** C
+*/
+
+#include <unistd.h>
+#include <stdlib.h>
+
+/*
+** C++
+*/
 
 #include <iostream>
 #include <memory>
 #include <stdexcept>
 
-#include <unistd.h>
-#include <stdlib.h>
+/*
+** CONTAINER
+*/
 
-#include <vector>
-#include <array>
 #include <map>
+#include <array>
+#include <vector>
 #include <unordered_map>
+
+/*
+** RAYLIB
+*/
 
 #include "raylib.h"
 #include "raymath.h"
+
+/*
+** TOOLS
+*/
 
 #include "../src/Data/Enum.hpp"
 #include "../src/Data/Const.hpp"

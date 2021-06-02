@@ -8,13 +8,13 @@
 #ifndef ITEXT_HPP
 #define ITEXT_HPP
 
-#include "../../include/include.hpp"
-
 #include "../Font/IFont.hpp"
+#include "../../include/object.hpp"
+#include "../Renderable/IRenderable.hpp"
 
 namespace raylib
 {
-    class IText {
+    class IText : public IRenderable {
       public:
         virtual ~IText() = default;
 

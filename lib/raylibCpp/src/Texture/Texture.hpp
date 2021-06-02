@@ -8,7 +8,7 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "ITexture.hpp"
 

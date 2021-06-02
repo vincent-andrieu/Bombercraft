@@ -8,7 +8,7 @@
 #ifndef CUBOID_HPP
 #define CUBOID_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "ISolid.hpp"
 

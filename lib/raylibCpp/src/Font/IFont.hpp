@@ -8,7 +8,7 @@
 #ifndef IFONT_HPP
 #define IFONT_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 typedef Font RFont;
 

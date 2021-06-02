@@ -8,7 +8,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 
-#include "../../include/include.hpp"
+#include "../../include/object.hpp"
 
 #include "IModel.hpp"
 

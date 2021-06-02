@@ -8,7 +8,7 @@
 #ifndef IINPUT_HPP
 #define IINPUT_HPP
 
-#include "include.hpp"
+#include "object.hpp"
 
 namespace raylib
 {

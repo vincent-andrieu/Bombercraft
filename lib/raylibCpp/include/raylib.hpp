@@ -8,7 +8,7 @@
 #ifndef CLASS_HPP
 #define CLASS_HPP
 
-#include "./include.hpp"
+#include "./object.hpp"
 
 #include "../src/Audio/IAudio.hpp"
 #include "../src/Audio/Music.hpp"
