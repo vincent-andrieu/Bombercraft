@@ -10,7 +10,7 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector3.hpp"
-#include "../../Collidable/ICollidable.hpp"
+#include "../../../include/ICollidable.hpp"
 
 using namespace raylib;
 
