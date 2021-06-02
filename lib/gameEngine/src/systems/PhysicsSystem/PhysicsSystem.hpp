@@ -22,10 +22,6 @@ namespace Engine
 
         void update(float dt);
 
-        virtual void onManagedEntityAdded(Entity entity);
-
-        virtual void onManagedEntityRemoved(Entity entity);
-
       private:
     };
 }
