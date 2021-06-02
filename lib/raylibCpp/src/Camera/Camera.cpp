@@ -7,22 +7,19 @@
 
 #include "Camera.hpp"
 
-raylib::Camera::Camera(const MyVector3 position, const MyVector3 target, const MyVector3 up,
-const float fovy)
+raylib::Camera::Camera(const MyVector3 position, const MyVector3 target, const MyVector3 up, const float fovy)
 {
-    _camera = { 0 };
-    _camera.position = (Vector3){position.a, position.b, position.c};
-    _camera.target = (Vector3){target.a, target.b, target.c};
-    _camera.up = (Vector3){up.a, up.b, up.c};
-    _camera.fovy = fovy;
-    _camera.projection = CAMERA_PERSPECTIVE;
+    this->_camera = {0};
+    this->_camera.position = (Vector3){position.a, position.b, position.c};
+    this->_camera.target = (Vector3){target.a, target.b, target.c};
+    this->_camera.up = (Vector3){up.a, up.b, up.c};
+    this->_camera.fovy = fovy;
+    this->_camera.projection = CAMERA_PERSPECTIVE;
 }
-
-raylib::Camera::~Camera() {}
 
 void raylib::Camera::begin3D()
 {
-    BeginMode3D(_camera);
+    BeginMode3D(this->_camera);
 }
 
 void raylib::Camera::end3D()
@@ -32,20 +29,20 @@ void raylib::Camera::end3D()
 
 void raylib::Camera::setPosition(const MyVector3 position)
 {
-    _camera.position = (Vector3){position.a, position.b, position.c};
+    this->_camera.position = (Vector3){position.a, position.b, position.c};
 }
 
 void raylib::Camera::setTarget(const MyVector3 target)
 {
-    _camera.target = (Vector3){target.a, target.b, target.c};
+    this->_camera.target = (Vector3){target.a, target.b, target.c};
 }
 
 void raylib::Camera::setUp(const MyVector3 up)
 {
-    _camera.up = (Vector3){up.a, up.b, up.c};
+    this->_camera.up = (Vector3){up.a, up.b, up.c};
 }
 
 void raylib::Camera::setFovy(const float fovy)
 {
-    _camera.fovy = fovy;
+    this->_camera.fovy = fovy;
 }

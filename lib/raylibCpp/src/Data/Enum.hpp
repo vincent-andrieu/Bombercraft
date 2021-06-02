@@ -10,7 +10,8 @@
 
 namespace raylib
 {
-    enum class RColor {
+    enum class RColor
+    {
         RLIGHTGRAY,
         RGRAY,
         RDARKGRAY,
@@ -39,7 +40,8 @@ namespace raylib
         RRAYWHITE
     };
 
-    enum class KeyBoard {
+    enum class KeyBoard
+    {
         IKEY_A,
         IKEY_B,
         IKEY_C,
@@ -71,6 +73,6 @@ namespace raylib
         IKEY_RIGHT,
         IKEY_LEFT,
     };
-};
+}; // namespace raylib
 
 #endif // ENUM_HPP

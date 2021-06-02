@@ -14,18 +14,17 @@
 
 namespace raylib
 {
-    class ISolid : public IRenderable
-    {
-        public :
-            virtual ~ISolid() {};
+    class ISolid : public IRenderable {
+      public:
+        virtual ~ISolid() = default;
 
-            virtual void draw() = 0;
+        virtual void draw() = 0;
 
-            virtual void setPosition(const MyVector3 position) = 0;
-            virtual void setSize(const MyVector3 size) = 0;
-            virtual void setColor(const RColor color) = 0;
-            virtual void setTexture(const std::shared_ptr<ITexture> &texture) = 0;
+        virtual void setPosition(const MyVector3 position) = 0;
+        virtual void setSize(const MyVector3 size) = 0;
+        virtual void setColor(const RColor color) = 0;
+        virtual void setTexture(const std::shared_ptr<ITexture> &texture) = 0;
     };
-};
+}; // namespace raylib
 
 #endif // ISOLID_HPP

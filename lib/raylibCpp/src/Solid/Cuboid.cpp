@@ -7,48 +7,43 @@
 
 #include "Cuboid.hpp"
 
-raylib::Cuboid::Cuboid(const std::shared_ptr<ITexture> texture, const MyVector3 position,
-const MyVector3 size, const RColor color)
+raylib::Cuboid::Cuboid(
+    const std::shared_ptr<ITexture> texture, const MyVector3 position, const MyVector3 size, const RColor color)
 {
-    _texture = texture;
-    _position = position;
-    _size = size;
-    _color = color;
-}
-
-raylib::Cuboid::~Cuboid()
-{
-
+    this->_texture = texture;
+    this->_position = position;
+    this->_size = size;
+    this->_color = color;
 }
 
 void raylib::Cuboid::draw()
 {
-    Vector3 rayPos = {_position.a, _position.b, _position.c};
+    Vector3 rayPos = {this->_position.a, this->_position.b, this->_position.c};
 
-    if (_texture == nullptr)
-        DrawCube(rayPos, _size.a, _size.b, _size.c, _matchingColors.at(_color));
+    if (this->_texture == nullptr)
+        DrawCube(rayPos, this->_size.a, this->_size.b, this->_size.c, _matchingColors.at(this->_color));
     else {
-        DrawCubeTexture(_texture->getTexture(), rayPos, _size.a, _size.b,
-        _size.c, _matchingColors.at(_color));
+        DrawCubeTexture(
+            this->_texture->getTexture(), rayPos, this->_size.a, this->_size.b, this->_size.c, _matchingColors.at(this->_color));
     }
 }
 
 void raylib::Cuboid::setPosition(const MyVector3 position)
 {
-    _position = position;
+    this->_position = position;
 }
 
 void raylib::Cuboid::setSize(const MyVector3 size)
 {
-    _size = size;
+    this->_size = size;
 }
 
 void raylib::Cuboid::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }
 
 void raylib::Cuboid::setTexture(const std::shared_ptr<ITexture> &texture)
 {
-    _texture = texture;
+    this->_texture = texture;
 }

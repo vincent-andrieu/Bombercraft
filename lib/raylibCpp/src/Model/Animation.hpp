@@ -16,34 +16,32 @@ typedef Model RModel;
 
 namespace raylib
 {
-    class Animation : public IModel
-    {
-        public :
-            Animation(const std::shared_ptr<ITexture> texture, const std::string &dirpath,
-            const MyVector3 position, const RColor color);
-            ~Animation();
+    class Animation : public IModel {
+      public:
+        Animation(const std::shared_ptr<ITexture> texture, const string &dirpath, const MyVector3 position, const RColor color);
+        ~Animation();
 
-            void draw();
+        void draw();
 
-            void setPosition(const MyVector3 position);
-            void setRotation(const MyVector3 rotation);
-            void setScale(const float scale);
-            void setColor(const RColor color);
-            void setPath(const std::string &path);
-            void setTexture(const std::shared_ptr<ITexture> &texture);
+        void setPosition(const MyVector3 position);
+        void setRotation(const MyVector3 rotation);
+        void setScale(const float scale);
+        void setColor(const RColor color);
+        void setPath(const string &path);
+        void setTexture(const std::shared_ptr<ITexture> &texture);
 
-            std::string getPath() const;
+        [[nodiscard]] string getPath() const;
 
-        private :
-            MyVector3 _position;
-            MyVector3 _rotation;
-            float _scale;
-            RColor _color;
-            std::shared_ptr<ITexture> _texture;
-            std::string _path;
-            std::vector<RModel> _models;
-            size_t _currentFrame;
+      private:
+        MyVector3 _position;
+        MyVector3 _rotation;
+        float _scale;
+        RColor _color;
+        std::shared_ptr<ITexture> _texture;
+        string _path;
+        std::vector<RModel> _models;
+        size_t _currentFrame;
     };
-};
+}; // namespace raylib
 
 #endif // ANIMATION_HPP

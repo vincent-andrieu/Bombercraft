@@ -13,10 +13,6 @@ Input::Input() : _previousMousePos(0, 0)
 {
 }
 
-Input::~Input()
-{
-}
-
 bool Input::isKeyPressed(KeyBoard key) const
 {
     std::unordered_map<KeyBoard, int>::const_iterator keyLine = this->_keyList.find(key);
