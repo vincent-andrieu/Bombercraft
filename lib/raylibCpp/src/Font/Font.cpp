@@ -9,39 +9,39 @@
 
 raylib::Font::Font(const string path)
 {
-    _path = path;
-    if (_path.compare("") != 0) {
-        _font = LoadFont(_path.data());
-        _hasFont = true;
+    this->_path = path;
+    if (this->_path.compare("") != 0) {
+        this->_font = LoadFont(this->_path.data());
+        this->_hasFont = true;
     } else {
-        _font = GetFontDefault();
-        _hasFont = false;
+        this->_font = GetFontDefault();
+        this->_hasFont = false;
     }
 }
 
 raylib::Font::~Font()
 {
-    if (_hasFont)
-        UnloadFont(_font);
+    if (this->_hasFont)
+        UnloadFont(this->_font);
 }
 
 void raylib::Font::setPath(const string &path)
 {
-    _path = path;
-    UnloadFont(_font);
-    _hasFont = true;
-    _font = LoadFont(_path.data());
+    this->_path = path;
+    UnloadFont(this->_font);
+    this->_hasFont = true;
+    this->_font = LoadFont(this->_path.data());
 }
 
 RFont raylib::Font::getFont() const
 {
-    return _font;
+    return this->_font;
 }
 
 void raylib::Font::reset()
 {
-    if (_hasFont) {
-        _hasFont = false;
-        UnloadFont(_font);
+    if (this->_hasFont) {
+        this->_hasFont = false;
+        UnloadFont(this->_font);
     }
 }

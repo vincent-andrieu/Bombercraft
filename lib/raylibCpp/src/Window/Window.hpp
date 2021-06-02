@@ -17,7 +17,7 @@ namespace raylib
     class Window : public IWindow {
       public:
         Window(const MyVector2 size, const string &title, const RColor color, const int fps = 60);
-        ~Window();
+        ~Window() = default;
 
         void open();
         void close();
@@ -31,9 +31,9 @@ namespace raylib
         void setCamera(const std::shared_ptr<ICamera> &camera);
         void setFPS(const int fps);
 
-        std::shared_ptr<ICamera> getCamera() const;
+        [[nodiscard]] std::shared_ptr<ICamera> getCamera() const;
 
-        bool isOpen() const;
+        [[nodiscard]] bool isOpen() const;
 
       private:
         MyVector2 _size;

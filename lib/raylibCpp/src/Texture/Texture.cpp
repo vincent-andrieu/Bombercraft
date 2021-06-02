@@ -9,45 +9,45 @@
 
 raylib::Texture::Texture(const string &path, const MyVector2 position, const RColor color)
 {
-    _path = path;
-    _position = position;
-    _color = color;
-    _texture = LoadTexture(path.data());
+    this->_path = path;
+    this->_position = position;
+    this->_color = color;
+    this->_texture = LoadTexture(path.data());
 }
 
 raylib::Texture::~Texture()
 {
-    UnloadTexture(_texture);
+    UnloadTexture(this->_texture);
 }
 
 void raylib::Texture::draw()
 {
-    DrawTexture(_texture, _position.a, _position.b, _matchingColors.at(_color));
+    DrawTexture(this->_texture, this->_position.a, this->_position.b, _matchingColors.at(this->_color));
 }
 
 void raylib::Texture::setPosition(const MyVector2 position)
 {
-    _position = position;
+    this->_position = position;
 }
 
 void raylib::Texture::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }
 
 void raylib::Texture::setPath(const string &path)
 {
-    _path = path;
-    UnloadTexture(_texture);
-    _texture = LoadTexture(path.data());
+    this->_path = path;
+    UnloadTexture(this->_texture);
+    this->_texture = LoadTexture(path.data());
 }
 
 Texture2D raylib::Texture::getTexture() const
 {
-    return _texture;
+    return this->_texture;
 }
 
 string raylib::Texture::getPath() const
 {
-    return _path;
+    return this->_path;
 }

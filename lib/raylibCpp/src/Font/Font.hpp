@@ -21,7 +21,7 @@ namespace raylib
 
         void setPath(const string &path);
 
-        RFont getFont() const;
+        [[nodiscard]] RFont getFont() const;
 
         void reset();
 

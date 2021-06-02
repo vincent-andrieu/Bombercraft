@@ -25,8 +25,8 @@ namespace raylib
         void setColor(const RColor color);
         void setPath(const string &path);
 
-        Texture2D getTexture() const;
-        string getPath() const;
+        [[nodiscard]] Texture2D getTexture() const;
+        [[nodiscard]] string getPath() const;
 
       private:
         MyVector2 _position;

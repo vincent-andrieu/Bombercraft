@@ -14,7 +14,7 @@ namespace raylib
 {
     class ITexture {
       public:
-        virtual ~ITexture(){};
+        virtual ~ITexture() = default;
 
         virtual void draw() = 0;
 

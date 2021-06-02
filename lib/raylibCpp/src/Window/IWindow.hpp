@@ -16,7 +16,7 @@ namespace raylib
 {
     class IWindow {
       public:
-        virtual ~IWindow(){};
+        virtual ~IWindow() = default;
 
         virtual void open() = 0;
         virtual void close() = 0;

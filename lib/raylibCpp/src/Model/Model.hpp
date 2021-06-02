@@ -30,7 +30,7 @@ namespace raylib
         void setPath(const string &path);
         void setTexture(const std::shared_ptr<ITexture> &texture);
 
-        string getPath() const;
+        [[nodiscard]] string getPath() const;
 
       private:
         MyVector3 _position;

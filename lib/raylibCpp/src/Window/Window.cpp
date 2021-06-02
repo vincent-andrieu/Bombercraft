@@ -9,21 +9,17 @@
 
 raylib::Window::Window(const MyVector2 size, const string &title, const RColor color, const int fps)
 {
-    _size = size;
-    _title = title;
-    _color = color;
-    _camera = nullptr;
-    _fps = fps;
-}
-
-raylib::Window::~Window()
-{
+    this->_size = size;
+    this->_title = title;
+    this->_color = color;
+    this->_camera = nullptr;
+    this->_fps = fps;
 }
 
 void raylib::Window::open()
 {
-    InitWindow(_size.a, _size.b, _title.data());
-    SetTargetFPS(_fps);
+    InitWindow(this->_size.a, this->_size.b, this->_title.data());
+    SetTargetFPS(this->_fps);
 }
 
 void raylib::Window::close()
@@ -34,7 +30,7 @@ void raylib::Window::close()
 void raylib::Window::clear()
 {
     BeginDrawing();
-    ClearBackground(_matchingColors.at(_color));
+    ClearBackground(_matchingColors.at(this->_color));
 }
 
 void raylib::Window::refresh()
@@ -46,35 +42,35 @@ void raylib::Window::setSize(const MyVector2 size)
 {
     if (size.a <= 0 || size.b <= 0)
         return;
-    _size = size;
-    SetWindowSize(_size.a, _size.b);
+    this->_size = size;
+    SetWindowSize(this->_size.a, this->_size.b);
 }
 
 void raylib::Window::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }
 
 void raylib::Window::setTitle(const string &title)
 {
-    _title = title;
-    SetWindowTitle(_title.data());
+    this->_title = title;
+    SetWindowTitle(this->_title.data());
 }
 
 void raylib::Window::setCamera(const std::shared_ptr<ICamera> &camera)
 {
-    _camera = camera;
+    this->_camera = camera;
 }
 
 void raylib::Window::setFPS(const int fps)
 {
-    _fps = fps;
-    SetTargetFPS(_fps);
+    this->_fps = fps;
+    SetTargetFPS(this->_fps);
 }
 
 std::shared_ptr<raylib::ICamera> raylib::Window::getCamera() const
 {
-    return _camera;
+    return this->_camera;
 }
 
 bool raylib::Window::isOpen() const

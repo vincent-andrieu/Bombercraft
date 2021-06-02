@@ -9,75 +9,72 @@
 
 raylib::Text::Text(const string &text, const MyVector2 position, const size_t size, const RColor color)
 {
-    _text = text;
-    _position = position;
-    _font = nullptr;
-    _color = color;
-    _size = size;
-    _limit = {-1, -1, -1, -1};
-}
-
-raylib::Text::~Text()
-{
+    this->_text = text;
+    this->_position = position;
+    this->_font = nullptr;
+    this->_color = color;
+    this->_size = size;
+    this->_limit = {-1, -1, -1, -1};
 }
 
 void raylib::Text::draw()
 {
-    Vector2 rayPos = {_position.a, _position.b};
-    int spacing = _size / 10;
+    Vector2 rayPos = {this->_position.a, this->_position.b};
+    int spacing = this->_size / 10;
 
-    if (_size < 10) {
+    if (this->_size < 10) {
         spacing = 1;
     }
-    if (_limit.height == -1) {
-        DrawTextEx(_font->getFont(), _text.data(), rayPos, _size, spacing, _matchingColors.at(_color));
+    if (this->_limit.height == -1) {
+        DrawTextEx(this->_font->getFont(), this->_text.data(), rayPos, this->_size, spacing, _matchingColors.at(this->_color));
     } else {
-        DrawTextRec(_font->getFont(), _text.data(), _limit, _size, spacing, true, _matchingColors.at(_color));
+        DrawTextRec(this->_font->getFont(), this->_text.data(), this->_limit, this->_size, spacing, true,
+            _matchingColors.at(this->_color));
     }
 }
 
 void raylib::Text::setText(const string &text)
 {
-    _text = text;
+    this->_text = text;
 }
 
 void raylib::Text::setPosition(const MyVector2 position)
 {
-    _position = position;
+    this->_position = position;
 }
 
 void raylib::Text::setFont(const string &font)
 {
-    _font->setPath(font);
+    this->_font->setPath(font);
 }
 
 void raylib::Text::setColor(const RColor color)
 {
-    _color = color;
+    this->_color = color;
 }
 
 void raylib::Text::setFontSize(const size_t size)
 {
-    _size = size;
+    this->_size = size;
 }
 
 void raylib::Text::setLimit(const MyVector4 limit)
 {
-    _limit.x = limit.a;
-    _limit.y = limit.b;
-    _limit.width = limit.c;
-    _limit.height = limit.d;
+    this->_limit.x = limit.a;
+    this->_limit.y = limit.b;
+    this->_limit.width = limit.c;
+    this->_limit.height = limit.d;
 }
 
 void raylib::Text::removeFont()
 {
-    _font->reset();
+    this->_font->reset();
 }
 
 void raylib::Text::removeLimit()
 {
-    _limit.x = -1;
-    _limit.y = -1;
-    _limit.width = -1;
-    _limit.height = -1;
+    this->_limit.x = -1;
+    this->_limit.y = -1;
+    this->_limit.width = -1;
+    this->_limit.height = -1;
 }

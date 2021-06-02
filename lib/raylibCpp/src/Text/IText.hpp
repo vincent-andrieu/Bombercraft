@@ -16,7 +16,7 @@ namespace raylib
 {
     class IText {
       public:
-        virtual ~IText(){};
+        virtual ~IText() = default;
 
         virtual void draw() = 0;
 

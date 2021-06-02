@@ -14,7 +14,7 @@ namespace raylib
 {
     class IFile {
       public:
-        virtual ~IFile(){};
+        virtual ~IFile() = default;
         virtual void setPath(const string &path) = 0;
         virtual std::shared_ptr<void *> readData(size_t &read_size) = 0;
         virtual void writeData(std::shared_ptr<void *> data, size_t objectSize) = 0;
