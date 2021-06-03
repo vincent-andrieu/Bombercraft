@@ -28,7 +28,7 @@ class ConfigFile : public IConfigFile
         void cleanLine(std::string &str);
         std::string getLineByName(const std::string name) const;
         void commentManagingLine(std::string line);
-        void objInline();
+        void objInline(char start, char end);
         void correctFile();
         std::string getAfterMatch(std::string line, std::string match) const;
         size_t getStartOf(const std::string &line, size_t pos) const;

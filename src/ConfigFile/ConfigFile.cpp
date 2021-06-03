@@ -28,7 +28,8 @@ ConfigFile::ConfigFile(std::vector<std::string> tab)
             this->commentManagingLine(line);
         }
     }
-    this->objInline();
+    this->objInline('{', '}');
+    this->objInline('[', ']');
     this->correctFile();
 }
 
@@ -63,7 +64,10 @@ void ConfigFile::loadFile(const std::string &filename)
                 this->commentManagingLine(line);
             }
         }
-        this->objInline();
+        this->objInline('{', '}');
+        this->objInline('[', ']');
+        for (auto line : this->_fileContent)
+            std::cout << line << std::endl;
         this->correctFile();
     } else {
         throw std::invalid_argument("File close");
@@ -154,22 +158,22 @@ void ConfigFile::cleanLine(std::string &str)
     }
 }
 
-void ConfigFile::objInline()
+void ConfigFile::objInline(char start, char end)
 {
     std::vector<std::string>::iterator next = this->_fileContent.begin();
     bool stat = false;
     size_t cnt = 0;
 
     for (auto it = this->_fileContent.begin(); it != this->_fileContent.end(); it++) {
-        if (it->back() == '{') {
+        if (it->back() == start) {
             cnt = 1;
             do {
                 next = it + 1;
                 if (next == this->_fileContent.end())
                     throw ParserExceptions("The file incorrect: not find }");
-                if (next->back() == '{')
+                if (next->back() == start)
                     cnt++;
-                stat = next->back() == '}';
+                stat = next->back() == end;
                 if (stat)
                     cnt--;
                 it->append(*next);
