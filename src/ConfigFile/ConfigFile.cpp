@@ -327,18 +327,26 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for Tab: " + line);
     input = this->getAfterMatch(line, ": [");
-    input.pop_back();
-    input.pop_back();
+    if (input.length())
+        input.pop_back();
+    if (input.length())
+        input.pop_back();
     parse = this->getParseIn("],", input);
     for (auto line : parse) {
         tab.clear();
         input = std::string(line.substr(1, line.length() - 1));
         tmp = this->getParseIn(", ", input, false);
         for (auto once : tmp) {
-            if (std::all_of(once.begin(), once.end(), ::isdigit))
-                tab.push_back(std::stoi(once));
-            else if (once.back() == ']')
-                tab.push_back(std::stoi(once));
+            try {
+                if (std::all_of(once.begin(), once.end(), ::isdigit))
+                    tab.push_back(std::stoi(once));
+                else if (once.back() == ']')
+                    tab.push_back(std::stoi(once));
+            } catch (const std::out_of_range &e) {
+                throw ParserExceptions("Incorrect value for TABTAB");
+            } catch (const std::invalid_argument &e) {
+                throw ParserExceptions("Incorrect value for TABTAB");
+            }
         }
         array.push_back(tab);
     }
