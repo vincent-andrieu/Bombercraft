@@ -87,7 +87,7 @@ int ConfigFile::getInt(const std::string name) const
 float ConfigFile::getFloat(const std::string name) const
 {
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*(.)\\d$");
+    std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*(.)?\\d$");
 
     if (line.empty())
         throw ParserExceptions("No variable with name: " + name);
