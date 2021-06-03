@@ -398,5 +398,5 @@ raylib::MyVector4 ConfigFile::getMyVector4(const std::string name) const
     input = this->getAfterMatch(line, ": {");
     input.pop_back();
     ConfigFile inside(this->getParseFile(input));
-    return raylib::MyVector4(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"), inside.getFloat("b"));
+    return raylib::MyVector4(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"), inside.getFloat("d"));
 }
