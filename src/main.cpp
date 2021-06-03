@@ -49,6 +49,10 @@ int main(void)
             }
             std::cout << std::endl;
         }
+
+        raylib::MyVector2 vec2 = config->getMyVector2("VECTOR_TWO");
+        raylib::MyVector3 vec3 = config->getMyVector3("VECTOR_THREE");
+        raylib::MyVector4 vec4 = config->getMyVector4("VECTOR_FOUR");
     } catch (const ParserExceptions &e) {
         std::cout << e.what() << std::endl;
         return EXIT_FAILURE;        

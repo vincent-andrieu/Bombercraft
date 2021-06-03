@@ -28,6 +28,10 @@ class ConfigFile : public IConfigFile
         std::vector<int> getTabInt(const std::string name) const;
         std::vector<std::vector<int>> getTabTabInt(const std::string name) const;
 
+        raylib::MyVector2 getMyVector2(const std::string name) const;
+        raylib::MyVector3 getMyVector3(const std::string name) const;
+        raylib::MyVector4 getMyVector4(const std::string name) const;
+
     private:
         void cleanLine(std::string &str);
         std::string getLineByName(const std::string name) const;

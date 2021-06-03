@@ -332,3 +332,51 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     }
     return array;
 }
+
+raylib::MyVector2 ConfigFile::getMyVector2(const std::string name) const
+{
+    std::string input;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+    input = this->getAfterMatch(line, ": {");
+    input.pop_back();
+    ConfigFile inside(this->getParseFile(input));
+    return raylib::MyVector2(inside.getFloat("a"), inside.getFloat("b"));
+}
+
+raylib::MyVector3 ConfigFile::getMyVector3(const std::string name) const
+{
+    std::string input;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+    input = this->getAfterMatch(line, ": {");
+    input.pop_back();
+    ConfigFile inside(this->getParseFile(input));
+    return raylib::MyVector3(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"));
+}
+
+raylib::MyVector4 ConfigFile::getMyVector4(const std::string name) const
+{
+    std::string input;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+    input = this->getAfterMatch(line, ": {");
+    input.pop_back();
+    ConfigFile inside(this->getParseFile(input));
+    return raylib::MyVector4(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"), inside.getFloat("b"));
+}
