@@ -42,7 +42,7 @@ void ShaderManage::addShader(string filepath, string shaderName)
         shaderName = filepath;
     if (it == this->_shaderList.end())
         throw std::invalid_argument("Shader " + shaderName + "already exist.");
-    if (access(filepath.c_str(), F_OK) == -1)
+    if (Cross::Unistd::my_access(filepath, Cross::aMode::fOk) == -1)
         throw std::invalid_argument("Filepath incorrect: " + filepath);
     this->_shaderList[shaderName] = LoadShader(NULL, TextFormat(filepath.c_str(), GLSL_VERSION));
 }
