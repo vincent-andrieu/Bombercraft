@@ -73,7 +73,7 @@ void ConfigFile::loadFile(const std::string &filename)
 int ConfigFile::getInt(const std::string name) const
 {
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*$");
+    std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*$");
 
     if (line.empty())
         throw ParserExceptions("No variable with name: " + name);
@@ -85,7 +85,7 @@ int ConfigFile::getInt(const std::string name) const
 float ConfigFile::getFloat(const std::string name) const
 {
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": (-)?\\d*(.)\\d$");
+    std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*(.)\\d$");
 
     if (line.empty())
         throw ParserExceptions("No variable with name: " + name);
@@ -98,7 +98,7 @@ std::pair<int, int> ConfigFile::getPaire(const std::string name) const
 {
     std::string input;
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": \\{.*\\}$");
+    std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
 
     if (line.empty())
         throw ParserExceptions("No variable with name: " + name);
@@ -114,7 +114,7 @@ std::string ConfigFile::getString(const std::string name) const
 {
     std::string value;
     std::string line = getLineByName(name);
-    std::regex regexp("\"[a-zA-Z]+\": \".*\"$");
+    std::regex regexp("\"[a-zA-Z_]+\": \".*\"$");
 
     if (line.empty())
         throw ParserExceptions("No variable with name: " + name);
@@ -181,7 +181,7 @@ void ConfigFile::objInline()
 
 void ConfigFile::correctFile()
 {
-    std::regex regexp("\"[a-zA-Z]+\": .*");
+    std::regex regexp("\"[a-zA-Z_]+\": .*$");
 
     for (auto it : this->_fileContent) {
         if (!std::regex_search(it, regexp))
