@@ -16,6 +16,22 @@ ConfigFile::ConfigFile(const std::string &filename)
     this->loadFile(filename);
 }
 
+ConfigFile::ConfigFile(std::vector<std::string> tab)
+{
+    std::regex isAscii ("^[\\x00-\\x7F]+$");
+
+    this->_fileContent.clear();
+    for (auto line : tab) {
+        if (!std::regex_search(line, isAscii) && !line.empty()) {
+            throw ParserExceptions("The file doesn't contains only ASCII characters !");
+        } else {
+            this->commentManagingLine(line);
+        }
+    }
+    this->objInline();
+    this->correctFile();
+}
+
 ConfigFile::~ConfigFile()
 {
     this->_fileContent.clear();
@@ -76,6 +92,22 @@ float ConfigFile::getFloat(const std::string name) const
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
     return std::stof(this->getAfterMatch(line, ": "));
+}
+
+std::pair<int, int> ConfigFile::getPaire(const std::string name) const
+{
+    std::string input;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z]+\": \\{.*\\}$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+    input = this->getAfterMatch(line, ": {");
+    input.pop_back();
+    ConfigFile inside(this->getParseFile(input));
+    return std::pair<int, int>(inside.getInt("x"), inside.getInt("y"));
 }
 
 std::string ConfigFile::getString(const std::string name) const
@@ -160,4 +192,54 @@ void ConfigFile::correctFile()
 std::string ConfigFile::getAfterMatch(std::string line, std::string match) const
 {
     return line.substr(line.find(match) + match.length(), line.length());
+}
+
+size_t ConfigFile::getStartOf(const std::string &line, size_t pos) const
+{
+    size_t cnt = 0;
+
+    for (; pos >= 0; pos--) {
+        if (line[pos] == '"')
+            cnt++;
+        if (cnt == 2)
+            return pos;
+        if (pos == 0)
+            break;
+    }    
+    throw ParserExceptions("Invalide '\"': symbole not found");
+}
+
+std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line) const
+{
+    size_t first = line.find_first_of(": ");
+    size_t second = (line.substr(first + 2, line.length())).find_first_of(": ");
+    size_t first_end = 0;
+    size_t second_end = 0;
+
+    if (first == std::string::npos)
+        throw ParserExceptions("Invalide ': ': symbole not found");
+    if (second == std::string::npos)
+        return std::pair<size_t, size_t>(0, line.length());
+    second += first + 2;
+    first_end = getStartOf(line, first);
+    second_end = getStartOf(line, second);
+    if (second_end < first)
+        throw ParserExceptions("Invalide symbole");
+    return std::pair<size_t, size_t>(first_end, second_end);
+}
+
+std::vector<std::string> ConfigFile::getParseFile(const std::string &line) const
+{
+    std::string onceStr;
+    std::string toWork(line);
+    std::pair<size_t, size_t> once;
+    std::vector<std::string> parse;
+
+    while (toWork.length()) {
+        once = getOnceBlock(toWork);
+        onceStr = toWork.substr(once.first, once.second);
+        toWork = toWork.substr(once.second, toWork.length());
+        parse.push_back(onceStr);
+    }
+    return parse;
 }

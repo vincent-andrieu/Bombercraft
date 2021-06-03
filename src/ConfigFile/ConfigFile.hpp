@@ -16,11 +16,13 @@ class ConfigFile : public IConfigFile
     public:
         ConfigFile();
         ConfigFile(const std::string &filename);
+        ConfigFile(std::vector<std::string> tab);
         ~ConfigFile();
-        void loadFile(const std::string &filename);
         int getInt(const std::string name) const;
+        void loadFile(const std::string &filename);
         float getFloat(const std::string name) const;
         std::string getString(const std::string name) const;
+        std::pair<int, int> getPaire(const std::string name) const;
 
     private:
         void cleanLine(std::string &str);
@@ -29,6 +31,9 @@ class ConfigFile : public IConfigFile
         void objInline();
         void correctFile();
         std::string getAfterMatch(std::string line, std::string match) const;
+        size_t getStartOf(const std::string &line, size_t pos) const;
+        std::pair<size_t, size_t> getOnceBlock(std::string &line) const;
+        std::vector<std::string> getParseFile(const std::string &line) const;
 
     protected:
     private:

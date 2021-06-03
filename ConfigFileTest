@@ -1,9 +1,10 @@
 ##
 ##      config file
 ##
-
+"y": 1
 "objTest": {
-  "oui": "oui"
+  "x": 111
+  "y": 1
 }
 
 "objTest2": {  

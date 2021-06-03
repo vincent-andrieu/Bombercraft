@@ -15,7 +15,8 @@ int main(void)
     std::unique_ptr<IConfigFile> map = std::make_unique<ConfigFile>("./ConfigFileTest");
 
     //std::cout << "yolo ->" << map->getInt("fuck") << std::endl;
-    std::cout << "1 == " << map->getInt("LoadInt") << std::endl;
+    std::cout << "1 == " << map->getInt("y") << std::endl;
+    std::cout << "obj == " << map->getPaire("objTest").first << std::endl;
     std::cout << "1.1 == " << map->getFloat("LoadFloat") << std::endl;
     std::cout << "? == " << map->getString("LoadString") << std::endl;
     /*std::unique_ptr<IProceduralMap> map = std::make_unique<ProceduralMap>();
