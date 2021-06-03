@@ -21,15 +21,20 @@ include_directories(
 
 ## SOURCES
 set(SRCS
-        src/EntityContainer/EntityRegister.cpp
-        src/Component/Component.cpp
-        src/systems/PhysicsSystem/PhysicsSystem.cpp
-        src/systems/TimerSystem/TimerSystem.cpp
-        src/AbstractSystem/AbstractSystem.cpp
-        src/EntityManager/EntityManager.cpp
-        src/SystemManager/SystemManager.cpp
-        src/AbstractScene/AbstractScene.cpp
-        src/SceneManager/SceneManager.cpp
+    # Scenes
+    src/SceneManager/SceneManager.cpp
+    src/AbstractScene/AbstractScene.cpp
+    # Systems
+    src/SystemManager/SystemManager.cpp
+    src/AbstractSystem/AbstractSystem.cpp
+    src/Systems/PhysicsSystem/PhysicsSystem.cpp
+    src/Systems/TimerSystem/TimerSystem.cpp
+    src/Systems/
+    # Entities
+    src/EntityContainer/EntityRegister.cpp
+    src/EntityManager/EntityManager.cpp
+    # Components
+    src/Component/Component.cpp
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
