@@ -16,4 +16,17 @@ AbstractScene::AbstractScene(SystemManager &systemManager, EntityManager &entity
 
 AbstractScene::~AbstractScene()
 {
+    while (false == _localEntities.empty()) {
+        Entity entity = _localEntities.back();
+
+        _entityManager.removeEntity(entity);
+        _localEntities.pop_back();
+    }
+}
+
+Entity AbstractScene::createLocalEntity()
+{
+    Entity entity = _entityManager.createEntity();
+
+    _localEntities.push_back(entity);
 }

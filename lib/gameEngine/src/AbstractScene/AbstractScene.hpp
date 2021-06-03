@@ -20,9 +20,13 @@ namespace Engine
 
         virtual void update() = 0;
 
+        Entity createLocalEntity();
       protected:
         SystemManager &_systemManager;
         EntityManager &_entityManager;
+
+      private:
+        std::vector<Entity> _localEntities;
     };
 }
 
