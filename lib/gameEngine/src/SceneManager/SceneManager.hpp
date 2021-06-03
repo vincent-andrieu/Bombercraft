@@ -50,7 +50,7 @@ namespace Engine
             != _types.end()) {
                 throw std::exception();
         }
-        auto &scene = _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
+        _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
         _types.emplace_back(typeid(T));
         if (_currentScene == nullptr)
             _currentScene = _scenes.back();
