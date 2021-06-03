@@ -146,7 +146,7 @@ void ProceduralMap::mapInitEmpty()
 
     for (auto it_y : this->_mapModel) {
         list.clear();
-        for (__attribute__ ((unused))auto it : it_y) {
+        for ([[maybe_unused]]auto it : it_y) {
             list.push_back(TileType::TILE_DEFAULT);
         }
         this->_mapProcedural.push_back(list);
