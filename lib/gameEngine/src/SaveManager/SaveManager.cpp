@@ -19,7 +19,9 @@ SaveManager::SaveManager(const std::string &dirname) : _workingDirectory(std::fi
 SaveManager::~SaveManager()
 {
     for (auto &file : this->_writingFiles)
-        file.second.close();
+        file.second->close();
+    for (auto &file : this->_readingFiles)
+        file.second->close();
 }
 
 inline bool SaveManager::directoryExists(const string &dirname)
@@ -79,8 +81,8 @@ void SaveManager::setWritingFile(const string &filename)
 
     if (!fileExists(my_tmp_path))
         throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
-    _writingFiles.insert(std::make_pair(my_tmp_path, ofstream(my_tmp_path)));
-    if (!_writingFiles.at(my_tmp_path).is_open()) {
+    _writingFiles.insert(std::make_pair(my_tmp_path, std::make_unique<ofstream>(my_tmp_path)));
+    if (!_writingFiles.at(my_tmp_path)->is_open()) {
         _writingFiles.erase(my_tmp_path);
         throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
     }
@@ -88,12 +90,39 @@ void SaveManager::setWritingFile(const string &filename)
 
 void SaveManager::closeWritingFile()
 {
-    ofstream &my_stream(_writingFiles.begin()->second);
+    this->_writingFiles.begin()->second->close();
+    this->_writingFiles.erase(_writingFiles.begin());
+}
 
-    if (my_stream.is_open()) {
-        my_stream.close();
+void SaveManager::closeWritingFile(const string &filename)
+{
+    this->_writingFiles[filename]->close();
+    this->_writingFiles.erase(filename);
+}
+
+void SaveManager::setReadingFile(const string &filename)
+{
+    std::filesystem::path my_tmp_path(getFileDir(filename));
+
+    if (!fileExists(my_tmp_path))
+        throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
+    _readingFiles.insert(std::make_pair(my_tmp_path, std::make_unique<ifstream>(my_tmp_path)));
+    if (!_readingFiles.at(my_tmp_path)->is_open()) {
+        _readingFiles.erase(my_tmp_path);
+        throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
     }
-    _writingFiles.erase(_writingFiles.begin());
+}
+
+void SaveManager::closeReadingFile()
+{
+    this->_readingFiles.begin()->second->close();
+    this->_readingFiles.erase(_readingFiles.begin());
+}
+
+void SaveManager::closeReadingFile(const string &filename)
+{
+    this->_readingFiles[filename]->close();
+    this->_readingFiles.erase(filename);
 }
 
 inline std::filesystem::path SaveManager::getFileDir(const string &filename)
@@ -102,14 +131,6 @@ inline std::filesystem::path SaveManager::getFileDir(const string &filename)
 
     my_path /= filename;
     return my_path;
-}
-
-void SaveManager::closeFile(const string &filename)
-{
-    std::filesystem::path my_path(getFileDir(filename));
-
-    this->_writingFiles[filename].close();
-    this->_writingFiles.erase(filename);
 }
 
 void SaveManager::write(const string &filename, const void *value, std::streamsize size)
@@ -154,17 +175,17 @@ void SaveManager::read(const string &filename, string &value)
 ofstream &SaveManager::_getWritingFile(const string &filename)
 {
     if (this->_writingFiles.find(filename) != this->_writingFiles.end())
-        return this->_writingFiles[filename];
+        return *this->_writingFiles[filename];
 
-    this->_writingFiles[filename] = ofstream(filename);
-    return this->_writingFiles[filename];
+    this->_writingFiles[filename] = std::make_unique<ofstream>(filename);
+    return *this->_writingFiles[filename];
 }
 
 ifstream &SaveManager::_getReadingFile(const string &filename)
 {
     if (this->_readingFiles.find(filename) != this->_readingFiles.end())
-        return this->_readingFiles[filename];
+        return *this->_readingFiles[filename];
 
-    this->_readingFiles[filename] = ifstream(filename);
-    return this->_readingFiles[filename];
+    this->_readingFiles[filename] = std::make_unique<ifstream>(filename);
+    return *this->_readingFiles[filename];
 }

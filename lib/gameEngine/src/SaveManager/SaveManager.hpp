@@ -61,7 +61,8 @@ namespace Engine
          */
         void createFile(const string &filename);
         /**
-         * @brief Push the file given as parameter on top of the stack of writing files, so when
+         * @brief Push the file given as parameter on top of the stack of writing files, so when writeActFile is called, it uses
+         * this file
          * @param filename The name of the file
          */
         void setWritingFile(const string &filename);
@@ -70,7 +71,19 @@ namespace Engine
          * so the last writing file is now the actual
          */
         void closeWritingFile();
-        void closeFile(const string &filename);
+        void closeWritingFile(const string &filename);
+        /**
+         * @brief Push the file given as parameter on top of the stack of reading files, so when readActFile is called, it uses
+         * this file
+         * @param filename The name of the file
+         */
+        void setReadingFile(const string &filename);
+        /**
+         * @brief Remove the actual writing file from the stack of actual writing files,
+         * so the last writing file is now the actual
+         */
+        void closeReadingFile();
+        void closeReadingFile(const string &filename);
 
         template <typename T> void writeActFile(const T value)
         {
@@ -91,11 +104,12 @@ namespace Engine
 
       private:
         std::filesystem::path _workingDirectory;
-        std::map<std::filesystem::path, ofstream> _writingFiles{};
-        std::map<std::filesystem::path, ifstream> _readingFiles{};
+        std::map<std::filesystem::path, std::shared_ptr<ofstream>> _writingFiles{};
+        std::map<std::filesystem::path, std::shared_ptr<ifstream>> _readingFiles{};
 
         [[nodiscard]] ofstream &_getWritingFile(const string &filename);
         [[nodiscard]] ifstream &_getReadingFile(const string &filename);
+
         template <typename T> void write(const string &filename, const T &value)
         {
             ofstream &file = this->_getWritingFile(filename);
