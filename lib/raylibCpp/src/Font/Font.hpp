@@ -12,9 +12,11 @@
 
 #include "IFont.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class Font : public IFont {
+    class EXPORT Font : public IFont {
       public:
         Font(const string path = "");
         ~Font();

@@ -8,9 +8,11 @@
 #ifndef IRENDERABLE_HPP
 #define IRENDERABLE_HPP
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class IRenderable
+    class EXPORT IRenderable
     {
         public :
             virtual ~IRenderable() {};

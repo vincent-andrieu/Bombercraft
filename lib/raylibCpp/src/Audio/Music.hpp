@@ -12,11 +12,13 @@
 
 #include "IAudio.hpp"
 
+#include "export.hpp"
+
 typedef Music RMusic;
 
 namespace raylib
 {
-    class Music : public IAudio
+    class EXPORT Music : public IAudio
     {
         public :
             Music(const std::string &path, const float volume = 100, const float pitch = 1.0f);

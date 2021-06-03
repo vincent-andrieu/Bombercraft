@@ -12,9 +12,11 @@
 
 #include "ITexture.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class Texture : public ITexture {
+    class EXPORT Texture : public ITexture {
       public:
         Texture(const string &path, const MyVector2 position = {0, 0}, const RColor color = RColor::RWHITE);
         ~Texture();

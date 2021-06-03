@@ -12,9 +12,11 @@
 
 #include "IModel.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class Model : public IModel {
+    class EXPORT Model : public IModel {
       public:
         Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color);
         ~Model();

@@ -12,9 +12,11 @@
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class ISolid : public IRenderable {
+    class EXPORT ISolid : public IRenderable {
       public:
         virtual ~ISolid() = default;
 

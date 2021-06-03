@@ -12,9 +12,11 @@
 
 #include "IFile.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class Save : public IFile {
+    class EXPORT Save : public IFile {
       public:
         Save(const string &filepath);
         ~Save();

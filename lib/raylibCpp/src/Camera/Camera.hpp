@@ -11,10 +11,11 @@
 #include "../../include/object.hpp"
 
 #include "ICamera.hpp"
+#include "export.hpp"
 
 namespace raylib
 {
-    class Camera : public ICamera {
+    class EXPORT Camera : public ICamera {
       public:
         Camera(const MyVector3 position, const MyVector3 target, const MyVector3 up, const float fovy = 90);
         ~Camera() = default;

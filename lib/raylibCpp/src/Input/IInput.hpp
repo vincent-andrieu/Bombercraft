@@ -9,10 +9,11 @@
 #define IINPUT_HPP
 
 #include "object.hpp"
+#include "export.hpp"
 
 namespace raylib
 {
-    class IInput
+    class EXPORT IInput
     {
         public:
             virtual ~IInput() = default;

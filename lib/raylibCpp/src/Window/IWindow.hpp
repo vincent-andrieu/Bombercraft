@@ -12,9 +12,11 @@
 
 #include "../Camera/ICamera.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class IWindow {
+    class EXPORT IWindow {
       public:
         virtual ~IWindow() = default;
 

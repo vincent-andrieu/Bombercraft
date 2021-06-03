@@ -12,11 +12,13 @@
 
 #include "IAudio.hpp"
 
+#include "export.hpp"
+
 typedef Sound RSound;
 
 namespace raylib
 {
-    class Sound : public IAudio
+    class EXPORT Sound : public IAudio
     {
         public :
             Sound(const std::string &path, const float volume = 100, const float pitch = 100);

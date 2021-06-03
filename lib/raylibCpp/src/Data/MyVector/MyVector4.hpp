@@ -10,9 +10,11 @@
 
 #include "raylib.h"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class MyVector4
+    class EXPORT MyVector4
     {
         public:
             MyVector4();
@@ -27,11 +29,11 @@ namespace raylib
             float c;
             float d;
     };
-    MyVector4 operator+(MyVector4 const &first, MyVector4 const &second);
-    MyVector4 operator-(MyVector4 const &first, MyVector4 const &second);
-    MyVector4 operator*(MyVector4 const &first, MyVector4 const &second);
-    MyVector4 operator/(MyVector4 const &first, MyVector4 const &second);
-    bool operator==(MyVector4 const &first, MyVector4 const &second);
+    EXPORT MyVector4 operator+(MyVector4 const &first, MyVector4 const &second);
+    EXPORT MyVector4 operator-(MyVector4 const &first, MyVector4 const &second);
+    EXPORT MyVector4 operator*(MyVector4 const &first, MyVector4 const &second);
+    EXPORT MyVector4 operator/(MyVector4 const &first, MyVector4 const &second);
+    EXPORT bool operator==(MyVector4 const &first, MyVector4 const &second);
 };
 
 #endif

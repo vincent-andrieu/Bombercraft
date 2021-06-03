@@ -10,10 +10,11 @@
 
 #include "IInput.hpp"
 #include "object.hpp"
+#include "export.hpp"
 
 namespace raylib
 {
-    class Input : public IInput {
+    class EXPORT Input : public IInput {
       public:
         Input();
         ~Input() = default;

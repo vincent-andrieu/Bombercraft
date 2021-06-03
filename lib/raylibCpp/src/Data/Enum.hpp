@@ -8,9 +8,11 @@
 #ifndef ENUM_HPP
 #define ENUM_HPP
 
+#include "export.hpp"
+
 namespace raylib
 {
-    enum class RColor
+    enum class EXPORT RColor
     {
         RLIGHTGRAY,
         RGRAY,
@@ -40,7 +42,7 @@ namespace raylib
         RRAYWHITE
     };
 
-    enum class KeyBoard
+    enum class EXPORT KeyBoard
     {
         IKEY_A,
         IKEY_B,

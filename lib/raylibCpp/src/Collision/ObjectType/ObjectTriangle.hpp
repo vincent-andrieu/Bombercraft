@@ -11,15 +11,17 @@
 #include "../../Data/MyVector/MyVector2.hpp"
 #include "../../../include/ICollidable.hpp"
 
+#include "export.hpp"
+
 #include <functional>
 
 using namespace raylib;
 
 namespace ObjectType
 {
-    class ObjectLine;
-    class ObjectBox;
-    class ObjectTriangle
+    class EXPORT ObjectLine;
+    class EXPORT ObjectBox;
+    class EXPORT ObjectTriangle
     {
         public:
             ObjectTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);

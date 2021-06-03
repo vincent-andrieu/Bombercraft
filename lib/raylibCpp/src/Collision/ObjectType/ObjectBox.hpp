@@ -11,13 +11,14 @@
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector3.hpp"
 #include "../../../include/ICollidable.hpp"
+#include "export.hpp"
 
 using namespace raylib;
 
 namespace ObjectType
 {
-    class ObjectSphere;
-    class ObjectBox : public ICollidable
+    class EXPORT ObjectSphere;
+    class EXPORT ObjectBox : public ICollidable
     {
         public:
             ObjectBox(const MyVector3 origin, const MyVector3 size);

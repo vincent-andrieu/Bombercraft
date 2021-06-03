@@ -12,6 +12,8 @@
 
 #include "IModel.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
     class Animation : public IModel {

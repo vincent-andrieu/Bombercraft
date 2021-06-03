@@ -12,6 +12,8 @@
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
 
+#include "export.hpp"
+
 typedef Model RModel;
 
 namespace raylib

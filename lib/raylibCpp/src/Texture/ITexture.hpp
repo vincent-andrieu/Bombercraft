@@ -11,9 +11,11 @@
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
 
+#include "export.hpp"
+
 namespace raylib
 {
-    class ITexture : public IRenderable {
+    class EXPORT ITexture : public IRenderable {
       public:
         virtual ~ITexture() = default;
 
