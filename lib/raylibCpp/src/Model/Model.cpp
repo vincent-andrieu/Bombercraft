@@ -7,18 +7,24 @@
 
 #include "Model.hpp"
 
-raylib::Model::Model(const std::shared_ptr<ITexture> texture, const string &filepath, const MyVector3 position = {0, 0, 0},
+raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position = {0, 0, 0},
     const RColor color = RColor::RWHITE)
 {
     this->_position = position;
     this->_rotation = {0.0f, 0.0f, 0.0f};
     this->_scale = 1.0f;
     this->_color = color;
-    this->_texture = texture;
+    this->_texture = {0};
+    this->_texturePath = texturePath;
+    if (texturePath.compare("") != 0) {
+        if (FileExists(texturePath.data())) {
+            _texture = LoadTexture(texturePath.data());
+        }
+    }
     this->_path = filepath;
     this->_model = LoadModel(filepath.data());
-    if (_texture != nullptr)
-        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
+    if (texturePath.compare("") != 0)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture);
 }
 
 raylib::Model::~Model()
@@ -70,11 +76,19 @@ void raylib::Model::setPath(const string &path)
     this->_model.transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
 }
 
-void raylib::Model::setTexture(const std::shared_ptr<ITexture> &texture)
+void raylib::Model::setTexture(const std::string &texturePath)
 {
-    _texture = texture;
-    if (_texture != nullptr)
-        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
+    if (_texturePath.compare("") != 0) {
+        UnloadTexture(_texture);
+    }
+    _texturePath = texturePath;
+    if (texturePath.compare("") != 0) {
+        if (FileExists(texturePath.data())) {
+            _texture = LoadTexture(texturePath.data());
+        }
+    }
+    if (texturePath.compare("") != 0)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture);
 }
 
 string raylib::Model::getPath() const

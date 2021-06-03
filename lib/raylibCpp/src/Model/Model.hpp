@@ -16,7 +16,7 @@ namespace raylib
 {
     class Model : public IModel {
       public:
-        Model(const std::shared_ptr<ITexture> texture, const string &filepath, const MyVector3 position, const RColor color);
+        Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color);
         ~Model();
 
         void draw();
@@ -26,7 +26,7 @@ namespace raylib
         void setScale(const float scale);
         void setColor(const RColor color);
         void setPath(const string &path);
-        void setTexture(const std::shared_ptr<ITexture> &texture);
+        void setTexture(const std::string &texturePath);
 
         [[nodiscard]] string getPath() const;
 
@@ -35,7 +35,8 @@ namespace raylib
         MyVector3 _rotation;
         float _scale;
         RColor _color;
-        std::shared_ptr<ITexture> _texture;
+        Texture2D _texture;
+        std::string _texturePath;
         string _path;
         RModel _model;
     };
