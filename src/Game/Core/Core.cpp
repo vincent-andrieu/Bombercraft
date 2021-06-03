@@ -22,22 +22,13 @@ std::unique_ptr<raylib::Camera> Core::camera = std::make_unique<raylib::Camera>(
 Core::Core()
     : _window(WIN_SIZE, WIN_TITLE, WIN_BACK), _entityManager(_systemManager), _sceneManager(_entityManager)
 {
-    /// COMPONENTS
+    /// COMPONENTS - DEFINITION
     _entityManager.registerComponent<Component::Render2D>();
     _entityManager.registerComponent<Component::Render3D>();
-    /// SYSTEMS
+    /// SYSTEMS - CREATION
     _systemManager.createSystem<System::Render3DSystem>(_entityManager);
     _systemManager.createSystem<System::Render2DSystem>(_entityManager);
-    /// ENTITIES
-    auto rect = _entityManager.createEntity();
-    _entityManager.addComponent<Component::Render2D>(rect,
-        std::make_shared<raylib::Rectangle>((raylib::MyVector2){10, 10}, (raylib::MyVector2){20, 20})
-    );
-    auto block = _entityManager.createEntity();
-    _entityManager.addComponent<Component::Render3D>(block,
-        std::make_shared<raylib::Cuboid>(nullptr, (raylib::MyVector3){50, 50, 0}, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RRED)
-    );
-    // SCENES
+    // SCENES - CREATION
     _sceneManager.createScene<DebugScene>(_systemManager, _entityManager);
 }
 
