@@ -18,10 +18,14 @@ class IConfigFile {
     public:
         virtual ~IConfigFile() {};
         virtual void loadFile(const std::string &filename) = 0;
+
         virtual int getInt(const std::string name) const = 0;
         virtual float getFloat(const std::string name) const = 0;
         virtual std::string getString(const std::string name) const = 0;
         virtual std::pair<int, int> getPaire(const std::string name) const = 0;
+
+        virtual std::vector<int> getTabInt(const std::string name) const = 0;
+        virtual std::vector<std::vector<int>> getTabTabInt(const std::string name) const = 0;
         /*
         ** OTHER
         **

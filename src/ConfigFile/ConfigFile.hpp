@@ -18,11 +18,15 @@ class ConfigFile : public IConfigFile
         ConfigFile(const std::string &filename);
         ConfigFile(std::vector<std::string> tab);
         ~ConfigFile();
+
         int getInt(const std::string name) const;
         void loadFile(const std::string &filename);
         float getFloat(const std::string name) const;
         std::string getString(const std::string name) const;
         std::pair<int, int> getPaire(const std::string name) const;
+
+        std::vector<int> getTabInt(const std::string name) const;
+        std::vector<std::vector<int>> getTabTabInt(const std::string name) const;
 
     private:
         void cleanLine(std::string &str);
@@ -34,6 +38,7 @@ class ConfigFile : public IConfigFile
         size_t getStartOf(const std::string &line, size_t pos) const;
         std::pair<size_t, size_t> getOnceBlock(std::string &line) const;
         std::vector<std::string> getParseFile(const std::string &line) const;
+        std::vector<std::string> getParseIn(std::string sym, std::string line, bool activate = false) const;
 
     protected:
     private:

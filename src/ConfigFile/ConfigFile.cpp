@@ -66,8 +66,6 @@ void ConfigFile::loadFile(const std::string &filename)
         }
         this->objInline('{', '}');
         this->objInline('[', ']');
-        for (auto line : this->_fileContent)
-            std::cout << line << std::endl;
         this->correctFile();
     } else {
         throw std::invalid_argument("File close");
@@ -246,4 +244,91 @@ std::vector<std::string> ConfigFile::getParseFile(const std::string &line) const
         parse.push_back(onceStr);
     }
     return parse;
+}
+
+std::vector<std::string> ConfigFile::getParseIn(std::string sym, std::string line, bool activate) const
+{
+    size_t pos;
+    std::string tmp;
+    std::vector<std::string> tab;
+
+    while (1) {
+        pos = line.find(sym);
+        if (pos == std::string::npos)
+            break;
+        tmp = line.substr(0, pos);
+        if (pos + sym.length() >= line.length())
+            break;
+        line = line.substr(pos + sym.length(), line.length());
+        tab.push_back(tmp);
+    }
+    if (activate) {
+        if (line.length())
+            tab.push_back(line.substr(0, line.length() - 1));
+        for (std::vector<std::string>::iterator it = tab.begin(); it != tab.end(); it++) {
+            if (it->c_str()[0] == '[')
+                *it = it->substr(1, it->length());
+            if (it->c_str()[it->length()] == ']')
+                *it = it->substr(0, it->length() - 1);
+        }
+    } else {
+        if (line.length())
+            tab.push_back(line);
+    }
+    return tab;
+}
+
+std::vector<int> ConfigFile::getTabInt(const std::string name) const
+{
+    std::string input;
+    std::vector<int> tab;
+    std::vector<std::string> parse;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for Tab: " + line);
+    input = this->getAfterMatch(line, ": [");
+    input.pop_back();
+    parse = this->getParseIn(",", input);
+    for (auto once : parse) {
+        if (std::all_of(once.begin(), once.end(), ::isdigit))
+            tab.push_back(std::stoi(once));
+    }
+    return tab;
+}
+
+std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) const
+{
+    std::string input;
+    std::vector<int> tab;
+    std::vector<std::string> tmp;
+    std::vector<std::string> parse;
+    std::vector<std::vector<int>> array;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
+
+    if (line.empty())
+        throw ParserExceptions("No variable with name: " + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions("Incorrect line format for Tab: " + line);
+    input = this->getAfterMatch(line, ": [");
+    input.pop_back();
+    input.pop_back();
+    parse = this->getParseIn("],", input);
+    for (auto line : parse) {
+        tab.clear();
+        input = std::string(line.substr(1, line.length() - 1));
+        tmp = this->getParseIn(", ", input, false);
+        for (auto once : tmp) {
+            if (std::all_of(once.begin(), once.end(), ::isdigit))
+                tab.push_back(std::stoi(once));
+            else if (once.back() == ']')
+                tab.push_back(std::stoi(once));
+        }
+        array.push_back(tab);
+    }
+    return array;
 }
