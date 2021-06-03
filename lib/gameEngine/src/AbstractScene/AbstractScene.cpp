@@ -29,4 +29,5 @@ Entity AbstractScene::createLocalEntity()
     Entity entity = _entityManager.createEntity();
 
     _localEntities.push_back(entity);
+    return entity;
 }

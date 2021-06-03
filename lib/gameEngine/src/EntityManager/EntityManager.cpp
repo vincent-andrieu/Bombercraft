@@ -30,7 +30,16 @@ Entity EntityManager::createEntity()
 
 void EntityManager::removeEntity(Entity entity)
 {
-    return _entities.remove(entity);
+    // Hey Entity Register, remove "entity" from your register
+    _entities.remove(entity);
+    // Hey systems! Remove "entity" from your managed entity lists
+    this->_systemManager.onEntityRemoved(entity);
+    // Hey Component Registers! Remove the instances of the components of "entity".
+    for (auto &componentRegister : _componentRegisters) {
+        if (componentRegister != nullptr) {
+            componentRegister->tryRemove(entity);
+        }
+    }
 }
 
 SystemManager &EntityManager::getSystemManager()
