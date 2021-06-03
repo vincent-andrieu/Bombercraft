@@ -15,3 +15,10 @@ void SystemManager::onEntityUpdated(Entity entity, const Signature &signature)
         system->onEntityUpdated(entity, signature);
     }
 }
+
+void SystemManager::onEntityRemoved(Entity entity)
+{
+    for (auto &system : _systems) {
+        system->onEntityRemoved(entity);
+    }
+}

@@ -10,7 +10,7 @@
 
 #include "../Collision.hpp"
 #include "../../Data/MyVector/MyVector2.hpp"
-#include "../../Collidable/ICollidable.hpp"
+#include "../../../include/ICollidable.hpp"
 
 #include <functional>
 

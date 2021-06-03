@@ -122,6 +122,8 @@ void ProceduralMap::modelApply()
                 case TileDisponibility::TILE_FORCE_HARD: *map_it_x = TileType::TILE_HARD; break;
                 case TileDisponibility::TILE_FORCE_SOFT: *map_it_x = TileType::TILE_SOFT; break;
                 case TileDisponibility::TILE_FORCE_BONUS: *map_it_x = TileType::TILE_BONUS; break;
+                default:
+                    break;
             }
             map_it_x++;
         }
@@ -144,7 +146,7 @@ void ProceduralMap::mapInitEmpty()
 
     for (auto it_y : this->_mapModel) {
         list.clear();
-        for (auto it_x : it_y) {
+        for (__attribute__ ((unused))auto it : it_y) {
             list.push_back(TileType::TILE_DEFAULT);
         }
         this->_mapProcedural.push_back(list);

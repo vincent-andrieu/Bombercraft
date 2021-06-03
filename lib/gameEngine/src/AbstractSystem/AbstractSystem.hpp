@@ -31,9 +31,9 @@ namespace Engine
         void addEntity(Entity entity);
         void removeEntity(Entity entity);
 
-        virtual void onManagedEntityAdded(Entity entity) = 0;
+        virtual void onManagedEntityAdded(Entity) {};
 
-        virtual void onManagedEntityRemoved(Entity entity) = 0;
+        virtual void onManagedEntityRemoved(Entity) {};
 
       protected:
         const std::vector<Entity> &getManagedEntities() const;
