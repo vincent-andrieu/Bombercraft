@@ -1,0 +1,46 @@
+# Blender MTL File: 'Anim_Set_Bomb.blend'
+# Material Count: 4
+
+newmtl Bottom
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\TntBottom.png
+
+newmtl Side
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\TntSide.png
+
+newmtl Texture_Test
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Thomas Jouanolle\\Downloads\\Test.png
+
+newmtl Top
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\TntTop.png
