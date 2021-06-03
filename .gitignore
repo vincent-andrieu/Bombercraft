@@ -9,10 +9,6 @@ build
 .idea
 cmake-build-debug
 bomberman
-cmake-build-debug
-bomberman
-gameEngine
-!lib/gameEngine/
 ### C ###
 # Prerequisites
 *.d

@@ -22,7 +22,7 @@ SaveManager::~SaveManager()
         file.second.close();
 }
 
-inline bool SaveManager::directoryExists(const std::string &dirname)
+inline bool SaveManager::directoryExists(const string &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_directory(dirname)) {
         return true;
@@ -30,7 +30,7 @@ inline bool SaveManager::directoryExists(const std::string &dirname)
     return false;
 }
 
-inline bool SaveManager::fileExists(const std::string &dirname)
+inline bool SaveManager::fileExists(const string &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_regular_file(dirname)) {
         return true;
@@ -38,14 +38,14 @@ inline bool SaveManager::fileExists(const std::string &dirname)
     return false;
 }
 
-inline void SaveManager::createDirectory(const std::string &dirname)
+inline void SaveManager::createDirectory(const string &dirname)
 {
     std::filesystem::path my_path(getFileDir(dirname));
 
     std::filesystem::create_directory(my_path);
 }
 
-void SaveManager::setWorkingDirectory(const std::string &dirname)
+void SaveManager::setWorkingDirectory(const string &dirname)
 {
     _workingDirectory /= dirname;
     _workingDirectory = std::filesystem::canonical(_workingDirectory);
@@ -61,10 +61,10 @@ inline void SaveManager::unsetWorkingDirectory()
     _workingDirectory.replace_filename("");
 }
 
-void SaveManager::createFile(const std::string &filename)
+void SaveManager::createFile(const string &filename)
 {
     std::filesystem::path my_tmp_path(getFileDir(filename));
-    std::ofstream my_stream;
+    ofstream my_stream;
 
     my_stream.open(my_tmp_path);
     if (!my_stream.is_open())
@@ -73,13 +73,13 @@ void SaveManager::createFile(const std::string &filename)
     my_stream.close();
 }
 
-void SaveManager::setWritingFile(const std::string &filename)
+void SaveManager::setWritingFile(const string &filename)
 {
     std::filesystem::path my_tmp_path(getFileDir(filename));
 
     if (!fileExists(my_tmp_path))
         throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
-    _writingFiles.insert(std::make_pair(my_tmp_path, std::ofstream(my_tmp_path)));
+    _writingFiles.insert(std::make_pair(my_tmp_path, ofstream(my_tmp_path)));
     if (!_writingFiles.at(my_tmp_path).is_open()) {
         _writingFiles.erase(my_tmp_path);
         throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
@@ -88,7 +88,7 @@ void SaveManager::setWritingFile(const std::string &filename)
 
 void SaveManager::closeWritingFile()
 {
-    std::ofstream &my_stream(_writingFiles.begin()->second);
+    ofstream &my_stream(_writingFiles.begin()->second);
 
     if (my_stream.is_open()) {
         my_stream.close();
@@ -96,7 +96,7 @@ void SaveManager::closeWritingFile()
     _writingFiles.erase(_writingFiles.begin());
 }
 
-inline std::filesystem::path SaveManager::getFileDir(const std::string &filename)
+inline std::filesystem::path SaveManager::getFileDir(const string &filename)
 {
     std::filesystem::path my_path(_workingDirectory);
 
@@ -104,7 +104,7 @@ inline std::filesystem::path SaveManager::getFileDir(const std::string &filename
     return my_path;
 }
 
-void SaveManager::closeFile(const std::string &filename)
+void SaveManager::closeFile(const string &filename)
 {
     std::filesystem::path my_path(getFileDir(filename));
 
@@ -112,25 +112,59 @@ void SaveManager::closeFile(const std::string &filename)
     this->_writingFiles.erase(filename);
 }
 
-void SaveManager::write(const std::string &filename, const void *value, std::streamsize size)
+void SaveManager::write(const string &filename, const void *value, std::streamsize size)
 {
-    std::ofstream &file = this->_getFile(filename);
+    ofstream &file = this->_getWritingFile(filename);
 
+    file.write((char *) &size, sizeof(size_t));
     file.write((const char *) value, size);
 }
 
-void SaveManager::write(const std::string &filename, const std::string &value)
+void SaveManager::write(const string &filename, const string &value)
 {
-    std::ofstream &file = this->_getFile(filename);
+    ofstream &file = this->_getWritingFile(filename);
+    size_t size = value.length() + 1;
 
-    file.write(value.c_str(), value.length());
+    file.write((char *) &size, sizeof(size_t));
+    file.write(value.c_str(), size);
 }
 
-std::ofstream &SaveManager::_getFile(const std::string &filename)
+void SaveManager::read(const string &filename, void *value)
+{
+    ifstream &file = this->_getReadingFile(filename);
+    size_t size;
+
+    file.read((char *) &size, sizeof(size_t));
+    file.read((char *) value, size);
+}
+
+void SaveManager::read(const string &filename, string &value)
+{
+    ifstream &file = this->_getReadingFile(filename);
+    size_t size;
+    char *dest;
+
+    file.read((char *) &size, sizeof(size_t));
+    dest = new char[size];
+    file.read(dest, size);
+    value = dest;
+    delete dest;
+}
+
+ofstream &SaveManager::_getWritingFile(const string &filename)
 {
     if (this->_writingFiles.find(filename) != this->_writingFiles.end())
         return this->_writingFiles[filename];
 
-    this->_writingFiles[filename] = std::ofstream(filename);
+    this->_writingFiles[filename] = ofstream(filename);
     return this->_writingFiles[filename];
+}
+
+ifstream &SaveManager::_getReadingFile(const string &filename)
+{
+    if (this->_readingFiles.find(filename) != this->_readingFiles.end())
+        return this->_readingFiles[filename];
+
+    this->_readingFiles[filename] = ifstream(filename);
+    return this->_readingFiles[filename];
 }
