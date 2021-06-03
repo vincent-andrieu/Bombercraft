@@ -10,7 +10,7 @@
 
 #include "../Texture/ITexture.hpp"
 #include "../../include/object.hpp"
-#include "../Renderable/IRenderable.hpp"
+#include "../../include/IRenderable.hpp"
 
 namespace raylib
 {

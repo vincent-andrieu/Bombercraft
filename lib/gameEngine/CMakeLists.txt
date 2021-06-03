@@ -24,6 +24,7 @@ set(SRCS
         src/EntityContainer/EntityRegister.cpp
         src/Component/Component.cpp
         src/systems/PhysicsSystem/PhysicsSystem.cpp
+        src/systems/TimerSystem/TimerSystem.cpp
         src/AbstractSystem/AbstractSystem.cpp
         src/EntityManager/EntityManager.cpp
         src/SystemManager/SystemManager.cpp

@@ -22,10 +22,3 @@ void PhysicsSystem::update(float dt)
         position.y += velocity.y * dt;
     }
 }
-
-void PhysicsSystem::onManagedEntityAdded(Entity entity)
-{
-}
-void PhysicsSystem::onManagedEntityRemoved(Entity entity)
-{
-}

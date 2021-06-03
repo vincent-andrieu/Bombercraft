@@ -9,7 +9,6 @@
 #define SCENEMANAGER_HPP_
 
 #include "AbstractScene/AbstractScene.hpp"
-#include "IEventManager.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "env.hpp"
 #include <vector>
@@ -18,7 +17,7 @@ namespace Engine
 {
     class SceneManager {
         public:
-            SceneManager(IEventManager &events, EntityManager &entityManager);
+            SceneManager(EntityManager &entityManager);
             ~SceneManager();
 
         void run();
@@ -33,7 +32,6 @@ namespace Engine
         void setScene();
 
         private:
-            IEventManager &_eventManager;
             EntityManager &_entityManager;
             std::shared_ptr<AbstractScene> _currentScene;
             std::vector<std::shared_ptr<AbstractScene>> _scenes;
@@ -52,7 +50,7 @@ namespace Engine
             != _types.end()) {
                 throw std::exception();
         }
-        auto &scene = _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
+        _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
         _types.emplace_back(typeid(T));
         if (_currentScene == nullptr)
             _currentScene = _scenes.back();

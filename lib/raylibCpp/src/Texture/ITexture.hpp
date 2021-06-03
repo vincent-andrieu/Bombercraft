@@ -9,7 +9,7 @@
 #define ITEXTURE_HPP
 
 #include "../../include/object.hpp"
-#include "../Renderable/IRenderable.hpp"
+#include "../../include/IRenderable.hpp"
 
 namespace raylib
 {
