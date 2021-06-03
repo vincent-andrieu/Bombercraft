@@ -7,8 +7,7 @@
 
 #include "Animation.hpp"
 
-raylib::Animation::Animation(
-    const std::shared_ptr<ITexture> texture, const string &dirpath, const MyVector3 position, const RColor color)
+raylib::Animation::Animation(const std::string &texturePath, const string &dirpath, const MyVector3 position, const RColor color)
 {
     char **filenames = nullptr;
     int count = 0;
@@ -18,7 +17,20 @@ raylib::Animation::Animation(
     this->_rotation = {0.0f, 0.0f, 0.0f};
     this->_scale = 1.0f;
     this->_color = color;
-    this->_texture = texture;
+    this->_textures = {};
+    if (texturePath.compare("") != 0) {
+        if (DirectoryExists(texturePath.data())) {
+            filenames = GetDirectoryFiles(_path.data(), &count);
+            ChangeDirectory(_path.data());
+            for (size_t i = 0; i < (size_t) count; i++) {
+                _textures.push_back(LoadTexture(filenames[i]));
+            }
+            ClearDirectoryFiles();
+            ChangeDirectory(workingDirectory);
+        } else if (FileExists(texturePath.data())) {
+            _textures.push_back(LoadTexture(texturePath.data()));
+        }
+    }
     this->_path = dirpath;
     this->_currentFrame = 0;
     this->_start = std::chrono::system_clock::now();
@@ -32,10 +44,10 @@ raylib::Animation::Animation(
         ClearDirectoryFiles();
         ChangeDirectory(workingDirectory);
     }
-    if (_texture == nullptr)
+    if (_textures.size() == 0)
         return;
     for (size_t i = 0; i < _models.size(); i++) {
-        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, texture->getTexture());
+        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, _textures[i % _textures.size()]);
     }
 }
 
@@ -60,7 +72,7 @@ void raylib::Animation::draw()
         _start = std::chrono::system_clock::now();
     }
     if (_models.size() > 0) {
-        DrawModel(_models[_currentFrame], rayPos, _scale, _matchingColors.at(_color));        
+        DrawModel(_models[_currentFrame], rayPos, _scale, _matchingColors.at(_color));
     }
 }
 
@@ -114,13 +126,29 @@ void raylib::Animation::setPath(const string &path)
     }
 }
 
-void raylib::Animation::setTexture(const std::shared_ptr<ITexture> &texture)
+void raylib::Animation::setTexture(const std::string &texturePath)
 {
-    _texture = texture;
-    if (_texture == nullptr)
+    char **filenames = nullptr;
+    int count = 0;
+    const char *workingDirectory = GetWorkingDirectory();
+
+    if (texturePath.compare("") != 0) {
+        if (DirectoryExists(texturePath.data())) {
+            filenames = GetDirectoryFiles(_path.data(), &count);
+            ChangeDirectory(_path.data());
+            for (size_t i = 0; i < (size_t) count; i++) {
+                _textures.push_back(LoadTexture(filenames[i]));
+            }
+            ClearDirectoryFiles();
+            ChangeDirectory(workingDirectory);
+        } else if (FileExists(texturePath.data())) {
+            _textures.push_back(LoadTexture(texturePath.data()));
+        }
+    }
+    if (_textures.size() == 0)
         return;
     for (size_t i = 0; i < _models.size(); i++) {
-        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, texture->getTexture());
+        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, _textures[i % _textures.size()]);
     }
 }
 
