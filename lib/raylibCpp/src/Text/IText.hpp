@@ -9,6 +9,7 @@
 #define ITEXT_HPP
 
 #include "../Font/IFont.hpp"
+#include "../Font/Font.hpp"
 #include "../../include/object.hpp"
 #include "../Renderable/IRenderable.hpp"
 

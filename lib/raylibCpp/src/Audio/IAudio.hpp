@@ -20,6 +20,7 @@ namespace raylib
         virtual void stop() = 0;
         virtual void resume() = 0;
         virtual void pause() = 0;
+        virtual void update() = 0;
 
         virtual void setPath(const string &path) = 0;
         virtual void setVolume(const float volume) = 0;

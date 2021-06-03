@@ -17,6 +17,8 @@ raylib::Model::Model(const std::shared_ptr<ITexture> texture, const string &file
     this->_texture = texture;
     this->_path = filepath;
     this->_model = LoadModel(filepath.data());
+    if (_texture != nullptr)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
 }
 
 raylib::Model::~Model()
@@ -70,8 +72,9 @@ void raylib::Model::setPath(const string &path)
 
 void raylib::Model::setTexture(const std::shared_ptr<ITexture> &texture)
 {
-    this->_texture = texture;
-    SetMaterialTexture(&this->_model.materials[0], MAP_DIFFUSE, texture->getTexture());
+    _texture = texture;
+    if (_texture != nullptr)
+        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture->getTexture());
 }
 
 string raylib::Model::getPath() const

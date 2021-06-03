@@ -18,12 +18,14 @@ raylib::Window::Window(const MyVector2 size, const string &title, const RColor c
 
 void raylib::Window::open()
 {
-    InitWindow(this->_size.a, this->_size.b, this->_title.data());
-    SetTargetFPS(this->_fps);
+    InitWindow(_size.a, _size.b, _title.data());
+    InitAudioDevice();
+    SetTargetFPS(_fps);
 }
 
 void raylib::Window::close()
 {
+    CloseAudioDevice();
     CloseWindow();
 }
 

@@ -12,6 +12,8 @@
 #include "../../include/object.hpp"
 #include "../Renderable/IRenderable.hpp"
 
+typedef Model RModel;
+
 namespace raylib
 {
     class IModel : public IRenderable

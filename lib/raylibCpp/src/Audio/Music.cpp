@@ -40,7 +40,12 @@ void raylib::Music::pause()
     PauseMusicStream(this->_music);
 }
 
-void raylib::Music::setPath(const string &path)
+void raylib::Music::update()
+{
+    UpdateMusicStream(_music);
+}
+
+void raylib::Music::setPath(const std::string &path)
 {
     this->_path = path;
     UnloadMusicStream(this->_music);

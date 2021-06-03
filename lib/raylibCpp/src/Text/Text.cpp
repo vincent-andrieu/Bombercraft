@@ -11,7 +11,7 @@ raylib::Text::Text(const string &text, const MyVector2 position, const size_t si
 {
     this->_text = text;
     this->_position = position;
-    this->_font = nullptr;
+    this->_font = std::make_shared<raylib::Font>();
     this->_color = color;
     this->_size = size;
     this->_limit = {-1, -1, -1, -1};
