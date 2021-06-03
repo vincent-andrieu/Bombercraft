@@ -48,13 +48,6 @@ set_target_properties(${NAME}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
-        
-## CROSS-LIB
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/crossLib)
-set(CROSS_DIR ${PROJECT_SOURCE_DIR}/lib/crossLib)
-include_directories(${CROSS_DIR}/include)
-include_directories(${CROSS_DIR}/src)
-target_link_libraries(${NAME} cross)
 
 ## GAME-ENGINE
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)

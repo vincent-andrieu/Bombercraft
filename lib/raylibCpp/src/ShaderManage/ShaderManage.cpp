@@ -9,6 +9,8 @@
 
 using namespace raylib;
 
+namespace fs = std::filesystem;
+
 ShaderManage::ShaderManage() : _shaderList()
 {
 }
@@ -36,13 +38,14 @@ void ShaderManage::endShaderMode() const
 
 void ShaderManage::addShader(string filepath, string shaderName)
 {
+    fs::path filepathShader(filepath);
     std::unordered_map<string, Shader>::const_iterator it = this->_shaderList.find(shaderName);
 
     if (shaderName == "")
         shaderName = filepath;
     if (it == this->_shaderList.end())
         throw std::invalid_argument("Shader " + shaderName + "already exist.");
-    if (Cross::Unistd::my_access(filepath, Cross::aMode::fOk) == -1)
+    if (fs::exists(filepathShader) == false)
         throw std::invalid_argument("Filepath incorrect: " + filepath);
     this->_shaderList[shaderName] = LoadShader(NULL, TextFormat(filepath.c_str(), GLSL_VERSION));
 }
