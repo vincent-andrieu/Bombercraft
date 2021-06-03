@@ -32,7 +32,7 @@ namespace Engine
         virtual bool tryRemove(Entity entity) override;
         Entity getOwner(const T &component);
 
-        void save(Engine::SaveManager &saver) const;
+        void save(Engine::SaveManager &saver) const override;
 
       private:
         std::vector<T> _components;

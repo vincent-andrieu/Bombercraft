@@ -76,10 +76,29 @@ namespace Engine
         {
             write(_writingFiles.begin()->first, value);
         }
+        template <typename T, typename N> void writeActFile(const T value, const N size)
+        {
+            write(_writingFiles.begin()->first, value, size);
+        }
+        template <typename T> void readActFile(const T value)
+        {
+            read(_readingFiles.begin()->first, value);
+        }
+        template <typename T, typename N> void readActFile(const T value, const N size)
+        {
+            read(_readingFiles.begin()->first, value, size);
+        }
 
+      private:
+        std::filesystem::path _workingDirectory;
+        std::map<std::filesystem::path, ofstream> _writingFiles{};
+        std::map<std::filesystem::path, ifstream> _readingFiles{};
+
+        [[nodiscard]] ofstream &_getWritingFile(const string &filename);
+        [[nodiscard]] ifstream &_getReadingFile(const string &filename);
         template <typename T> void write(const string &filename, const T &value)
         {
-            ofstream &file = this->_getFile(filename);
+            ofstream &file = this->_getWritingFile(filename);
 
             file.write((char *) &value, sizeof(T));
         }
@@ -119,12 +138,6 @@ namespace Engine
         void write(const string &filename, const void *value, std::streamsize size);
         void write(const string &filename, const string &value);
 
-      private:
-        [[nodiscard]] ofstream &_getFile(const string &filename);
-
-        std::filesystem::path _workingDirectory;
-        std::map<std::filesystem::path, ofstream> _writingFiles{};
-        std::map<std::filesystem::path, ifstream> _readingFiles{};
         template <typename Key, typename T> void write(const string &filename, const std::map<Key, T> &value)
         {
             ofstream &file = this->_getWritingFile(filename);
@@ -148,9 +161,6 @@ namespace Engine
                 file.write((char *) &elem.second, sizeof(T));
             }
         }
-
-        void write(const string &filename, const void *value, streamsize size);
-        void write(const string &filename, const string &value);
 
         template <typename T> void read(const string &filename, T &value)
         {
@@ -256,9 +266,6 @@ namespace Engine
 
         void read(const string &filename, void *value);
         void read(const string &filename, string &value);
-        [[nodiscard]] ofstream &_getWritingFile(const string &filename);
-        [[nodiscard]] ifstream &_getReadingFile(const string &filename);
-
     };
 } // namespace Engine
 
