@@ -29,6 +29,7 @@ namespace Engine
         template <typename T, typename... Args> T *createSystem(Args &&...args);
 
         void onEntityUpdated(Entity entity, const Signature &signature);
+        void onEntityRemoved(Entity entity);
 
         template <typename T> T &getSystem();
 
