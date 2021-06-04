@@ -19,17 +19,23 @@ include_directories(./src)
 
 ## SOURCES
 set(SRCS
-        ./src/main.cpp
-        ./src/Game/Core/Core.cpp
-        ./src/Game/ProceduralMap/ProceduralMap.cpp
-        src/Components/Render3D/Render3D.cpp
-        src/Components/Render2D/Render2D.cpp
-        src/Systems/Render2D/Render2DSystem.cpp
-        src/Systems/Render3D/Render3DSystem.cpp
-        src/Scenes/DebugScene/DebugScene.cpp
-        ./src/ConfigFile/ConfigFile.cpp
-        ./src/Exceptions/Exceptions.cpp
-        )
+    # Core
+    src/main.cpp
+    src/Game/Core/Core.cpp
+    src/Game/ProceduralMap/ProceduralMap.cpp
+    src/ConfigFile/ConfigFile.cpp
+    src/Exceptions/Exceptions.cpp
+    # Scenes
+    src/Scenes/DebugScene/DebugScene.cpp
+    # Systems
+    src/Systems/Render2D/Render2DSystem.cpp
+    src/Systems/Render3D/Render3DSystem.cpp
+    src/Systems/Hitbox/HitboxSystem.cpp
+    # Components
+    src/Components/Render3D/Render3D.cpp
+    src/Components/Render2D/Render2D.cpp
+    src/Components/Hitbox/Hitbox.cpp
+)
 add_executable(${NAME} ${SRCS})
 
 if (MSVC)
@@ -39,9 +45,9 @@ else ()
 endif ()
 
 set_target_properties(${NAME}
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        )
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+)
 
 ## GAME-ENGINE
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)

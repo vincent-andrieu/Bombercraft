@@ -8,6 +8,8 @@
 #ifndef VELOCITY_HPP
 #define VELOCITY_HPP
 
+#include "Component/Component.hpp"
+
 namespace Engine
 {
     struct Velocity : public Component<Velocity> {

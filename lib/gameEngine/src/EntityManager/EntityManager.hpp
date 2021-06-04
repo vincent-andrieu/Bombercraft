@@ -40,8 +40,6 @@ namespace Engine
 
         template <typename T> T &getComponent(Entity entity);
 
-        template <typename T> const T &getComponent(Entity entity);
-
         template <typename... Ts> std::tuple<Ts &...> getComponents(Entity entity);
 
         template <typename T, typename... Args> void addComponent(Entity entity, Args &&...args);
@@ -85,8 +83,7 @@ namespace Engine
         return _entities.getSignature(entity)[T::type];
     }
 
-    template <typename... Ts>
-    bool EntityManager::hasComponents(Entity entity)
+    template <typename... Ts> bool EntityManager::hasComponents(Entity entity)
     {
         (this->checkComponentTypes<Ts>(), ...);
         auto requirements = Signature();
@@ -95,12 +92,6 @@ namespace Engine
     }
 
     template <typename T> T &EntityManager::getComponent(Entity entity)
-    {
-        this->checkComponentType<T>();
-        return this->getComponentContainer<T>()->get(entity);
-    }
-
-    template <typename T> const T &EntityManager::getComponent(Entity entity)
     {
         this->checkComponentType<T>();
         return this->getComponentContainer<T>()->get(entity);

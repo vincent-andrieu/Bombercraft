@@ -11,34 +11,39 @@ using namespace Game;
 
 static const std::string CONFIG_FILE = "bomberman.config";
 
+Engine::SystemManager Core::_systemManager = Engine::SystemManager();
+Engine::EntityManager Core::entityManager = Engine::EntityManager(Core::_systemManager);
+Engine::SceneManager Core::sceneManager = Engine::SceneManager(Core::entityManager);
 std::unique_ptr<raylib::Camera> Core::camera = nullptr;
 
 Core::Core()
-    : _settings(CONFIG_FILE), _window(_settings.getMyVector2("WIN_SIZE"), _settings.getString("WIN_TITLE"), static_cast<RColor>(_settings.getInt("WIN_BACK"))),
-    _entityManager(_systemManager), _sceneManager(_entityManager)
+    : _settings(CONFIG_FILE), _window(_settings.getMyVector2("WIN_SIZE"), _settings.getString("WIN_TITLE"),
+                                  static_cast<RColor>(_settings.getInt("WIN_BACK")))
 {
     /// COMPONENTS - DEFINITION
-    _entityManager.registerComponent<Component::Render2D>();
-    _entityManager.registerComponent<Component::Render3D>();
+    this->entityManager.registerComponent<Component::Render2D>();
+    this->entityManager.registerComponent<Component::Render3D>();
+    this->entityManager.registerComponent<Engine::Position>();
+    this->entityManager.registerComponent<Engine::Velocity>();
+    this->entityManager.registerComponent<Component::Hitbox>();
     /// SYSTEMS - CREATION
-    _systemManager.createSystem<System::Render3DSystem>(_entityManager);
-    _systemManager.createSystem<System::Render2DSystem>(_entityManager);
+    this->_systemManager.createSystem<Engine::PhysicsSystem>(this->entityManager);
+    this->_systemManager.createSystem<System::HitboxSystem>();
+    this->_systemManager.createSystem<System::Render3DSystem>(this->entityManager);
+    this->_systemManager.createSystem<System::Render2DSystem>(this->entityManager);
     // SCENES - CREATION
-    _sceneManager.createScene<DebugScene>(_systemManager, _entityManager);
-    this->camera = std::make_unique<raylib::Camera>(_settings.getMyVector3("CAM_POSITION"), _settings.getMyVector3("CAM_TARGET"), _settings.getMyVector3("CAM_UP"));
-}
-
-Core::~Core()
-{
+    this->sceneManager.createScene<DebugScene>(this->_systemManager, this->entityManager);
+    this->camera = std::make_unique<raylib::Camera>(
+        _settings.getMyVector3("CAM_POSITION"), _settings.getMyVector3("CAM_TARGET"), _settings.getMyVector3("CAM_UP"));
 }
 
 void Core::loop()
 {
-    _window.open();
-    while (_window.isOpen()) {
-        _window.clear();
-        _sceneManager.run();
-        _window.refresh();
+    this->_window.open();
+    while (this->_window.isOpen()) {
+        this->_window.clear();
+        this->sceneManager.run();
+        this->_window.refresh();
     }
-    _window.close();
+    this->_window.close();
 }

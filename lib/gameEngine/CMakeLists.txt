@@ -15,29 +15,35 @@ project(${NAME} VERSION 0.1 LANGUAGES CXX)
 
 ## INCLUDES
 include_directories(
-        ./include
-        ./src/
+    ./include
+    ./src/
 )
 
 ## SOURCES
 set(SRCS
-        src/EntityContainer/EntityRegister.cpp
-        src/Component/Component.cpp
-        src/systems/PhysicsSystem/PhysicsSystem.cpp
-        src/systems/TimerSystem/TimerSystem.cpp
-        src/AbstractSystem/AbstractSystem.cpp
-        src/EntityManager/EntityManager.cpp
-        src/SystemManager/SystemManager.cpp
-        src/AbstractScene/AbstractScene.cpp
-        src/SceneManager/SceneManager.cpp
-        src/SaveManager/SaveManager.cpp
-        )
+    # Scenes
+    src/SceneManager/SceneManager.cpp
+    src/AbstractScene/AbstractScene.cpp
+    # Systems
+    src/SystemManager/SystemManager.cpp
+    src/AbstractSystem/AbstractSystem.cpp
+    src/Systems/PhysicsSystem/PhysicsSystem.cpp
+    src/Systems/TimerSystem/TimerSystem.cpp
+    src/Systems/
+    # Entities
+    src/EntityContainer/EntityRegister.cpp
+    src/EntityManager/EntityManager.cpp
+    # Components
+    src/Component/Component.cpp
+        # Save
+    src/SaveManager/SaveManager.cpp
+)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 add_library(${NAME} SHARED ${SRCS})
 
-if (MSVC)
+if(MSVC)
     target_compile_options(${NAME} PRIVATE /W4 /WX)
-else ()
+else()
     target_compile_options(${NAME} PRIVATE -Wall -Wextra)
-endif ()
+endif()
