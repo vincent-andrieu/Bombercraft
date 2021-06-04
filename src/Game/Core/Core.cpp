@@ -11,7 +11,7 @@ using namespace Game;
 
 static const std::string CONFIG_FILE = "bomberman.config";
 
-Core::Core() : CoreData(), _settings(CONFIG_FILE)
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _settings(CONFIG_FILE)
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Render2D>();

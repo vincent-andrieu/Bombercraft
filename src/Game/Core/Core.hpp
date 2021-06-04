@@ -35,6 +35,9 @@ namespace Game
 
         void loop();
 
+      public:
+        Engine::EntityPack globalEntities;
+
       private:
         ConfigFile _settings;
     };
