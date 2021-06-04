@@ -12,7 +12,7 @@
 #include <algorithm>
 #include "ProceduralMap.hpp"
 
-ProceduralMap::ProceduralMap(size_t seed) : _seed((seed) ? seed : std::time(nullptr))
+ProceduralMap::ProceduralMap(unsigned int seed) : _seed((seed) ? seed : (unsigned int)std::time(nullptr))
 {
     std::srand(this->_seed);
 }
@@ -83,7 +83,7 @@ void ProceduralMap::generateMap()
 void ProceduralMap::randomFill(float prob, TileType type)
 {
     size_t totalTile = this->getTotalTile();
-    size_t nb = (prob / 100) * totalTile;
+    size_t nb = (size_t)(prob / 100) * totalTile;
     size_t endTile = this->getTotalEmptyTile();
     size_t random = 0;
     GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();

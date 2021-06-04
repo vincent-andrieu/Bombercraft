@@ -17,7 +17,7 @@ namespace GameModule
     class ProceduralMap : public IProceduralMap
     {
         public:
-            ProceduralMap(size_t seed = 0);
+            ProceduralMap(unsigned int seed = 0);
             ~ProceduralMap();
             void reset();
             MapType getProceduralMap();
