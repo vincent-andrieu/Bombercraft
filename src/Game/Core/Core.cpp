@@ -11,30 +11,31 @@ using namespace Game;
 
 static const std::string CONFIG_FILE = "bomberman.config";
 
-Engine::SystemManager Core::_systemManager = Engine::SystemManager();
-Engine::EntityManager Core::entityManager = Engine::EntityManager(Core::_systemManager);
-Engine::SceneManager Core::sceneManager = Engine::SceneManager(Core::entityManager);
 std::unique_ptr<raylib::Camera> Core::camera = nullptr;
 
 Core::Core()
-    : _settings(CONFIG_FILE), _window(_settings.getMyVector2("WIN_SIZE"), _settings.getString("WIN_TITLE"),
-                                  static_cast<RColor>(_settings.getInt("WIN_BACK")))
+    : _settings(CONFIG_FILE), _window(_settings.getMyVector2("WIN_SIZE"), _settings.getString("WIN_TITLE"), static_cast<RColor>(_settings.getInt("WIN_BACK"))),
+    _entityManager(_systemManager), _sceneManager(_entityManager)
 {
     /// COMPONENTS - DEFINITION
-    this->entityManager.registerComponent<Component::Render2D>();
-    this->entityManager.registerComponent<Component::Render3D>();
-    this->entityManager.registerComponent<Engine::Position>();
-    this->entityManager.registerComponent<Engine::Velocity>();
-    this->entityManager.registerComponent<Component::Hitbox>();
+    _entityManager.registerComponent<Component::Render2D>();
+    _entityManager.registerComponent<Component::Render3D>();
+    _entityManager.registerComponent<Component::ClickEvent>();
+    _entityManager.registerComponent<Component::KeyEvent>();
+    _entityManager.registerComponent<Component::MouseMoveEvent>();
     /// SYSTEMS - CREATION
-    this->_systemManager.createSystem<Engine::PhysicsSystem>(this->entityManager);
-    this->_systemManager.createSystem<System::HitboxSystem>();
-    this->_systemManager.createSystem<System::Render3DSystem>(this->entityManager);
-    this->_systemManager.createSystem<System::Render2DSystem>(this->entityManager);
+    _systemManager.createSystem<System::Render3DSystem>(_entityManager);
+    _systemManager.createSystem<System::Render2DSystem>(_entityManager);
+    _systemManager.createSystem<System::ClickEventSystem>(_entityManager);
+    _systemManager.createSystem<System::KeyEventSystem>(_entityManager);
+    _systemManager.createSystem<System::MouseEventSystem>(_entityManager);
     // SCENES - CREATION
-    this->sceneManager.createScene<DebugScene>(this->_systemManager, this->entityManager);
-    this->camera = std::make_unique<raylib::Camera>(
-        _settings.getMyVector3("CAM_POSITION"), _settings.getMyVector3("CAM_TARGET"), _settings.getMyVector3("CAM_UP"));
+    _sceneManager.createScene<DebugScene>(_systemManager, _entityManager, _eventManager);
+    this->camera = std::make_unique<raylib::Camera>(_settings.getMyVector3("CAM_POSITION"), _settings.getMyVector3("CAM_TARGET"), _settings.getMyVector3("CAM_UP"));
+}
+
+Core::~Core()
+{
 }
 
 void Core::loop()
@@ -42,7 +43,7 @@ void Core::loop()
     this->_window.open();
     while (this->_window.isOpen()) {
         this->_window.clear();
-        this->sceneManager.run();
+        this->_sceneManager.run();
         this->_window.refresh();
     }
     this->_window.close();

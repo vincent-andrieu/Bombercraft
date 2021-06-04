@@ -15,27 +15,33 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
+#include "Systems/Event/EventSystem.hpp"
+
 #include "Scenes/DebugScene/DebugScene.hpp"
 #include "ConfigFile/ConfigFile.hpp"
+
+#include "Components/ClickEvent.hpp"
+#include "Components/KeyEvent.hpp"
+#include "Components/MouseMoveEvent.hpp"
 
 namespace Game
 {
     class Core {
       public:
         Core();
-        ~Core() = default;
+        ~Core();
 
         void loop();
 
       public:
         static std::unique_ptr<raylib::Camera> camera;
-        static Engine::SceneManager sceneManager;
-        static Engine::EntityManager entityManager;
-
       private:
         ConfigFile _settings;
         raylib::Window _window;
-        static Engine::SystemManager _systemManager;
+        Engine::SystemManager _systemManager;
+        Engine::EntityManager _entityManager;
+        Engine::SceneManager _sceneManager;
+        raylib::Input _eventManager;
     };
 } // namespace Game
 
