@@ -35,7 +35,9 @@ set(SRCS
     src/EntityManager/EntityManager.cpp
     # Components
     src/Component/Component.cpp
-        # Save
+    # Other
+    src/EntityPack/EntityPack.cpp
+    # Save
     src/SaveManager/SaveManager.cpp
 )
 

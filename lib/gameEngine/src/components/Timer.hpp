@@ -16,7 +16,7 @@ namespace Engine
 {
     class Timer : public Component<Timer> {
       public:
-        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, SCRIPT_HANDLER &handler)
+        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
             : interval(time), startTime(std::chrono::system_clock::now()), script(entityManager, sceneManager, handler)
         {
         }

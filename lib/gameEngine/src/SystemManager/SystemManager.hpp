@@ -69,7 +69,7 @@ namespace Engine {
         });
 
         if (type_it == _types.end()) {
-            throw std::exception();
+            throw std::invalid_argument("Invalid system type (not registered?)");
         }
         index = std::distance(_types.begin(), type_it);
         return *(static_cast<T *>(_systems[index].get()));

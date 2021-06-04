@@ -9,7 +9,7 @@
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Game/Core/Core.hpp"
 
-System::HitboxSystem::HitboxSystem() : AbstractSystem(Game::Core::entityManager)
+System::HitboxSystem::HitboxSystem() : AbstractSystem(*Game::Core::entityManager)
 {
     this->setRequirements<Component::Hitbox>();
 }

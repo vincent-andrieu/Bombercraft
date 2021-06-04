@@ -24,3 +24,8 @@ void SceneManager::run()
         _currentScene->update();
     }
 }
+
+std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
+{
+    return _currentScene;
+}

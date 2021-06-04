@@ -8,6 +8,8 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
+#include "Game/CoreData/CoreData.hpp"
+
 #include "raylib.hpp"
 #include "GameEngine.hpp"
 
@@ -15,27 +17,26 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
+#include "Systems/Event/EventSystem.hpp"
+
 #include "Scenes/DebugScene/DebugScene.hpp"
-#include "ConfigFile/ConfigFile.hpp"
+
+#include "Components/ClickEvent.hpp"
+#include "Components/KeyEvent.hpp"
+#include "Components/MouseMoveEvent.hpp"
+#include "Components/Hitbox/Hitbox.hpp"
 
 namespace Game
 {
-    class Core {
+    class Core : public CoreData {
       public:
         Core();
-        ~Core() = default;
+        ~Core();
 
         void loop();
 
       public:
-        static std::unique_ptr<raylib::Camera> camera;
-        static Engine::SceneManager sceneManager;
-        static Engine::EntityManager entityManager;
-
-      private:
-        ConfigFile _settings;
-        raylib::Window _window;
-        static Engine::SystemManager _systemManager;
+        Engine::EntityPack globalEntities;
     };
 } // namespace Game
 

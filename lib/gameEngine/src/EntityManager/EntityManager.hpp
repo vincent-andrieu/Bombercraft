@@ -106,6 +106,9 @@ namespace Engine
     template <typename T, typename... Args> void EntityManager::addComponent(Entity entity, Args &&...args)
     {
         this->checkComponentType<T>();
+        if (_componentRegisters[T::type] == nullptr) {
+            throw std::invalid_argument("Invalid component type (not registered?)");
+        }
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
         // Send message to system
         const Signature &signature = _entities.getSignature(entity);
