@@ -9,6 +9,8 @@ build
 .idea
 cmake-build-debug
 bomberman
+Engine_Save
+
 ### C ###
 # Prerequisites
 *.d
