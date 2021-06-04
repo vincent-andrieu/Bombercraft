@@ -17,12 +17,17 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::ClickEvent>();
     CoreData::entityManager->registerComponent<Component::KeyEvent>();
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
+    CoreData::entityManager->registerComponent<Component::Hitbox>();
+    CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Engine::Velocity>();
     /// SYSTEMS - CREATION
     CoreData::_systemManager->createSystem<System::Render3DSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::Render2DSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::ClickEventSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::KeyEventSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::MouseEventSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager), (*CoreData::entityManager), (*CoreData::eventManager));
 }

@@ -24,6 +24,7 @@
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
 #include "Components/MouseMoveEvent.hpp"
+#include "Components/Hitbox/Hitbox.hpp"
 
 namespace Game
 {

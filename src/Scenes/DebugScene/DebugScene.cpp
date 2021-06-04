@@ -49,12 +49,12 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManag
             nullptr, blockPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RRED));
     _entityManager.addComponent<Component::Hitbox>(
         block, blockPos, (raylib::MyVector3){50, 50, 50}, [](const Engine::Entity &fromEntity, const Engine::Entity &toEntity) {
-          auto cubeComponent = Game::Core::entityManager.getComponent<Component::Render3D>(fromEntity);
+          auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
           auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
 
           cube->setColor(raylib::RColor::RBLUE);
     });
-    auto moveableEntity = this->createLocalEntity();
+    auto moveableEntity = this->localEntities.createEntity("movableEntity");
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RMAGENTA));
