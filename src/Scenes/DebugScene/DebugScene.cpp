@@ -23,22 +23,26 @@ static Component::eventScript clickHandler = [](const Engine::Entity) {
 static const EventRequirement keyHandlerRequirements(0, false, {raylib::KeyBoard::IKEY_S}, {});
 static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto scene = CoreData::sceneManager->getCurrentScene();
-    auto entity = scene->createLocalEntity();
+    auto entity = scene->localEntities.createAnonymousEntity();
 
     CoreData::entityManager->addComponent<Component::Render2D>(
         entity, std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30}));
     std::cout << "Key S pressed !!!" << std::endl;
+    // Change color of the cube:
+    auto block = scene->localEntities.getEntity("redBlock");
+    static_cast<raylib::Cuboid *>(CoreData::entityManager->getComponent<Component::Render3D>(block).modele.get())
+        ->setColor(raylib::RColor::RGREEN);
 };
 
 DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManager &entityManager, raylib::Input &eventManager)
     : AbstractScene(systemManager, entityManager), SceneWithEvents(eventManager)
 {
     /// ENTITIES - CREATION
-    auto rect = this->createLocalEntity();
+    auto rect = this->localEntities.createEntity("whiteRectangle");
     _entityManager.addComponent<Component::Render2D>(
         rect, std::make_shared<raylib::Rectangle>((raylib::MyVector2){10, 10}, (raylib::MyVector2){20, 20}));
 
-    auto block = this->createLocalEntity();
+    auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);
     _entityManager.addComponent<Component::Render3D>(block,
         std::make_shared<raylib::Cuboid>(
