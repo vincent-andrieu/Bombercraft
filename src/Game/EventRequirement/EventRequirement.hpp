@@ -28,7 +28,7 @@ namespace Game {
             std::vector<raylib::KeyBoard> const &keyPress = {},
             std::vector<raylib::KeyBoard> const &keyRelease = {});
 
-        bool isTrigger(raylib::Input &eventManager);
+        bool isTrigger(raylib::Input &eventManager) const;
 
       private:
         bool triggerClick(raylib::Input &eventManager) const;

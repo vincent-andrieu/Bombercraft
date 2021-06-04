@@ -14,7 +14,7 @@
 namespace Component {
     class KeyEvent : public AbstractEvent, public Engine::Component<KeyEvent> {
       public:
-        KeyEvent(eventScript &handler, std::shared_ptr<Game::EventRequirement> requirements)
+        KeyEvent(eventScript &handler, Game::EventRequirement const &requirements)
             : AbstractEvent(handler, requirements)
         {}
     };

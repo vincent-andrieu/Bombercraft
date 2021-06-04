@@ -7,15 +7,14 @@
 
 #include "AbstractEvent.hpp"
 
-Component::AbstractEvent::AbstractEvent(eventScript &handler,
-    std::shared_ptr<Game::EventRequirement> requirements)
+Component::AbstractEvent::AbstractEvent(eventScript &handler, Game::EventRequirement const &requirements)
     : _handler(handler), _requirements(requirements)
 {
 }
 
 void Component::AbstractEvent::trigger(Engine::Entity entity)
 {
-    if (_requirements->isTrigger(*Game::CoreData::eventManager)) {
+    if (_requirements.get().isTrigger(*Game::CoreData::eventManager)) {
         (_handler.get())(entity);
     }
 }

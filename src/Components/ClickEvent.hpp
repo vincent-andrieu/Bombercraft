@@ -14,7 +14,7 @@
 namespace Component {
     class ClickEvent : public AbstractEvent, public Engine::Component<ClickEvent> {
       public:
-        ClickEvent(eventScript &handler, std::shared_ptr<Game::EventRequirement> requirements)
+        ClickEvent(eventScript &handler, Game::EventRequirement const &requirements)
             : AbstractEvent(handler, requirements)
         {}
     };

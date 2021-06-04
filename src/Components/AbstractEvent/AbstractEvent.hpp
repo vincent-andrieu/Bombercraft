@@ -20,13 +20,13 @@ namespace Component
 
     class AbstractEvent {
       public:
-        AbstractEvent(eventScript &handler, std::shared_ptr<Game::EventRequirement> requirements);
+        AbstractEvent(eventScript &handler, Game::EventRequirement const &requirements);
 
         void trigger(Engine::Entity entity);
 
       private:
         std::reference_wrapper<eventScript> _handler;
-        std::shared_ptr<Game::EventRequirement> _requirements;
+        std::reference_wrapper<const Game::EventRequirement> _requirements;
     };
 } // namespace Component
 
