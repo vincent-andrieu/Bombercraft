@@ -35,6 +35,8 @@ set(SRCS
     src/EntityManager/EntityManager.cpp
     # Components
     src/Component/Component.cpp
+    # Other
+    src/EntityPack/EntityPack.cpp
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
