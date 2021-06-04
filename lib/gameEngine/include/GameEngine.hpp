@@ -17,6 +17,7 @@
 #include "EntityContainer/EntityRegister.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "AbstractSystem/AbstractSystem.hpp"
+#include "SaveManager/SaveManager.hpp"
 
 #include "components/Position.hpp"
 #include "components/Velocity.hpp"

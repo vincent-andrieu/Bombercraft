@@ -102,6 +102,8 @@ namespace Engine
             read(_readingFiles.begin()->first, value, size);
         }
 
+        static void printException(const std::filesystem::filesystem_error &except);
+
       private:
         std::filesystem::path _workingDirectory;
         std::map<std::filesystem::path, std::shared_ptr<ofstream>> _writingFiles{};

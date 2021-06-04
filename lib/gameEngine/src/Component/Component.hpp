@@ -23,7 +23,8 @@ namespace Engine
          */
         static const std::size_t type;
 
-        virtual void save(SaveManager &saver) const;
+        virtual void save(SaveManager &saver) const = 0;
+        virtual void load(SaveManager &saver) = 0;
     };
 
     std::size_t generateComponentType();

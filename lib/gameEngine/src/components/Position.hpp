@@ -13,12 +13,33 @@
 namespace Engine
 {
     struct Position : public Component<Position> {
-        Position(float x, float y) : x(x), y(y) {}
-        Position() : x(0), y(0) {}
+        Position(float x, float y) : x(x), y(y)
+        {
+        }
+        Position() : x(0), y(0)
+        {
+        }
 
         float x;
         float y;
+
+        void save(SaveManager &saver) const override
+        {
+            try {
+                saver.closeWritingFile();
+            } catch (const std::filesystem::filesystem_error &my_e) {
+                SaveManager::printException(my_e);
+            }
+        }
+        void load(SaveManager &saver) override
+        {
+            try {
+                saver.closeReadingFile();
+            } catch (const std::filesystem::filesystem_error &my_e) {
+                SaveManager::printException(my_e);
+            }
+        }
     };
-}
+} // namespace Engine
 
 #endif // POSITION_HPP

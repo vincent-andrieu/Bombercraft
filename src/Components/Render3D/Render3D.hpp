@@ -19,8 +19,11 @@ namespace Component
         Render3D(std::shared_ptr<raylib::IRenderable> object);
         ~Render3D() = default;
 
+        void save(Engine::SaveManager &saver) const override;
+        void load(Engine::SaveManager &saver) override;
+
         std::shared_ptr<raylib::IRenderable> modele;
     };
-}
+} // namespace Component
 
 #endif // RENDER3D_HPP

@@ -9,10 +9,15 @@
 
 using namespace Engine;
 
-SaveManager::SaveManager(const std::string &dirname) : _workingDirectory(std::filesystem::canonical(dirname))
+SaveManager::SaveManager(const std::string &dirname)
 {
-    if (!std::filesystem::exists(_workingDirectory) || !std::filesystem::is_directory(_workingDirectory)) {
-        createDirectory(_workingDirectory);
+    try {
+        if (!std::filesystem::exists(dirname) || !std::filesystem::is_directory(dirname)) {
+            createDirectory(dirname);
+        }
+        _workingDirectory = std::filesystem::canonical(dirname);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
     }
 }
 
@@ -190,4 +195,9 @@ ifstream &SaveManager::_getReadingFile(const string &filename)
 
     this->_readingFiles[filename] = std::make_unique<ifstream>(filename);
     return *this->_readingFiles[filename];
+}
+
+void SaveManager::printException(const std::filesystem::filesystem_error &except)
+{
+    std::cerr << except.what() << std::endl;
 }

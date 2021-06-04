@@ -18,7 +18,8 @@ namespace Engine
       public:
         Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, SCRIPT_HANDLER &handler)
             : interval(time), startTime(std::chrono::system_clock::now()), script(entityManager, sceneManager, handler)
-        {}
+        {
+        }
         ~Timer() = default;
 
         void start()
@@ -29,8 +30,8 @@ namespace Engine
         bool eval(Entity entity)
         {
             std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-            std::chrono::milliseconds t = std::chrono::duration_cast<std::chrono::milliseconds>(
-                now.time_since_epoch() - startTime.time_since_epoch());
+            std::chrono::milliseconds t =
+                std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - startTime.time_since_epoch());
 
             if (t >= interval) {
                 startTime = std::chrono::system_clock::now();
@@ -40,10 +41,26 @@ namespace Engine
             return false;
         }
 
+        void save(SaveManager &saver) const override
+        {
+            try {
+                saver.closeWritingFile();
+            } catch (const std::filesystem::filesystem_error &my_e) {
+                SaveManager::printException(my_e);
+            }
+        }
+        void load(SaveManager &saver) override
+        {
+            try {
+                saver.closeReadingFile();
+            } catch (const std::filesystem::filesystem_error &my_e) {
+                SaveManager::printException(my_e);
+            }
+        }
         std::chrono::milliseconds interval;
         std::chrono::system_clock::time_point startTime;
         Script script;
     };
-}
+} // namespace Engine
 
 #endif // TIMER_HPP

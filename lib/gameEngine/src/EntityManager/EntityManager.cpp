@@ -52,13 +52,18 @@ void EntityManager::save(const std::string &saveName)
     try {
         _saver.createDirectory(saveName);
         _saver.setWorkingDirectory(saveName);
+        _entities.save(_saver);
     } catch (const std::filesystem::filesystem_error &my_e) {
-        std::cerr << my_e.what() << std::endl;
+        SaveManager::printException(my_e);
         return;
     }
-    _entities.save(_saver);
     for (const auto &component_register : _componentRegisters) {
-        component_register->save(_saver);
+        try {
+            component_register->save(_saver);
+        } catch (const std::filesystem::filesystem_error &my_e) {
+            SaveManager::printException(my_e);
+            return;
+        }
     }
 }
 
@@ -66,12 +71,16 @@ void EntityManager::load(const std::string &saveName)
 {
     try {
         _saver.setWorkingDirectory(saveName);
+        _entities.load(_saver);
     } catch (const std::filesystem::filesystem_error &my_e) {
-        std::cerr << my_e.what() << std::endl;
+        SaveManager::printException(my_e);
         return;
     }
-    _entities.load(_saver);
     for (const auto &component_register : _componentRegisters) {
-        component_register->load(_saver);
+        try {
+            component_register->load(_saver);
+        } catch (const std::filesystem::filesystem_error &my_e) {
+            SaveManager::printException(my_e);
+        }
     }
 }

@@ -60,10 +60,14 @@ void EntityRegister::saveFreeEntities(SaveManager &saver) const
 {
     const std::string filename("FreeEntities");
 
-    saver.createFile(filename);
-    saver.setWritingFile(filename);
-    saver.writeActFile(_freeEntities);
-    saver.closeWritingFile();
+    try {
+        saver.createFile(filename);
+        saver.setWritingFile(filename);
+        saver.writeActFile(_freeEntities);
+        saver.closeWritingFile();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
+    }
 }
 
 void EntityRegister::loadFreeEntities(SaveManager &saver)
@@ -71,7 +75,11 @@ void EntityRegister::loadFreeEntities(SaveManager &saver)
     const std::string filename("FreeEntities");
 
     _freeEntities.clear();
-    saver.setWritingFile(filename);
-    saver.readActFile(_freeEntities);
-    saver.closeWritingFile();
+    try {
+        saver.setWritingFile(filename);
+        saver.readActFile(_freeEntities);
+        saver.closeWritingFile();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
+    }
 }

@@ -30,6 +30,7 @@ set(SRCS
         src/SystemManager/SystemManager.cpp
         src/AbstractScene/AbstractScene.cpp
         src/SceneManager/SceneManager.cpp
+        src/SaveManager/SaveManager.cpp
         )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
