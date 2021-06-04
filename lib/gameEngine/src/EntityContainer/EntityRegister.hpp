@@ -29,11 +29,13 @@ namespace Engine
         Entity create();
         void remove(Entity entity);
         void save(SaveManager &saver) const;
+        void load(SaveManager &saver);
 
       private:
         std::vector<Signature> _entitySignatures;
         std::vector<Entity> _freeEntities;
         void saveFreeEntities(SaveManager &saver) const;
+        void loadFreeEntities(SaveManager &saver);
     };
 } // namespace Engine
 

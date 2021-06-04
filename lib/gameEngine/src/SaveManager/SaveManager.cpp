@@ -54,7 +54,8 @@ void SaveManager::setWorkingDirectory(const string &dirname)
 
     if (!directoryExists(_workingDirectory)) {
         unsetWorkingDirectory();
-        throw std::filesystem::filesystem_error("No such directory", std::make_error_code(std::errc(ENOENT)));
+        throw std::filesystem::filesystem_error(
+            "Cannot use directory", _workingDirectory, std::make_error_code(std::errc(ENOENT)));
     }
 }
 
@@ -111,6 +112,7 @@ void SaveManager::setReadingFile(const string &filename)
         _readingFiles.erase(my_tmp_path);
         throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
     }
+    // TODO add magic number and header
 }
 
 void SaveManager::closeReadingFile()

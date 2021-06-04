@@ -33,6 +33,7 @@ namespace Engine
         Entity getOwner(const T &component);
 
         void save(Engine::SaveManager &saver) const override;
+        void load(Engine::SaveManager &saver) const override;
 
       private:
         std::vector<T> _components;
@@ -45,6 +46,12 @@ namespace Engine
         void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
         //        void saveEntityComponentIndex(Engine::SaveManager &saver, Entity owner) const;
         void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
+
+        void loadEntities(Engine::SaveManager &saver) const;
+        void loadEntity(Engine::SaveManager &saver, Entity owner) const;
+        void loadEntitySignature(Engine::SaveManager &saver, Entity owner) const;
+        //        void loadEntityComponentIndex(Engine::SaveManager &saver, Entity owner) const;
+        void loadEntityComponents(Engine::SaveManager &saver, Entity owner) const;
     };
 
     template <typename T>
@@ -156,6 +163,55 @@ namespace Engine
     template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner) const
     {
         _components.at(_ownersIndex.at(owner)).save(saver);
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::load(Engine::SaveManager &saver) const
+    {
+        //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+        //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+        loadEntities(saver);
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::loadEntities(Engine::SaveManager &saver) const
+    {
+        for (const auto &owner : _componentOwners) {
+            loadEntity(saver, owner);
+        }
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::loadEntity(Engine::SaveManager &saver, Entity owner) const
+    {
+        const std::string dirPrefix("Entity_");
+        const std::string dirname(dirPrefix + std::to_string(owner));
+
+        saver.setWorkingDirectory(dirname);
+        loadEntitySignature(saver, owner);
+        loadEntityComponents(saver, owner);
+        saver.unsetWorkingDirectory();
+    }
+
+    template <typename T> void ComponentTypeRegister<T>::loadEntitySignature(Engine::SaveManager &saver, Entity owner) const
+    {
+        const std::string filename("EntitySignature");
+
+        saver.setWritingFile(filename);
+        saver.writeActFile(_entitySignatures[owner]);
+        saver.closeWritingFile();
+    }
+
+    //    template <typename T> void ComponentTypeRegister<T>::loadEntityComponentIndex(Engine::SaveManager &saver, Entity owner)
+    //    const
+    //    {
+    //        const std::string filename("EntityComponentIndex");
+    //
+    //        saver.setWritingFile(filename);
+    //        saver.writeActFile(_ownersIndex.at(owner));
+    //        saver.closeFile(filename);
+    //}
+
+    template <typename T> void ComponentTypeRegister<T>::loadEntityComponents(Engine::SaveManager &saver, Entity owner) const
+    {
+        _components.at(_ownersIndex.at(owner)).load(saver);
     }
 
 } // namespace Engine

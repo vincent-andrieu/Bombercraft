@@ -47,10 +47,31 @@ SystemManager &EntityManager::getSystemManager()
     return _systemManager;
 }
 
-void EntityManager::save()
+void EntityManager::save(const std::string &saveName)
 {
+    try {
+        _saver.createDirectory(saveName);
+        _saver.setWorkingDirectory(saveName);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+        return;
+    }
     _entities.save(_saver);
     for (const auto &component_register : _componentRegisters) {
         component_register->save(_saver);
+    }
+}
+
+void EntityManager::load(const std::string &saveName)
+{
+    try {
+        _saver.setWorkingDirectory(saveName);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+        return;
+    }
+    _entities.load(_saver);
+    for (const auto &component_register : _componentRegisters) {
+        component_register->load(_saver);
     }
 }
