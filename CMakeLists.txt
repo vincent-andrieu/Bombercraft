@@ -7,6 +7,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME bomberman)
@@ -22,6 +23,7 @@ set(SRCS
         src/main.cpp
         # GAME
         src/Game/Core/Core.cpp
+        src/Game/CoreData/CoreData.cpp
         src/Game/ProceduralMap/ProceduralMap.cpp
         src/Game/EventRequirement/EventRequirement.cpp
         src/ConfigFile/ConfigFile.cpp

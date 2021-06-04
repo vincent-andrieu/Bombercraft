@@ -8,6 +8,8 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
+#include "Game/CoreData/CoreData.hpp"
+
 #include "raylib.hpp"
 #include "GameEngine.hpp"
 
@@ -26,22 +28,15 @@
 
 namespace Game
 {
-    class Core {
+    class Core : public CoreData {
       public:
         Core();
         ~Core();
 
         void loop();
 
-      public:
-        static std::unique_ptr<raylib::Camera> camera;
       private:
         ConfigFile _settings;
-        raylib::Window _window;
-        Engine::SystemManager _systemManager;
-        Engine::EntityManager _entityManager;
-        Engine::SceneManager _sceneManager;
-        raylib::Input _eventManager;
     };
 } // namespace Game
 

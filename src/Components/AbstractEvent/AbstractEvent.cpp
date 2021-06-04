@@ -7,16 +7,15 @@
 
 #include "AbstractEvent.hpp"
 
-Component::AbstractEvent::AbstractEvent(Engine::SceneManager &sceneManager,
-    eventScript &handler, Game::EventRequirement &requirements)
-    : _sceneManager(sceneManager), _handler(handler), _requirements(requirements)
+Component::AbstractEvent::AbstractEvent(eventScript &handler,
+    std::shared_ptr<Game::EventRequirement> requirements)
+    : _handler(handler), _requirements(requirements)
 {
 }
 
-void Component::AbstractEvent::trigger(Engine::EntityManager &entityManager,
-    raylib::Input &eventManager, Engine::Entity entity)
+void Component::AbstractEvent::trigger(Engine::Entity entity)
 {
-//    if (_requirements.isTrigger(eventManager)) {
-//        _hander(entityManager, _sceneManager, eventManager, entity);
-//    }
+    if (_requirements->isTrigger(*Game::CoreData::eventManager)) {
+        (_handler.get())(entity);
+    }
 }

@@ -15,9 +15,8 @@
 namespace Component {
     class MouseMoveEvent : public AbstractEvent, public Engine::Component<MouseMoveEvent> {
       public:
-        MouseMoveEvent(Engine::SceneManager &sceneManager, eventScript &hander,
-            Game::EventRequirement &requirements)
-            : AbstractEvent(sceneManager, hander, requirements)
+        MouseMoveEvent(eventScript &handler, std::shared_ptr<Game::EventRequirement> requirements)
+            : AbstractEvent(handler, requirements)
         {}
     };
 }

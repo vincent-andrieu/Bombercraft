@@ -29,7 +29,7 @@ namespace System
             for (const Engine::Entity &entity : this->getManagedEntities()) {
                 auto [event] = _entityManager.getComponents<T>(entity);
 
-                event.trigger(_entityManager, eventManager, entity);
+                event.trigger(entity);
             }
         }
     };
