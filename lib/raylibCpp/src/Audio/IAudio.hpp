@@ -10,11 +10,9 @@
 
 #include "../../include/object.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT IAudio {
+    class IAudio {
       public:
         virtual ~IAudio() = default;
 

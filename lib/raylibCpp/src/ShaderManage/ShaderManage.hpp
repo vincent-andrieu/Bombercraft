@@ -13,11 +13,9 @@
 #include <filesystem>
 #include <unordered_map>
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT ShaderManage : public IShaderManage {
+    class ShaderManage : public IShaderManage {
       public:
         ShaderManage();
         ~ShaderManage();

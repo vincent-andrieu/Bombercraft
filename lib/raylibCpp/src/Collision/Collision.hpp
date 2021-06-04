@@ -16,13 +16,11 @@
 #include "ObjectType/ObjectRectangle.hpp"
 #include "raylib.h"
 
-#include "export.hpp"
-
 using namespace ObjectType;
 
 namespace raylib
 {
-    class EXPORT Collision
+    class Collision
     {
         public:
             // 2D

@@ -12,11 +12,9 @@
 
 #include "IText.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT Text : public IText {
+    class Text : public IText {
       public:
         Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE);
         ~Text() = default;

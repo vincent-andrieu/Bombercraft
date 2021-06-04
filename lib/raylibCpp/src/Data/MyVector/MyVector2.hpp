@@ -9,11 +9,10 @@
 #define MYVECTOR2_HPP
 
 #include "raylib.h"
-#include "export.hpp"
 
 namespace raylib
 {
-    class EXPORT MyVector2
+    class MyVector2
     {
         public:
             MyVector2();
@@ -26,11 +25,11 @@ namespace raylib
             float a;
             float b;
     };
-    EXPORT MyVector2 operator+(MyVector2 const &first, MyVector2 const &second);
-    EXPORT MyVector2 operator-(MyVector2 const &first, MyVector2 const &second);
-    EXPORT MyVector2 operator*(MyVector2 const &first, MyVector2 const &second);
-    EXPORT MyVector2 operator/(MyVector2 const &first, MyVector2 const &second);
-    EXPORT bool operator==(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator+(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator-(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator*(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator/(MyVector2 const &first, MyVector2 const &second);
+    bool operator==(MyVector2 const &first, MyVector2 const &second);
 };
 
 #endif

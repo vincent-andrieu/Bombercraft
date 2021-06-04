@@ -10,11 +10,9 @@
 
 #include "../../include/object.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT IShaderManage {
+    class IShaderManage {
       public:
         virtual ~IShaderManage() = default;
         virtual void startShaderMode(string shaderName) const = 0;

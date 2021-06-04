@@ -12,11 +12,9 @@
 
 #include "IWindow.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT Window : public IWindow {
+    class Window : public IWindow {
       public:
         Window(const MyVector2 size, const string &title, const RColor color, const int fps = 60);
         ~Window() = default;

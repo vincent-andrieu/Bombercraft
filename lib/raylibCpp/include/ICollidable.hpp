@@ -8,16 +8,14 @@
 #ifndef ICOLLIDABLE_HPP
 #define ICOLLIDABLE_HPP
 
-#include "export.hpp"
-
 namespace ObjectType
 {
-    class EXPORT ObjectBox;
+    class ObjectBox;
 }
 
 namespace raylib
 {
-    class EXPORT ICollidable
+    class ICollidable
     {
         public :
             virtual ~ICollidable() {};

@@ -12,11 +12,9 @@
 
 #include "ISolid.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT Cuboid : public ISolid {
+    class Cuboid : public ISolid {
       public:
         Cuboid(const std::shared_ptr<ITexture> texture, const MyVector3 position, const MyVector3 size,
             const RColor color = RColor::RWHITE);

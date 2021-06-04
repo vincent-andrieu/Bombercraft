@@ -13,11 +13,9 @@
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT IText : public IRenderable {
+    class IText : public IRenderable {
       public:
         virtual ~IText() = default;
 

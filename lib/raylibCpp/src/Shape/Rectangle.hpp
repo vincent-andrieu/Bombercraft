@@ -12,11 +12,9 @@
 
 #include "IShape.hpp"
 
-#include "export.hpp"
-
 namespace raylib
 {
-    class EXPORT Rectangle : public IShape {
+    class Rectangle : public IShape {
       public:
         Rectangle(const MyVector2 position, const MyVector2 size, const RColor color = RColor::RWHITE);
         ~Rectangle() = default;

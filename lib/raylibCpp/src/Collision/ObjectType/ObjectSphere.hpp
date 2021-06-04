@@ -12,14 +12,12 @@
 #include "../../Data/MyVector/MyVector3.hpp"
 #include "../../../include/ICollidable.hpp"
 
-#include "export.hpp"
-
 using namespace raylib;
 
 namespace ObjectType
 {
-    class EXPORT ObjectBox;
-    class EXPORT ObjectSphere : public ICollidable
+    class ObjectBox;
+    class ObjectSphere : public ICollidable
     {
         public:
             ObjectSphere(const MyVector3 center, const float radius);

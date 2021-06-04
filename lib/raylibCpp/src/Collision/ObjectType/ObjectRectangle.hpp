@@ -12,17 +12,15 @@
 #include "../../Data/MyVector/MyVector2.hpp"
 #include "../../../include/ICollidable.hpp"
 
-#include "export.hpp"
-
 #include <functional>
 
 using namespace raylib;
 
 namespace ObjectType
 {
-    class EXPORT ObjectCircle;
-    class EXPORT ObjectBox;
-    class EXPORT ObjectRectangle : public ICollidable
+    class ObjectCircle;
+    class ObjectBox;
+    class ObjectRectangle : public ICollidable
     {
         public:
             ObjectRectangle(const MyVector2 origin, const MyVector2 size);

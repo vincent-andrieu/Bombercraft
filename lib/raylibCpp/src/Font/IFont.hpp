@@ -10,13 +10,11 @@
 
 #include "../../include/object.hpp"
 
-#include "export.hpp"
-
 typedef Font RFont;
 
 namespace raylib
 {
-    class EXPORT IFont {
+    class IFont {
       public:
         virtual ~IFont(){};
 

@@ -9,11 +9,10 @@
 #define IFILE_HPP
 
 #include "../../include/object.hpp"
-#include "export.hpp"
 
 namespace raylib
 {
-    class EXPORT IFile {
+    class IFile {
       public:
         virtual ~IFile() = default;
         virtual void setPath(const string &path) = 0;

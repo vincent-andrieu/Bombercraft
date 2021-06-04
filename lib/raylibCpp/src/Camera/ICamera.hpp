@@ -9,11 +9,10 @@
 #define ICAMERA_HPP
 
 #include "../../include/object.hpp"
-#include "export.hpp"
 
 namespace raylib
 {
-    class EXPORT ICamera {
+    class ICamera {
       public:
         virtual ~ICamera() = default;
 

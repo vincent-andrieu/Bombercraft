@@ -18,9 +18,9 @@ using namespace raylib;
 
 namespace ObjectType
 {
-    class EXPORT ObjectRectangle;
-    class EXPORT ObjectBox;
-    class EXPORT ObjectCircle : public ICollidable
+    class ObjectRectangle;
+    class ObjectBox;
+    class ObjectCircle : public ICollidable
     {
         public:
             ObjectCircle(const MyVector2 center, const float radius);
