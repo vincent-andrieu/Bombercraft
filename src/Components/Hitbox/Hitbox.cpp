@@ -17,3 +17,28 @@ void Hitbox::trigger(const Engine::Entity &fromEntity, const Engine::Entity &toE
 {
     this->_handler(fromEntity, toEntity);
 }
+
+void Hitbox::save(Engine::SaveManager &saver) const
+{
+    try {
+        saver.createFile(COMP_SAVE_FILE);
+        saver.setWritingFile(COMP_SAVE_FILE);
+        saver.writeActFile(objectBox);
+        saver.writeActFile(_handler);
+        saver.closeWritingFile();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+    }
+}
+void Hitbox::load(Engine::SaveManager &saver)
+{
+    try {
+        saver.createFile(COMP_SAVE_FILE);
+        saver.setReadingFile(COMP_SAVE_FILE);
+        saver.readActFile(objectBox);
+        saver.readActFile(_handler);
+        saver.closeReadingFile();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+    }
+}

@@ -61,7 +61,7 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::allocate(std::size_t size)
     {
-        _components.reserve(size);
+        //        _components.reserve(size);
         _componentOwners.reserve(size);
         _ownersIndex.reserve(size);
     }
