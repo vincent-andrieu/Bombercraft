@@ -25,7 +25,7 @@ namespace Engine
          */
         static const std::size_t type;
 
-        virtual void save(SaveManager &saver) const
+        virtual bool save(SaveManager &saver) const
         {
             try {
                 saver.createFile(COMP_SAVE_FILE);
@@ -34,23 +34,27 @@ namespace Engine
                 saver.closeWritingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
+            return true;
         }
 
-        virtual void load(SaveManager &saver)
+        virtual bool load(SaveManager &saver)
         {
             std::size_t tmp_type = 0;
 
             try {
                 saver.setReadingFile(COMP_SAVE_FILE);
-                saver.writeActFile(tmp_type);
+                saver.readActFile(tmp_type);
                 saver.closeReadingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
-            //            if (tmp_type != type) {}
-            // TODO do no retreive this data, it is not a good file
-            // TODO maybe an assertion or something
+            if (tmp_type != type) {
+                return false;
+            }
+            return true;
         }
     };
 

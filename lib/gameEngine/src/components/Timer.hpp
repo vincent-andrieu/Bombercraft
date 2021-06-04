@@ -41,8 +41,10 @@ namespace Engine
             return false;
         }
 
-        void save(SaveManager &saver) const override
+        bool save(SaveManager &saver) const override
         {
+            if (!Component::save(saver))
+                return false;
             try {
                 saver.createFile(COMP_SAVE_FILE);
                 saver.setWritingFile(COMP_SAVE_FILE);
@@ -52,10 +54,14 @@ namespace Engine
                 saver.closeWritingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
+            return true;
         }
-        void load(SaveManager &saver) override
+        bool load(SaveManager &saver) override
         {
+            if (!Component::load(saver))
+                return false;
             try {
                 saver.setReadingFile(COMP_SAVE_FILE);
                 saver.readActFile(interval);
@@ -64,7 +70,9 @@ namespace Engine
                 saver.closeReadingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
+            return true;
         }
         std::chrono::milliseconds interval;
         std::chrono::system_clock::time_point startTime;

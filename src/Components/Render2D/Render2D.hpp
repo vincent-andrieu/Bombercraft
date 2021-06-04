@@ -19,8 +19,8 @@ namespace Component
         Render2D(std::shared_ptr<raylib::IRenderable> object);
         ~Render2D() = default;
 
-        void save(Engine::SaveManager &saver) const override;
-        void load(Engine::SaveManager &saver) override;
+        bool save(Engine::SaveManager &saver) const override;
+        bool load(Engine::SaveManager &saver) override;
 
         std::shared_ptr<raylib::IRenderable> modele;
     };

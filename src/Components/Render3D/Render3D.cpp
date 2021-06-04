@@ -13,8 +13,10 @@ Render3D::Render3D(std::shared_ptr<raylib::IRenderable> object) : modele(object)
 {
 }
 
-void Render3D::save(Engine::SaveManager &saver) const
+bool Render3D::save(Engine::SaveManager &saver) const
 {
+    if (!Component::save(saver))
+        return false;
     try {
         saver.createFile(COMP_SAVE_FILE);
         saver.setWritingFile(COMP_SAVE_FILE);
@@ -22,10 +24,14 @@ void Render3D::save(Engine::SaveManager &saver) const
         saver.closeWritingFile();
     } catch (const std::filesystem::filesystem_error &my_e) {
         Engine::SaveManager::printException(my_e);
+        return false;
     }
+    return true;
 }
-void Render3D::load(Engine::SaveManager &saver)
+bool Render3D::load(Engine::SaveManager &saver)
 {
+    if (!Component::load(saver))
+        return false;
     try {
         saver.createFile(COMP_SAVE_FILE);
         saver.setReadingFile(COMP_SAVE_FILE);
@@ -33,5 +39,7 @@ void Render3D::load(Engine::SaveManager &saver)
         saver.closeReadingFile();
     } catch (const std::filesystem::filesystem_error &my_e) {
         Engine::SaveManager::printException(my_e);
+        return false;
     }
+    return true;
 }

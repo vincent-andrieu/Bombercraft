@@ -22,8 +22,8 @@ namespace Component
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
-        void save(Engine::SaveManager &saver) const override;
-        void load(Engine::SaveManager &saver) override;
+        bool save(Engine::SaveManager &saver) const override;
+        bool load(Engine::SaveManager &saver) override;
 
         ObjectBox objectBox;
 

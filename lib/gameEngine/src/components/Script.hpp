@@ -32,23 +32,6 @@ namespace Engine
             handler(_entityManager, _sceneManager, entity);
         }
 
-        void save(SaveManager &saver) const override
-        {
-            try {
-                saver.closeWritingFile();
-            } catch (const std::filesystem::filesystem_error &my_e) {
-                SaveManager::printException(my_e);
-            }
-        }
-        void load(SaveManager &saver) override
-        {
-            try {
-                saver.closeReadingFile();
-            } catch (const std::filesystem::filesystem_error &my_e) {
-                SaveManager::printException(my_e);
-            }
-        }
-
       private:
         scriptHandler &handler;
         EntityManager &_entityManager;

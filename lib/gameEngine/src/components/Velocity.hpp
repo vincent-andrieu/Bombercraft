@@ -23,8 +23,10 @@ namespace Engine
         float x;
         float y;
 
-        void save(SaveManager &saver) const override
+        bool save(SaveManager &saver) const override
         {
+            if (!Component::save(saver))
+                return false;
             try {
                 saver.createFile(COMP_SAVE_FILE);
                 saver.setWritingFile(COMP_SAVE_FILE);
@@ -33,10 +35,14 @@ namespace Engine
                 saver.closeWritingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
+            return true;
         }
-        void load(SaveManager &saver) override
+        bool load(SaveManager &saver) override
         {
+            if (!Component::load(saver))
+                return false;
             try {
                 saver.setReadingFile(COMP_SAVE_FILE);
                 saver.readActFile(x);
@@ -44,7 +50,9 @@ namespace Engine
                 saver.closeReadingFile();
             } catch (const std::filesystem::filesystem_error &my_e) {
                 SaveManager::printException(my_e);
+                return false;
             }
+            return true;
         }
     };
 } // namespace Engine
