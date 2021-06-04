@@ -13,21 +13,19 @@
 
 namespace Component
 {
-    using hitboxHandler =
-        std::function<void(Engine::EntityManager &, Engine::SceneManager &, const Engine::Entity &, const Engine::Entity &)>;
+    using hitboxHandler = std::function<void(const Engine::Entity &, const Engine::Entity &)>;
 
     class Hitbox : public Engine::Component<Hitbox> {
       public:
-        Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler &handler, Engine::SceneManager &sceneManager);
+        Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler handler);
         ~Hitbox() = default;
 
-        void trigger(Engine::EntityManager &entityManager, const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
+        void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
         ObjectBox objectBox;
 
       private:
-        hitboxHandler &_handler;
-        Engine::SceneManager &_sceneManager;
+        hitboxHandler _handler;
     };
 } // namespace Component
 

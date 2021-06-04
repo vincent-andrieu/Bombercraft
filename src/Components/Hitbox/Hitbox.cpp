@@ -9,12 +9,11 @@
 
 using namespace Component;
 
-Hitbox::Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler &handler, Engine::SceneManager &sceneManager)
-    : objectBox(origin, size), _handler(handler), _sceneManager(sceneManager)
+Hitbox::Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler handler) : objectBox(origin, size), _handler(handler)
 {
 }
 
-void Hitbox::trigger(Engine::EntityManager &entityManager, const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+void Hitbox::trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    this->_handler(entityManager, this->_sceneManager, fromEntity, toEntity);
+    this->_handler(fromEntity, toEntity);
 }

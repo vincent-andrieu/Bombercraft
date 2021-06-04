@@ -7,8 +7,9 @@
 
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
+#include "Game/Core/Core.hpp"
 
-System::HitboxSystem::HitboxSystem(Engine::EntityManager &entityManager) : AbstractSystem(entityManager)
+System::HitboxSystem::HitboxSystem() : AbstractSystem(Game::Core::entityManager)
 {
     this->setRequirements<Component::Hitbox>();
 }
@@ -22,8 +23,8 @@ void System::HitboxSystem::update()
                 if (fromEntity != toEntity) {
                     Component::Hitbox toHitboxComp = this->_entityManager.getComponent<Component::Hitbox>(toEntity);
                     if (fromHitboxComp.objectBox.checkCollisionWith(toHitboxComp.objectBox)) {
-                        fromHitboxComp.trigger(this->_entityManager, fromEntity, toEntity);
-                        toHitboxComp.trigger(this->_entityManager, fromEntity, toEntity);
+                        fromHitboxComp.trigger(fromEntity, toEntity);
+                        toHitboxComp.trigger(fromEntity, toEntity);
                     }
                 }
         }

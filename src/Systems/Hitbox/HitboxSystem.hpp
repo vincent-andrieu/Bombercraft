@@ -14,7 +14,7 @@ namespace System
 {
     class HitboxSystem : public Engine::AbstractSystem {
       public:
-        HitboxSystem(Engine::EntityManager &entityManager);
+        HitboxSystem();
 
         void update();
     };
