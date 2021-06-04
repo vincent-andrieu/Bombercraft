@@ -14,6 +14,7 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Scenes/DebugScene/DebugScene.hpp"
+#include "ConfigFile/ConfigFile.hpp"
 
 namespace Game
 {
@@ -27,6 +28,7 @@ namespace Game
       public:
         static std::unique_ptr<raylib::Camera> camera;
       private:
+        ConfigFile _settings;
         raylib::Window _window;
         Engine::SystemManager _systemManager;
         Engine::EntityManager _entityManager;

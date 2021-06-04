@@ -9,7 +9,6 @@
 #define ENTITYMANAGER_HPP
 
 #include <memory>
-#include "SystemManager/SystemManager.hpp"
 #include "entity.hpp"
 #include "IComponentTypeRegister.hpp"
 #include "EntityContainer/EntityRegister.hpp"
@@ -86,7 +85,8 @@ namespace Engine
         return _entities.getSignature(entity)[T::type];
     }
 
-    template <typename... Ts> bool EntityManager::hasComponents(Entity entity)
+    template <typename... Ts>
+    bool EntityManager::hasComponents(Entity entity)
     {
         (this->checkComponentTypes<Ts>(), ...);
         auto requirements = Signature();
@@ -155,7 +155,6 @@ namespace Engine
     {
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
-
 } // namespace Engine
 
 #endif // ENTITYMANAGER_HPP

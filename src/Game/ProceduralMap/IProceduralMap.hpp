@@ -22,11 +22,11 @@ namespace GameModule
     };
 
     enum class TileDisponibility {
-        TILE_AVAILABLE,
-        TILE_FORCE_EMPTY,
-        TILE_FORCE_HARD,
-        TILE_FORCE_SOFT,
-        TILE_FORCE_BONUS
+        TILE_AVAILABLE = 0,
+        TILE_FORCE_EMPTY = 1,
+        TILE_FORCE_HARD = 2,
+        TILE_FORCE_SOFT = 3,
+        TILE_FORCE_BONUS = 4
     };
 
     typedef std::vector<std::vector<TileType>> MapType;

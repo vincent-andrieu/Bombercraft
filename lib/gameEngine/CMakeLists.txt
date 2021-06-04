@@ -7,9 +7,6 @@
 
 cmake_minimum_required(VERSION 3.17)
 
-#set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_BUILD_TYPE Debug)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME gameEngine)
@@ -33,7 +30,6 @@ set(SRCS
         src/SystemManager/SystemManager.cpp
         src/AbstractScene/AbstractScene.cpp
         src/SceneManager/SceneManager.cpp
-        ./src/SaveManager/SaveManager.cpp
         )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})

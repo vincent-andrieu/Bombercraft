@@ -7,8 +7,7 @@
 
 #include "raylib.hpp"
 
-static void moveCamera(std::shared_ptr<IInput> input, MyVector3 *camPos,
-std::shared_ptr<ICamera> camera)
+static void moveCamera(std::shared_ptr<IInput> input, MyVector3 *camPos, std::shared_ptr<ICamera> camera)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_DOWN)) {
         camPos->b -= 1.0f;
@@ -28,8 +27,7 @@ std::shared_ptr<ICamera> camera)
     }
 }
 
-static void changeScreenSize(std::shared_ptr<IInput> input, MyVector2 *windowSize,
-std::shared_ptr<IWindow> window)
+static void changeScreenSize(std::shared_ptr<IInput> input, MyVector2 *windowSize, std::shared_ptr<IWindow> window)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_Z)) {
         windowSize->a += 100;
@@ -59,8 +57,7 @@ static void drawCube(std::shared_ptr<ISolid> cube, MyVector3 cubePos)
     cube->draw();
 }
 
-static void manageCubeTexture(std::shared_ptr<IInput> input,
-std::shared_ptr<ISolid> cube, std::shared_ptr<ITexture> texture)
+static void manageCubeTexture(std::shared_ptr<IInput> input, std::shared_ptr<ISolid> cube, std::shared_ptr<ITexture> texture)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_Q))
         cube->setTexture(texture);
@@ -72,8 +69,7 @@ std::shared_ptr<ISolid> cube, std::shared_ptr<ITexture> texture)
         texture->setPath("../../../Asset/Texture/Nether/Ground/Netherrack.png");
 }
 
-static void manageMusic(std::shared_ptr<IInput> input,
-std::shared_ptr<IAudio> music)
+static void manageMusic(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> music)
 {
     static float pitch = 1.0f;
 
@@ -95,8 +91,7 @@ std::shared_ptr<IAudio> music)
     }
 }
 
-static void manageSound(std::shared_ptr<IInput> input,
-std::shared_ptr<IAudio> sound)
+static void manageSound(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> sound)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_G)) {
         sound->setPath("../../../Asset/Sound/ButtonClick.ogg");
@@ -108,8 +103,7 @@ std::shared_ptr<IAudio> sound)
     }
 }
 
-static void manageModel(std::shared_ptr<IInput> input,
-std::shared_ptr<IModel> model, std::shared_ptr<IModel> animation)
+static void manageModel(std::shared_ptr<IInput> input, std::shared_ptr<IModel> model, std::shared_ptr<IModel> animation)
 {
     static bool inAnim = false;
 
@@ -150,7 +144,6 @@ int main(void)
     std::shared_ptr<IText> text = std::make_shared<raylib::Text>("Ca va mon amigos ?", textPos, textSize, raylib::RColor::RPINK);
     std::shared_ptr<ITexture> texture = nullptr;
     std::shared_ptr<ITexture> texture2 = nullptr;
-    std::shared_ptr<ITexture> texture3 = nullptr;
     std::shared_ptr<IAudio> music = nullptr;
     std::shared_ptr<IAudio> sound = nullptr;
     std::shared_ptr<IModel> model = nullptr;
@@ -161,15 +154,16 @@ int main(void)
     texture = std::make_shared<raylib::Texture>("../../../Asset/Interface/TitleLogo.png");
     texture->setPosition(texturePos);
     texture2 = std::make_shared<raylib::Texture>("../../../Asset/Texture/Desert/Ground/Sand.png");
-    texture3 = std::make_shared<raylib::Texture>("../../../Asset/Skin/Basic_Test.png");
     music = std::make_shared<raylib::Music>("../../../Asset/Music/Fight9.mp3");
     sound = std::make_shared<raylib::Sound>("../../../Asset/Sound/ButtonClick.ogg");
     text->setFont("../../../Asset/Font/MinecraftRegular.ttf");
     text->setLimit(textLimit);
-    model = std::make_shared<raylib::Model>(texture3, "../../../Asset/Model/Char/Model_Char.obj", modelPos, raylib::RColor::RWHITE);
+    model = std::make_shared<raylib::Model>(
+        "../../../Asset/Skin/Basic_Test.png", "../../../Asset/Model/Model_Char/Model_Char.obj", modelPos, raylib::RColor::RWHITE);
     model->setRotation(modelRot);
     model->setScale(scale);
-    animation = std::make_shared<raylib::Animation>(texture3, "../../../Asset/Animation/Walk_20", modelPos, raylib::RColor::RWHITE);
+    animation = std::make_shared<raylib::Animation>(
+        "../../../Asset/Skin/Basic_Test.png", "../../../Asset/Animation/Anim_Walk_20", modelPos, raylib::RColor::RWHITE);
     animation->setRotation(modelRot);
     animation->setScale(scale);
     while (window->isOpen()) {
