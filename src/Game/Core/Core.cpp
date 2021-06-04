@@ -9,20 +9,16 @@
 
 using namespace Game;
 
-static const MyVector2 WIN_SIZE = {800, 600};
-static const std::string WIN_TITLE = "BomberBlock";
-static const RColor WIN_BACK = RColor::RBLACK;
+static const std::string CONFIG_FILE = "bomberman.config";
 
-static const MyVector3 CAM_POSITION = {200, 0, 200};
-static const MyVector3 CAM_TARGET = {0, 0, 0};
-static const MyVector3 CAM_UP = {0, 1, 0};
-
-std::unique_ptr<raylib::Camera> Core::camera = std::make_unique<raylib::Camera>(CAM_POSITION, CAM_TARGET, CAM_UP);
 Engine::SystemManager Core::_systemManager = Engine::SystemManager();
 Engine::EntityManager Core::entityManager = Engine::EntityManager(Core::_systemManager);
 Engine::SceneManager Core::sceneManager = Engine::SceneManager(Core::entityManager);
+std::unique_ptr<raylib::Camera> Core::camera = nullptr;
 
-Core::Core() : _window(WIN_SIZE, WIN_TITLE, WIN_BACK)
+Core::Core()
+    : _settings(CONFIG_FILE), _window(_settings.getMyVector2("WIN_SIZE"), _settings.getString("WIN_TITLE"),
+                                  static_cast<RColor>(_settings.getInt("WIN_BACK")))
 {
     /// COMPONENTS - DEFINITION
     this->entityManager.registerComponent<Component::Render2D>();
@@ -37,6 +33,8 @@ Core::Core() : _window(WIN_SIZE, WIN_TITLE, WIN_BACK)
     this->_systemManager.createSystem<System::Render2DSystem>(this->entityManager);
     // SCENES - CREATION
     this->sceneManager.createScene<DebugScene>(this->_systemManager, this->entityManager);
+    this->camera = std::make_unique<raylib::Camera>(
+        _settings.getMyVector3("CAM_POSITION"), _settings.getMyVector3("CAM_TARGET"), _settings.getMyVector3("CAM_UP"));
 }
 
 void Core::loop()

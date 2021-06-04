@@ -16,6 +16,7 @@
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Scenes/DebugScene/DebugScene.hpp"
+#include "ConfigFile/ConfigFile.hpp"
 
 namespace Game
 {
@@ -32,6 +33,7 @@ namespace Game
         static Engine::EntityManager entityManager;
 
       private:
+        ConfigFile _settings;
         raylib::Window _window;
         static Engine::SystemManager _systemManager;
     };

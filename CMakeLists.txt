@@ -23,6 +23,8 @@ set(SRCS
     src/main.cpp
     src/Game/Core/Core.cpp
     src/Game/ProceduralMap/ProceduralMap.cpp
+    src/ConfigFile/ConfigFile.cpp
+    src/Exceptions/Exceptions.cpp
     # Scenes
     src/Scenes/DebugScene/DebugScene.cpp
     # Systems
