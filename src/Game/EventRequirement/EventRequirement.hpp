@@ -19,6 +19,9 @@ namespace Game {
     };
     using clickType = uint8_t;
 
+    clickType operator|(evtMouse a, evtMouse b);
+    clickType operator|(clickType a, evtMouse b);
+
     class EventRequirement {
       public:
         EventRequirement(clickType const click = 0, bool mouseMove = false,

@@ -11,6 +11,14 @@
 
 using namespace Game;
 
+/// [Test] - Event Handler
+static Component::eventScript clickHandler = [](const Engine::Entity){
+    // DataCore::entityManager
+    // DataCore::sceneManager
+    // DataCore::eventManager
+    std::cout << "Clicked!!!\n";
+};
+
 DebugScene::DebugScene(Engine::SystemManager &systemManager,
     Engine::EntityManager &entityManager, raylib::Input &eventManager)
     : AbstractScene(systemManager, entityManager), SceneWithEvents(eventManager)
@@ -31,16 +39,18 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager,
           auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
 
           cube->setColor(raylib::RColor::RBLUE);
-    });
+        });
     auto moveableEntity = this->createLocalEntity();
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
-       std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RMAGENTA));
+        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RMAGENTA));
     this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100, 20);
     this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20, 0);
     this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, (raylib::MyVector3){50, 50, 50},
          [](const Engine::Entity &fromEntity, const Engine::Entity &toEntity) {
      });
+    _entityManager.addComponent<Component::ClickEvent>(block, clickHandler,
+        std::make_shared<EventRequirement>(evtMouse::LEFT | evtMouse::RIGHT));
 }
 
 void DebugScene::update()

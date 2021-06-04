@@ -12,6 +12,7 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Game/EventRequirement/EventRequirement.hpp"
 
 namespace Game
 {
