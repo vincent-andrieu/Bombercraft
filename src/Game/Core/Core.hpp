@@ -20,7 +20,6 @@
 #include "Systems/Event/EventSystem.hpp"
 
 #include "Scenes/DebugScene/DebugScene.hpp"
-#include "ConfigFile/ConfigFile.hpp"
 
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
@@ -37,9 +36,6 @@ namespace Game
 
       public:
         Engine::EntityPack globalEntities;
-
-      private:
-        ConfigFile _settings;
     };
 } // namespace Game
 

@@ -11,6 +11,8 @@
 #include "raylib.hpp"
 #include "GameEngine.hpp"
 
+#include "ConfigFile/ConfigFile.hpp"
+
 namespace Game
 {
     class CoreData {
@@ -19,6 +21,7 @@ namespace Game
         ~CoreData() = default;
 
       public:
+        static ConfigFile settings;
         static std::shared_ptr<raylib::Camera> camera;
         static std::shared_ptr<Engine::EntityManager> entityManager;
         static std::shared_ptr<Engine::SceneManager> sceneManager;
