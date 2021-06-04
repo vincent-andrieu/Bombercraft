@@ -22,6 +22,8 @@ set(SRCS
         ./src/main.cpp
         ./src/Game/Core/Core.cpp
         ./src/Game/ProceduralMap/ProceduralMap.cpp
+        ./src/Game/IABomberman/IABomberman.cpp
+        ./src/Game/IABomberman/IACore.cpp
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
         src/Systems/Render2D/Render2DSystem.cpp
