@@ -25,6 +25,7 @@ namespace GameModule
             IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range = 6, int defaultValue = -1);
             ~IABomberman();
             void setRange(size_t range);
+            IA::Movement getIAMovement();
         
         private:
             // To set in IACore
