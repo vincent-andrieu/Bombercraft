@@ -25,6 +25,7 @@ namespace GameModule
             ~IABomberman();
         
         private:
+            bool actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
     };
 }
 
