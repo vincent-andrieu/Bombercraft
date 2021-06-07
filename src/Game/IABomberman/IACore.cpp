@@ -80,7 +80,7 @@ Movement IACore<TileType, Action>::getIAMovement()
     }
     if (!this->_MovementQueue.size())
         return Movement::IA_MOVE_NONE;
-    tmp = this->_MovementQueue.back();
+    tmp = this->_MovementQueue.front();
     this->_MovementQueue.pop();
     return tmp;
 }
