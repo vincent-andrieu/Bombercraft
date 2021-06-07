@@ -34,7 +34,7 @@ jobs:
         run: make
 
       - name: Check if binary exist
-        run: ls libraylibcpp.so
+        run: ls libraylibcpp.a
 
   linux-gameengine:
     runs-on: ubuntu-20.04
@@ -60,7 +60,7 @@ jobs:
         run: make
 
       - name: Check if binary exist
-        run: ls libgameEngine.so
+        run: ls libgameEngine.a
 
   linux-bomberman:
     runs-on: ubuntu-20.04
