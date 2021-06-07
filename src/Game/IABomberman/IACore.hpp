@@ -36,6 +36,9 @@ namespace IA
             Action getIAAction() const;
             void setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
             void setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func);
+        
+        private:
+            void applyIAMovement(Movement move);
 
         protected:
             std::pair<size_t, size_t> _pos;

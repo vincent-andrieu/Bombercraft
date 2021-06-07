@@ -86,6 +86,7 @@ Movement IACore<TileType, Action>::getIAMovement()
         return Movement::IA_MOVE_NONE;
     tmp = this->_MovementQueue.front();
     this->_MovementQueue.pop();
+    this->applyIAMovement(tmp);
     return tmp;
 }
 
@@ -109,6 +110,20 @@ template <typename TileType, typename Action>
 void IACore<TileType, Action>::setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func)
 {
     this->_MovementFunc = func;
+}
+
+template <typename TileType, typename Action>
+void IACore<TileType, Action>::applyIAMovement(Movement move)
+{
+    switch (move)
+    {
+        case Movement::IA_MOVE_UP: this->_pos.second--; break;
+        case Movement::IA_MOVE_NONE: ; break;
+        case Movement::IA_MOVE_DOWN: this->_pos.second++; break;
+        case Movement::IA_MOVE_LEFT: this->_pos.first--; break;
+        case Movement::IA_MOVE_RIGHT: this->_pos.first++; break;
+        default: throw IAExceptions("Invalide Move", false); break;
+    }
 }
 
 template class IACore<GameModule::TileType, GameModule::BombermanAction>;
