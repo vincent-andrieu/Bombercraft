@@ -24,7 +24,7 @@ namespace System
         }
         ~EventSystem() = default;
 
-        void update(raylib::Input &eventManager)
+        void update([[maybe_unused]]raylib::Input &eventManager)
         {
             for (const Engine::Entity &entity : this->getManagedEntities()) {
                 auto [event] = _entityManager.getComponents<T>(entity);
