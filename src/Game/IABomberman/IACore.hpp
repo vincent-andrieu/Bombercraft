@@ -29,12 +29,14 @@ namespace IA
             Movement getIAMovement() const;
             Action getIAAction() const;
             void setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
+            void setIAMovement(std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
 
         private:
             std::pair<size_t, size_t> _pos;
             std::vector<std::vector<TileType>> _env;
             std::unordered_map<Action, std::function<bool(std::vector<std::vector<TileType>>, std::pair<size_t, size_t>)>> _actLink;
             std::vector<TileType> _isRunnable;
+            std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> _MovementFunc;
     };
 }
 
