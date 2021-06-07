@@ -10,6 +10,7 @@
 
 #include "IConfigFile.hpp"
 #include "../Exceptions/Exceptions.hpp"
+#include <filesystem>
 
 class ConfigFile : public IConfigFile
 {
@@ -20,6 +21,7 @@ class ConfigFile : public IConfigFile
         ~ConfigFile();
 
         int getInt(const std::string name) const;
+        void createDefault(const std::string &filename) const;
         void loadFile(const std::string &filename);
         float getFloat(const std::string name) const;
         std::string getString(const std::string name) const;
@@ -47,6 +49,7 @@ class ConfigFile : public IConfigFile
     protected:
     private:
         std::vector<std::string> _fileContent;
+        static const std::vector<std::string> _defaultContent;
 };
 
 #endif /* !CONFIGFILE_HPP_ */
