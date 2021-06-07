@@ -21,7 +21,7 @@ namespace GameModule
     class IABomberman : public IA::IACore<TileType, BombermanAction>
     {
         public:
-            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
+            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, int defaultValue = -1);
             ~IABomberman();
         
         private:
@@ -33,7 +33,15 @@ namespace GameModule
             bool findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list);
 
             // TOOLS
+            bool isRunnable(TileType type) const;
+            bool isSecurePlace(TileType type) const;
             void clearQueue(std::queue<IA::Movement> &list);
+            void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
+            std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+            std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
+        
+        private:
+            int _defaultValue;
     };
 }
 
