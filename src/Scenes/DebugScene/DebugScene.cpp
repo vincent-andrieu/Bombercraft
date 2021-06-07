@@ -48,7 +48,8 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManag
         std::make_shared<raylib::Cuboid>(
             nullptr, blockPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RRED));
     _entityManager.addComponent<Component::Hitbox>(
-        block, blockPos, (raylib::MyVector3){50, 50, 50}, [](const Engine::Entity &fromEntity, [[maybe_unused]]const Engine::Entity &toEntity) {
+        block, blockPos, (raylib::MyVector3){50, 50, 50},
+        [](const Engine::Entity &fromEntity, [[maybe_unused]]const Engine::Entity &toEntity) {
           auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
           auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
 
