@@ -47,8 +47,10 @@ void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<
     size_t x = pos.first;
     size_t y = pos.second;
 
-    if (this->isSecurePlace(env[y][x])) {
-        // OFFENSIVE
+    if (this->isRandomMove()) {
+        this->randomMove(pos, env, list);
+    } else if (this->isSecurePlace(env[y][x])) {
+        this->offensiveMove(pos, env, list);
     } else {
         if (!this->findSecurePlace(pos, env, list))
             std::cout << "RIP mon ruf" << std::endl;
@@ -249,4 +251,28 @@ IA::Movement IABomberman::getIAMovement()
             return IA::Movement::IA_MOVE_NONE;
         }
     return tmp;
+}
+
+void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
+{
+    // TODO ADD RANDOMMOVE
+    (void) pos;
+    (void) env;
+    this->clearQueue(list);
+    list.push(IA::Movement::IA_MOVE_NONE);
+}
+
+void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
+{
+    // TODO ADD OFFENSIVE ACT
+    (void) pos;
+    (void) env;
+    this->clearQueue(list);
+    list.push(IA::Movement::IA_MOVE_NONE);
+}
+
+bool IABomberman::isRandomMove() const
+{
+    // TODO ADD PROBA FOR RANDOMMOVE
+    return false;
 }

@@ -35,6 +35,9 @@ namespace GameModule
             // Internal function
             bool findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list);
             std::vector<std::vector<TileType>> getMapWithExposionEffect(std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const;
+            void randomMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
+            void offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
+            bool isRandomMove() const;
 
             // TOOLS
             bool isRunnable(TileType type) const;
