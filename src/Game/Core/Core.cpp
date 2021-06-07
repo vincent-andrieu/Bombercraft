@@ -22,7 +22,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     /// SYSTEMS - CREATION
     CoreData::_systemManager->createSystem<System::Render3DSystem>();
-    CoreData::_systemManager->createSystem<System::Render2DSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::Render2DSystem>();
     CoreData::_systemManager->createSystem<System::ClickEventSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::KeyEventSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::MouseEventSystem>(*CoreData::entityManager);
