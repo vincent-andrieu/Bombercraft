@@ -34,6 +34,7 @@ set(SRCS
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
+        src/Game/EntityFactory/EntityFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
