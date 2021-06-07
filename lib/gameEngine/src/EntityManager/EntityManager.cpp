@@ -11,6 +11,12 @@ using namespace Engine;
 
 EntityManager::EntityManager(SystemManager &sysManager) : _systemManager(sysManager)
 {
+    //    load("last_save");
+}
+
+EntityManager::~EntityManager()
+{
+    save("last_save");
 }
 
 void EntityManager::allocate(std::size_t size)

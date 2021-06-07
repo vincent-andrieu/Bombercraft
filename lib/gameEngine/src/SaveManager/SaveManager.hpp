@@ -32,7 +32,7 @@ namespace Engine
          * @brief Construct SaveManager starting in a new woking directory
          * @param dirname The name of the directory to be created
          */
-        explicit SaveManager(const string &dirname);
+        explicit SaveManager(const string &dirname = "Engine_Save");
         ~SaveManager();
 
         std::filesystem::path getFileDir(const string &filename);
@@ -139,16 +139,12 @@ namespace Engine
 
         template <typename T> void write(const string &filename, const std::unique_ptr<T> &value)
         {
-            ofstream &file = this->_getWritingFile(filename);
-
-            file.write(value.get(), sizeof(T));
+            write(filename, *value);
         }
 
         template <typename T> void write(const string &filename, const std::shared_ptr<T> &value)
         {
-            ofstream &file = this->_getWritingFile(filename);
-
-            file.write(value.get(), sizeof(T));
+            write(filename, *value);
         }
 
         void write(const string &filename, const void *value, std::streamsize size);
