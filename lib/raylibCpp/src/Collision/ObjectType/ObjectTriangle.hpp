@@ -13,29 +13,26 @@
 
 #include <functional>
 
-using namespace raylib;
-
-namespace ObjectType
+namespace raylib
 {
     class ObjectLine;
     class ObjectBox;
-    class ObjectTriangle
-    {
-        public:
-            ObjectTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
-            ~ObjectTriangle();
-            void setTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
-            MyVector2 getPointA() const;
-            MyVector2 getPointB() const;
-            MyVector2 getPointC() const;
+    class ObjectTriangle {
+      public:
+        ObjectTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
+        ~ObjectTriangle();
+        void setTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c);
+        MyVector2 getPointA() const;
+        MyVector2 getPointB() const;
+        MyVector2 getPointC() const;
 
-            bool boxCollider(const ObjectType::ObjectBox &box);
+        bool boxCollider(const ObjectBox &box);
 
-        private:
-            MyVector2 _a;
-            MyVector2 _b;
-            MyVector2 _c;
+      private:
+        MyVector2 _a;
+        MyVector2 _b;
+        MyVector2 _c;
     };
-};
+}; // namespace raylib
 
 #endif

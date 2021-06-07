@@ -14,29 +14,26 @@
 
 #include <functional>
 
-using namespace raylib;
-
-namespace ObjectType
+namespace raylib
 {
     class ObjectRectangle;
     class ObjectBox;
-    class ObjectCircle : public ICollidable
-    {
-        public:
-            ObjectCircle(const MyVector2 center, const float radius);
-            ~ObjectCircle();
-            void setCircle(const MyVector2 center, const float radius);
-            MyVector2 getCircleCenter() const;
-            float getCircleRadius() const;
-            bool checkCollisionWith(const ObjectCircle &circle);
-            bool checkCollisionWith(const ObjectRectangle &rectangle);
+    class ObjectCircle : public ICollidable {
+      public:
+        ObjectCircle(const MyVector2 center, const float radius);
+        ~ObjectCircle();
+        void setCircle(const MyVector2 center, const float radius);
+        MyVector2 getCircleCenter() const;
+        float getCircleRadius() const;
+        bool checkCollisionWith(const ObjectCircle &circle);
+        bool checkCollisionWith(const ObjectRectangle &rectangle);
 
-            bool boxCollider(const ObjectType::ObjectBox &box);
+        bool boxCollider(const ObjectBox &box);
 
-        private:
-            MyVector2 _center;
-            float _radius;
+      private:
+        MyVector2 _center;
+        float _radius;
     };
-};
+}; // namespace raylib
 
 #endif

@@ -7,6 +7,8 @@
 
 #include "ObjectRectangle.hpp"
 
+using namespace raylib;
+
 ObjectRectangle::ObjectRectangle(const MyVector2 origin, const MyVector2 size) : _origin(origin), _size(size)
 {
 }
@@ -41,7 +43,7 @@ bool ObjectRectangle::checkCollisionWith(const ObjectRectangle &rectangle)
     return Collision::checkCollision(*this, rectangle);
 }
 
-bool ObjectRectangle::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectRectangle::boxCollider(const ObjectBox &box)
 {
     //return this->checkCollisionWith(box);
     (void) box;

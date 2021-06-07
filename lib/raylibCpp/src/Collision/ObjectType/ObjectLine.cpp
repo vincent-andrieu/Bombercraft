@@ -7,6 +7,8 @@
 
 #include "ObjectLine.hpp"
 
+using namespace raylib;
+
 ObjectLine::ObjectLine(const MyVector2 a, const MyVector2 b) : _a(a), _b(b)
 {
 }
@@ -36,7 +38,7 @@ bool ObjectLine::checkCollisionWith(const ObjectLine &line)
     return Collision::checkCollision(*this, line);
 }
 
-bool ObjectLine::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectLine::boxCollider(const ObjectBox &box)
 {
     //return this->checkCollisionWith(box);
     (void) box;

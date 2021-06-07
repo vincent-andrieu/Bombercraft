@@ -7,7 +7,7 @@
 
 #include "ObjectTriangle.hpp"
 
-using namespace ObjectType;
+using namespace raylib;
 
 ObjectTriangle::ObjectTriangle(const MyVector2 a, const MyVector2 b, const MyVector2 c) : _a(a), _b(b), _c(c)
 {
@@ -39,7 +39,7 @@ MyVector2 ObjectTriangle::getPointC() const
     return this->_c;
 }
 
-bool ObjectTriangle::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectTriangle::boxCollider(const ObjectBox &box)
 {
     //return this->checkCollisionWith(box);
     (void) box;

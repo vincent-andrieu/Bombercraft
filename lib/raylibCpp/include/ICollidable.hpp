@@ -8,18 +8,15 @@
 #ifndef ICOLLIDABLE_HPP
 #define ICOLLIDABLE_HPP
 
-namespace ObjectType
-{
-    class ObjectBox;
-}
-
 namespace raylib
 {
+    class ObjectBox;
+
     class ICollidable
     {
         public :
             virtual ~ICollidable() {};
-            virtual bool boxCollider(const ObjectType::ObjectBox &box) = 0;
+            virtual bool boxCollider(const ObjectBox &box) = 0;
     };
 };
 
