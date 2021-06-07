@@ -23,9 +23,9 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// SYSTEMS - CREATION
     CoreData::_systemManager->createSystem<System::Render3DSystem>();
     CoreData::_systemManager->createSystem<System::Render2DSystem>();
-    CoreData::_systemManager->createSystem<System::ClickEventSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<System::KeyEventSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<System::MouseEventSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::ClickEventSystem>();
+    CoreData::_systemManager->createSystem<System::KeyEventSystem>();
+    CoreData::_systemManager->createSystem<System::MouseEventSystem>();
     CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION

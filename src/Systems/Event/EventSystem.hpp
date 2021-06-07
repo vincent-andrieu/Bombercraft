@@ -12,22 +12,22 @@
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
 #include "Components/MouseMoveEvent.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 namespace System
 {
-    template <typename T>
-    class EventSystem : public Engine::AbstractSystem {
+    template <typename T> class EventSystem : public Engine::AbstractSystem {
       public:
-        EventSystem(Engine::EntityManager &entityManager) : AbstractSystem(entityManager)
+        EventSystem() : AbstractSystem(*Game::CoreData::entityManager)
         {
             this->setRequirements<T>();
         }
         ~EventSystem() = default;
 
-        void update(raylib::Input &eventManager)
+        void update()
         {
             for (const Engine::Entity &entity : this->getManagedEntities()) {
-                auto [event] = _entityManager.getComponents<T>(entity);
+                auto [event] = Game::CoreData::entityManager->getComponents<T>(entity);
 
                 event.trigger(entity);
             }
@@ -37,6 +37,6 @@ namespace System
     using ClickEventSystem = EventSystem<Component::ClickEvent>;
     using KeyEventSystem = EventSystem<Component::KeyEvent>;
     using MouseEventSystem = EventSystem<Component::MouseMoveEvent>;
-}
+} // namespace System
 
 #endif // EVENTSYSTEM_HPP

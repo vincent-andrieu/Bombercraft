@@ -9,8 +9,7 @@
 
 using namespace Game;
 
-SceneWithEvents::SceneWithEvents(raylib::Input &eventManager)
-: _eventManager(eventManager)
+SceneWithEvents::SceneWithEvents(raylib::Input &eventManager) : _eventManager(eventManager)
 {
 }
 
@@ -20,13 +19,11 @@ void SceneWithEvents::eventDispatcher(Engine::SystemManager &systemManager)
     auto keyEventSystem = systemManager.getSystem<System::KeyEventSystem>();
     auto mouseMoveEventSystem = systemManager.getSystem<System::MouseEventSystem>();
 
-    if (_eventManager.isMouseLeftPressed()
-        || _eventManager.isMouseRightPressed()
-        || _eventManager.isMouseMiddlePressed()) {
-        clickEventSystem.update(_eventManager);
+    if (_eventManager.isMouseLeftPressed() || _eventManager.isMouseRightPressed() || _eventManager.isMouseMiddlePressed()) {
+        clickEventSystem.update();
     }
     if (_eventManager.isMouseMoved()) {
-        mouseMoveEventSystem.update(_eventManager);
+        mouseMoveEventSystem.update();
     }
-    keyEventSystem.update(_eventManager);
+    keyEventSystem.update();
 }
