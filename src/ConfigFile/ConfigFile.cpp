@@ -333,9 +333,9 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     if (input.length())
         input.pop_back();
     parse = this->getParseIn("],", input);
-    for (auto line : parse) {
+    for (auto lines : parse) {
         tab.clear();
-        input = std::string(line.substr(1, line.length() - 1));
+        input = std::string(lines.substr(1, lines.length() - 1));
         tmp = this->getParseIn(", ", input, false);
         for (auto once : tmp) {
             try {
