@@ -8,6 +8,7 @@
 #ifndef ENTITYMANAGER_HPP
 #define ENTITYMANAGER_HPP
 
+#include <array>
 #include <memory>
 #include "entity.hpp"
 #include "IComponentTypeRegister.hpp"
