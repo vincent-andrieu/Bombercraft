@@ -8,6 +8,7 @@
 #ifndef IABOMBERMAN_HPP
 #define IABOMBERMAN_HPP
 
+#include <iostream>
 #include "IACore.hpp"
 
 namespace GameModule

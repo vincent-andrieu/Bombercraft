@@ -42,10 +42,15 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
 
 void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
 {
-    // TODO to dev
-    (void) pos;
-    (void) env;
-    (void) list;
+    size_t x = pos.first;
+    size_t y = pos.second;
+
+    if (this->isSecurePlace(env[y][x])) {
+        // OFFENSIVE
+    } else {
+        if (!this->findSecurePlace(pos, env, list))
+            std::cout << "RIP mon ruf" << std::endl;
+    }
 }
 
 bool IABomberman::findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
