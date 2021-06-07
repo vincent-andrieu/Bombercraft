@@ -22,7 +22,6 @@ IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<
 
 IABomberman::~IABomberman()
 {
-
 }
 
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
@@ -39,4 +38,18 @@ void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<
     (void) pos;
     (void) env;
     (void) list;
+}
+
+bool IABomberman::findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
+{
+    this->clearQueue(list);
+    (void) pos;
+    (void) env;
+    return false;
+}
+
+void IABomberman::clearQueue(std::queue<IA::Movement> &list)
+{
+    while (list.size())
+        list.pop();
 }

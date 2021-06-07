@@ -25,8 +25,15 @@ namespace GameModule
             ~IABomberman();
         
         private:
+            // To set in IACore
             bool actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
             void movementPrediction(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list);
+
+            // Internal function
+            bool findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list);
+
+            // TOOLS
+            void clearQueue(std::queue<IA::Movement> &list);
     };
 }
 
