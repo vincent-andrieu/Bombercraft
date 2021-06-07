@@ -7,11 +7,12 @@
 
 #include "Text.hpp"
 
-raylib::Text::Text(const string &text, const MyVector2 position, const size_t size, const RColor color)
+raylib::Text::Text(
+    const string &text, const MyVector2 position, const size_t size, const RColor color, std::shared_ptr<raylib::Font> font)
 {
     this->_text = text;
     this->_position = position;
-    this->_font = std::make_shared<raylib::Font>();
+    this->_font = font;
     this->_color = color;
     this->_size = size;
     this->_limit = {-1, -1, -1, -1};
