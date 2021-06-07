@@ -39,7 +39,7 @@ set(SRCS
     src/EntityPack/EntityPack.cpp
 )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 add_library(${NAME} ${SRCS})
 
 if(MSVC)
