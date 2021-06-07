@@ -28,6 +28,9 @@ set(SRCS
         src/Game/EventRequirement/EventRequirement.cpp
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
+        ## GAME/FACTORIES
+        src/Game/Factories/ButtonFactory.cpp
+        src/Game/EntityFactory/EntityFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
