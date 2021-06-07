@@ -84,7 +84,7 @@ int ConfigFile::getInt(const std::string name) const
         throw ParserExceptions("Incorrect line format for INT: " + line);
     try {
         value = std::stoi(this->getAfterMatch(line, ": "));
-    } catch (const std::out_of_range &e) {
+    } catch ([[maybe_unused]]const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
@@ -102,7 +102,7 @@ float ConfigFile::getFloat(const std::string name) const
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
     try {
         value = std::stof(this->getAfterMatch(line, ": "));
-    } catch (const std::out_of_range &e) {
+    } catch ([[maybe_unused]]const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
@@ -343,9 +343,9 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
                     tab.push_back(std::stoi(once));
                 else if (once.back() == ']')
                     tab.push_back(std::stoi(once));
-            } catch (const std::out_of_range &e) {
+            } catch ([[maybe_unused]]const std::out_of_range &e) {
                 throw ParserExceptions("Incorrect value for TABTAB");
-            } catch (const std::invalid_argument &e) {
+            } catch ([[maybe_unused]]const std::invalid_argument &e) {
                 throw ParserExceptions("Incorrect value for TABTAB");
             }
         }

@@ -27,7 +27,7 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
 
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels(
-            {{"rect1", std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30})}}));
+            {{"rect1", std::make_shared<raylib::Rectangle>(raylib::MyVector2(100, 100), raylib::MyVector2(20, 30))}}));
     std::cout << "Key S pressed !!!" << std::endl;
     // Change color of the cube:
     auto block = scene->localEntities.getEntity("redBlock");
@@ -58,8 +58,8 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
         std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
-    this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100, 20);
-    this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20, 0);
+    this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
+    this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20.0f, 0.0f);
     this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, raylib::MyVector3(50, 50, 50),
         []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
         });
