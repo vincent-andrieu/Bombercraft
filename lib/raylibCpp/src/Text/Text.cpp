@@ -43,6 +43,11 @@ void raylib::Text::setPosition(const MyVector2 position)
     this->_position = position;
 }
 
+void raylib::Text::setFont(std::shared_ptr<raylib::IFont> &font)
+{
+    this->_font = font;
+}
+
 void raylib::Text::setFont(const string &font)
 {
     this->_font->setPath(font);
