@@ -21,8 +21,9 @@ namespace GameModule
     class IABomberman : public IA::IACore<TileType, BombermanAction>
     {
         public:
-            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, int defaultValue = -1);
+            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range = 6, int defaultValue = -1);
             ~IABomberman();
+            void setRange(size_t range);
         
         private:
             // To set in IACore
@@ -39,8 +40,10 @@ namespace GameModule
             void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
             std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
             std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
+            std::vector<std::vector<TileType>> getMapWithExposionEffect(std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const;
         
         private:
+            size_t _range;
             int _defaultValue;
     };
 }

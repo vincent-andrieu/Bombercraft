@@ -9,8 +9,8 @@
 
 using namespace GameModule;
 
-IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, int defaultValue)
-: IA::IACore<TileType, BombermanAction>(pos, env), _defaultValue(defaultValue)
+IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range, int defaultValue)
+: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue)
 {
     this->setIAAction(BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
         return this->actionPutBomber(pos, env);
@@ -24,12 +24,20 @@ IABomberman::~IABomberman()
 {
 }
 
+void IABomberman::setRange(size_t range)
+{
+    this->_range = range;
+}
+
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 {
-    // TODO to dev
-    (void) pos;
-    (void) env;
-    return false;
+    std::queue<IA::Movement> list;
+    std::vector<std::vector<TileType>> editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
+    
+    if (this->findSecurePlace(pos, env, list))
+        return false;
+    this->_MovementQueue = list;
+    return true;
 }
 
 void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
@@ -156,4 +164,67 @@ void IABomberman::loadPath(const std::vector<std::vector<int>> &tab, std::pair<s
     }
     this->loadPath(tab, next, list);
     list.push(toPush);
+}
+
+std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const
+{
+    int move = 1;
+    size_t x = pos.first;
+    size_t y = pos.second;
+    int tmp;
+
+    for (size_t i = 0; i < range; i++) {
+        tmp = x + (i * move);
+        if (tmp >= 0 && x + (i * move) < env[y].size()) {
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
+                env[y][tmp] = TileType::TILE_EXPLOSION;
+            else if (env[y][tmp] == TileType::TILE_SOFT) {
+                env[y][tmp] = TileType::TILE_EXPLOSION;
+                break;
+            } else if (env[y][tmp] == TileType::TILE_HARD) {
+                break;
+            }
+        }
+    }
+    for (size_t i = 0; i < range; i++) {
+        tmp = y + (i * move);
+        if (tmp >= 0 && y + (i * move) < env.size()) {
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
+                env[tmp][x] = TileType::TILE_EXPLOSION;
+            else if (env[tmp][x] == TileType::TILE_SOFT) {
+                env[tmp][x] = TileType::TILE_EXPLOSION;
+                break;
+            } else if (env[tmp][x] == TileType::TILE_HARD) {
+                break;
+            }
+        }
+    }
+    move = -1;
+    for (size_t i = 0; i < range; i++) {
+        tmp = x + (i * move);
+        if (tmp >= 0 && x + (i * move) < env[y].size()) {
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
+                env[y][tmp] = TileType::TILE_EXPLOSION;
+            else if (env[y][tmp] == TileType::TILE_SOFT) {
+                env[y][tmp] = TileType::TILE_EXPLOSION;
+                break;
+            } else if (env[y][tmp] == TileType::TILE_HARD) {
+                break;
+            }
+        }
+    }
+    for (size_t i = 0; i < range; i++) {
+        tmp = y + (i * move);
+        if (tmp >= 0 && y + (i * move) < env.size()) {
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
+                env[tmp][x] = TileType::TILE_EXPLOSION;
+            else if (env[tmp][x] == TileType::TILE_SOFT) {
+                env[tmp][x] = TileType::TILE_EXPLOSION;
+                break;
+            } else if (env[tmp][x] == TileType::TILE_HARD) {
+                break;
+            }
+        }
+    }
+    return env;
 }
