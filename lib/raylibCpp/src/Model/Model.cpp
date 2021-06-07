@@ -51,7 +51,7 @@ void raylib::Model::setRotation(const MyVector3 rotation)
     float roll = rotation.c;
 
     this->_rotation = rotation;
-    this->_model.transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+    this->_model.transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
 }
 
 void raylib::Model::setScale(const float scale)
@@ -73,7 +73,7 @@ void raylib::Model::setPath(const string &path)
     this->_path = path;
     UnloadModel(this->_model);
     this->_model = LoadModel(path.data());
-    this->_model.transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+    this->_model.transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
 }
 
 void raylib::Model::setTexture(const std::string &texturePath)

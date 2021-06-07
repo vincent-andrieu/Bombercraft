@@ -21,6 +21,8 @@ namespace Engine
 
         virtual void update() = 0;
 
+        virtual void onSceneChange();
+
       public:
         EntityPack localEntities;
 

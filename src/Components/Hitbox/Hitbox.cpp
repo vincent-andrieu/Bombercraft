@@ -9,7 +9,8 @@
 
 using namespace Component;
 
-Hitbox::Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler handler) : objectBox(origin, size), _handler(handler)
+Hitbox::Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler)
+    : objectBox(std::make_shared<ObjectBox>(origin, size)), _handler(handler)
 {
 }
 

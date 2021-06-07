@@ -13,12 +13,7 @@ Engine::EntityPack::EntityPack(Engine::EntityManager &entityManager) : _entityMa
 
 Engine::EntityPack::~EntityPack()
 {
-    for (auto [key, entity] : _entities) {
-        _entityManager.removeEntity(entity);
-    }
-    for (Entity e : _anonymousEntities) {
-        _entityManager.removeEntity(e);
-    }
+    this->unload();
 }
 
 Engine::Entity Engine::EntityPack::createEntity(const std::string &key)
@@ -47,4 +42,14 @@ Engine::Entity Engine::EntityPack::createAnonymousEntity()
 
     _anonymousEntities.push_back(e);
     return e;
+}
+
+void Engine::EntityPack::unload()
+{
+    for (auto [key, entity] : _entities) {
+        _entityManager.removeEntity(entity);
+    }
+    for (Entity e : _anonymousEntities) {
+        _entityManager.removeEntity(e);
+    }
 }

@@ -39,6 +39,7 @@ set(SRCS
         src/Systems/Hitbox/HitboxSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
+        src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
@@ -50,7 +51,7 @@ add_executable(${NAME} ${SRCS})
 if (MSVC)
     target_compile_options(${NAME} PRIVATE /W4 /WX)
 else ()
-    target_compile_options(${NAME} PRIVATE -Wall) # -Wextra
+    target_compile_options(${NAME} PRIVATE -Wall -Wextra -Wno-missing-field-initializers)
 endif ()
 
 set_target_properties(${NAME}

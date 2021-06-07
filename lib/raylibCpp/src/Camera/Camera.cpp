@@ -10,9 +10,9 @@
 raylib::Camera::Camera(const MyVector3 position, const MyVector3 target, const MyVector3 up, const float fovy)
 {
     this->_camera = {0};
-    this->_camera.position = (Vector3){position.a, position.b, position.c};
-    this->_camera.target = (Vector3){target.a, target.b, target.c};
-    this->_camera.up = (Vector3){up.a, up.b, up.c};
+    this->_camera.position = MyVector3::makeVector3(position);
+    this->_camera.target = MyVector3::makeVector3(target);
+    this->_camera.up = MyVector3::makeVector3(up);
     this->_camera.fovy = fovy;
     this->_camera.projection = CAMERA_PERSPECTIVE;
 }
@@ -29,17 +29,17 @@ void raylib::Camera::end3D()
 
 void raylib::Camera::setPosition(const MyVector3 position)
 {
-    this->_camera.position = (Vector3){position.a, position.b, position.c};
+    this->_camera.position = MyVector3::makeVector3(position);
 }
 
 void raylib::Camera::setTarget(const MyVector3 target)
 {
-    this->_camera.target = (Vector3){target.a, target.b, target.c};
+    this->_camera.target = MyVector3::makeVector3(target);
 }
 
 void raylib::Camera::setUp(const MyVector3 up)
 {
-    this->_camera.up = (Vector3){up.a, up.b, up.c};
+    this->_camera.up = MyVector3::makeVector3(up);
 }
 
 void raylib::Camera::setFovy(const float fovy)

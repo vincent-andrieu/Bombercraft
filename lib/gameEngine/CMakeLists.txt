@@ -41,8 +41,8 @@ set(SRCS
     src/SaveManager/SaveManager.cpp
 )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
-add_library(${NAME} SHARED ${SRCS})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+add_library(${NAME} ${SRCS})
 
 if(MSVC)
     target_compile_options(${NAME} PRIVATE /W4 /WX)

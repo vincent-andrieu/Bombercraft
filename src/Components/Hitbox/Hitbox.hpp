@@ -10,6 +10,9 @@
 
 #include "GameEngine.hpp"
 #include "raylib.hpp"
+#include <memory>
+
+using ObjectBox = raylib::ObjectBox;
 
 namespace Component
 {
@@ -17,7 +20,7 @@ namespace Component
 
     class Hitbox : public Engine::Component<Hitbox> {
       public:
-        Hitbox(const MyVector3 origin, const MyVector3 size, hitboxHandler handler);
+        Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler);
         ~Hitbox() = default;
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
@@ -25,7 +28,7 @@ namespace Component
         bool save(Engine::SaveManager &saver) const override;
         bool load(Engine::SaveManager &saver) override;
 
-        ObjectBox objectBox;
+        std::shared_ptr<ObjectBox> objectBox;
 
       private:
         hitboxHandler _handler;

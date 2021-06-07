@@ -20,6 +20,8 @@ namespace Engine
         EntityPack(EntityManager &entityManager);
         ~EntityPack();
 
+        void unload();
+
         Entity createEntity(const std::string &key);
         Entity createAnonymousEntity();
 

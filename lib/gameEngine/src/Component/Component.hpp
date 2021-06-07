@@ -8,6 +8,7 @@
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
+#include <cstdlib>
 #include <cctype>
 #include "SaveManager/SaveManager.hpp"
 

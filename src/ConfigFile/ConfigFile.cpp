@@ -41,7 +41,7 @@ ConfigFile::~ConfigFile()
 std::string ConfigFile::getLineByName(const std::string name) const
 {
     const std::string startLine("\"" + name + "\": ");
-    
+
     for (auto it = std::begin(_fileContent); it != std::end(_fileContent); ++it) {
         if ((*it).compare(0, startLine.size(), startLine) == 0)
             return (*it);
@@ -68,7 +68,7 @@ void ConfigFile::loadFile(const std::string &filename)
         this->objInline('[', ']');
         this->correctFile();
     } else {
-        throw std::invalid_argument("File close");
+        throw ParserExceptions("File close");
     }
 }
 
@@ -212,15 +212,16 @@ size_t ConfigFile::getStartOf(const std::string &line, size_t pos) const
 {
     size_t cnt = 0;
 
-    for (; pos >= 0; pos--) {
+    while (true) {
         if (line[pos] == '"')
             cnt++;
         if (cnt == 2)
             return pos;
         if (pos == 0)
             break;
-    }    
-    throw ParserExceptions("Invalide '\"': symbole not found");
+        pos--;
+    }
+    throw ParserExceptions("Invalid '\"': symbol not found");
 }
 
 std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line) const

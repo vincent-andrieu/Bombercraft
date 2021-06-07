@@ -12,28 +12,25 @@
 #include "../../Data/MyVector/MyVector3.hpp"
 #include "../../../include/ICollidable.hpp"
 
-using namespace raylib;
-
-namespace ObjectType
+namespace raylib
 {
     class ObjectBox;
-    class ObjectSphere : public ICollidable
-    {
-        public:
-            ObjectSphere(const MyVector3 center, const float radius);
-            ~ObjectSphere();
-            void setSphere(const MyVector3 center, const float radius);
-            MyVector3 getSphereCenter() const;
-            float getSphereRadius() const;
-            bool checkCollisionWith(const ObjectSphere &sphere);
-            bool checkCollisionWith(const ObjectBox &box);
+    class ObjectSphere : public ICollidable {
+      public:
+        ObjectSphere(const MyVector3 center, const float radius);
+        ~ObjectSphere();
+        void setSphere(const MyVector3 center, const float radius);
+        MyVector3 getSphereCenter() const;
+        float getSphereRadius() const;
+        bool checkCollisionWith(const ObjectSphere &sphere);
+        bool checkCollisionWith(const ObjectBox &box);
 
-            bool boxCollider(const ObjectType::ObjectBox &box);
+        bool boxCollider(const ObjectBox &box);
 
-        private:
-            MyVector3 _center;
-            float _radius;
+      private:
+        MyVector3 _center;
+        float _radius;
     };
-};
+}; // namespace raylib
 
 #endif
