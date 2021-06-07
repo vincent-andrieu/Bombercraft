@@ -17,6 +17,7 @@ namespace Component {
         ClickEvent(eventScript &handler, Game::EventRequirement const &requirements)
             : AbstractEvent(handler, requirements)
         {}
+
     };
 }
 

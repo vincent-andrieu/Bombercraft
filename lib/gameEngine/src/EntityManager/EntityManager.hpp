@@ -15,6 +15,7 @@
 #include "EntityContainer/EntityRegister.hpp"
 #include "ComponentTypeRegister/ComponentTypeRegister.hpp"
 #include "Component/Component.hpp"
+#include "SaveManager/SaveManager.hpp"
 
 namespace Engine
 {
@@ -22,8 +23,8 @@ namespace Engine
 
     class EntityManager {
       public:
-        EntityManager(SystemManager &sysManager);
-        ~EntityManager() = default;
+        explicit EntityManager(SystemManager &sysManager);
+        ~EntityManager();
 
         template <typename T> void registerComponent();
 
@@ -48,10 +49,14 @@ namespace Engine
 
         template <typename T> Entity getOwner(const T &component) const;
 
+        void save(const std::string &saveName);
+        void load(const std::string &saveName);
+
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
+        SaveManager _saver{"Engine_Save"};
 
         template <typename T> void checkComponentType() const;
 
@@ -61,7 +66,6 @@ namespace Engine
 
         template <typename T> ComponentTypeRegister<T> *getComponentContainer() const;
     };
-
 } // namespace Engine
 
 #include "SystemManager/SystemManager.hpp"
