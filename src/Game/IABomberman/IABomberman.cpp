@@ -18,6 +18,8 @@ IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<
     this->setIAMovement([this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list) {
         return this->movementPrediction(pos, env, list);
     });
+    this->setRunnableTile(TileType::TILE_BONUS);
+    this->setRunnableTile(TileType::TILE_EMPTY);
 }
 
 IABomberman::~IABomberman()
