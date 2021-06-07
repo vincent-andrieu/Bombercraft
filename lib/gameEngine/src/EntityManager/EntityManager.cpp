@@ -65,7 +65,8 @@ void EntityManager::save(const std::string &saveName)
     }
     for (const auto &component_register : _componentRegisters) {
         try {
-            component_register->save(_saver);
+            if (component_register)
+                component_register->save(_saver);
         } catch (const std::filesystem::filesystem_error &my_e) {
             SaveManager::printException(my_e);
             return;
