@@ -30,6 +30,16 @@ MyVector3::MyVector3(const MyVector3 &src)
     this->c = src.c;
 }
 
+Vector3 MyVector3::makeVector3(const MyVector3 vector)
+{
+    Vector3 v = {0};
+
+    v.x = vector.a;
+    v.y = vector.b;
+    v.z = vector.c;
+    return v;
+}
+
 MyVector3 raylib::operator+(MyVector3 const &first, MyVector3 const &second)
 {
     return MyVector3(first.a + second.a, first.b + second.b, first.c + second.c);

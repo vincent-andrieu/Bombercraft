@@ -12,7 +12,6 @@
 int main(void)
 {
     Game::Core core;
-
     core.loop();
     return EXIT_SUCCESS;
 }
