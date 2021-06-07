@@ -39,6 +39,7 @@ set(SRCS
         src/Systems/Hitbox/HitboxSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
+        src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
