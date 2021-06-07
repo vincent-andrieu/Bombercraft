@@ -16,7 +16,6 @@
 #include "ObjectType/ObjectRectangle.hpp"
 #include "raylib.h"
 
-using namespace ObjectType;
 
 namespace raylib
 {

@@ -14,27 +14,24 @@
 
 #include <functional>
 
-using namespace raylib;
-
-namespace ObjectType
+namespace raylib
 {
     class ObjectBox;
-    class ObjectLine : public ICollidable
-    {
-        public:
-            ObjectLine(const MyVector2 a, const MyVector2 b);
-            ~ObjectLine();
-            void setLine(const MyVector2 a, const MyVector2 b);
-            MyVector2 getPointA() const;
-            MyVector2 getPointB() const;
-            bool checkCollisionWith(const ObjectLine &line);
+    class ObjectLine : public ICollidable {
+      public:
+        ObjectLine(const MyVector2 a, const MyVector2 b);
+        ~ObjectLine();
+        void setLine(const MyVector2 a, const MyVector2 b);
+        MyVector2 getPointA() const;
+        MyVector2 getPointB() const;
+        bool checkCollisionWith(const ObjectLine &line);
 
-            bool boxCollider(const ObjectType::ObjectBox &box);
+        bool boxCollider(const ObjectBox &box);
 
-        private:
-            MyVector2 _a;
-            MyVector2 _b;
+      private:
+        MyVector2 _a;
+        MyVector2 _b;
     };
-};
+}; // namespace raylib
 
 #endif

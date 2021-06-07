@@ -22,7 +22,7 @@ void System::HitboxSystem::update()
             for (const Engine::Entity &toEntity : this->getManagedEntities())
                 if (fromEntity != toEntity) {
                     Component::Hitbox toHitboxComp = this->_entityManager.getComponent<Component::Hitbox>(toEntity);
-                    if (fromHitboxComp.objectBox.checkCollisionWith(toHitboxComp.objectBox)) {
+                    if (fromHitboxComp.objectBox->checkCollisionWith(*toHitboxComp.objectBox)) {
                         fromHitboxComp.trigger(fromEntity, toEntity);
                         toHitboxComp.trigger(fromEntity, toEntity);
                     }

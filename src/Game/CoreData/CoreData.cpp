@@ -20,7 +20,7 @@ std::shared_ptr<raylib::Input> CoreData::eventManager = nullptr;
 ConfigFile CoreData::settings = ConfigFile(CONFIG_FILE);
 
 CoreData::CoreData() : _window(CoreData::settings.getMyVector2("WIN_SIZE"), CoreData::settings.getString("WIN_TITLE"),
-    static_cast<RColor>(CoreData::settings.getInt("WIN_BACK")))
+    static_cast<raylib::RColor>(CoreData::settings.getInt("WIN_BACK")))
 {
     if (CoreData::_systemManager == nullptr)
         CoreData::_systemManager = std::make_unique<Engine::SystemManager>();
