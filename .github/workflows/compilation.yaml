@@ -105,10 +105,6 @@ jobs:
         working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
         run: cmake ..
 
-      - name: Build Project
-        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
-        run: cmake --build .
-
       - name: Check if binary exist
         working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
         run: ls raylibcpp.sln
@@ -150,6 +146,10 @@ jobs:
       - name: Run cmake
         working-directory: build
         run: cmake ..
+
+      - name: Build Project
+        working-directory: build
+        run: cmake --build .
 
       - name: Check if binary exist
         working-directory: build
