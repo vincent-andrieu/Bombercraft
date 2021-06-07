@@ -25,8 +25,10 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto scene = CoreData::sceneManager->getCurrentScene();
     auto entity = scene->localEntities.createAnonymousEntity();
 
-    CoreData::entityManager->addComponent<Component::Render2D>(
-        entity, std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30}));
+    CoreData::entityManager->addComponent<Component::Render2D>(entity,
+         Component::render2dMapModels(
+            {{"rect1", std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30})}
+        }));
     std::cout << "Key S pressed !!!" << std::endl;
     // Change color of the cube:
     auto block = scene->localEntities.getEntity("redBlock");
@@ -39,8 +41,9 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManag
 {
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
-    _entityManager.addComponent<Component::Render2D>(
-        rect, std::make_shared<raylib::Rectangle>((raylib::MyVector2){10, 10}, (raylib::MyVector2){20, 20}));
+    _entityManager.addComponent<Component::Render2D>(rect,
+        Component::render2dMapModels{
+            {"recTest", std::make_shared<raylib::Rectangle>((raylib::MyVector2){10, 10}, (raylib::MyVector2){20, 20})}});
 
     auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);

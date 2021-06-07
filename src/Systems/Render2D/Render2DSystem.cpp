@@ -18,6 +18,6 @@ void System::Render2DSystem::update()
     for (const Engine::Entity &entity : this->getManagedEntities()) {
         auto [render] = Game::CoreData::entityManager->getComponents<Component::Render2D>(entity);
 
-        render.modele->draw();
+        render.draw();
     }
 }
