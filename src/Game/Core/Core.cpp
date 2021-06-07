@@ -38,11 +38,11 @@ Core::~Core()
 
 void Core::loop()
 {
-    _window.open();
-    while (_window.isOpen()) {
-        _window.clear();
+    CoreData::_window->open();
+    while (CoreData::_window->isOpen()) {
+        CoreData::_window->clear();
         CoreData::sceneManager->run();
-        _window.refresh();
+        CoreData::_window->refresh();
     }
-    _window.close();
+    CoreData::_window->close();
 }
