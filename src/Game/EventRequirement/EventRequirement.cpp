@@ -44,7 +44,7 @@ bool Game::EventRequirement::triggerKey(raylib::Input &eventManager) const
     return false;
 }
 
-bool Game::EventRequirement::triggerMouseMove(raylib::Input &eventManager) const
+bool Game::EventRequirement::triggerMouseMove([[maybe_unused]]raylib::Input &eventManager) const
 {
     return _mouseMoveEvent;
 }
