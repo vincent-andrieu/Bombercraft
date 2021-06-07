@@ -68,11 +68,21 @@ void IACore<TileType, Action>::unsetRunnableTile(TileType tile)
 }
 
 template <typename TileType, typename Action>
-Movement IACore<TileType, Action>::getIAMovement() const
+Movement IACore<TileType, Action>::getIAMovement()
 {
-    if (!this->_MovementFunc)
-        throw std::invalid_argument("Moving function not initialized");
-    return this->_MovementFunc(this->_env, this->_pos);
+    Movement tmp;
+
+    if (!this->_MovementQueue.size()) {
+        if (!this->_MovementFunc)
+            throw std::invalid_argument("Moving function not initialized");
+        else
+            this->_MovementFunc(this->_env, this->_pos, this->_MovementQueue);
+    }
+    if (!this->_MovementQueue.size())
+        return Movement::IA_MOVE_NONE;
+    tmp = this->_MovementQueue.back();
+    this->_MovementQueue.pop();
+    return tmp;
 }
 
 template <typename TileType, typename Action>
@@ -92,7 +102,7 @@ void IACore<TileType, Action>::setIAAction(Action act, std::function<bool(std::v
 }
 
 template <typename TileType, typename Action>
-void IACore<TileType, Action>::setIAMovement(std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func)
+void IACore<TileType, Action>::setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func)
 {
     this->_MovementFunc = func;
 }

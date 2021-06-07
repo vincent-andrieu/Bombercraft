@@ -8,8 +8,8 @@
 #ifndef IA_HPP
 #define IA_HPP
 
+#include <queue>
 #include "IIA.hpp"
-//#include "IABomberman.hpp"
 #include "../ProceduralMap/IProceduralMap.hpp"
 
 namespace GameModule
@@ -31,17 +31,18 @@ namespace IA
             std::pair<size_t, size_t> getIAPos() const;
             void setRunnableTile(TileType tile);
             void unsetRunnableTile(TileType tile);
-            Movement getIAMovement() const;
+            Movement getIAMovement();
             Action getIAAction() const;
             void setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
-            void setIAMovement(std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
+            void setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func);
 
         private:
             std::pair<size_t, size_t> _pos;
             std::vector<std::vector<TileType>> _env;
             std::unordered_map<Action, std::function<bool(std::vector<std::vector<TileType>>, std::pair<size_t, size_t>)>> _actLink;
             std::vector<TileType> _isRunnable;
-            std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> _MovementFunc;
+            std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> _MovementFunc;
+            std::queue<Movement> _MovementQueue;
     };
 }
 
