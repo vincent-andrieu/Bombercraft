@@ -12,18 +12,16 @@
 #include "Systems/Event/EventSystem.hpp"
 #include "GameEngine.hpp"
 
-namespace Game {
+namespace Game
+{
     class SceneWithEvents {
       public:
-        SceneWithEvents(raylib::Input &eventManager);
+        SceneWithEvents() = default;
         ~SceneWithEvents() = default;
 
       protected:
         void eventDispatcher(Engine::SystemManager &systemManager);
-
-      protected:
-        raylib::Input &_eventManager;
     };
-}
+} // namespace Game
 
 #endif // SCENEWITHEVENTS_HPP

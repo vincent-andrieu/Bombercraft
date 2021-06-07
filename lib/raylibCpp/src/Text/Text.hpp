@@ -16,13 +16,15 @@ namespace raylib
 {
     class Text : public IText {
       public:
-        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE);
+        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
+            std::shared_ptr<raylib::Font> font = std::make_shared<raylib::Font>());
         ~Text() = default;
 
         void draw();
 
         void setText(const string &text);
         void setPosition(const MyVector2 position);
+        void setFont(std::shared_ptr<raylib::IFont> &font);
         void setFont(const string &font);
         void setColor(const RColor color);
         void setFontSize(const size_t size);
