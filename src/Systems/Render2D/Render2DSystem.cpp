@@ -6,8 +6,9 @@
 */
 
 #include "Render2DSystem.hpp"
+#include "Game/Core/Core.hpp"
 
-System::Render2DSystem::Render2DSystem(Engine::EntityManager &entityManager) : AbstractSystem(entityManager)
+System::Render2DSystem::Render2DSystem() : AbstractSystem(*Game::CoreData::entityManager)
 {
     this->setRequirements<Component::Render2D>();
 }
@@ -15,7 +16,7 @@ System::Render2DSystem::Render2DSystem(Engine::EntityManager &entityManager) : A
 void System::Render2DSystem::update()
 {
     for (const Engine::Entity &entity : this->getManagedEntities()) {
-        auto [render] = _entityManager.getComponents<Component::Render2D>(entity);
+        auto [render] = Game::CoreData::entityManager->getComponents<Component::Render2D>(entity);
 
         render.draw();
     }

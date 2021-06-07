@@ -10,12 +10,13 @@
 
 namespace raylib
 {
-    class IRenderable
-    {
-        public :
-            virtual ~IRenderable() {};
-            virtual void draw() = 0;
+    class IRenderable {
+      public:
+        virtual ~IRenderable(){};
+        virtual void draw() = 0;
+
+        virtual void setColor(const RColor color) = 0;
     };
-};
+}; // namespace raylib
 
 #endif

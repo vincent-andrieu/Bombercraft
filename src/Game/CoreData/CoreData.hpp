@@ -21,7 +21,7 @@ namespace Game
         ~CoreData() = default;
 
       public:
-        static ConfigFile settings;
+        static std::unique_ptr<ConfigFile> settings;
         static std::shared_ptr<raylib::Camera> camera;
         static std::shared_ptr<Engine::EntityManager> entityManager;
         static std::shared_ptr<Engine::SceneManager> sceneManager;
@@ -29,7 +29,7 @@ namespace Game
 
       protected:
         static std::shared_ptr<Engine::SystemManager> _systemManager;
-        raylib::Window _window;
+        static std::unique_ptr<raylib::Window> _window;
     };
 }
 
