@@ -9,7 +9,7 @@
 
 using namespace Game;
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
+Core::Core() : CoreData(), globalEntities(*this->entityManager)
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Render2D>();
@@ -26,24 +26,19 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::_systemManager->createSystem<System::ClickEventSystem>();
     CoreData::_systemManager->createSystem<System::KeyEventSystem>();
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
-    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*this->entityManager);
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>(
-        (*CoreData::_systemManager), (*CoreData::entityManager), (*CoreData::eventManager));
-}
-
-Core::~Core()
-{
+    CoreData::sceneManager->createScene<DebugScene>(*this->_systemManager);
 }
 
 void Core::loop()
 {
-    _window.open();
-    while (_window.isOpen()) {
-        _window.clear();
+    this->_window.open();
+    while (this->_window.isOpen()) {
+        this->_window.clear();
         CoreData::sceneManager->run();
-        _window.refresh();
+        this->_window.refresh();
     }
-    _window.close();
+    this->_window.close();
 }

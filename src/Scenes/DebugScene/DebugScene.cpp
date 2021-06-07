@@ -26,9 +26,8 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto entity = scene->localEntities.createAnonymousEntity();
 
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
-         Component::render2dMapModels(
-            {{"rect1", std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30})}
-        }));
+        Component::render2dMapModels(
+            {{"rect1", std::make_shared<raylib::Rectangle>((raylib::MyVector2){100, 100}, (raylib::MyVector2){20, 30})}}));
     std::cout << "Key S pressed !!!" << std::endl;
     // Change color of the cube:
     auto block = scene->localEntities.getEntity("redBlock");
@@ -36,20 +35,19 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
         ->setColor(raylib::RColor::RGREEN);
 };
 
-DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManager &entityManager, raylib::Input &eventManager)
-    : AbstractScene(systemManager, entityManager)
+DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
 {
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
-    _entityManager.addComponent<Component::Render2D>(rect,
+    this->_entityManager.addComponent<Component::Render2D>(rect,
         Component::render2dMapModels{
             {"recTest", std::make_shared<raylib::Rectangle>((raylib::MyVector2){10, 10}, (raylib::MyVector2){20, 20})}});
 
     auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);
-    _entityManager.addComponent<Component::Render3D>(
+    this->_entityManager.addComponent<Component::Render3D>(
         block, std::make_shared<raylib::Cuboid>(nullptr, blockPos, (raylib::MyVector3){50, 50, 50}, raylib::RColor::RRED));
-    _entityManager.addComponent<Component::Hitbox>(
+    this->_entityManager.addComponent<Component::Hitbox>(
         block, blockPos, (raylib::MyVector3){50, 50, 50}, [](const Engine::Entity &fromEntity, const Engine::Entity &toEntity) {
             auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
             auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
@@ -66,8 +64,8 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager, Engine::EntityManag
         [](const Engine::Entity &fromEntity, const Engine::Entity &toEntity) {
         });
     // Events
-    _entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
-    _entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
+    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
+    this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 }
 
 void DebugScene::update()
@@ -82,5 +80,5 @@ void DebugScene::update()
     render3D.update();
     render2D.update();
     hitbox.update();
-    this->eventDispatcher(_systemManager);
+    this->eventDispatcher(this->_systemManager);
 }

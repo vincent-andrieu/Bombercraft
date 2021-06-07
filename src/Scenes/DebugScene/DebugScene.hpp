@@ -19,11 +19,11 @@ namespace Game
 {
     class DebugScene : public Engine::AbstractScene, public SceneWithEvents {
       public:
-        DebugScene(Engine::SystemManager &systemManager, Engine::EntityManager &entityManager, raylib::Input &eventManager);
+        DebugScene(Engine::SystemManager &systemManager);
         ~DebugScene() = default;
 
         void update();
     };
-}
+} // namespace Game
 
 #endif // DEBUGSCENE_HPP
