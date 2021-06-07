@@ -10,13 +10,11 @@
 
 #include "IACore.hpp"
 
-using namespace GameModule;
-
 namespace GameModule
 {
     enum class BombermanAction
     {
-        ACTION_NONE,
+        ACTION_NONE = 0,
         ACTION_TRIGGER_BOMBE,
     };
 

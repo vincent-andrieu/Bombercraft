@@ -9,8 +9,13 @@
 #define IA_HPP
 
 #include "IIA.hpp"
-#include "IABomberman.hpp"
+//#include "IABomberman.hpp"
 #include "../ProceduralMap/IProceduralMap.hpp"
+
+namespace GameModule
+{
+    enum class BombermanAction;
+}
 
 namespace IA
 {

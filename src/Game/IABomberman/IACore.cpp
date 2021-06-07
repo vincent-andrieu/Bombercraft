@@ -82,8 +82,7 @@ Action IACore<TileType, Action>::getIAAction() const
         if (it.second(this->_env, this->_pos))
             return it.first;
     }
-    
-    return GameModule::BombermanAction::ACTION_NONE;
+    return static_cast<GameModule::BombermanAction>(0);
 }
 
 template <typename TileType, typename Action>
