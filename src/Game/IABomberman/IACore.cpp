@@ -54,6 +54,8 @@ void IACore<TileType, Action>::setRunnableTile(TileType tile)
 
     if (it == this->_isRunnable.end()) {
         this->_isRunnable.push_back(tile);
+    } else {
+        throw IAExceptions("This tile is already set.", false);
     }
 }
 
@@ -64,6 +66,8 @@ void IACore<TileType, Action>::unsetRunnableTile(TileType tile)
 
     if (it != this->_isRunnable.end()) {
         this->_isRunnable.erase(it);
+    } else {
+        throw IAExceptions("This tile is not set.", false);
     }
 }
 
@@ -74,7 +78,7 @@ Movement IACore<TileType, Action>::getIAMovement()
 
     if (!this->_MovementQueue.size()) {
         if (!this->_MovementFunc)
-            throw std::invalid_argument("Moving function not initialized");
+            throw IAExceptions("Moving function not initialized", false);
         else
             this->_MovementFunc(this->_env, this->_pos, this->_MovementQueue);
     }

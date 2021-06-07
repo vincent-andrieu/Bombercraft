@@ -10,6 +10,7 @@
 
 #include <queue>
 #include "IIA.hpp"
+#include "../../Exceptions/Exceptions.hpp"
 #include "../ProceduralMap/IProceduralMap.hpp"
 
 namespace GameModule

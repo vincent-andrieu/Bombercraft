@@ -152,7 +152,7 @@ void IABomberman::loadPath(const std::vector<std::vector<int>> &tab, std::pair<s
         next = {x, y + 1};
         toPush = IA::Movement::IA_MOVE_UP;
     } else {
-        throw std::invalid_argument("Incorrect parameters");
+        throw IAExceptions("Incorrect parameters.", true);
     }
     this->loadPath(tab, next, list);
     list.push(toPush);
