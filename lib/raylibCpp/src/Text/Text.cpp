@@ -23,7 +23,7 @@ raylib::Text::Text(
 {
     this->_text = text;
     this->_position = position;
-    this->setFont(fontPath);
+    this->_font = std::make_shared<raylib::Font>(fontPath);
     this->_color = color;
     this->_size = size;
     this->_limit = {-1, -1, -1, -1};
@@ -67,7 +67,10 @@ void raylib::Text::setFont(std::shared_ptr<raylib::IFont> &font)
 
 void raylib::Text::setFont(const string &font)
 {
+    std::cout << "setFont std::string" << std::endl;
+    std::cout << "string:"  << font << std::endl;
     this->_font->setPath(font);
+    std::cout << "after setPath" << std::endl;
 }
 
 void raylib::Text::setColor(const RColor color)
