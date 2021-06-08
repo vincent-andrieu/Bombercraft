@@ -64,7 +64,7 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
         []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
         });
     // Events
-    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler);
+    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 }
 

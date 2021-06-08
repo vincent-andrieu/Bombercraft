@@ -13,7 +13,8 @@ Render2D::Render2D(std::unordered_map<std::string, std::shared_ptr<raylib::IRend
 {
     for (auto [label, model] : models) {
         if (this->_modelIndex.find(label) != this->_modelIndex.end()) {
-            throw std::invalid_argument("in Render2D::Render2D, Label index already exist");
+            throw std::invalid_argument("in Render2D::Render2D, Label index "
+                                        "already exists");
         }
         std::size_t index = this->_models.size();
         this->_modelIndex[label] = index;
@@ -25,7 +26,8 @@ Render2D::Render2D(std::unordered_map<std::string, std::shared_ptr<raylib::IRend
 void Render2D::add(std::shared_ptr<raylib::IRenderable> model, const std::string &label)
 {
     if (this->_modelIndex.find(label) != this->_modelIndex.end()) {
-        throw std::invalid_argument("in Render2D::add, Label index already exist");
+        throw std::invalid_argument("in Render2D::add, Label index already "
+                                    "exists");
     }
     std::size_t index = this->_models.size();
     this->_modelIndex[label] = index;
@@ -36,7 +38,8 @@ void Render2D::add(std::shared_ptr<raylib::IRenderable> model, const std::string
 void Render2D::remove(const std::string &label)
 {
     if (this->_modelIndex.find(label) == this->_modelIndex.end()) {
-        throw std::invalid_argument("in Render2D::remove, Undefined label index");
+        throw std::invalid_argument("in Render2D::remove, undefined label "
+                                    "index");
     }
     std::size_t index = this->_modelIndex[label];
     this->_modelIndex.erase(label);

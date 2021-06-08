@@ -10,13 +10,12 @@
 
 #include "Components/AbstractEvent/AbstractEvent.hpp"
 #include "GameEngine.hpp"
-#include <memory>
 
 namespace Component
 {
     class ClickEvent : public AbstractEvent, public Engine::Component<ClickEvent> {
       public:
-        explicit ClickEvent(eventScript &handler);
+        ClickEvent(eventScript handler, const Game::EventRequirement &requirements);
     };
 } // namespace Component
 

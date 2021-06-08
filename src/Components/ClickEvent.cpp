@@ -8,8 +8,7 @@
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "ClickEvent.hpp"
 
-static const Game::EventRequirement my_event(Game::evtMouse::LEFT);
-
-Component::ClickEvent::ClickEvent(eventScript &handler) : AbstractEvent(handler, my_event)
+Component::ClickEvent::ClickEvent(eventScript handler, const Game::EventRequirement &requirements)
+    : AbstractEvent(handler, requirements)
 {
 }

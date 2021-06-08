@@ -29,12 +29,15 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
+        # GUI/FACTORIES
         src/GUI/Factories/ButtonFactory.cpp
+        src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
+        src/Components/ClickEvent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
