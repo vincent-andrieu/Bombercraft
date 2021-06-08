@@ -21,4 +21,17 @@ class ParserExceptions : public std::exception {
             std::string _message;
 };
 
+class IAExceptions : public std::exception
+{
+    public:
+        IAExceptions(std::string const &message, bool fatal = true);
+        ~IAExceptions();
+        const char *what() const noexcept override;
+        bool isFatalThrow() const;
+
+        private:
+            std::string _message;
+            bool _fatal;
+};
+
 #endif /* !EXCEPTIONS_HPP_ */

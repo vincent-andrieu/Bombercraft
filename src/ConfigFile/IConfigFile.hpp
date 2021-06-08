@@ -23,17 +23,19 @@ class IConfigFile {
     virtual ~IConfigFile(){};
     virtual void loadFile(const std::string &filename) = 0;
 
-    [[nodiscard]] virtual int getInt(const std::string &name) const = 0;
-    [[nodiscard]] virtual float getFloat(const std::string &name) const = 0;
-    [[nodiscard]] virtual std::string getString(const std::string &name) const = 0;
-    [[nodiscard]] virtual std::pair<int, int> getPaire(const std::string &name) const = 0;
+    virtual bool isSetInFile(const std::string &name) const = 0;
 
-    [[nodiscard]] virtual raylib::MyVector2 getMyVector2(const std::string &name) const = 0;
-    [[nodiscard]] virtual raylib::MyVector3 getMyVector3(const std::string &name) const = 0;
-    [[nodiscard]] virtual raylib::MyVector4 getMyVector4(const std::string &name) const = 0;
+    virtual int getInt(const std::string &name) const = 0;
+    virtual float getFloat(const std::string &name) const = 0;
+    virtual std::string getString(const std::string &name) const = 0;
+    virtual std::pair<int, int> getPaire(const std::string &name) const = 0;
 
-    [[nodiscard]] virtual std::vector<int> getTabInt(const std::string &name) const = 0;
-    [[nodiscard]] virtual std::vector<std::vector<int>> getTabTabInt(const std::string &name) const = 0;
+    virtual raylib::MyVector2 getMyVector2(const std::string &name) const = 0;
+    virtual raylib::MyVector3 getMyVector3(const std::string &name) const = 0;
+    virtual raylib::MyVector4 getMyVector4(const std::string &name) const = 0;
+
+    virtual std::vector<int> getTabInt(const std::string &name) const = 0;
+    virtual std::vector<std::vector<int>> getTabTabInt(const std::string &name) const = 0;
     /*
     ** OTHER
     **

@@ -28,6 +28,9 @@ namespace Component
 
         void draw();
 
+        bool save(Engine::SaveManager &saver) const override;
+        bool load(Engine::SaveManager &saver) override;
+
       protected:
         std::vector<std::shared_ptr<raylib::IRenderable>> _models;
         std::unordered_map<std::string, std::size_t> _modelIndex;

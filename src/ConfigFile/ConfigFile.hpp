@@ -10,6 +10,7 @@
 
 #include "IConfigFile.hpp"
 #include "../Exceptions/Exceptions.hpp"
+#include <filesystem>
 
 class ConfigFile : public IConfigFile {
   public:
@@ -17,6 +18,8 @@ class ConfigFile : public IConfigFile {
     ConfigFile(const std::string &filename);
     ConfigFile(const std::vector<std::string> &tab);
     ~ConfigFile();
+
+    void createDefault(const std::string &filename) const;
 
     void loadFile(const std::string &filename) override;
 
@@ -32,6 +35,8 @@ class ConfigFile : public IConfigFile {
     [[nodiscard]] raylib::MyVector3 getMyVector3(const std::string &name) const override;
     [[nodiscard]] raylib::MyVector4 getMyVector4(const std::string &name) const override;
 
+    [[nodiscard]] bool isSetInFile(const std::string &name) const override;
+
   private:
     void cleanLine(std::string &str);
     [[nodiscard]] std::string getLineByName(const std::string &name) const;
@@ -44,9 +49,8 @@ class ConfigFile : public IConfigFile {
     [[nodiscard]] static std::vector<std::string> getParseFile(const std::string &line);
     [[nodiscard]] static std::vector<std::string> getParseIn(const std::string &sym, std::string line, bool activate = false);
 
-  protected:
-  private:
     std::vector<std::string> _fileContent;
+    static const std::vector<std::string> _defaultContent;
 };
 
 #endif /* !CONFIGFILE_HPP_ */

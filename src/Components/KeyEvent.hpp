@@ -17,6 +17,7 @@ namespace Component {
         KeyEvent(eventScript &handler, Game::EventRequirement const &requirements)
             : AbstractEvent(handler, requirements)
         {}
+
     };
 }
 

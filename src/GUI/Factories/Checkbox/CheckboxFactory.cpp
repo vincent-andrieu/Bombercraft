@@ -25,18 +25,18 @@ void CheckboxFactory::create(
     auto checkRect = std::make_shared<raylib::Rectangle>(position + outlineSize, size - 2 * outlineSize,
         static_cast<RColor>(CoreData::settings->getInt(CHECKBOX_CONFIG_DISABLE_COLOR)));
 
+    Component::eventScript checkboxHandler = [checkRect, isDefaultChecked, clickHandler](const Engine::Entity entity) {
+        static bool isChecked = isDefaultChecked;
+
+        isChecked = !isChecked;
+        checkRect->setColor(CheckboxFactory::getCheckColor(isChecked));
+        clickHandler(entity);
+    };
+
     CoreData::entityManager->addComponent<Component::Render2D>(
         checkbox, Component::render2dMapModels{{"checkboxBackground", backgroundRect}, {"checkboxCheck", checkRect}});
     CoreData::entityManager->addComponent<Component::ClickEvent>(
-        checkbox,
-        [checkRect, isDefaultChecked, clickHandler](const Engine::Entity entity) {
-            static bool isChecked = isDefaultChecked;
-
-            isChecked = !isChecked;
-            checkRect->setColor(CheckboxFactory::getCheckColor(isChecked));
-            clickHandler(entity);
-        },
-        CheckboxFactory::_clickHandlerRequirements);
+        checkbox, checkboxHandler, CheckboxFactory::_clickHandlerRequirements);
 }
 
 RColor CheckboxFactory::getCheckColor(bool isChecked)

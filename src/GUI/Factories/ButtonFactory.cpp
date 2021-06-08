@@ -32,7 +32,7 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     Engine::Entity entity = pack.createAnonymousEntity();
     Component::render2dMapModels my_models({{label, std::make_shared<raylib::Rectangle>(position, conf.size)}});
 
-    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, handler);
+    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, handler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, handler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
 }

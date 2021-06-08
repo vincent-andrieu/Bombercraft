@@ -14,11 +14,12 @@
 namespace GameModule
 {
     enum class TileType {
+        TILE_EXPLOSION,
         TILE_DEFAULT,
         TILE_EMPTY,
         TILE_BONUS,
         TILE_SOFT,
-        TILE_HARD
+        TILE_HARD,
     };
 
     enum class TileDisponibility {

@@ -10,6 +10,7 @@
 
 #include <cstddef>
 #include "entity.hpp"
+#include "SaveManager/SaveManager.hpp"
 
 namespace Engine
 {
@@ -19,7 +20,9 @@ namespace Engine
 
         virtual void allocate(std::size_t size) = 0;
         virtual bool tryRemove(Entity entity) = 0;
+        virtual void save(Engine::SaveManager &saver) const = 0;
+        virtual void load(Engine::SaveManager &saver) = 0;
     };
-}
+} // namespace Engine
 
 #endif // ICOMPONENTTYPEREGISTER_HPP
