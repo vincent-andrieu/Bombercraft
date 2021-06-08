@@ -26,6 +26,8 @@ namespace Component
         void add(std::shared_ptr<raylib::IRenderable> model, const std::string &label);
         void remove(const std::string &label);
 
+        std::shared_ptr<raylib::IRenderable> &get(const std::string &label);
+
         void draw();
 
         bool save(Engine::SaveManager &saver) const override;
