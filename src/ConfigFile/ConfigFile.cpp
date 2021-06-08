@@ -7,23 +7,25 @@
 
 #include "ConfigFile.hpp"
 
-ConfigFile::ConfigFile()
-{
-}
+static const std::string errmsg_notAscii("The file doesn't contain only ASCII characters !");
+static const std::string errmsg_notPair("Incorrect line format for PAIR: ");
+static const std::string errmsg_notVariable("No variable with name: ");
+static const std::string errmsg_notTab("Incorrect line format for Tab: ");
+static const std::string errmsg_notTabTab("Incorrect value for TABTAB");
 
 ConfigFile::ConfigFile(const std::string &filename)
 {
     this->loadFile(filename);
 }
 
-ConfigFile::ConfigFile(std::vector<std::string> tab)
+ConfigFile::ConfigFile(const std::vector<std::string> &tab)
 {
-    std::regex isAscii ("^[\\x00-\\x7F]+$");
+    std::regex isAscii("^[\\x00-\\x7F]+$");
 
     this->_fileContent.clear();
-    for (auto line : tab) {
+    for (const auto &line : tab) {
         if (!std::regex_search(line, isAscii) && !line.empty()) {
-            throw ParserExceptions("The file doesn't contains only ASCII characters !");
+            throw ParserExceptions(errmsg_notAscii);
         } else {
             this->commentManagingLine(line);
         }
@@ -38,9 +40,9 @@ ConfigFile::~ConfigFile()
     this->_fileContent.clear();
 }
 
-std::string ConfigFile::getLineByName(const std::string name) const
+std::string ConfigFile::getLineByName(const std::string &name) const
 {
-    const std::string startLine("\"" + name + "\": ");
+    const std::string &startLine("\"" + name + "\": ");
 
     for (auto it = std::begin(_fileContent); it != std::end(_fileContent); ++it) {
         if ((*it).compare(0, startLine.size(), startLine) == 0)
@@ -52,14 +54,14 @@ std::string ConfigFile::getLineByName(const std::string name) const
 void ConfigFile::loadFile(const std::string &filename)
 {
     std::string line;
-    std::ifstream myfile (filename);
-    std::regex isAscii ("^[\\x00-\\x7F]+$");
+    std::ifstream myfile(filename);
+    std::regex isAscii("^[\\x00-\\x7F]+$");
 
     if (myfile.is_open()) {
         this->_fileContent.clear();
         while (getline(myfile, line)) {
             if (!std::regex_search(line, isAscii) && !line.empty()) {
-                throw ParserExceptions("The file doesn't contains only ASCII characters !");
+                throw ParserExceptions(errmsg_notAscii);
             } else {
                 this->commentManagingLine(line);
             }
@@ -72,66 +74,66 @@ void ConfigFile::loadFile(const std::string &filename)
     }
 }
 
-int ConfigFile::getInt(const std::string name) const
+int ConfigFile::getInt(const std::string &name) const
 {
     int value = 0;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for INT: " + line);
     try {
         value = std::stoi(this->getAfterMatch(line, ": "));
-    } catch ([[maybe_unused]]const std::out_of_range &e) {
+    } catch ([[maybe_unused]] const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
 }
 
-float ConfigFile::getFloat(const std::string name) const
+float ConfigFile::getFloat(const std::string &name) const
 {
     float value = 0;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": (-)?\\d*(.)?\\d$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
     try {
         value = std::stof(this->getAfterMatch(line, ": "));
-    } catch ([[maybe_unused]]const std::out_of_range &e) {
+    } catch ([[maybe_unused]] const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
 }
 
-std::pair<int, int> ConfigFile::getPaire(const std::string name) const
+std::pair<int, int> ConfigFile::getPaire(const std::string &name) const
 {
     std::string input;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+        throw ParserExceptions(errmsg_notPair + line);
     input = this->getAfterMatch(line, ": {");
     input.pop_back();
     ConfigFile inside(this->getParseFile(input));
     return std::pair<int, int>(inside.getInt("x"), inside.getInt("y"));
 }
 
-std::string ConfigFile::getString(const std::string name) const
+std::string ConfigFile::getString(const std::string &name) const
 {
     std::string value;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \".*\"$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
         throw ParserExceptions("Incorrect line format for STRING: " + line);
     value = this->getAfterMatch(line, ": \"");
@@ -170,7 +172,7 @@ void ConfigFile::cleanLine(std::string &str)
 
 void ConfigFile::objInline(char start, char end)
 {
-    std::vector<std::string>::iterator next = this->_fileContent.begin();
+    auto next = this->_fileContent.begin();
     bool stat = false;
     size_t cnt = 0;
 
@@ -203,12 +205,12 @@ void ConfigFile::correctFile()
     }
 }
 
-std::string ConfigFile::getAfterMatch(std::string line, std::string match) const
+std::string ConfigFile::getAfterMatch(const std::string &line, const std::string &match)
 {
     return line.substr(line.find(match) + match.length(), line.length());
 }
 
-size_t ConfigFile::getStartOf(const std::string &line, size_t pos) const
+size_t ConfigFile::getStartOf(const std::string &line, size_t pos)
 {
     size_t cnt = 0;
 
@@ -224,7 +226,7 @@ size_t ConfigFile::getStartOf(const std::string &line, size_t pos) const
     throw ParserExceptions("Invalid '\"': symbol not found");
 }
 
-std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line) const
+std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line)
 {
     size_t first = line.find_first_of(": ");
     size_t second = (line.substr(first + 2, line.length())).find_first_of(": ");
@@ -232,18 +234,18 @@ std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line) const
     size_t second_end = 0;
 
     if (first == std::string::npos)
-        throw ParserExceptions("Invalide ': ': symbole not found");
+        throw ParserExceptions("Invalid ': ': symbol not found");
     if (second == std::string::npos)
         return std::pair<size_t, size_t>(0, line.length());
     second += first + 2;
     first_end = getStartOf(line, first);
     second_end = getStartOf(line, second);
     if (second_end < first)
-        throw ParserExceptions("Invalide symbole");
+        throw ParserExceptions("Invalid symbol");
     return std::pair<size_t, size_t>(first_end, second_end);
 }
 
-std::vector<std::string> ConfigFile::getParseFile(const std::string &line) const
+std::vector<std::string> ConfigFile::getParseFile(const std::string &line)
 {
     std::string onceStr;
     std::string toWork(line);
@@ -259,13 +261,13 @@ std::vector<std::string> ConfigFile::getParseFile(const std::string &line) const
     return parse;
 }
 
-std::vector<std::string> ConfigFile::getParseIn(std::string sym, std::string line, bool activate) const
+std::vector<std::string> ConfigFile::getParseIn(const std::string &sym, std::string line, const bool activate)
 {
     size_t pos;
     std::string tmp;
     std::vector<std::string> tab;
 
-    while (1) {
+    while (true) {
         pos = line.find(sym);
         if (pos == std::string::npos)
             break;
@@ -278,11 +280,11 @@ std::vector<std::string> ConfigFile::getParseIn(std::string sym, std::string lin
     if (activate) {
         if (line.length())
             tab.push_back(line.substr(0, line.length() - 1));
-        for (std::vector<std::string>::iterator it = tab.begin(); it != tab.end(); it++) {
-            if (it->c_str()[0] == '[')
-                *it = it->substr(1, it->length());
-            if (it->c_str()[it->length()] == ']')
-                *it = it->substr(0, it->length() - 1);
+        for (auto &it : tab) {
+            if (it.c_str()[0] == '[')
+                it = it.substr(1, it.length());
+            if (it.c_str()[it.length()] == ']')
+                it = it.substr(0, it.length() - 1);
         }
     } else {
         if (line.length())
@@ -291,7 +293,7 @@ std::vector<std::string> ConfigFile::getParseIn(std::string sym, std::string lin
     return tab;
 }
 
-std::vector<int> ConfigFile::getTabInt(const std::string name) const
+std::vector<int> ConfigFile::getTabInt(const std::string &name) const
 {
     std::string input;
     std::vector<int> tab;
@@ -300,9 +302,9 @@ std::vector<int> ConfigFile::getTabInt(const std::string name) const
     std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for Tab: " + line);
+        throw ParserExceptions(errmsg_notTab + line);
     input = this->getAfterMatch(line, ": [");
     input.pop_back();
     parse = this->getParseIn(",", input);
@@ -313,7 +315,7 @@ std::vector<int> ConfigFile::getTabInt(const std::string name) const
     return tab;
 }
 
-std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) const
+std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string &name) const
 {
     std::string input;
     std::vector<int> tab;
@@ -324,9 +326,9 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for Tab: " + line);
+        throw ParserExceptions(errmsg_notTab + line);
     input = this->getAfterMatch(line, ": [");
     if (input.length())
         input.pop_back();
@@ -343,10 +345,10 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
                     tab.push_back(std::stoi(once));
                 else if (once.back() == ']')
                     tab.push_back(std::stoi(once));
-            } catch ([[maybe_unused]]const std::out_of_range &e) {
-                throw ParserExceptions("Incorrect value for TABTAB");
-            } catch ([[maybe_unused]]const std::invalid_argument &e) {
-                throw ParserExceptions("Incorrect value for TABTAB");
+            } catch ([[maybe_unused]] const std::out_of_range &e) {
+                throw ParserExceptions(errmsg_notTabTab);
+            } catch ([[maybe_unused]] const std::invalid_argument &e) {
+                throw ParserExceptions(errmsg_notTabTab);
             }
         }
         array.push_back(tab);
@@ -354,48 +356,48 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     return array;
 }
 
-raylib::MyVector2 ConfigFile::getMyVector2(const std::string name) const
+raylib::MyVector2 ConfigFile::getMyVector2(const std::string &name) const
 {
     std::string input;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+        throw ParserExceptions(errmsg_notPair + line);
     input = this->getAfterMatch(line, ": {");
     input.pop_back();
     ConfigFile inside(this->getParseFile(input));
     return raylib::MyVector2(inside.getFloat("a"), inside.getFloat("b"));
 }
 
-raylib::MyVector3 ConfigFile::getMyVector3(const std::string name) const
+raylib::MyVector3 ConfigFile::getMyVector3(const std::string &name) const
 {
     std::string input;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+        throw ParserExceptions(errmsg_notPair + line);
     input = this->getAfterMatch(line, ": {");
     input.pop_back();
     ConfigFile inside(this->getParseFile(input));
     return raylib::MyVector3(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"));
 }
 
-raylib::MyVector4 ConfigFile::getMyVector4(const std::string name) const
+raylib::MyVector4 ConfigFile::getMyVector4(const std::string &name) const
 {
     std::string input;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \\{.*\\}$");
 
     if (line.empty())
-        throw ParserExceptions("No variable with name: " + name);
+        throw ParserExceptions(errmsg_notVariable + name);
     if (!std::regex_search(line, regexp))
-        throw ParserExceptions("Incorrect line format for PAIR: " + line);
+        throw ParserExceptions(errmsg_notPair + line);
     input = this->getAfterMatch(line, ": {");
     input.pop_back();
     ConfigFile inside(this->getParseFile(input));

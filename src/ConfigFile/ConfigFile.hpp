@@ -11,42 +11,42 @@
 #include "IConfigFile.hpp"
 #include "../Exceptions/Exceptions.hpp"
 
-class ConfigFile : public IConfigFile
-{
-    public:
-        ConfigFile();
-        ConfigFile(const std::string &filename);
-        ConfigFile(std::vector<std::string> tab);
-        ~ConfigFile();
+class ConfigFile : public IConfigFile {
+  public:
+    ConfigFile() = default;
+    ConfigFile(const std::string &filename);
+    ConfigFile(const std::vector<std::string> &tab);
+    ~ConfigFile();
 
-        int getInt(const std::string name) const;
-        void loadFile(const std::string &filename);
-        float getFloat(const std::string name) const;
-        std::string getString(const std::string name) const;
-        std::pair<int, int> getPaire(const std::string name) const;
+    void loadFile(const std::string &filename) override;
 
-        std::vector<int> getTabInt(const std::string name) const;
-        std::vector<std::vector<int>> getTabTabInt(const std::string name) const;
+    [[nodiscard]] int getInt(const std::string &name) const override;
+    [[nodiscard]] float getFloat(const std::string &name) const override;
+    [[nodiscard]] std::string getString(const std::string &name) const override;
+    [[nodiscard]] std::pair<int, int> getPaire(const std::string &name) const override;
 
-        raylib::MyVector2 getMyVector2(const std::string name) const;
-        raylib::MyVector3 getMyVector3(const std::string name) const;
-        raylib::MyVector4 getMyVector4(const std::string name) const;
+    [[nodiscard]] std::vector<int> getTabInt(const std::string &name) const override;
+    [[nodiscard]] std::vector<std::vector<int>> getTabTabInt(const std::string &name) const override;
 
-    private:
-        void cleanLine(std::string &str);
-        std::string getLineByName(const std::string name) const;
-        void commentManagingLine(std::string line);
-        void objInline(char start, char end);
-        void correctFile();
-        std::string getAfterMatch(std::string line, std::string match) const;
-        size_t getStartOf(const std::string &line, size_t pos) const;
-        std::pair<size_t, size_t> getOnceBlock(std::string &line) const;
-        std::vector<std::string> getParseFile(const std::string &line) const;
-        std::vector<std::string> getParseIn(std::string sym, std::string line, bool activate = false) const;
+    [[nodiscard]] raylib::MyVector2 getMyVector2(const std::string &name) const override;
+    [[nodiscard]] raylib::MyVector3 getMyVector3(const std::string &name) const override;
+    [[nodiscard]] raylib::MyVector4 getMyVector4(const std::string &name) const override;
 
-    protected:
-    private:
-        std::vector<std::string> _fileContent;
+  private:
+    void cleanLine(std::string &str);
+    [[nodiscard]] std::string getLineByName(const std::string &name) const;
+    void commentManagingLine(std::string line);
+    void objInline(char start, char end);
+    void correctFile();
+    [[nodiscard]] static std::string getAfterMatch(const std::string &line, const std::string &match);
+    [[nodiscard]] static size_t getStartOf(const std::string &line, size_t pos);
+    [[nodiscard]] static std::pair<size_t, size_t> getOnceBlock(std::string &line);
+    [[nodiscard]] static std::vector<std::string> getParseFile(const std::string &line);
+    [[nodiscard]] static std::vector<std::string> getParseIn(const std::string &sym, std::string line, bool activate = false);
+
+  protected:
+  private:
+    std::vector<std::string> _fileContent;
 };
 
 #endif /* !CONFIGFILE_HPP_ */
