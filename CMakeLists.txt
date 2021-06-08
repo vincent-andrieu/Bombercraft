@@ -50,6 +50,9 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
+        # GUI
+        src/GUI/Factories/Timer/TimerFactory.cpp
+        src/GUI/Factories/Timer/TimeText.cpp
 )
 add_executable(${NAME} ${SRCS})
 
