@@ -9,8 +9,40 @@
 
 using namespace GameModule;
 
+IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::unique_ptr<IConfigFile> &configFile)
+: IA::IACore<TileType, BombermanAction>(pos, env), _range(0), _defaultValue(-1), _randomMove(0), _randomBombe(7)
+{
+    // seed
+    if (configFile->isSetInFile("IA_SEED"))
+        this->setSeed(configFile->getInt("IA_SEED"));
+    else
+        std::cerr << "Random seed" << std::endl;
+    // default value
+    if (configFile->isSetInFile("IA_INTERNAL_DEFAULT_VALUE"))
+        this->_defaultValue = configFile->getInt("IA_INTERNAL_DEFAULT_VALUE");
+    else
+        std::cerr << "Default_value: " << this->_defaultValue << std::endl;
+    // range
+    if (configFile->isSetInFile("IA_EXPLOSION_RANGE"))
+        this->_range = configFile->getInt("IA_EXPLOSION_RANGE");
+    else
+        std::cerr << "Default range: " << this->_range << std::endl;
+    // range
+    if (configFile->isSetInFile("IA_RANDOM_PROB"))
+        this->_randomMove = configFile->getInt("IA_RANDOM_PROB");
+    else
+        std::cerr << "Default %: " << this->_randomMove << std::endl;
+    // random bombe
+    if (configFile->isSetInFile("IA_BOMBE_PROB"))
+        this->_randomBombe = configFile->getInt("IA_BOMBE_PROB");
+    else
+        std::cerr << "Default bombe prob: 1/" << this->_randomBombe << std::endl;
+    if (this->_randomBombe <= 0)
+        throw IAExceptions("\"IA_BOMBE_PROB\" must be > 0");
+}
+
 IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range, int defaultValue)
-: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue), _randomMove(0)
+: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue), _randomMove(0), _randomBombe(7)
 {
     this->setIAAction(BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
         return this->actionPutBomber(pos, env);
@@ -39,7 +71,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
     std::srand(this->_seed);
-    if (std::rand() % 7)
+    if (std::rand() % this->_randomBombe)
         return false;
     editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
     if (this->findSecurePlace(pos, env, list))

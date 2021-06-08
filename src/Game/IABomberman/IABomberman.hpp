@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "IACore.hpp"
+#include "../../ConfigFile/IConfigFile.hpp"
 
 namespace GameModule
 {
@@ -22,6 +23,7 @@ namespace GameModule
     class IABomberman : public IA::IACore<TileType, BombermanAction>
     {
         public:
+            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::unique_ptr<IConfigFile> &configFile);
             IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range = 6, int defaultValue = -1);
             ~IABomberman();
             void setRange(size_t range);
@@ -51,6 +53,7 @@ namespace GameModule
             size_t _range;
             int _defaultValue;
             size_t _randomMove;
+            size_t _randomBombe;
     };
 }
 
