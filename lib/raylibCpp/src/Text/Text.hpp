@@ -36,7 +36,7 @@ namespace raylib
         void removeFont();
         void removeLimit();
 
-      private:
+      protected:
         string _text;
         MyVector2 _position;
         std::shared_ptr<IFont> _font;
