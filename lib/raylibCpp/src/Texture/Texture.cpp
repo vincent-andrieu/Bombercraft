@@ -7,12 +7,13 @@
 
 #include "Texture.hpp"
 
-raylib::Texture::Texture(const string &path, const MyVector2 position, const RColor color)
+raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color)
 {
     this->_path = path;
     this->_position = position;
     this->_color = color;
     this->_texture = LoadTexture(path.data());
+    this->_size = {this->_position.a, this->_position.b, size.a, size.b};
 }
 
 raylib::Texture::~Texture()
@@ -22,12 +23,19 @@ raylib::Texture::~Texture()
 
 void raylib::Texture::draw()
 {
-    DrawTexture(this->_texture, this->_position.a, this->_position.b, _matchingColors.at(this->_color));
+    Vector2 rayPos = {this->_position.a, this->_position.b};
+
+    if (_size.width == -1)
+        DrawTexture(this->_texture, this->_position.a, this->_position.b, _matchingColors.at(this->_color));
+    else
+        DrawTextureRec(this->_texture, this->_size, rayPos, _matchingColors.at(this->_color));
 }
 
 void raylib::Texture::setPosition(const MyVector2 position)
 {
     this->_position = position;
+    this->_size.x = this->_position.a;
+    this->_size.y = this->_position.b;
 }
 
 void raylib::Texture::setColor(const RColor color)
@@ -40,6 +48,12 @@ void raylib::Texture::setPath(const string &path)
     this->_path = path;
     UnloadTexture(this->_texture);
     this->_texture = LoadTexture(path.data());
+}
+
+void raylib::Texture::setSize(const MyVector2 size)
+{
+    this->_size.width = size.a;
+    this->_size.height = size.b;
 }
 
 Texture2D raylib::Texture::getTexture() const
