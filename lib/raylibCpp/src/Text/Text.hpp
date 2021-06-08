@@ -18,6 +18,8 @@ namespace raylib
       public:
         Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
             std::shared_ptr<raylib::Font> font = std::make_shared<raylib::Font>());
+        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
+            const string &fontPath);
         ~Text() = default;
 
         void draw();
