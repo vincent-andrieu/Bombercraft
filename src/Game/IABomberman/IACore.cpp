@@ -10,8 +10,8 @@
 using namespace IA;
 
 template <typename TileType, typename Action>
-IACore<TileType, Action>::IACore(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
-: _pos(pos), _prevPos({-1, -1}), _env(env), _isRunnable({0}), _actLink({0}), _MovementFunc(nullptr)
+IACore<TileType, Action>::IACore(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, unsigned int seed)
+: _pos(pos), _prevPos({-1, -1}), _env(env), _isRunnable({0}), _seed(seed), _actLink({0}), _MovementFunc(nullptr)
 {
 }
 
@@ -124,6 +124,18 @@ void IACore<TileType, Action>::applyIAMovement(Movement move)
         case Movement::IA_MOVE_RIGHT: this->_pos.first++; break;
         default: throw IAExceptions("Invalide Move", false); break;
     }
+}
+
+template <typename TileType, typename Action>
+unsigned int IACore<TileType, Action>::getSeed() const
+{
+    return this->_seed;
+}
+
+template <typename TileType, typename Action>
+void IACore<TileType, Action>::setSeed(unsigned int seed)
+{
+    this->_seed = seed;
 }
 
 template class IACore<GameModule::TileType, GameModule::BombermanAction>;

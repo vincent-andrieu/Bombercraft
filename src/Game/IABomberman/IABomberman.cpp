@@ -34,8 +34,12 @@ void IABomberman::setRange(size_t range)
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 {
     std::queue<IA::Movement> list;
-    std::vector<std::vector<TileType>> editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
+    std::vector<std::vector<TileType>> editedEnv;
     
+    std::srand(this->_seed);
+    if (std::rand() % 7)
+        return false;
+    editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
     if (this->findSecurePlace(pos, env, list))
         return false;
     this->_MovementQueue = list;

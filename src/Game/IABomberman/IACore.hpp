@@ -8,6 +8,7 @@
 #ifndef IA_HPP
 #define IA_HPP
 
+#include <ctime>
 #include <queue>
 #include "IIA.hpp"
 #include "../../Exceptions/Exceptions.hpp"
@@ -24,7 +25,7 @@ namespace IA
     class IACore : public IIA<TileType, Action>
     {
         public:
-            IACore(std::pair<size_t, size_t> _pos, std::vector<std::vector<TileType>> _env);
+            IACore(std::pair<size_t, size_t> _pos, std::vector<std::vector<TileType>> _env, unsigned int seed = std::time(nullptr));
             ~IACore();
             void setIAEnv(std::vector<std::vector<TileType>> env);
             std::vector<std::vector<TileType>> getIAEnv() const;
@@ -36,6 +37,8 @@ namespace IA
             Action getIAAction() const;
             void setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func);
             void setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func);
+            unsigned int getSeed() const;
+            void setSeed(unsigned int seed);
         
         private:
             void applyIAMovement(Movement move);
@@ -46,6 +49,7 @@ namespace IA
             std::vector<std::vector<TileType>> _env;
             std::vector<TileType> _isRunnable;
             std::queue<Movement> _MovementQueue;
+            unsigned int _seed;
 
         private:
             std::unordered_map<Action, std::function<bool(std::vector<std::vector<TileType>>, std::pair<size_t, size_t>)>> _actLink;

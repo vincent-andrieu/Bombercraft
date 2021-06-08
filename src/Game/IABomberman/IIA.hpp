@@ -36,6 +36,8 @@ namespace IA
             virtual Action getIAAction() const = 0;
             virtual void setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func) = 0;
             virtual void setIAMovement(std::function<Movement(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func) = 0;
+            virtual unsigned int getSeed() const = 0;
+            virtual void setSeed(unsigned int seed) = 0;
     };
 }
 
