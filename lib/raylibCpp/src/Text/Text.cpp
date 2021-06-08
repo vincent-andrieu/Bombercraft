@@ -23,7 +23,7 @@ raylib::Text::Text(
 {
     this->_text = text;
     this->_position = position;
-    this->_font = std::make_shared<raylib::Font>(fontPath);
+    this->setFont(fontPath);
     this->_color = color;
     this->_size = size;
     this->_limit = {-1, -1, -1, -1};
