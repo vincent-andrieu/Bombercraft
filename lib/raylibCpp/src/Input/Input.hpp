@@ -60,6 +60,8 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_DOWN, KEY_DOWN},
                 {raylib::KeyBoard::IKEY_RIGHT, KEY_RIGHT},
                 {raylib::KeyBoard::IKEY_LEFT, KEY_LEFT},
+                {raylib::KeyBoard::IKEY_BACKSPACE, KEY_BACKSPACE},
+                {raylib::KeyBoard::IKEY_SPACE, KEY_SPACE},
             };
     };
 }; // namespace raylib

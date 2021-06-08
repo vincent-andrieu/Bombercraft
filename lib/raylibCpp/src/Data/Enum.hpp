@@ -72,6 +72,8 @@ namespace raylib
         IKEY_DOWN,
         IKEY_RIGHT,
         IKEY_LEFT,
+        IKEY_BACKSPACE,
+        IKEY_SPACE,
     };
 }; // namespace raylib
 
