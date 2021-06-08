@@ -15,14 +15,15 @@ using namespace Game;
 const EventRequirement CheckboxFactory::_clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
 
 void CheckboxFactory::create(
-    Engine::EntityPack &entityPack, const MyVector2 position, Component::eventScript clickHandler, bool isDefaultChecked)
+    Engine::EntityPack &entityPack, const MyVector2 &position, Component::eventScript clickHandler, bool isDefaultChecked)
 {
     const auto checkbox = entityPack.createEntity("checkbox");
     const auto &size = CoreData::settings->getMyVector2(CHECKBOX_CONFIG_SIZE);
     const auto &outlineSize = CoreData::settings->getMyVector2(CHECKBOX_CONFIG_OUTLINE);
     auto backgroundRect = std::make_shared<raylib::Rectangle>(
         position, size, static_cast<RColor>(CoreData::settings->getInt(CHECKBOX_CONFIG_OUTLINE_COLOR)));
-    auto checkRect = std::make_shared<raylib::Rectangle>(position + outlineSize, size - 2 * outlineSize,
+    auto checkRect = std::make_shared<raylib::Rectangle>(position + outlineSize,
+        size - 2 * outlineSize,
         static_cast<RColor>(CoreData::settings->getInt(CHECKBOX_CONFIG_DISABLE_COLOR)));
 
     Component::eventScript checkboxHandler = [checkRect, isDefaultChecked, clickHandler](const Engine::Entity entity) {

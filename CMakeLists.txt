@@ -30,7 +30,7 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         # GUI/FACTORIES
-        src/GUI/Factories/ButtonFactory.cpp
+        src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
