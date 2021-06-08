@@ -29,7 +29,7 @@ namespace GUI
         static raylib::RColor getCheckColor(bool isChecked);
 
       private:
-        static const Game::EventRequirement _clickHandlerRequirements{Game::evtMouse::LEFT | Game::evtMouse::RIGHT};
+        static const Game::EventRequirement _clickHandlerRequirements;
     };
 } // namespace GUI
 

@@ -12,6 +12,8 @@ using namespace raylib;
 using namespace GUI;
 using namespace Game;
 
+const EventRequirement CheckboxFactory::_clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
+
 void CheckboxFactory::create(
     Engine::EntityPack &entityPack, const MyVector2 position, Component::eventScript clickHandler, bool isDefaultChecked)
 {
