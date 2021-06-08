@@ -40,7 +40,6 @@ set(SRCS
         src/Game/IABomberman/IACore.cpp
         ## GAME/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
-        src/Game/EntityFactory/EntityFactory.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
