@@ -16,7 +16,7 @@ namespace Engine
 {
     class Timer : public Component<Timer> {
       public:
-        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
+        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler handler)
             : interval(time), startTime(std::chrono::system_clock::now()), script(entityManager, sceneManager, handler)
         {
         }
@@ -35,10 +35,19 @@ namespace Engine
 
             if (t >= interval) {
                 startTime = std::chrono::system_clock::now();
+                std::cout << "TRIGGER\n";
                 script.trigger(entity);
                 return true;
             }
             return false;
+        }
+
+        [[nodiscard]] std::chrono::milliseconds getDelta() const
+        {
+            std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+
+            return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - startTime.time_since_epoch());
+            ;
         }
 
         bool save(SaveManager &saver) const override
