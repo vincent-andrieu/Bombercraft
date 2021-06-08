@@ -38,8 +38,9 @@ set(SRCS
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
-        ## GAME/FACTORIES
+        ## GUI/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
+        src/GUI/Factories/LabelFactory.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp

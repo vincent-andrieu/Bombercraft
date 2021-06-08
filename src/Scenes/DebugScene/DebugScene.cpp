@@ -10,6 +10,7 @@
 #include "Components/Hitbox/Hitbox.hpp"
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
+#include "GUI/Factories/LabelFactory.hpp"
 
 using namespace Game;
 
@@ -49,6 +50,12 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
 void DebugScene::open()
 {
     std::cout << "----OPEN\n";
+    const raylib::MyVector2 position(10, 70);
+    GUI::LabelConfig config = { .fontSize = 24, .fontColor = raylib::RColor::RBLUE, .fontPath = "./Asset/Font/MinecraftItalic.ttf"};
+
+    // ENTITIES - CREATION WITH FACTORY
+    GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
+
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
     this->_entityManager.addComponent<Component::Render2D>(rect,
