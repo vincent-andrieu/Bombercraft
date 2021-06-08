@@ -79,9 +79,9 @@ jobs:
         working-directory: build
         run: cmake ..
 
-      - name: Run make
+      - name: Build Project
         working-directory: build
-        run: make
+        run: cmake --build .
 
       - name: Check if binary exist
         run: ls bomberman
@@ -146,6 +146,10 @@ jobs:
       - name: Run cmake
         working-directory: build
         run: cmake ..
+
+      - name: Build Project
+        working-directory: build
+        run: cmake --build .
 
       - name: Check if binary exist
         working-directory: build
