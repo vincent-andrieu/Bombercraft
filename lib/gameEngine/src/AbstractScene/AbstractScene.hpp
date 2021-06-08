@@ -10,23 +10,25 @@
 
 #include "EntityManager/EntityManager.hpp"
 #include "SystemManager/SystemManager.hpp"
+#include "EntityPack/EntityPack.hpp"
 
 namespace Engine
 {
     class AbstractScene {
       public:
         AbstractScene(SystemManager &systemManager, EntityManager &entityManager);
-        ~AbstractScene();
+        ~AbstractScene() = default;
 
         virtual void update() = 0;
 
-        Entity createLocalEntity();
+        virtual void onSceneChange();
+
+      public:
+        EntityPack localEntities;
+
       protected:
         SystemManager &_systemManager;
         EntityManager &_entityManager;
-
-      private:
-        std::vector<Entity> _localEntities;
     };
 }
 

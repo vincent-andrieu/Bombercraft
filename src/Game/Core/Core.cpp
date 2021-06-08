@@ -9,40 +9,36 @@
 
 using namespace Game;
 
-static const MyVector2 WIN_SIZE = {800, 600};
-static const std::string WIN_TITLE = "BomberBlock";
-static const RColor WIN_BACK = RColor::RBLACK;
-
-static const MyVector3 CAM_POSITION = {300, 0, 100};
-static const MyVector3 CAM_TARGET = {0, 0, 0};
-static const MyVector3 CAM_UP = {0, 1, 0};
-
-std::unique_ptr<raylib::Camera> Core::camera = std::make_unique<raylib::Camera>(CAM_POSITION, CAM_TARGET, CAM_UP);
-
-Core::Core()
-    : _window(WIN_SIZE, WIN_TITLE, WIN_BACK), _entityManager(_systemManager), _sceneManager(_entityManager)
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 {
     /// COMPONENTS - DEFINITION
-    _entityManager.registerComponent<Component::Render2D>();
-    _entityManager.registerComponent<Component::Render3D>();
+    CoreData::entityManager->registerComponent<Component::Render2D>();
+    CoreData::entityManager->registerComponent<Component::Render3D>();
+    CoreData::entityManager->registerComponent<Component::ClickEvent>();
+    CoreData::entityManager->registerComponent<Component::KeyEvent>();
+    CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
+    CoreData::entityManager->registerComponent<Component::Hitbox>();
+    CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Engine::Velocity>();
     /// SYSTEMS - CREATION
-    _systemManager.createSystem<System::Render3DSystem>(_entityManager);
-    _systemManager.createSystem<System::Render2DSystem>(_entityManager);
+    CoreData::_systemManager->createSystem<System::Render3DSystem>();
+    CoreData::_systemManager->createSystem<System::Render2DSystem>();
+    CoreData::_systemManager->createSystem<System::ClickEventSystem>();
+    CoreData::_systemManager->createSystem<System::KeyEventSystem>();
+    CoreData::_systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
-    _sceneManager.createScene<DebugScene>(_systemManager, _entityManager);
-}
-
-Core::~Core()
-{
+    CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
 }
 
 void Core::loop()
 {
-    _window.open();
-    while (_window.isOpen()) {
-        _window.clear();
-        _sceneManager.run();
-        _window.refresh();
+    CoreData::_window->open();
+    while (CoreData::_window->isOpen()) {
+        CoreData::_window->clear();
+        CoreData::sceneManager->run();
+        CoreData::_window->refresh();
     }
-    _window.close();
+    CoreData::_window->close();
 }

@@ -8,6 +8,8 @@
 #ifndef MYVECTOR4_HPP
 #define MYVECTOR4_HPP
 
+#include "raylib.h"
+
 namespace raylib
 {
     class MyVector4
@@ -16,6 +18,8 @@ namespace raylib
             MyVector4();
             MyVector4(const float a, const float b, const float c, const float d);
             MyVector4(const MyVector4 &src);
+
+            static Vector4 makeVector4(const MyVector4 vector);
 
         public:
             float a;

@@ -15,10 +15,10 @@ namespace System
 {
     class Render2DSystem : public Engine::AbstractSystem {
       public:
-        Render2DSystem(Engine::EntityManager &entityManager);
+        Render2DSystem();
 
         void update();
     };
-}
+} // namespace System
 
 #endif // RENDER2DSYSTEM_HPP

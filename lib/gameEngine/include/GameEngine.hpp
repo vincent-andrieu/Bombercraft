@@ -23,7 +23,7 @@
 #include "components/Script.hpp"
 #include "components/Timer.hpp"
 
-#include "systems/PhysicsSystem/PhysicsSystem.hpp"
-#include "systems/TimerSystem/TimerSystem.hpp"
+#include "Systems/PhysicsSystem/PhysicsSystem.hpp"
+#include "Systems/TimerSystem/TimerSystem.hpp"
 
 #endif // GAMEENGINE_HPP

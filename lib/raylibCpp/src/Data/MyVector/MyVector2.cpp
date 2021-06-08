@@ -27,6 +27,15 @@ MyVector2::MyVector2(const MyVector2 &src)
     this->b = src.b;
 }
 
+Vector2 MyVector2::makeVector2(const MyVector2 vector)
+{
+    Vector2 v = {0};
+
+    v.x = vector.a;
+    v.y = vector.b;
+    return v;
+}
+
 MyVector2 raylib::operator+(MyVector2 const &first, MyVector2 const &second)
 {
     return MyVector2(first.a + second.a, first.b + second.b);

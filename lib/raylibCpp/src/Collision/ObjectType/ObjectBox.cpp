@@ -7,6 +7,8 @@
 
 #include "ObjectBox.hpp"
 
+using namespace raylib;
+
 ObjectBox::ObjectBox(const MyVector3 origin, const MyVector3 size) : _origin(origin), _size(size)
 {
 }
@@ -41,7 +43,7 @@ bool ObjectBox::checkCollisionWith(const ObjectSphere &sphere)
     return Collision::checkCollision(*this, sphere);
 }
 
-bool ObjectBox::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectBox::boxCollider(const ObjectBox &box)
 {
     return this->checkCollisionWith(box);
 }

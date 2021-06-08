@@ -89,7 +89,7 @@ void raylib::Animation::setRotation(const MyVector3 rotation)
 
     this->_rotation = rotation;
     for (size_t i = 0; i < this->_models.size(); i++) {
-        this->_models[i].transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+        this->_models[i].transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
     }
 }
 
@@ -105,6 +105,7 @@ void raylib::Animation::setColor(const RColor color)
 
 void raylib::Animation::setPath(const string &path)
 {
+    MyVector3 rotation;
     float pitch = this->_rotation.a;
     float yam = this->_rotation.b;
     float roll = this->_rotation.c;
@@ -122,7 +123,7 @@ void raylib::Animation::setPath(const string &path)
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {
-        this->_models[i].transform = MatrixRotateXYZ((Vector3){DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll});
+        this->_models[i].transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
     }
 }
 

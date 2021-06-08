@@ -7,6 +7,7 @@
 
 cmake_minimum_required(VERSION 3.17)
 
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(NAME bomberman)
@@ -19,29 +20,44 @@ include_directories(./src)
 
 ## SOURCES
 set(SRCS
-        ./src/main.cpp
-        ./src/Game/Core/Core.cpp
-        ./src/Game/ProceduralMap/ProceduralMap.cpp
+        src/main.cpp
+        # GAME
+        src/Game/Core/Core.cpp
+        src/Game/CoreData/CoreData.cpp
+        src/Game/ProceduralMap/ProceduralMap.cpp
+        src/Game/EventRequirement/EventRequirement.cpp
+        src/ConfigFile/ConfigFile.cpp
+        src/Exceptions/Exceptions.cpp
+        # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
+        src/Components/AbstractEvent/AbstractEvent.cpp
+        src/Components/Hitbox/Hitbox.cpp
+        # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
+        src/Systems/Hitbox/HitboxSystem.cpp
+        # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
-        ./src/ConfigFile/ConfigFile.cpp
-        ./src/Exceptions/Exceptions.cpp
-        )
+        src/Scenes/MainMenu/MainMenuScene.cpp
+        src/Scenes/SceneWithEvents/SceneWithEvents.cpp
+        # CONFIG
+        src/ConfigFile/ConfigFile.cpp
+        # EXCEPTION
+        src/Exceptions/Exceptions.cpp
+)
 add_executable(${NAME} ${SRCS})
 
 if (MSVC)
     target_compile_options(${NAME} PRIVATE /W4 /WX)
 else ()
-    target_compile_options(${NAME} PRIVATE -Wall) # -Wextra
+    target_compile_options(${NAME} PRIVATE -Wall -Wextra -Wno-missing-field-initializers)
 endif ()
 
 set_target_properties(${NAME}
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
-        )
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+)
 
 ## GAME-ENGINE
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)
