@@ -29,6 +29,9 @@ namespace GUI
 
         //TODO: add name on entity (modifiate the size of the box)
         static void create(Engine::EntityPack &pack, raylib::MyVector2 position, std::string const &label, LabelConfig const &config);
+        static void create(Engine::EntityPack &pack, raylib::MyVector2 position, std::size_t const &label, LabelConfig const &config);
+        static void create(Engine::EntityPack &pack, raylib::MyVector2 position, int const &label, LabelConfig const &config);
+        static void create(Engine::EntityPack &pack, raylib::MyVector2 position, float const &label, LabelConfig const &config);
 
       protected:
       private:
