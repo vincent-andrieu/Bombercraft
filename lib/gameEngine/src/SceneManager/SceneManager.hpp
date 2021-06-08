@@ -31,6 +31,8 @@ namespace Engine
         template <typename T>
         void setScene();
 
+        std::shared_ptr<AbstractScene> getCurrentScene();
+
         private:
             EntityManager &_entityManager;
             std::shared_ptr<AbstractScene> _currentScene;
@@ -93,7 +95,6 @@ namespace Engine
         index = std::distance(_types.begin(), type_it);
         _currentScene = _scenes[index];
     }
-
 }
 
 

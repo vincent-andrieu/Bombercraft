@@ -16,10 +16,10 @@ namespace System
 {
     class Render3DSystem : public Engine::AbstractSystem {
       public:
-        Render3DSystem(Engine::EntityManager &entityManager);
+        Render3DSystem();
 
         void update();
     };
-}
+} // namespace System
 
 #endif // RENDER3DSYSTEM_HPP

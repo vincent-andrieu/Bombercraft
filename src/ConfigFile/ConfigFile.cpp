@@ -41,7 +41,7 @@ ConfigFile::~ConfigFile()
 std::string ConfigFile::getLineByName(const std::string name) const
 {
     const std::string startLine("\"" + name + "\": ");
-    
+
     for (auto it = std::begin(_fileContent); it != std::end(_fileContent); ++it) {
         if ((*it).compare(0, startLine.size(), startLine) == 0)
             return (*it);
@@ -68,7 +68,7 @@ void ConfigFile::loadFile(const std::string &filename)
         this->objInline('[', ']');
         this->correctFile();
     } else {
-        throw std::invalid_argument("File close");
+        throw ParserExceptions("File close");
     }
 }
 
@@ -84,7 +84,7 @@ int ConfigFile::getInt(const std::string name) const
         throw ParserExceptions("Incorrect line format for INT: " + line);
     try {
         value = std::stoi(this->getAfterMatch(line, ": "));
-    } catch (const std::out_of_range &e) {
+    } catch ([[maybe_unused]]const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
@@ -102,7 +102,7 @@ float ConfigFile::getFloat(const std::string name) const
         throw ParserExceptions("Incorrect line format for FLOAT: " + line);
     try {
         value = std::stof(this->getAfterMatch(line, ": "));
-    } catch (const std::out_of_range &e) {
+    } catch ([[maybe_unused]]const std::out_of_range &e) {
         throw ParserExceptions("Incorrect value for FLOAT");
     }
     return value;
@@ -212,15 +212,16 @@ size_t ConfigFile::getStartOf(const std::string &line, size_t pos) const
 {
     size_t cnt = 0;
 
-    for (; pos >= 0; pos--) {
+    while (true) {
         if (line[pos] == '"')
             cnt++;
         if (cnt == 2)
             return pos;
         if (pos == 0)
             break;
-    }    
-    throw ParserExceptions("Invalide '\"': symbole not found");
+        pos--;
+    }
+    throw ParserExceptions("Invalid '\"': symbol not found");
 }
 
 std::pair<size_t, size_t> ConfigFile::getOnceBlock(std::string &line) const
@@ -332,9 +333,9 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
     if (input.length())
         input.pop_back();
     parse = this->getParseIn("],", input);
-    for (auto line : parse) {
+    for (auto lines : parse) {
         tab.clear();
-        input = std::string(line.substr(1, line.length() - 1));
+        input = std::string(lines.substr(1, lines.length() - 1));
         tmp = this->getParseIn(", ", input, false);
         for (auto once : tmp) {
             try {
@@ -342,9 +343,9 @@ std::vector<std::vector<int>> ConfigFile::getTabTabInt(const std::string name) c
                     tab.push_back(std::stoi(once));
                 else if (once.back() == ']')
                     tab.push_back(std::stoi(once));
-            } catch (const std::out_of_range &e) {
+            } catch ([[maybe_unused]]const std::out_of_range &e) {
                 throw ParserExceptions("Incorrect value for TABTAB");
-            } catch (const std::invalid_argument &e) {
+            } catch ([[maybe_unused]]const std::invalid_argument &e) {
                 throw ParserExceptions("Incorrect value for TABTAB");
             }
         }

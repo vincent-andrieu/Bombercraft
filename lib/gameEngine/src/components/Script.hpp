@@ -16,11 +16,11 @@
 
 namespace Engine
 {
-    #define SCRIPT_HANDLER std::function<void(Engine::EntityManager, Engine::SceneManager, const Engine::Entity)>
+    using scriptHandler = std::function<void(Engine::EntityManager, Engine::SceneManager, const Engine::Entity)>;
 
     class Script : public Component<Script> {
       public:
-        Script(EntityManager &entityManager, SceneManager &sceneManager, SCRIPT_HANDLER &handler)
+        Script(EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
             : handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
         {}
 
@@ -32,10 +32,10 @@ namespace Engine
         }
 
       private:
-        SCRIPT_HANDLER &handler;
+        scriptHandler &handler;
         EntityManager &_entityManager;
         SceneManager &_sceneManager;
     };
 }
 
-#endif // EVENT_HPP
+#endif // ABSTRACTEVENT_HPP

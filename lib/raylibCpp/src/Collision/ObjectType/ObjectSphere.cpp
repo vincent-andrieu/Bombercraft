@@ -7,6 +7,8 @@
 
 #include "ObjectSphere.hpp"
 
+using namespace raylib;
+
 ObjectSphere::ObjectSphere(const MyVector3 center, const float radius) : _center(center), _radius(radius)
 {
 }
@@ -41,7 +43,7 @@ bool ObjectSphere::checkCollisionWith(const ObjectBox &box)
     return Collision::checkCollision(box, *this);
 }
 
-bool ObjectSphere::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectSphere::boxCollider(const ObjectBox &box)
 {
     return this->checkCollisionWith(box);
 }

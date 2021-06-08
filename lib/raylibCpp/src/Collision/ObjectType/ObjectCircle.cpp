@@ -7,6 +7,8 @@
 
 #include "ObjectCircle.hpp"
 
+using namespace raylib;
+
 ObjectCircle::ObjectCircle(const MyVector2 center, const float radius) : _center(center), _radius(radius)
 {
 }
@@ -41,7 +43,7 @@ bool ObjectCircle::checkCollisionWith(const ObjectRectangle &rectangle)
     return Collision::checkCollision(*this, rectangle);
 }
 
-bool ObjectCircle::boxCollider(const ObjectType::ObjectBox &box)
+bool ObjectCircle::boxCollider(const ObjectBox &box)
 {
     //return this->checkCollisionWith(box);
     (void) box;

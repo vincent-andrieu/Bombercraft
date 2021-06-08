@@ -7,7 +7,7 @@
 
 #include "Render3DSystem.hpp"
 
-System::Render3DSystem::Render3DSystem(Engine::EntityManager &entityManager) : AbstractSystem(entityManager)
+System::Render3DSystem::Render3DSystem() : AbstractSystem(*Game::CoreData::entityManager)
 {
     this->setRequirements<Component::Render3D>();
 }
@@ -16,7 +16,7 @@ void System::Render3DSystem::update()
 {
     Game::Core::camera->begin3D();
     for (const Engine::Entity &entity : this->getManagedEntities()) {
-        auto [render] = _entityManager.getComponents<Component::Render3D>(entity);
+        auto [render] = Game::CoreData::entityManager->getComponents<Component::Render3D>(entity);
 
         render.modele->draw();
     }

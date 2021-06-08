@@ -13,9 +13,16 @@
 namespace Engine
 {
     struct Position : public Component<Position> {
+        Position(float x, float y) : x(x), y(y)
+        {
+        }
+        Position() : x(0), y(0)
+        {
+        }
+
         float x;
         float y;
     };
-}
+} // namespace Engine
 
 #endif // POSITION_HPP

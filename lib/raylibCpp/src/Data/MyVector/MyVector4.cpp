@@ -33,6 +33,17 @@ MyVector4::MyVector4(const MyVector4 &src)
     this->d = src.d;
 }
 
+Vector4 MyVector4::makeVector4(const MyVector4 vector)
+{
+    Vector4 v = {0};
+
+    v.x = vector.a;
+    v.y = vector.b;
+    v.z = vector.c;
+    v.w = vector.d;
+    return v;
+}
+
 MyVector4 raylib::operator+(MyVector4 const &first, MyVector4 const &second)
 {
     return MyVector4(first.a + second.a, first.b + second.b, first.c + second.c, first.d + second.d);

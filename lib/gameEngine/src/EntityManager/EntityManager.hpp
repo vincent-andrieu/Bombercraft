@@ -8,6 +8,7 @@
 #ifndef ENTITYMANAGER_HPP
 #define ENTITYMANAGER_HPP
 
+#include <array>
 #include <memory>
 #include "entity.hpp"
 #include "IComponentTypeRegister.hpp"
@@ -39,8 +40,6 @@ namespace Engine
 
         template <typename T> T &getComponent(Entity entity);
 
-        template <typename T> const T &getComponent(Entity entity);
-
         template <typename... Ts> std::tuple<Ts &...> getComponents(Entity entity);
 
         template <typename T, typename... Args> void addComponent(Entity entity, Args &&...args);
@@ -63,27 +62,25 @@ namespace Engine
         template <typename T> ComponentTypeRegister<T> *getComponentContainer() const;
     };
 
-}
+} // namespace Engine
 
 #include "SystemManager/SystemManager.hpp"
 
-namespace Engine {
-    template <typename T>
-    void EntityManager::registerComponent()
+namespace Engine
+{
+    template <typename T> void EntityManager::registerComponent()
     {
         this->template checkComponentType<T>();
         _componentRegisters[T::type] = std::make_shared<ComponentTypeRegister<T>>(_entities.getEntitySignatures());
     }
 
-    template <typename T>
-    bool EntityManager::hasComponent(Entity entity)
+    template <typename T> bool EntityManager::hasComponent(Entity entity)
     {
         this->checkComponentType<T>();
         return _entities.getSignature(entity)[T::type];
     }
 
-    template <typename... Ts>
-    bool EntityManager::hasComponents(Entity entity)
+    template <typename... Ts> bool EntityManager::hasComponents(Entity entity)
     {
         (this->checkComponentTypes<Ts>(), ...);
         auto requirements = Signature();
@@ -92,12 +89,6 @@ namespace Engine {
     }
 
     template <typename T> T &EntityManager::getComponent(Entity entity)
-    {
-        this->checkComponentType<T>();
-        return this->getComponentContainer<T>()->get(entity);
-    }
-
-    template <typename T> const T &EntityManager::getComponent(Entity entity)
     {
         this->checkComponentType<T>();
         return this->getComponentContainer<T>()->get(entity);
@@ -112,6 +103,9 @@ namespace Engine {
     template <typename T, typename... Args> void EntityManager::addComponent(Entity entity, Args &&...args)
     {
         this->checkComponentType<T>();
+        if (_componentRegisters[T::type] == nullptr) {
+            throw std::invalid_argument("Invalid component type (not registered?)");
+        }
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
         // Send message to system
         const Signature &signature = _entities.getSignature(entity);
@@ -152,6 +146,6 @@ namespace Engine {
     {
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
-}
+} // namespace Engine
 
 #endif // ENTITYMANAGER_HPP
