@@ -17,7 +17,7 @@ namespace Component
     class Render3D : public Engine::Component<Render3D> {
       public:
         Render3D(std::shared_ptr<raylib::IRenderable> object);
-        ~Render3D() = default;
+        virtual ~Render3D() = default;
 
         bool save(Engine::SaveManager &saver) const override;
         bool load(Engine::SaveManager &saver) override;
