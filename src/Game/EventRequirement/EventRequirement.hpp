@@ -11,8 +11,6 @@
 #include "raylib.hpp"
 #include <vector>
 
-// typedef uint8_t uint;
-
 namespace Game
 {
     enum class evtMouse : uint
@@ -29,10 +27,14 @@ namespace Game
     class EventRequirement {
       public:
         EventRequirement() = delete;
-        explicit EventRequirement(const uint &click = 0, bool mouseMove = false, std::vector<raylib::KeyBoard> keyPress = {},
+        explicit EventRequirement(const uint &click = 0,
+            bool mouseMove = false,
+            std::vector<raylib::KeyBoard> keyPress = {},
             std::vector<raylib::KeyBoard> keyRelease = {});
-        explicit EventRequirement(const evtMouse &click = Game::evtMouse::NONE, bool mouseMove = false,
-            std::vector<raylib::KeyBoard> keyPress = {}, std::vector<raylib::KeyBoard> keyRelease = {});
+        explicit EventRequirement(const evtMouse &click = Game::evtMouse::NONE,
+            bool mouseMove = false,
+            std::vector<raylib::KeyBoard> keyPress = {},
+            std::vector<raylib::KeyBoard> keyRelease = {});
 
         bool isTriggered(raylib::Input &eventManager) const;
 

@@ -29,7 +29,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
-        src/Game/Factories/ButtonFactory.cpp
+        src/GUI/Factories/ButtonFactory.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
