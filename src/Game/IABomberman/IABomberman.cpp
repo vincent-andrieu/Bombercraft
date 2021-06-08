@@ -39,10 +39,21 @@ IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<
         std::cerr << "Default bombe prob: 1/" << this->_randomBombe << std::endl;
     if (this->_randomBombe <= 0)
         throw IAExceptions("\"IA_BOMBE_PROB\" must be > 0");
+    // SETINGS
+    this->IASettings();
 }
 
 IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range, int defaultValue)
 : IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue), _randomMove(0), _randomBombe(7)
+{
+    this->IASettings();
+}
+
+IABomberman::~IABomberman()
+{
+}
+
+void IABomberman::IASettings()
 {
     this->setIAAction(BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
         return this->actionPutBomber(pos, env);
@@ -52,10 +63,6 @@ IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<
     });
     this->setRunnableTile(TileType::TILE_BONUS);
     this->setRunnableTile(TileType::TILE_EMPTY);
-}
-
-IABomberman::~IABomberman()
-{
 }
 
 void IABomberman::setRange(size_t range)
