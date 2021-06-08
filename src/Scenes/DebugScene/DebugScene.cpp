@@ -11,6 +11,7 @@
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/LabelFactory.hpp"
+#include "GUI/Factories/TextInputFactory.hpp"
 
 using namespace Game;
 
