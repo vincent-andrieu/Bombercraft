@@ -13,6 +13,9 @@
 
 #include "ConfigFile/ConfigFile.hpp"
 
+#define CONFIG_FILE "bomberman.config"
+#define UNUSED      [[maybe_unused]]
+
 namespace Game
 {
     class CoreData {
@@ -31,6 +34,6 @@ namespace Game
         static std::shared_ptr<Engine::SystemManager> _systemManager;
         static std::unique_ptr<raylib::Window> _window;
     };
-}
+} // namespace Game
 
 #endif // COREDATA_HPP
