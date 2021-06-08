@@ -67,10 +67,7 @@ void raylib::Text::setFont(std::shared_ptr<raylib::IFont> &font)
 
 void raylib::Text::setFont(const string &font)
 {
-    std::cout << "setFont std::string" << std::endl;
-    std::cout << "string:"  << font << std::endl;
     this->_font->setPath(font);
-    std::cout << "after setPath" << std::endl;
 }
 
 void raylib::Text::setColor(const RColor color)
