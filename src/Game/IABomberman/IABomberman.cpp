@@ -36,6 +36,8 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
     
+    if (!this->isSecurePlace(env[pos.second][pos.first]))
+        return false;
     std::srand(this->_seed);
     if (std::rand() % 7)
         return false;
@@ -283,11 +285,8 @@ void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::ve
 
 void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
-    // TODO ADD OFFENSIVE ACT
-    (void) pos;
-    (void) env;
-    this->clearQueue(list);
-    list.push(IA::Movement::IA_MOVE_NONE);
+    // TODO GET OFFENSIVE MODE
+    this->randomMove(pos, env, list);
 }
 
 bool IABomberman::isRandomMove() const
