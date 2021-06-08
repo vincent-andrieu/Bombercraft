@@ -50,6 +50,7 @@ namespace GameModule
         private:
             size_t _range;
             int _defaultValue;
+            size_t _randomMove;
     };
 }
 

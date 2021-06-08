@@ -10,7 +10,7 @@
 using namespace GameModule;
 
 IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range, int defaultValue)
-: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue)
+: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue), _randomMove(0)
 {
     this->setIAAction(BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
         return this->actionPutBomber(pos, env);
@@ -57,7 +57,7 @@ void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<
         this->offensiveMove(pos, env, list);
     } else {
         if (!this->findSecurePlace(pos, env, list))
-            std::cout << "RIP mon ruf" << std::endl;
+            std::cerr << "RIP mon ruf" << std::endl;
     }
 }
 
@@ -259,11 +259,26 @@ IA::Movement IABomberman::getIAMovement()
 
 void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
-    // TODO ADD RANDOMMOVE
-    (void) pos;
-    (void) env;
+    size_t x = pos.first;
+    size_t y = pos.second;
+    IA::Movement toPush;
+    std::vector<IA::Movement> valueOk;
+
+    if (x != 0 && this->isRunnable(env[y][x - 1]))
+        valueOk.push_back(IA::Movement::IA_MOVE_LEFT);
+    if (y != 0 && this->isRunnable(env[y - 1][x]))
+        valueOk.push_back(IA::Movement::IA_MOVE_UP);
+    if (x + 1 < env[y].size() && this->isRunnable(env[y][x + 1]))
+        valueOk.push_back(IA::Movement::IA_MOVE_RIGHT);
+    if (y + 1 < env.size() && this->isRunnable(env[y + 1][x]))
+        valueOk.push_back(IA::Movement::IA_MOVE_DOWN);
     this->clearQueue(list);
-    list.push(IA::Movement::IA_MOVE_NONE);
+    if (valueOk.size()) {
+        toPush = valueOk[std::rand() % valueOk.size()];
+    } else {
+        toPush = IA::Movement::IA_MOVE_NONE;
+    }
+    list.push(toPush);
 }
 
 void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
@@ -277,6 +292,12 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
 
 bool IABomberman::isRandomMove() const
 {
-    // TODO ADD PROBA FOR RANDOMMOVE
+    int randomProba = this->_randomMove;
+
+    if (!randomProba)
+        return false;
+    std::srand(this->_seed);
+    if (std::rand() % 100 <= randomProba)
+        return true;
     return false;
 }
