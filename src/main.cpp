@@ -11,7 +11,15 @@
 
 int main(void)
 {
-    Game::Core core;
-    core.loop();
+    try {
+        Game::Core core;
+        core.loop();
+    } catch (const ParserExceptions &e) {
+        std::cerr << "Fatal error: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch(...) {
+        std::cerr << "Warning: Catch unknown exceptions" << std::endl;
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }

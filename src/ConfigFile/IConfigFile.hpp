@@ -22,6 +22,7 @@ class IConfigFile {
     public:
         virtual ~IConfigFile() {};
         virtual void loadFile(const std::string &filename) = 0;
+        virtual bool isSetInFile(const std::string name) const = 0;
 
         virtual int getInt(const std::string name) const = 0;
         virtual float getFloat(const std::string name) const = 0;

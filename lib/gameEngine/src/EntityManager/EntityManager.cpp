@@ -11,6 +11,12 @@ using namespace Engine;
 
 EntityManager::EntityManager(SystemManager &sysManager) : _systemManager(sysManager)
 {
+    //    load("last_save");
+}
+
+EntityManager::~EntityManager()
+{
+    save("last_save");
 }
 
 void EntityManager::allocate(std::size_t size)
@@ -45,4 +51,43 @@ void EntityManager::removeEntity(Entity entity)
 SystemManager &EntityManager::getSystemManager()
 {
     return _systemManager;
+}
+
+void EntityManager::save(const std::string &saveName)
+{
+    try {
+        _saver.createDirectory(saveName);
+        _saver.setWorkingDirectory(saveName);
+        _entities.save(_saver);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
+        return;
+    }
+    for (const auto &component_register : _componentRegisters) {
+        try {
+            if (component_register)
+                component_register->save(_saver);
+        } catch (const std::filesystem::filesystem_error &my_e) {
+            SaveManager::printException(my_e);
+            return;
+        }
+    }
+}
+
+void EntityManager::load(const std::string &saveName)
+{
+    try {
+        _saver.setWorkingDirectory(saveName);
+        _entities.load(_saver);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
+        return;
+    }
+    for (const auto &component_register : _componentRegisters) {
+        try {
+            component_register->load(_saver);
+        } catch (const std::filesystem::filesystem_error &my_e) {
+            SaveManager::printException(my_e);
+        }
+    }
 }

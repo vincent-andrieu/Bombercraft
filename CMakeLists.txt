@@ -32,12 +32,14 @@ set(SRCS
         src/Game/Factories/ButtonFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
+        # IA
+        src/Game/IABomberman/IABomberman.cpp
+        src/Game/IABomberman/IACore.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
-        src/Components/ClickEvent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp

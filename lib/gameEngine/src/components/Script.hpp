@@ -22,7 +22,8 @@ namespace Engine
       public:
         Script(EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
             : handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
-        {}
+        {
+        }
 
         ~Script() = default;
 
@@ -36,6 +37,6 @@ namespace Engine
         EntityManager &_entityManager;
         SceneManager &_sceneManager;
     };
-}
+} // namespace Engine
 
 #endif // ABSTRACTEVENT_HPP
