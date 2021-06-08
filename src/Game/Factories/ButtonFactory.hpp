@@ -47,7 +47,7 @@ namespace Game
         const auto &staticConf = *dynamic_cast<const ButtonStaticConfig *>(&staticData);
         const auto &dynConf = *dynamic_cast<const ButtonDynamicConfig *>(&dynamicData);
 
-        CoreData::entityManager->addComponent<Component::ClickEvent>(entity, dynConf.handler);
+        CoreData::entityManager->addComponent<Component::ClickEvent>(entity, dynConf.handler, staticConf.requirements);
         CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, dynConf.handler, staticConf.requirements);
         CoreData::entityManager->addComponent<Component::Render2D>(entity,
             Component::render2dMapModels{
