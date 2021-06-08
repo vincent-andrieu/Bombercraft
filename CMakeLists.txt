@@ -37,6 +37,7 @@ set(SRCS
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
+        src/Components/ClickEvent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -49,7 +50,8 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-)
+    )
+
 add_executable(${NAME} ${SRCS})
 
 if (MSVC)
@@ -59,9 +61,9 @@ else ()
 endif ()
 
 set_target_properties(${NAME}
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
-)
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        )
 
 ## GAME-ENGINE
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)
