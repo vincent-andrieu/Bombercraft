@@ -22,6 +22,7 @@ class ConfigFile : public IConfigFile
         int getInt(const std::string name) const;
         void loadFile(const std::string &filename);
         float getFloat(const std::string name) const;
+        bool isSetInFile(const std::string name) const;
         std::string getString(const std::string name) const;
         std::pair<int, int> getPaire(const std::string name) const;
 
