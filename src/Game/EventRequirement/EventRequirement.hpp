@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 03/06/2021 EventRequirement.hpp.h
+** 03/06/2021 EventRequirement.hpp
 */
 
 #ifndef EVENTREQUIREMENT_HPP
@@ -11,24 +11,30 @@
 #include "raylib.hpp"
 #include <vector>
 
-namespace Game {
-    enum class evtMouse {
+// typedef uint8_t uint;
+
+namespace Game
+{
+    enum class evtMouse : uint
+    {
+        NONE = 0,
         LEFT = 1,
         RIGHT = 2,
         MIDDLE = 4
     };
-    using clickType = uint8_t;
 
-    clickType operator|(evtMouse a, evtMouse b);
-    clickType operator|(clickType a, evtMouse b);
+    uint operator|(evtMouse a, evtMouse b);
+    uint operator|(uint a, evtMouse b);
 
     class EventRequirement {
       public:
-        EventRequirement(clickType const click = 0, bool mouseMove = false,
-            std::vector<raylib::KeyBoard> const &keyPress = {},
-            std::vector<raylib::KeyBoard> const &keyRelease = {});
+        EventRequirement() = delete;
+        explicit EventRequirement(const uint &click = 0, bool mouseMove = false, std::vector<raylib::KeyBoard> keyPress = {},
+            std::vector<raylib::KeyBoard> keyRelease = {});
+        explicit EventRequirement(const evtMouse &click = Game::evtMouse::NONE, bool mouseMove = false,
+            std::vector<raylib::KeyBoard> keyPress = {}, std::vector<raylib::KeyBoard> keyRelease = {});
 
-        bool isTrigger(raylib::Input &eventManager) const;
+        bool isTriggered(raylib::Input &eventManager) const;
 
       private:
         bool triggerClick(raylib::Input &eventManager) const;
@@ -36,11 +42,11 @@ namespace Game {
         bool triggerMouseMove(raylib::Input &eventManager) const;
 
       private:
-        const clickType _click;
-        const bool _mouseMoveEvent;
+        const uint _click;
+        const bool _mouseMoveEvent{false};
         const std::vector<raylib::KeyBoard> _handledKeyPress;
         const std::vector<raylib::KeyBoard> _handledKeyRelease;
     };
-}
+} // namespace Game
 
 #endif // EVENTREQUIREMENT_HPP

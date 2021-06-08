@@ -52,8 +52,8 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
             auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
             auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
 
-          cube->setColor(raylib::RColor::RBLUE);
-    });
+            cube->setColor(raylib::RColor::RBLUE);
+        });
     auto moveableEntity = this->localEntities.createEntity("movableEntity");
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
@@ -64,7 +64,7 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
         []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
         });
     // Events
-    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
+    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 }
 
