@@ -89,13 +89,14 @@ void ProceduralMap::randomFill(float prob, TileType type)
     GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();
     std::vector<GameModule::TileType>::iterator map_it_x = map_it_y->begin();
 
+    std::srand(this->_seed);
     while (map_it_y != this->_mapProcedural.end()) {
         map_it_x = map_it_y->begin();
         while (map_it_x != map_it_y->end()) {
             if (!nb)
                 return;
             if (*map_it_x == TileType::TILE_DEFAULT) {
-                random = rand() % 100;
+                random = std::rand() % 100;
                 if (nb >= endTile || random <= prob) {
                     *map_it_x = type;
                     nb--;

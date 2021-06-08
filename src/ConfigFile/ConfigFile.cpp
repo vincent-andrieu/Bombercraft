@@ -486,3 +486,10 @@ raylib::MyVector4 ConfigFile::getMyVector4(const std::string name) const
     ConfigFile inside(this->getParseFile(input));
     return raylib::MyVector4(inside.getFloat("a"), inside.getFloat("b"), inside.getFloat("c"), inside.getFloat("d"));
 }
+
+bool ConfigFile::isSetInFile(const std::string name) const
+{
+    std::string line = getLineByName(name);
+
+    return line.size();
+}

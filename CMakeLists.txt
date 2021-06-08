@@ -28,6 +28,9 @@ set(SRCS
         src/Game/EventRequirement/EventRequirement.cpp
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
+        # IA
+        src/Game/IABomberman/IABomberman.cpp
+        src/Game/IABomberman/IACore.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
