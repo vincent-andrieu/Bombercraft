@@ -138,4 +138,4 @@ void IACore<TileType, Action>::setSeed(unsigned int seed)
     this->_seed = seed;
 }
 
-template class IACore<GameModule::TileType, GameModule::BombermanAction>;
+template class IA::IACore<GameModule::TileType, GameModule::BombermanAction>;
