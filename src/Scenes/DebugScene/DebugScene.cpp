@@ -13,7 +13,7 @@ using namespace Game;
 
 /// [Test] - Event Handler
 static const EventRequirement clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
-static const Component::eventScript clickHandler = [](const Engine::Entity) {
+static Component::eventScript clickHandler = [](const Engine::Entity) {
     // CoreData::entityManager
     // CoreData::sceneManager
     // CoreData::eventManager
