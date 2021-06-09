@@ -39,13 +39,13 @@ Component::eventScript ButtonFactory::getStandardButtonHandler()
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
-    const string &label, // TODO is it the text or smthing else ?
+    const string &label,
     Component::eventScript &handler,
     const GUI::ButtonConfig &conf,
     const std::string &text)
 {
     raylib::MyVector2 my_position(position);
-    Engine::Entity entity = pack.createEntity("Button");
+    Engine::Entity entity = pack.createEntity(label);
     Component::render2dMapModels my_textureModels(
         {{"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, conf.size, my_position)},
             {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, conf.size, my_position)},
@@ -57,7 +57,7 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
 
     Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, handler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, handler, conf.requirements);
-    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_textureModels);
+    Game::CoreData::entityManager->addComponent<Component::SingleRender2D>(entity, my_textureModels);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         my_textModel); // TODO can't init two same components in entity ?
     // TODO register component such as Render2D, but able to choose which texture will be drawn
