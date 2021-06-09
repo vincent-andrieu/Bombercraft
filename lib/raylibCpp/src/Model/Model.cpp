@@ -7,8 +7,7 @@
 
 #include "Model.hpp"
 
-raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position = {0, 0, 0},
-    const RColor color = RColor::RWHITE)
+raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
 {
     this->_position = position;
     this->_rotation = {0.0f, 0.0f, 0.0f};
