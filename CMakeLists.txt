@@ -35,6 +35,7 @@ set(SRCS
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Slider/SliderFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
