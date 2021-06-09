@@ -48,6 +48,8 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
+        # GUI
+        src/GUI/Entities/Block/Block.cpp
 )
 add_executable(${NAME} ${SRCS})
 
