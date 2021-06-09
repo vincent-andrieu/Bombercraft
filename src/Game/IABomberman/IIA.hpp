@@ -38,6 +38,7 @@ namespace IA
             virtual void setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func) = 0;
             virtual unsigned int getSeed() const = 0;
             virtual void setSeed(unsigned int seed) = 0;
+            virtual void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy) = 0;
     };
 }
 

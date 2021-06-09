@@ -28,6 +28,7 @@ namespace GameModule
             ~IABomberman();
             void setRange(size_t range);
             IA::Movement getIAMovement();
+            void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
         
         private:
             // SETTINGS

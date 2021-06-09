@@ -70,6 +70,13 @@ void IABomberman::setRange(size_t range)
     this->_range = range;
 }
 
+void IABomberman::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
+{
+    if (enemy.size() != 3)
+        throw IAExceptions("Invalide list size", true);
+    IACore::setEnemyPos(enemy);
+}
+
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 {
     std::queue<IA::Movement> list;
@@ -324,8 +331,23 @@ void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::ve
 
 void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
-    // TODO GET OFFENSIVE MODE
-    this->randomMove(pos, env, list);
+    std::queue<IA::Movement> path;
+    std::pair<int, int> tmp = {this->_defaultValue, this->_defaultValue};
+    std::vector<std::vector<int>> cost;
+
+    if (this->_enemyPos.size() != 3)
+        throw IAExceptions("Invalide enemy list", true);
+    cost = this->getCostArray(pos, env);
+    for (size_t i = 0; i < this->_enemyPos.size(); i++) {
+        if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
+            tmp.first = i;
+            tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
+        }
+    }
+    this->loadPath(cost, this->_enemyPos[tmp.first], path);
+    this->clearQueue(list);
+    list.push(path.front());
+    this->clearQueue(path);
 }
 
 bool IABomberman::isRandomMove() const
