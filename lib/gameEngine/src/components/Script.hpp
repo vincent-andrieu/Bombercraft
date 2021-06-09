@@ -21,7 +21,7 @@ namespace Engine
     class Script : public Component<Script> {
       public:
         Script(EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
-            : handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
+            : _handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
         {
         }
 
@@ -29,11 +29,11 @@ namespace Engine
 
         void trigger(const Entity entity)
         {
-            handler(_entityManager, _sceneManager, entity);
+            this->_handler(_entityManager, _sceneManager, entity);
         }
 
       private:
-        scriptHandler &handler;
+        scriptHandler &_handler;
         EntityManager &_entityManager;
         SceneManager &_sceneManager;
     };
