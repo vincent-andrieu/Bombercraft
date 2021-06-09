@@ -32,6 +32,7 @@ namespace Entities
 
             private:
                 BlockType _type;
+                std::string _name;
                 Engine::Entity _entity;
     };
 }

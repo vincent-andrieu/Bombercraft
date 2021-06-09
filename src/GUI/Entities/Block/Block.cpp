@@ -10,7 +10,7 @@
 using namespace Entities;
 
 Block::Block(Engine::EntityPack &entities, const std::string &name, raylib::MyVector3 pos, BlockType type)
-: _type(type), _entity(entities.createEntity(name))
+: _type(type), _name(name), _entity(entities.createEntity(name))
 {
     raylib::MyVector3 size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = this->getModel(pos, type);
