@@ -39,6 +39,11 @@ void raylib::Text::setText(const string &text)
     this->_text = text;
 }
 
+std::string raylib::Text::getText() const
+{
+    return this->_text;
+}
+
 void raylib::Text::setPosition(const MyVector2 position)
 {
     this->_position = position;

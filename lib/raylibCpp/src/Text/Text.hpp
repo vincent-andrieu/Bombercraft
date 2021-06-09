@@ -23,6 +23,7 @@ namespace raylib
         void draw();
 
         void setText(const string &text);
+        std::string getText() const;
         void setPosition(const MyVector2 position);
         void setFont(std::shared_ptr<raylib::IFont> &font);
         void setFont(const string &font);
