@@ -30,6 +30,8 @@ namespace GUI
         const raylib::RColor fontColor;
         const std::string fontPath;
         const Game::EventRequirement requirements;
+        Component::eventScript clickHandler;
+        Component::eventScript moveHandler;
     };
 
     class ButtonFactory {
@@ -42,12 +44,9 @@ namespace GUI
          */
         static ButtonConfig getStandardButtonConfig();
 
-        static Component::eventScript getStandardButtonHandler();
-
         static void create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
             const string &label,
-            Component::eventScript &handler,
             ButtonConfig const &conf,
             const std::string &text);
     };

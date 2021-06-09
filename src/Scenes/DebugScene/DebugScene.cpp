@@ -72,10 +72,9 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 
-    Engine::EntityPack my_pack(this->_entityManager);
-    Component::eventScript my_script(GUI::ButtonFactory::getStandardButtonHandler());
+    std::cout << std::endl << "hello world" << std::endl << std::endl;
     GUI::ButtonFactory::create(
-        my_pack, {20, 20}, "my_button_label", my_script, GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
+        this->localEntities, {20, 20}, "my_button_label", GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
 }
 
 void DebugScene::update()

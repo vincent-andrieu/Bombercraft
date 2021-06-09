@@ -54,7 +54,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        src/Components/Render2D/ARender2D.cpp src/Components/Render2D/ARender2D.hpp)
+        src/Components/Render2D/ARender2D.cpp src/Components/Render2D/ARender2D.hpp src/Components/MouseMoveEvent.cpp)
 
 add_executable(${NAME} ${SRCS})
 

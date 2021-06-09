@@ -13,7 +13,9 @@ Component::SingleRender2D::SingleRender2D(const render2dMapModels &models) : ARe
 
 void Component::SingleRender2D::draw()
 {
+    std::cout << "in" << std::endl;
     _models.at(_actRender2D)->draw();
+    std::cout << "out" << std::endl;
 }
 
 void Component::SingleRender2D::setActRender2D(const string &label)

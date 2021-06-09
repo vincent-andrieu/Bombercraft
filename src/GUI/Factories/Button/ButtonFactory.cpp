@@ -9,6 +9,18 @@
 
 using namespace GUI;
 
+static const Game::EventRequirement clickHandlerRequirements(Game::evtMouse::LEFT);
+
+namespace GUI
+{
+    void standardButtonHandler(const Engine::Entity entity) // TODO make one handler for click and one for move
+    {
+        Component::SingleRender2D my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
+        std::cout << "lol" << std::endl;
+        my_render2D.setActRender2D("hover");
+    }
+} // namespace GUI
+
 ButtonConfig ButtonFactory::getStandardButtonConfig()
 {
     ButtonConfig my_standard{Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
@@ -19,28 +31,15 @@ ButtonConfig ButtonFactory::getStandardButtonConfig()
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         raylib::RColor::RWHITE,
         Game::CoreData::settings->getString("STANDARD_FONT"),
-        Game::EventRequirement(Game::evtMouse::LEFT)};
-    return my_standard;
-}
-
-void standardButtonHandler(const Engine::Entity)
-{
-    // TODO how to change texture (idle, hover, clicked, unavailable) ?
-}
-
-Component::eventScript ButtonFactory::getStandardButtonHandler()
-{
-    Component::eventScript my_standard(standardButtonHandler);
-
-    // TODO if standard button handler not dependant on config file, remove
-    //  this function
+        clickHandlerRequirements,
+        standardButtonHandler,
+        standardButtonHandler};
     return my_standard;
 }
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     const string &label,
-    Component::eventScript &handler,
     const GUI::ButtonConfig &conf,
     const std::string &text)
 {
@@ -54,11 +53,11 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     Component::render2dMapModels my_textModel({{"text",
         std::make_shared<raylib::Text>(
             text, my_position, conf.fontSize, conf.fontColor, std::make_shared<raylib::Font>(conf.fontPath))}});
+    Component::eventScript my_clickHandler(conf.clickHandler);
+    Component::eventScript my_moveHandler(conf.moveHandler);
 
-    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, handler, conf.requirements);
-    Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, handler, conf.requirements);
+    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
+    Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
     Game::CoreData::entityManager->addComponent<Component::SingleRender2D>(entity, my_textureModels);
-    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        my_textModel); // TODO can't init two same components in entity ?
-    // TODO register component such as Render2D, but able to choose which texture will be drawn
+    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_textModel);
 }

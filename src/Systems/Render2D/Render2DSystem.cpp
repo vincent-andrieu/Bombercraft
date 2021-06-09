@@ -11,13 +11,15 @@
 System::Render2DSystem::Render2DSystem() : AbstractSystem(*Game::CoreData::entityManager)
 {
     this->setRequirements<Component::Render2D>();
+    this->setRequirements<Component::SingleRender2D>();
 }
 
 void System::Render2DSystem::update()
 {
     for (const Engine::Entity &entity : this->getManagedEntities()) {
         auto [render] = Game::CoreData::entityManager->getComponents<Component::Render2D>(entity);
-
         render.draw();
+        auto [singleRender] = Game::CoreData::entityManager->getComponents<Component::SingleRender2D>(entity);
+        singleRender.draw();
     }
 }

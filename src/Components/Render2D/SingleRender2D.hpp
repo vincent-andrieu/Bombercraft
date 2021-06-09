@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** SingleRender2D.hpp
 ** File description:
-** TODO: add description
+** Class allowing to handle several render elements, but render a single
 */
 #ifndef BOMBERMAN_SINGLERENDER2D_HPP
 #define BOMBERMAN_SINGLERENDER2D_HPP
