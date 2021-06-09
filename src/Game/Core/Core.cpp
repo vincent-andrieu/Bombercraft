@@ -18,6 +18,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Render2D>();
     CoreData::entityManager->registerComponent<Component::Render3D>();
     CoreData::entityManager->registerComponent<Component::ClickEvent>();
+    CoreData::entityManager->registerComponent<Component::ClickFocusEvent>();
     CoreData::entityManager->registerComponent<Component::KeyEvent>();
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
