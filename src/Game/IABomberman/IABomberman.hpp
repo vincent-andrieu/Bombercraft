@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "IACore.hpp"
+#include "Game/CoreData/CoreData.hpp"
 #include "../../ConfigFile/IConfigFile.hpp"
 
 namespace GameModule
@@ -23,8 +24,7 @@ namespace GameModule
     class IABomberman : public IA::IACore<TileType, BombermanAction>
     {
         public:
-            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::unique_ptr<IConfigFile> &configFile);
-            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range = 6, int defaultValue = -1);
+            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
             ~IABomberman();
             void setRange(size_t range);
             IA::Movement getIAMovement();

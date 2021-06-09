@@ -16,7 +16,8 @@ namespace raylib
 {
     class Model : public IModel {
       public:
-        Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color);
+        Model(const std::string &texturePath, const string &filepath, const MyVector3 position = MyVector3(0, 0, 0),
+            const RColor color = RColor::RWHITE);
         ~Model();
 
         void draw();

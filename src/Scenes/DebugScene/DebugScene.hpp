@@ -22,6 +22,8 @@ namespace Game
         DebugScene(Engine::SystemManager &systemManager);
         ~DebugScene() = default;
 
+        void open();
+
         void update();
     };
 } // namespace Game

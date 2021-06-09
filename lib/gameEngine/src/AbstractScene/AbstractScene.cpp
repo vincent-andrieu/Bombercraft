@@ -14,7 +14,7 @@ AbstractScene::AbstractScene(SystemManager &systemManager, EntityManager &entity
 {
 }
 
-void AbstractScene::onSceneChange()
+void AbstractScene::close()
 {
     this->localEntities.unload();
 }

@@ -21,6 +21,8 @@ namespace Game
         MainMenuScene(Engine::SystemManager &systemManager);
         ~MainMenuScene() = default;
 
+        virtual void open();
+
         void update();
     };
 }

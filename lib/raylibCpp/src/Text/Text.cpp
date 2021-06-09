@@ -18,6 +18,17 @@ raylib::Text::Text(
     this->_limit = {-1, -1, -1, -1};
 }
 
+raylib::Text::Text(
+    const string &text, const raylib::MyVector2 position, const size_t size, const raylib::RColor color, const string &fontPath)
+{
+    this->_text = text;
+    this->_position = position;
+    this->_font = std::make_shared<raylib::Font>(fontPath);
+    this->_color = color;
+    this->_size = size;
+    this->_limit = {-1, -1, -1, -1};
+}
+
 void raylib::Text::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};

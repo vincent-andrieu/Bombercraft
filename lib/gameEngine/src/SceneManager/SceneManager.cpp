@@ -9,8 +9,8 @@
 
 using namespace Engine;
 
-SceneManager::SceneManager(EntityManager &entityManager)
-    : _entityManager(entityManager), _currentScene(nullptr)
+SceneManager::SceneManager()
+    : _currentScene(nullptr)
 {
 }
 
@@ -28,4 +28,15 @@ void SceneManager::run()
 std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
 {
     return _currentScene;
+}
+
+void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
+{
+    if (_currentScene != nullptr) {
+        _currentScene->close();
+    }
+    _currentScene = scene;
+    if (_currentScene) {
+        _currentScene->open();
+    }
 }
