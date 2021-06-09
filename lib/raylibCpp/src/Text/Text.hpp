@@ -16,25 +16,34 @@ namespace raylib
 {
     class Text : public IText {
       public:
-        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
-            std::shared_ptr<raylib::Font> font = std::make_shared<raylib::Font>());
-        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
+        explicit Text(string text,
+            MyVector2 position = {0, 0},
+            size_t size = 1,
+            RColor color = RColor::RWHITE,
+            const std::shared_ptr<raylib::Font> &font = std::make_shared<raylib::Font>());
+        explicit Text(string text,
+            MyVector2 position = {0, 0},
+            size_t size = 1,
+            RColor color = RColor::RWHITE,
             const string &fontPath = "");
-        ~Text() = default;
+        ~Text() override
+        {
+            _font = nullptr;
+        };
 
-        void draw();
+        void draw() override;
 
-        void setText(const string &text);
-        std::string getText() const;
-        void setPosition(const MyVector2 position);
-        void setFont(std::shared_ptr<raylib::IFont> &font);
-        void setFont(const string &font);
-        void setColor(const RColor color);
-        void setFontSize(const size_t size);
-        void setLimit(const MyVector4 limit);
+        void setText(const string &text) override;
+        [[nodiscard]] std::string getText() const override;
+        void setPosition(MyVector2 position) override;
+        void setFont(std::shared_ptr<raylib::IFont> &font) override;
+        void setFont(const string &font) override;
+        void setColor(RColor color) override;
+        void setFontSize(size_t size) override;
+        void setLimit(MyVector4 limit) override;
 
-        void removeFont();
-        void removeLimit();
+        void removeFont() override;
+        void removeLimit() override;
 
       protected:
         string _text;

@@ -15,9 +15,10 @@ namespace GUI
 {
     void standardButtonHandler(const Engine::Entity entity) // TODO make one handler for click and one for move
     {
-        Component::SingleRender2D my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
+        //        Component::SingleRender2D
+        //        my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
         std::cout << "lol" << std::endl;
-        my_render2D.setActRender2D("hover");
+        //        my_render2D.setActRender2D("hover");
     }
 } // namespace GUI
 

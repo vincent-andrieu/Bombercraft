@@ -16,7 +16,7 @@ namespace raylib
 {
     class Rectangle : public IShape {
       public:
-        Rectangle(const MyVector2 position, const MyVector2 size, const RColor color = RColor::RWHITE);
+        Rectangle(const MyVector2 position, const MyVector2 size, const RColor color = RColor::RWHITE, int i = -1);
         ~Rectangle() = default;
 
         void draw();
