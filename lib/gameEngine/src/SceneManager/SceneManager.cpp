@@ -29,3 +29,14 @@ std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
 {
     return _currentScene;
 }
+
+void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
+{
+    if (_currentScene != nullptr) {
+        _currentScene->close();
+    }
+    _currentScene = scene;
+    if (_currentScene) {
+        _currentScene->open();
+    }
+}

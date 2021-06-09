@@ -21,7 +21,7 @@ Engine::Entity Engine::EntityPack::createEntity(const std::string &key)
     Entity entity;
 
     if (_entities.find(key) != _entities.end()) {
-        throw std::invalid_argument("Key already exist");
+        throw std::invalid_argument("Key " + key + " already exist");
     }
     entity = _entityManager.createEntity();
     _entities[key] = entity;
