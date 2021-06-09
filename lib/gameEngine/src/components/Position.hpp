@@ -20,6 +20,8 @@ namespace Engine
         {
         }
 
+        virtual ~Position() = default;
+
         float x;
         float y;
 

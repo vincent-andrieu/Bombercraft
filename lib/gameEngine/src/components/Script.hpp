@@ -24,7 +24,7 @@ namespace Engine
             : _handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
         {}
 
-        ~Script() = default;
+        virtual ~Script() = default;
 
         void trigger(const Entity entity)
         {

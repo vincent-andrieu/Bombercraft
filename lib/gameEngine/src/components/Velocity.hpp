@@ -20,6 +20,8 @@ namespace Engine
         {
         }
 
+        virtual ~Velocity() = default;
+
         float x;
         float y;
 
