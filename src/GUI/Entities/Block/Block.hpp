@@ -40,6 +40,9 @@ namespace Entities
             void bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size);
             void blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size);
 
+            // HANDLER
+            static void handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity);
+
         private:
             BlockType _type;
             std::string _name;

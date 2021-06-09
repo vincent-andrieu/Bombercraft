@@ -82,8 +82,20 @@ void Block::bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 
 void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 {
+    int blastTime = Game::CoreData::settings->getInt("BLAST_DURATION");
+
+    if (blastTime < 0)
+        blastTime = 0;
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size,
         []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
             // TODO ADD CALLBACK KILLENTITY
     });
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(this->_entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, Block::handlerBlastTimer);
+}
+
+void Block::handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity)
+{
+    (void) entityManager;
+    (void) sceneManager;
+    (void) entity;
 }
