@@ -8,6 +8,7 @@
 #include "DebugScene.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
+#include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 
 using namespace Game;
 
@@ -18,6 +19,9 @@ static Component::eventScript clickHandler = [](const Engine::Entity) {
     // CoreData::sceneManager
     // CoreData::eventManager
     std::cout << "Clicked!!!" << std::endl;
+};
+static Component::eventScript checkboxHandler = [](const Engine::Entity) {
+    std::cout << "Checkbox!!!" << std::endl;
 };
 
 static const EventRequirement keyHandlerRequirements(0, false, {raylib::KeyBoard::IKEY_S}, {});
@@ -66,6 +70,8 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     // Events
     this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
+
+    GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
 }
 
 void DebugScene::update()
