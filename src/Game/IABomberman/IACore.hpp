@@ -39,6 +39,7 @@ namespace IA
             void setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func);
             unsigned int getSeed() const;
             void setSeed(unsigned int seed);
+            void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
         
         private:
             void applyIAMovement(Movement move);
@@ -50,6 +51,7 @@ namespace IA
             std::vector<TileType> _isRunnable;
             std::queue<Movement> _MovementQueue;
             unsigned int _seed;
+            std::vector<std::pair<size_t, size_t>> _enemyPos;
 
         private:
             std::unordered_map<Action, std::function<bool(std::vector<std::vector<TileType>>, std::pair<size_t, size_t>)>> _actLink;

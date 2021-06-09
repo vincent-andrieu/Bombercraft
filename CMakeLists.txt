@@ -32,16 +32,22 @@ set(SRCS
         # GUI/FACTORIES
         src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
+        src/GUI/Factories/Countdown/CountdownFactory.cpp
+        src/GUI/Factories/Countdown/TimeText.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
+        src/Components/Render2D/ARender2D.cpp
         src/Components/Render2D/Render2D.cpp
         src/Components/Render2D/SingleRender2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
         src/Components/ClickEvent.cpp
+        src/Components/MouseMoveEvent.cpp
+        src/Components/Chrono/Chrono.cpp
+        src/Components/FocusEvent/ClickFocusEvent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -54,7 +60,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        src/Components/Render2D/ARender2D.cpp src/Components/Render2D/ARender2D.hpp src/Components/MouseMoveEvent.cpp)
+        )
 
 add_executable(${NAME} ${SRCS})
 

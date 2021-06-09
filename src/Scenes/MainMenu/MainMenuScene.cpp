@@ -12,10 +12,11 @@ using namespace Game;
 Game::MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
 {
-    /// CREATE local Entities and Components
-    //    Engine::Entity playButton = this->localEntities.createEntity("button_play");
-    //    this->_entityManager.addComponent<Component::ClickEvent>(/* handler*/, /* trigger requirements */);
-    //    this->_entityManager.addComponent<Component::Render2d>(/* raylib object */);
+}
+
+void MainMenuScene::open()
+{
+    /// Call factories Here
 }
 
 void Game::MainMenuScene::update()

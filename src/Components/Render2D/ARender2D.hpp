@@ -27,6 +27,8 @@ namespace Component
 
         virtual void draw() = 0;
 
+        std::shared_ptr<raylib::IRenderable> &get(const std::string &label);
+
         virtual bool save(Engine::SaveManager &saver) const = 0;
         virtual bool load(Engine::SaveManager &saver) = 0;
 

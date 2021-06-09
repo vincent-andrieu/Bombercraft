@@ -6,6 +6,8 @@
 */
 
 #include "Core.hpp"
+#include "Scenes/MainMenu/MainMenuScene.hpp"
+#include "Components/Chrono/Chrono.hpp"
 
 using namespace Game;
 
@@ -17,21 +19,28 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::SingleRender2D>();
     CoreData::entityManager->registerComponent<Component::Render3D>();
     CoreData::entityManager->registerComponent<Component::ClickEvent>();
+    CoreData::entityManager->registerComponent<Component::ClickFocusEvent>();
     CoreData::entityManager->registerComponent<Component::KeyEvent>();
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
     CoreData::entityManager->registerComponent<Engine::Velocity>();
+    CoreData::entityManager->registerComponent<Engine::Timer>();
+    CoreData::entityManager->registerComponent<Engine::Script>();
+    CoreData::entityManager->registerComponent<Component::Chrono>();
     /// SYSTEMS - CREATION
     CoreData::_systemManager->createSystem<System::Render3DSystem>();
     CoreData::_systemManager->createSystem<System::Render2DSystem>();
     CoreData::_systemManager->createSystem<System::ClickEventSystem>();
     CoreData::_systemManager->createSystem<System::KeyEventSystem>();
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->setScene<DebugScene>();
 }
 
 void Core::loop()
