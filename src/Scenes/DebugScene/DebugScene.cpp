@@ -11,6 +11,7 @@
 #include "GUI/Factories/Button/ButtonFactory.hpp"
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
+#include "GUI/Factories/Image/ImageFactory.hpp"
 
 using namespace Game;
 
@@ -85,6 +86,7 @@ void DebugScene::open()
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
+    GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
     GUI::ButtonFactory::create(
         this->localEntities, {20, 20}, "my_button_label", GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
 }
