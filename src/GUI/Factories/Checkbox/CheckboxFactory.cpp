@@ -25,12 +25,15 @@ void CheckboxFactory::create(
     auto checkRect = std::make_shared<raylib::Rectangle>(position + outlineSize, size - 2 * outlineSize,
         static_cast<RColor>(CoreData::settings->getInt(CHECKBOX_CONFIG_DISABLE_COLOR)));
 
-    Component::eventScript checkboxHandler = [checkRect, isDefaultChecked, clickHandler](const Engine::Entity entity) {
+    Component::eventScript checkboxHandler = [checkRect, isDefaultChecked, clickHandler, position, size](
+                                                 const Engine::Entity entity) {
         static bool isChecked = isDefaultChecked;
 
-        isChecked = !isChecked;
-        checkRect->setColor(CheckboxFactory::getCheckColor(isChecked));
-        clickHandler(entity);
+        if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
+            isChecked = !isChecked;
+            checkRect->setColor(CheckboxFactory::getCheckColor(isChecked));
+            clickHandler(entity);
+        }
     };
 
     CoreData::entityManager->addComponent<Component::Render2D>(
