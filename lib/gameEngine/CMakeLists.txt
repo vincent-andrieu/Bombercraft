@@ -34,6 +34,7 @@ set(SRCS
     src/EntityManager/EntityManager.cpp
     # Components
     src/Component/Component.cpp
+    src/components/Timer.cpp
     # Other
     src/EntityPack/EntityPack.cpp
     # Save
