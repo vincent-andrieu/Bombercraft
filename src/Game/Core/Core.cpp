@@ -33,11 +33,12 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::_systemManager->createSystem<System::KeyEventSystem>();
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
     CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
-    CoreData::sceneManager->setScene<MainMenuScene>();
+    CoreData::sceneManager->setScene<DebugScene>();
 }
 
 void Core::loop()
