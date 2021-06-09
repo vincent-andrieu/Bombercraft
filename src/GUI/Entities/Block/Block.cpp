@@ -37,6 +37,10 @@ std::shared_ptr<raylib::Model> Block::getModel(raylib::MyVector3 pos, BlockType 
         case BlockType::BLOCK_BOMB: typeInStr = "BOMB"; break;
         case BlockType::BLOCK_BLAST: typeInStr = "BLAST"; break;
         case BlockType::BLOCK_FLOOR: typeInStr = "FLOOR"; break;
+        case BlockType::BLOCK_BONUS_BOOMUP: typeInStr = "BONUS_BOOMUP"; break;
+        case BlockType::BLOCK_BONUS_FIREUP: typeInStr = "BONUS_FIREUP"; break;
+        case BlockType::BLOCK_BONUS_SPEEDUP: typeInStr = "BONUS_SPEEDUP"; break;
+        case BlockType::BLOCK_BONUS_WALLPASS: typeInStr = "BONUS_WALLPASS"; break;
         default: typeInStr = "DEFAULT"; break;
     }
     texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
@@ -56,22 +60,22 @@ void Block::internalFactory(BlockType type, raylib::MyVector3 pos, raylib::MyVec
     }
 }
 
-void Block::softFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
+void Block::softFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
 {
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
-void Block::hardFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
+void Block::hardFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
 {
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
-void Block::bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
+void Block::bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
 {
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
-void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
+void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
 {
     int blastTime = Game::CoreData::settings->getInt("BLAST_DURATION");
 
@@ -81,14 +85,37 @@ void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
     Game::CoreData::entityManager->addComponent<Engine::Timer>(this->_entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, Block::handlerBlastTimer);
 }
 
+void Block::boomUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
+{
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerBoomUp);
+}
+
+void Block::fireUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
+{
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerFireUp);
+}
+
+void Block::speedUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
+{
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerSpeedUp);
+}
+
+void Block::wallPassBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const
+{
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerWallPass);
+}
+
+
 void Block::handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity)
 {
+    // TODO remove blast
     (void) sceneManager;
     entityManager.removeEntity(entity);
 }
 
 void Block::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
+    // TODO stop moving
     (void) fromEntity;
     (void) toEntity;
 }
@@ -96,5 +123,30 @@ void Block::handlerCollision(const Engine::Entity &fromEntity, const Engine::Ent
 void Block::handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     (void) fromEntity;
+    // TODO kill entity if player
     Game::CoreData::entityManager->removeEntity(toEntity);
+}
+
+void Block::handlerBoomUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    Game::CoreData::entityManager->removeEntity(fromEntity);
+    (void) toEntity; // TODO give bonus to this entity if player
+}
+
+void Block::handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    Game::CoreData::entityManager->removeEntity(fromEntity);
+    (void) toEntity; // TODO give bonus to this entity if player
+}
+
+void Block::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    Game::CoreData::entityManager->removeEntity(fromEntity);
+    (void) toEntity; // TODO give bonus to this entity if player
+}
+
+void Block::handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    Game::CoreData::entityManager->removeEntity(fromEntity);
+    (void) toEntity; // TODO give bonus to this entity if player
 }
