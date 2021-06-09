@@ -28,8 +28,12 @@ namespace GameModule
             ~IABomberman();
             void setRange(size_t range);
             IA::Movement getIAMovement();
+            void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
         
         private:
+            // SETTINGS
+                void IASettings();
+
             // To set in IACore
             bool actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
             void movementPrediction(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list);

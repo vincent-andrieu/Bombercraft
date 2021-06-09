@@ -21,7 +21,7 @@ namespace Component
     class Render2D : public Engine::Component<Render2D> {
       public:
         Render2D(render2dMapModels const &models);
-        ~Render2D() = default;
+        virtual ~Render2D() = default;
 
         void add(std::shared_ptr<raylib::IRenderable> model, const std::string &label);
         void remove(const std::string &label);
