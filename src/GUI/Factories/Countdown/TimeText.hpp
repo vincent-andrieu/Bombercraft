@@ -19,10 +19,9 @@ namespace GUI
         TimeText(Engine::Entity owner, const std::string &text, const raylib::MyVector2 position = {0, 0}, const std::size_t size = 1,
             const raylib::RColor color = raylib::RColor::RWHITE, const std::string &fontPath = "");
 
-        void setTime(std::chrono::milliseconds const& time);
+        void setTime(double const& time);
 
       private:
-        Engine::Entity _owner;
         Engine::Timer &_timerComponent;
     };
 } // namespace GUI

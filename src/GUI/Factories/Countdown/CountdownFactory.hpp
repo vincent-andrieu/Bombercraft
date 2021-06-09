@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 08/06/2021 TimerFactory.hpp.h
+** 08/06/2021 CountdownFactory.hpp.h
 */
 
-#ifndef TIMERFACTORY_HPP
-#define TIMERFACTORY_HPP
+#ifndef COUNTDOWNFACTORY_HPP
+#define COUNTDOWNFACTORY_HPP
 
 #include "GameEngine.hpp"
 #include "Game/CoreData/CoreData.hpp"
@@ -22,18 +22,20 @@ namespace GUI
         raylib::MyVector2 size;
     };
 
-    class TimerFactory {
+#define DEFAULT_REFRESH_TIME 1.0f
+
+    class CountdownFactory {
       public:
-        virtual ~TimerFactory() = 0;
+        virtual ~CountdownFactory() = 0;
 
         static const TimerConfig getStandardConfig();
 
         static void create(Engine::EntityPack &entityPack, raylib::MyVector2 position, TimerConfig const &config,
-            std::string const &name = "", std::size_t refreshMsTime = 1000);
+            std::size_t countdown, std::string const &name = "", std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
 
-        static void create(Engine::EntityPack &entityPack, raylib::MyVector2 position, std::string const &name = "",
-            std::size_t refreshMsTime = 1000);
+        static void create(Engine::EntityPack &entityPack, raylib::MyVector2 position, std::size_t countdown,
+            std::string const &name = "", std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
     };
 } // namespace GUI
 
-#endif // TIMERFACTORY_HPP
+#endif // COUNTDOWNFACTORY_HPP
