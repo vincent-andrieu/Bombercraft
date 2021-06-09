@@ -15,7 +15,7 @@ using namespace Game;
 const EventRequirement CheckboxFactory::_clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
 
 void CheckboxFactory::create(
-    Engine::EntityPack &entityPack, const MyVector2 position, Component::eventScript clickHandler, bool isDefaultChecked)
+    Engine::EntityPack &entityPack, const MyVector2 position, checkboxHandler clickHandler, bool isDefaultChecked)
 {
     const auto checkbox = entityPack.createAnonymousEntity();
     const auto &size = CoreData::settings->getMyVector2(CHECKBOX_CONFIG_SIZE);
@@ -32,7 +32,7 @@ void CheckboxFactory::create(
         if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
             isChecked = !isChecked;
             checkRect->setColor(CheckboxFactory::getCheckColor(isChecked));
-            clickHandler(entity);
+            clickHandler(entity, isChecked);
         }
     };
 
