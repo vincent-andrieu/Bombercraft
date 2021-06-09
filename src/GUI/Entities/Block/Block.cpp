@@ -58,26 +58,17 @@ void Block::internalFactory(BlockType type, raylib::MyVector3 pos, raylib::MyVec
 
 void Block::softFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size,
-        []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
-            // TODO ADD CALLBACK UNDOMOVE
-    });
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
 void Block::hardFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size,
-        []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
-            // TODO ADD CALLBACK UNDOMOVE
-    });
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
 void Block::bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size,
-        []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
-            // TODO ADD CALLBACK UNDOMOVE
-    });
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerCollision);
 }
 
 void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
@@ -86,10 +77,7 @@ void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 
     if (blastTime < 0)
         blastTime = 0;
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size,
-        []([[maybe_unused]] const Engine::Entity &fromEntity, [[maybe_unused]] const Engine::Entity &toEntity) {
-            // TODO ADD CALLBACK KILLENTITY
-    });
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(this->_entity, pos, size, Block::handlerKillEntity);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(this->_entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, Block::handlerBlastTimer);
 }
 
@@ -98,4 +86,16 @@ void Block::handlerBlastTimer(Engine::EntityManager &entityManager, Engine::Scen
     (void) entityManager;
     (void) sceneManager;
     (void) entity;
+}
+
+void Block::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    (void) fromEntity;
+    (void) toEntity;
+}
+
+void Block::handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+{
+    (void) fromEntity;
+    (void) toEntity;
 }

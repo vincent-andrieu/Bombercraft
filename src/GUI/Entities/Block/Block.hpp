@@ -42,6 +42,8 @@ namespace Entities
 
             // HANDLER
             static void handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity);
+            static void handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
+            static void handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
         private:
             BlockType _type;
