@@ -8,6 +8,7 @@
 #include "DebugScene.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
+#include "GUI/Factories/Button/ButtonFactory.hpp"
 
 using namespace Game;
 
@@ -70,6 +71,11 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     // Events
     this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
+
+    Engine::EntityPack my_pack(this->_entityManager);
+    Component::eventScript my_script(GUI::ButtonFactory::getStandardButtonHandler());
+    GUI::ButtonFactory::create(
+        my_pack, {20, 20}, "my_button_label", my_script, GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
 }
 
 void DebugScene::update()

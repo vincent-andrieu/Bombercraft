@@ -38,6 +38,7 @@ set(SRCS
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
         src/Components/Render2D/Render2D.cpp
+        src/Components/Render2D/SingleRender2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
         src/Components/ClickEvent.cpp
@@ -52,7 +53,8 @@ set(SRCS
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
-        src/Exceptions/Exceptions.cpp)
+        src/Exceptions/Exceptions.cpp
+        src/Components/Render2D/ARender2D.cpp src/Components/Render2D/ARender2D.hpp)
 
 add_executable(${NAME} ${SRCS})
 
