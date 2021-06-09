@@ -17,7 +17,7 @@ const EventRequirement CheckboxFactory::_clickHandlerRequirements(evtMouse::LEFT
 void CheckboxFactory::create(
     Engine::EntityPack &entityPack, const MyVector2 position, Component::eventScript clickHandler, bool isDefaultChecked)
 {
-    const auto checkbox = entityPack.createEntity("checkbox");
+    const auto checkbox = entityPack.createAnonymousEntity();
     const auto &size = CoreData::settings->getMyVector2(CHECKBOX_CONFIG_SIZE);
     const auto &outlineSize = CoreData::settings->getMyVector2(CHECKBOX_CONFIG_OUTLINE);
     auto backgroundRect = std::make_shared<raylib::Rectangle>(
