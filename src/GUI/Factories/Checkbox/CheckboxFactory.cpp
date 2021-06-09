@@ -34,7 +34,7 @@ void CheckboxFactory::create(
     };
 
     CoreData::entityManager->addComponent<Component::Render2D>(
-        checkbox, Component::render2dMapModels{{"checkboxBackground", backgroundRect}, {"checkboxCheck", checkRect}});
+        checkbox, Component::render2dMapModels{{"checkboxCheck", checkRect}, {"checkboxBackground", backgroundRect}});
     CoreData::entityManager->addComponent<Component::ClickEvent>(
         checkbox, checkboxHandler, CheckboxFactory::_clickHandlerRequirements);
 }
