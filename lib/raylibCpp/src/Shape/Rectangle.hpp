@@ -22,7 +22,9 @@ namespace raylib
         void draw();
 
         void setPosition(const MyVector2 position);
+        MyVector2 getPosition() const;
         void setSize(const MyVector2 size);
+        MyVector2 getSize() const;
         void setColor(const RColor color);
 
       private:
