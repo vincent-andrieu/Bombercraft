@@ -42,7 +42,7 @@ namespace raylib
                 {raylib::KeyBoard::IKEY_J, KEY_J},
                 {raylib::KeyBoard::IKEY_K, KEY_K},
                 {raylib::KeyBoard::IKEY_L, KEY_L},
-                {raylib::KeyBoard::IKEY_M, KEY_COMMA},
+                {raylib::KeyBoard::IKEY_M, KEY_SEMICOLON},
                 {raylib::KeyBoard::IKEY_N, KEY_N},
                 {raylib::KeyBoard::IKEY_O, KEY_O},
                 {raylib::KeyBoard::IKEY_P, KEY_P},
