@@ -18,6 +18,8 @@ namespace Component {
         MouseMoveEvent(eventScript &handler, Game::EventRequirement const &requirements)
             : AbstractEvent(handler, requirements)
         {}
+
+        virtual ~MouseMoveEvent() = default;
     };
 }
 

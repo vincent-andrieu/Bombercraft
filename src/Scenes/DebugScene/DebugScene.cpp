@@ -9,6 +9,7 @@
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
+#include "GUI/Factories/Countdown/CountdownFactory.hpp"
 
 using namespace Game;
 
@@ -46,7 +47,7 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     this->_entityManager.addComponent<Component::Render2D>(rect,
         Component::render2dMapModels{
             {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}});
-
+    // ------------
     auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(
@@ -58,6 +59,7 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
 
             cube->setColor(raylib::RColor::RBLUE);
         });
+    // ------------
     auto moveableEntity = this->localEntities.createEntity("movableEntity");
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
@@ -71,20 +73,29 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
     this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
     this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 
+    ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
+    GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
 }
 
 void DebugScene::update()
 {
-    auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
-    auto render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-    auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
-    auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+    try {
+        auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+        auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
+        auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+        auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
+        auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
 
-    float dt = 1.0f / 10.0f;
-    physics.update(dt);
-    render3D.update();
-    render2D.update();
-    hitbox.update();
-    this->eventDispatcher(this->_systemManager);
+        float dt = 1.0f / 10.0f;
+        physics.update(dt);
+        render3D.update();
+        render2D.update();
+        hitbox.update();
+        timer.update();
+        this->eventDispatcher(this->_systemManager);
+    } catch (std::invalid_argument const &e) {
+        std::cerr << e.what() << std::endl;
+        exit(84); // TEMPORARY
+    }
 }

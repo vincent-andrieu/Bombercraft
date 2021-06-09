@@ -18,11 +18,14 @@ namespace raylib
       public:
         Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
             std::shared_ptr<raylib::Font> font = std::make_shared<raylib::Font>());
+        Text(const string &text, const MyVector2 position = {0, 0}, const size_t size = 1, const RColor color = RColor::RWHITE,
+            const string &fontPath = "");
         ~Text() = default;
 
         void draw();
 
         void setText(const string &text);
+        std::string getText() const;
         void setPosition(const MyVector2 position);
         void setFont(std::shared_ptr<raylib::IFont> &font);
         void setFont(const string &font);
@@ -33,7 +36,7 @@ namespace raylib
         void removeFont();
         void removeLimit();
 
-      private:
+      protected:
         string _text;
         MyVector2 _position;
         std::shared_ptr<IFont> _font;

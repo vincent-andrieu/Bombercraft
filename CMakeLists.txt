@@ -32,6 +32,8 @@ set(SRCS
         src/Game/Factories/ButtonFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
+        src/GUI/Factories/Countdown/CountdownFactory.cpp
+        src/GUI/Factories/Countdown/TimeText.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -40,6 +42,7 @@ set(SRCS
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
+        src/Components/Chrono/Chrono.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -52,7 +55,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-    )
+)
 
 add_executable(${NAME} ${SRCS})
 

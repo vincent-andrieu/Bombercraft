@@ -138,4 +138,10 @@ void IACore<TileType, Action>::setSeed(unsigned int seed)
     this->_seed = seed;
 }
 
-template class IACore<GameModule::TileType, GameModule::BombermanAction>;
+template <typename TileType, typename Action>
+void IACore<TileType, Action>::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
+{
+    this->_enemyPos = enemy;
+}
+
+template class IA::IACore<GameModule::TileType, GameModule::BombermanAction>;

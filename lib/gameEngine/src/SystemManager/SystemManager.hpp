@@ -64,7 +64,7 @@ namespace Engine {
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
-        auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sysType) {
+        auto type_it = std::find_if(_types.begin(), _types.end(), [](auto &sysType) {
             return sysType.get() == type;
         });
 

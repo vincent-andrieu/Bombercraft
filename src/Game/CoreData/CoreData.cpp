@@ -28,7 +28,7 @@ CoreData::CoreData()
     if (CoreData::entityManager == nullptr)
         CoreData::entityManager = std::make_unique<Engine::EntityManager>(*CoreData::_systemManager);
     if (CoreData::sceneManager == nullptr)
-        CoreData::sceneManager = std::make_unique<Engine::SceneManager>(*CoreData::entityManager);
+        CoreData::sceneManager = std::make_unique<Engine::SceneManager>();
     if (CoreData::eventManager == nullptr)
         CoreData::eventManager = std::make_unique<raylib::Input>();
     if (CoreData::camera == nullptr) {

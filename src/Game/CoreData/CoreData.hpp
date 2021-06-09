@@ -36,4 +36,6 @@ namespace Game
     };
 } // namespace Game
 
+#define CONF_GET_COLOR(label) static_cast<raylib::RColor>(CoreData::settings->getInt(label))
+
 #endif // COREDATA_HPP

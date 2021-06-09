@@ -18,6 +18,8 @@ namespace Component
         ClickEvent(eventScript &handler, Game::EventRequirement const &requirements) : AbstractEvent(handler, requirements)
         {
         }
+
+        virtual ~ClickEvent() = default;
     };
 } // namespace Component
 

@@ -9,8 +9,8 @@
 
 using namespace Engine;
 
-SceneManager::SceneManager(EntityManager &entityManager)
-    : _entityManager(entityManager), _currentScene(nullptr)
+SceneManager::SceneManager()
+    : _currentScene(nullptr)
 {
 }
 

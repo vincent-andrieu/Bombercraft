@@ -17,7 +17,7 @@ namespace Engine
 {
     class SceneManager {
         public:
-            SceneManager(EntityManager &entityManager);
+            SceneManager();
             ~SceneManager();
 
         void run();
@@ -34,7 +34,6 @@ namespace Engine
         std::shared_ptr<AbstractScene> getCurrentScene();
 
         private:
-            EntityManager &_entityManager;
             std::shared_ptr<AbstractScene> _currentScene;
             std::vector<std::shared_ptr<AbstractScene>> _scenes;
             std::vector<std::reference_wrapper<const std::type_info>> _types;
