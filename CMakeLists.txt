@@ -30,6 +30,10 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
+        # GUI/FACTORIES
+        src/GUI/Factories/Checkbox/CheckboxFactory.cpp
+        src/GUI/Factories/Countdown/CountdownFactory.cpp
+        src/GUI/Factories/Countdown/TimeText.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -51,10 +55,8 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        # GUI
-        src/GUI/Factories/Countdown/CountdownFactory.cpp
-        src/GUI/Factories/Countdown/TimeText.cpp
 )
+
 add_executable(${NAME} ${SRCS})
 
 if (MSVC)
@@ -64,9 +66,9 @@ else ()
 endif ()
 
 set_target_properties(${NAME}
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
-)
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        )
 
 ## GAME-ENGINE
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/gameEngine/)

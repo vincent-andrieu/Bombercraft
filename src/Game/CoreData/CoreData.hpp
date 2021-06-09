@@ -13,6 +13,9 @@
 
 #include "ConfigFile/ConfigFile.hpp"
 
+#define CONFIG_FILE "bomberman.config"
+#define UNUSED      [[maybe_unused]]
+
 namespace Game
 {
     class CoreData {
@@ -31,7 +34,7 @@ namespace Game
         static std::shared_ptr<Engine::SystemManager> _systemManager;
         static std::unique_ptr<raylib::Window> _window;
     };
-}
+} // namespace Game
 
 #define CONF_GET_COLOR(label) static_cast<raylib::RColor>(CoreData::settings->getInt(label))
 
