@@ -9,6 +9,7 @@
 #define ENTITYMANAGER_HPP
 
 #include <array>
+#include <algorithm>
 #include <memory>
 #include "entity.hpp"
 #include "IComponentTypeRegister.hpp"
@@ -51,6 +52,9 @@ namespace Engine
 
         void save(const std::string &saveName);
         void load(const std::string &saveName);
+
+        template <typename T, class Function>
+        void foreachComponent(Function fn);
 
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
@@ -149,6 +153,15 @@ namespace Engine
     template <typename T> ComponentTypeRegister<T> *EntityManager::getComponentContainer() const
     {
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
+    }
+
+    template <typename T, class Function>
+    void EntityManager::foreachComponent(Function fn)
+    {
+        this->checkComponentType<T>();
+        std::vector<T> &components = this->getComponentContainer<T>()->getComponents();
+
+        std::for_each(components.begin(), components.end(), fn);
     }
 } // namespace Engine
 

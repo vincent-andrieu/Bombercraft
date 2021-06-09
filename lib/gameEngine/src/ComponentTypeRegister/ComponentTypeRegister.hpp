@@ -35,6 +35,8 @@ namespace Engine
         void save(Engine::SaveManager &saver) const override;
         void load(Engine::SaveManager &saver) override;
 
+        std::vector<T> &getComponents();
+
       private:
         std::vector<T> _components;
         std::vector<Entity> _componentOwners;
@@ -236,6 +238,11 @@ namespace Engine
     template <typename T> void ComponentTypeRegister<T>::loadEntityComponents(Engine::SaveManager &saver, Entity owner)
     {
         _components.at(_ownersIndex.at(owner)).load(saver);
+    }
+
+    template <typename T> std::vector<T> &ComponentTypeRegister<T>::getComponents()
+    {
+        return _components;
     }
 
 } // namespace Engine
