@@ -83,9 +83,8 @@ void Block::blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size)
 
 void Block::handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity)
 {
-    (void) entityManager;
     (void) sceneManager;
-    (void) entity;
+    entityManager.removeEntity(entity);
 }
 
 void Block::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -97,5 +96,5 @@ void Block::handlerCollision(const Engine::Entity &fromEntity, const Engine::Ent
 void Block::handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     (void) fromEntity;
-    (void) toEntity;
+    Game::CoreData::entityManager->removeEntity(toEntity);
 }
