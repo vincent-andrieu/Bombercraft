@@ -29,12 +29,12 @@ set(SRCS
     src/AbstractSystem/AbstractSystem.cpp
     src/Systems/PhysicsSystem/PhysicsSystem.cpp
     src/Systems/TimerSystem/TimerSystem.cpp
-    src/Systems/
-    # Entities
+    # Factories
     src/EntityContainer/EntityRegister.cpp
     src/EntityManager/EntityManager.cpp
     # Components
     src/Component/Component.cpp
+    src/components/Timer.cpp
     # Other
     src/EntityPack/EntityPack.cpp
     # Save

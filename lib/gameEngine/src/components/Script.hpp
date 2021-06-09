@@ -16,26 +16,25 @@
 
 namespace Engine
 {
-    using scriptHandler = std::function<void(Engine::EntityManager, Engine::SceneManager, const Engine::Entity)>;
+    using scriptHandler = std::function<void(Engine::EntityManager&, Engine::SceneManager&, const Engine::Entity)>;
 
     class Script : public Component<Script> {
       public:
         Script(EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
-            : handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
-        {
-        }
+            : _handler(handler), _entityManager(entityManager), _sceneManager(sceneManager)
+        {}
 
-        ~Script() = default;
+        virtual ~Script() = default;
 
         void trigger(const Entity entity)
         {
-            handler(_entityManager, _sceneManager, entity);
+            _handler(_entityManager.get(), _sceneManager.get(), entity);
         }
 
       private:
-        scriptHandler &handler;
-        EntityManager &_entityManager;
-        SceneManager &_sceneManager;
+        scriptHandler _handler;
+        std::reference_wrapper<EntityManager> _entityManager;
+        std::reference_wrapper<SceneManager> _sceneManager;
     };
 } // namespace Engine
 

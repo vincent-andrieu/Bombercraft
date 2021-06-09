@@ -18,6 +18,8 @@ namespace Component {
             : AbstractEvent(handler, requirements)
         {}
 
+        virtual ~KeyEvent() = default;
+
     };
 }
 

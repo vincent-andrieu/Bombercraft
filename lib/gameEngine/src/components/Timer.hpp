@@ -10,72 +10,29 @@
 
 #include "Component/Component.hpp"
 #include "Script.hpp"
-#include <chrono>
+#include <ctime>
 
 namespace Engine
 {
+    #define NOW ((static_cast<double>(clock()) / CLOCKS_PER_SEC) * 10.0f)
+
     class Timer : public Component<Timer> {
       public:
-        Timer(std::size_t time, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler &handler)
-            : interval(time), startTime(std::chrono::system_clock::now()), script(entityManager, sceneManager, handler)
-        {
-        }
-        ~Timer() = default;
+        Timer(double seconds, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler handler);
+        virtual ~Timer() = default;
 
-        void start()
-        {
-            startTime = std::chrono::system_clock::now();
-        }
+        void start();
 
-        bool eval(Entity entity)
-        {
-            std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-            std::chrono::milliseconds t =
-                std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - startTime.time_since_epoch());
+        bool eval(Entity entity);
 
-            if (t >= interval) {
-                startTime = std::chrono::system_clock::now();
-                script.trigger(entity);
-                return true;
-            }
-            return false;
-        }
+        [[nodiscard]] double getDelta() const;
 
-        bool save(SaveManager &saver) const override
-        {
-            if (!Component::save(saver))
-                return false;
-            try {
-                saver.createFile(COMP_SAVE_FILE);
-                saver.setWritingFile(COMP_SAVE_FILE);
-                saver.writeActFile(interval);
-                saver.writeActFile(startTime);
-                //                saver.writeActFile(script); // TODO handle script ?
-                saver.closeWritingFile();
-            } catch (const std::filesystem::filesystem_error &my_e) {
-                SaveManager::printException(my_e);
-                return false;
-            }
-            return true;
-        }
-        bool load(SaveManager &saver) override
-        {
-            if (!Component::load(saver))
-                return false;
-            try {
-                saver.setReadingFile(COMP_SAVE_FILE);
-                saver.readActFile(interval);
-                saver.readActFile(startTime);
-                //                saver.writeActFile(script); // TODO handle script ?
-                saver.closeReadingFile();
-            } catch (const std::filesystem::filesystem_error &my_e) {
-                SaveManager::printException(my_e);
-                return false;
-            }
-            return true;
-        }
-        std::chrono::milliseconds interval;
-        std::chrono::system_clock::time_point startTime;
+        bool save(SaveManager &saver) const override;
+        bool load(SaveManager &saver) override;
+
+        double interval;    // in seconds
+      protected:
+        double startTime;   // in seconds
         Script script;
     };
 } // namespace Engine
