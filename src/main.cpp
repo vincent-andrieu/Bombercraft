@@ -26,9 +26,10 @@ int main(void)
     } catch (std::exception const &e) {
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
-    } catch(...) {
-        std::cerr << "Warning: Catch unknown exceptions" << std::endl;
+    } catch (...) {
+        std::cerr << "Warning: Caught unknown exceptions" << std::endl;
         return EXIT_FAILURE;
     }
+
     return EXIT_SUCCESS;
 }

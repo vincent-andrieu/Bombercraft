@@ -15,12 +15,12 @@ namespace GUI
 {
     void standardButtonHandler(const Engine::Entity entity) // TODO make one handler for click and one for move
     {
-        //        Component::SingleRender2D
-        //        my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
-        std::cout << "lol" << std::endl;
-        //        my_render2D.setActRender2D("hover");
+        Component::SingleRender2D my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
+        //        my_render2D.setActRender2D("hover"); // TODO change depending on mouse position and activate script if clicked
     }
 } // namespace GUI
+
+static const Component::eventScript getStandardButtonHandler = standardButtonHandler;
 
 ButtonConfig ButtonFactory::getStandardButtonConfig()
 {
@@ -38,6 +38,8 @@ ButtonConfig ButtonFactory::getStandardButtonConfig()
     return my_standard;
 }
 
+static const std::shared_ptr<raylib::Font> my_font(std::make_shared<raylib::Font>("conf.fontPath"));
+
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     const string &label,
@@ -51,9 +53,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
             {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, conf.size, my_position)},
             {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, conf.size, my_position)},
             {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, conf.size, my_position)}});
-    Component::render2dMapModels my_textModel({{"text",
-        std::make_shared<raylib::Text>(
-            text, my_position, conf.fontSize, conf.fontColor, std::make_shared<raylib::Font>(conf.fontPath))}});
+    Component::render2dMapModels my_textModel(
+        {{"text", std::make_shared<raylib::Text>(text, my_position, conf.fontSize, conf.fontColor, my_font)}});
     Component::eventScript my_clickHandler(conf.clickHandler);
     Component::eventScript my_moveHandler(conf.moveHandler);
 

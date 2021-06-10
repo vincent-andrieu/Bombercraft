@@ -43,6 +43,11 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->setScene<DebugScene>();
 }
 
+Core::~Core()
+{
+    CoreData::_window->close();
+}
+
 void Core::loop()
 {
     while (CoreData::_window->isOpen()) {
@@ -50,5 +55,4 @@ void Core::loop()
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
     }
-    CoreData::_window->close();
 }
