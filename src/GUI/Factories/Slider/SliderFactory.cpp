@@ -24,16 +24,19 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
     auto background = std::make_shared<raylib::Rectangle>(
         position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
     auto selector = std::make_shared<raylib::Rectangle>(
-        MyVector2(position.a + SliderFactory::_getRangeValue(minValue, maxValue, defaultValue), position.b), selectorSize,
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
+        MyVector2(
+            SliderFactory::_getRangeValue(position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a), position.b),
+        selectorSize, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
 
     Component::eventScript clickHandler = [selector, position, size, selectorSize, minValue, maxValue, defaultValue,
                                               sliderHandler](const Engine::Entity entity) {
         if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
             static sliderValue value = defaultValue;
             const MyVector2 &mousePos = CoreData::eventManager->getMousePos();
+            const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(position, mousePos.a, size.a, selectorSize);
 
-            selector->setPosition(MyVector2(mousePos.a + (selectorSize.a / 2), position.b));
+            value = SliderFactory::_getValueFromRange(mousePos.a - position.a, maxValue, size);
+            selector->setPosition(sliderPos);
             sliderHandler(entity, value);
         }
     };
@@ -43,9 +46,36 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
     CoreData::entityManager->addComponent<Component::ClickEvent>(entity, clickHandler, SliderFactory::_clickHandlerRequirements);
 }
 
-float SliderFactory::_getRangeValue(sliderValue minValue, sliderValue maxValue, sliderValue value, MyVector2 size)
+float SliderFactory::_getRangeValue(const float &origin, const sliderValue &minValue, const sliderValue &maxValue,
+    const sliderValue &value, const float &size, const float &selectorSize)
 {
     if (value < minValue || value > maxValue)
         throw std::out_of_range("slider value is over limits");
-    return ((size.a * value) / maxValue) + minValue;
+    float pos = origin + ((size * value) / maxValue) + minValue - (selectorSize / 2);
+
+    if (pos < origin)
+        pos = origin;
+    if (pos + selectorSize > origin + size)
+        pos = origin + size - selectorSize;
+    return pos;
+}
+
+sliderValue SliderFactory::_getValueFromRange(const float &position, const sliderValue &maxValue, const MyVector2 &size)
+{
+    if (position < 0 || position > size.a)
+        throw std::out_of_range("slider position is over limits");
+    std::cout << "position: " << position << ", maxValue: " << maxValue << ", size.a: " << size.a << std::endl;
+    return (position * maxValue) / size.a;
+}
+
+const MyVector2 SliderFactory::_getSliderMousePos(
+    const MyVector2 &position, const float &mousePos, const float &size, const MyVector2 &selectorSize)
+{
+    MyVector2 sliderPos(mousePos - (selectorSize.a / 2), position.b);
+
+    if (sliderPos.a < position.a)
+        sliderPos.a = position.a;
+    if (sliderPos.a + selectorSize.a > position.a + size)
+        sliderPos.a = position.a + size - selectorSize.a;
+    return sliderPos;
 }
