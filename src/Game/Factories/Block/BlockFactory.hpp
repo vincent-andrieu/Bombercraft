@@ -53,6 +53,7 @@ namespace GUI
             static void wallPassBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
 
             // HANDLER
+            static void handlerBombTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
             static void handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
             static void handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
             static void handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
@@ -60,6 +61,9 @@ namespace GUI
             static void handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
             static void handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
             static void handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
+
+            // TOOLS
+            static void blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack);
 
         private:
             static std::unordered_map<BlockFactory::BlockType, std::function<void(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)>> _factory;

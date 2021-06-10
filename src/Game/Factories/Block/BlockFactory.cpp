@@ -26,7 +26,7 @@ void BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = BlockFactory::getModel(position, type);
-    const Engine::Entity &entity = entityPack.createEntity(name);
+    const Engine::Entity &entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
@@ -81,7 +81,12 @@ void BlockFactory::hardFactory(const Engine::Entity &entity, const raylib::MyVec
 
 void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
+    int bombCountdown = Game::CoreData::settings->getInt("BOMB_COUNTDOWN");
+
+    if (bombCountdown < 0)
+        bombCountdown = 0;
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBombTimer);
 }
 
 void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -90,8 +95,8 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
 
     if (blastTime < 0)
         blastTime = 0;
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity);
 }
 
 void BlockFactory::boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -158,4 +163,18 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
 {
     Game::CoreData::entityManager->removeEntity(fromEntity);
     (void) toEntity; // TODO give bonus to this entity if player
+}
+
+void BlockFactory::handlerBombTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+{
+    Engine::Position &pos = entityManager.getComponent<Engine::Position>(entity);
+
+    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities);
+    Game::CoreData::entityManager->removeEntity(entity);
+}
+
+void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack)
+{
+    // TODO ADD ALL mecanique
+    GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
 }
