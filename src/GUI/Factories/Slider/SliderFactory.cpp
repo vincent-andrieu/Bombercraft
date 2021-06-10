@@ -15,7 +15,7 @@ using namespace Game;
 const EventRequirement SliderFactory::_clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
 
 void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &position, sliderHandler sliderHandler,
-    const string &label, sliderValue minValue, sliderValue maxValue, sliderValue defaultValue)
+    const string &label, const raylib::MyVector2 &labelPos, sliderValue minValue, sliderValue maxValue, sliderValue defaultValue)
 {
     const auto entity = entityPack.createAnonymousEntity();
     const MyVector2 &size = CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE);
@@ -29,7 +29,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
         selectorSize, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
     auto displayLabel =
         std::make_shared<raylib::Text>(label + toString(defaultValue), CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
-            position + (size / 2), static_cast<size_t>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE)),
+            position + labelPos, CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
             static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
 
     Component::eventScript clickHandler = [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue,

@@ -30,7 +30,8 @@ namespace GUI
         ~SliderFactory() = delete;
 
         static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 &position, sliderHandler clickHandler,
-            const string &label = "", sliderValue minValue = 0, sliderValue maxValue = 100, sliderValue defaultValue = 0);
+            const string &label = "", const raylib::MyVector2 &labelPos = raylib::MyVector2(0, 0), sliderValue minValue = 0,
+            sliderValue maxValue = 100, sliderValue defaultValue = 0);
 
       private:
         static const Game::EventRequirement _clickHandlerRequirements;
