@@ -27,10 +27,10 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
         MyVector2(
             SliderFactory::_getRangeValue(position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a), position.b),
         selectorSize, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
-    auto displayLabel = std::make_shared<raylib::Text>(string(label, defaultValue), position + (size / 2),
-        static_cast<size_t>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE)),
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)),
-        CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT));
+    auto displayLabel =
+        std::make_shared<raylib::Text>(label + toString(defaultValue), CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
+            position + (size / 2), static_cast<size_t>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE)),
+            static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
 
     Component::eventScript clickHandler = [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue,
                                               defaultValue, sliderHandler](const Engine::Entity entity) {
@@ -41,7 +41,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
 
             value = SliderFactory::_getValueFromRange(mousePos.a - position.a, maxValue, size);
             selector->setPosition(sliderPos);
-            displayLabel->setText(string(label, value));
+            displayLabel->setText(label + toString(value));
             sliderHandler(entity, value);
         }
     };
