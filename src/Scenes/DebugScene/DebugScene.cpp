@@ -95,7 +95,9 @@ void DebugScene::open()
     raylib::MyVector3 blockPos(-40, -50, 0);
     this->_entityManager.addComponent<Component::Render3D>(
         block, std::make_shared<raylib::Cuboid>(nullptr, blockPos, raylib::MyVector3(10, 10, 10), raylib::RColor::RRED));
-    this->_entityManager.addComponent<Component::Hitbox>(block, blockPos, raylib::MyVector3(10, 10, 10),
+    this->_entityManager.addComponent<Component::Hitbox>(block,
+        blockPos,
+        raylib::MyVector3(10, 10, 10),
         [](const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
             auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
 
@@ -108,7 +110,9 @@ void DebugScene::open()
         std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(10, 10, 10), raylib::RColor::RMAGENTA));
     this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
     this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 1.0f, 0.0f);
-    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, raylib::MyVector3(10, 10, 10),
+    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity,
+        moveableEntityPos,
+        raylib::MyVector3(10, 10, 10),
         [](UNUSED const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
         });
     // Events
@@ -118,8 +122,11 @@ void DebugScene::open()
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
-    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(200, 200), raylib::MyVector2(50, 50),
-        "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::ImageFactory::create(this->localEntities,
+        raylib::MyVector2(200, 200),
+        raylib::MyVector2(50, 50),
+        "Asset/Interface/PowerUpBox.png",
+        "testImage");
     GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
     GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
     GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
@@ -128,11 +135,17 @@ void DebugScene::open()
     GUI::BlockFactory::create(
         this->localEntities, raylib::MyVector3(0, 0, 0), GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
     GUI::SliderFactory::create(
-        this->localEntities, raylib::MyVector2(500, 160),
+        this->localEntities,
+        raylib::MyVector2(500, 160),
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
-        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+        "Value: ",
+        raylib::MyVector2(60, 10),
+        0,
+        100,
+        60);
+    GUI::ButtonFactory::create(localEntities, {20, 20}, "my_label", GUI::ButtonFactory::getStandardButtonConfig(), "button_text");
 }
 
 void DebugScene::update()
@@ -140,24 +153,19 @@ void DebugScene::update()
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
         auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
-        auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
+        //        auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
         auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
 
         float dt = 1.0f / 10.0f;
-        physics.update(dt);
+        //        physics.update(dt);
         render3D.update();
-        render2D.update();
         singleRender2D.update();
+        render2D.update();
         hitbox.update();
         timer.update();
         this->eventDispatcher(this->_systemManager);
-        // METHOD FOR GETTING VALUE OF PROMPT
-        // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
-        // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
-        //METHOD FOR GETTING VALUE OF KEYINPUT
-        //std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY

@@ -27,7 +27,7 @@ ButtonConfig ButtonFactory::getStandardButtonConfig()
     return my_standard;
 }
 
-static const std::shared_ptr<raylib::Font> my_font(std::make_shared<raylib::Font>("conf.fontPath"));
+// static const std::shared_ptr<raylib::Font> my_font(std::make_shared<raylib::Font>("conf.fontPath"));
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
@@ -44,8 +44,12 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
             {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
             {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
             {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}});
-    Component::render2dMapModels my_textModel(
-        {{"text", std::make_shared<raylib::Text>(text, my_position, conf.fontSize, conf.fontColor, my_font)}});
+    Component::render2dMapModels my_textModel({{"text",
+        std::make_shared<raylib::Text>(text,
+            my_position,
+            conf.fontSize,
+            conf.fontColor,
+            std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath)))}});
     Component::eventScript my_moveHandler = [position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
 
@@ -67,6 +71,6 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     };
     Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
-    Game::CoreData::entityManager->addComponent<Component::SingleRender2D>(entity, my_textureModels);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_textModel);
+    Game::CoreData::entityManager->addComponent<Component::SingleRender2D>(entity, my_textureModels);
 }
