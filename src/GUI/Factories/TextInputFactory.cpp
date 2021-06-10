@@ -38,6 +38,16 @@ const Game::EventRequirement inputHandlerRequireement(0, false, {
     raylib::KeyBoard::IKEY_X,
     raylib::KeyBoard::IKEY_Y,
     raylib::KeyBoard::IKEY_Z,
+    raylib::KeyBoard::IKEY_ZERO,
+    raylib::KeyBoard::IKEY_ONE,
+    raylib::KeyBoard::IKEY_TWO,
+    raylib::KeyBoard::IKEY_THREE,
+    raylib::KeyBoard::IKEY_FOUR,
+    raylib::KeyBoard::IKEY_FIVE,
+    raylib::KeyBoard::IKEY_SIX,
+    raylib::KeyBoard::IKEY_SEVEN,
+    raylib::KeyBoard::IKEY_EIGHT,
+    raylib::KeyBoard::IKEY_NINE,
     raylib::KeyBoard::IKEY_BACKSPACE,
     raylib::KeyBoard::IKEY_SPACE
  }
@@ -70,6 +80,16 @@ const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_X, std::string("x")},
     {raylib::KeyBoard::IKEY_Y, std::string("y")},
     {raylib::KeyBoard::IKEY_Z, std::string("z")},
+    {raylib::KeyBoard::IKEY_ZERO, std::string("0")},
+    {raylib::KeyBoard::IKEY_ONE, std::string("1")},
+    {raylib::KeyBoard::IKEY_TWO, std::string("2")},
+    {raylib::KeyBoard::IKEY_THREE, std::string("3")},
+    {raylib::KeyBoard::IKEY_FOUR, std::string("4")},
+    {raylib::KeyBoard::IKEY_FIVE, std::string("5")},
+    {raylib::KeyBoard::IKEY_SIX, std::string("6")},
+    {raylib::KeyBoard::IKEY_SEVEN, std::string("7")},
+    {raylib::KeyBoard::IKEY_EIGHT, std::string("8")},
+    {raylib::KeyBoard::IKEY_NINE, std::string("9")},
     {raylib::KeyBoard::IKEY_SPACE, std::string(" ")},
 };
 
