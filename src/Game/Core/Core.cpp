@@ -50,5 +50,10 @@ void Core::loop()
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
     }
+}
+
+Core::~Core()
+{
+    CoreData::~CoreData();
     CoreData::_window->close();
 }
