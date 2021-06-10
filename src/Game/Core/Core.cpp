@@ -23,6 +23,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Component::KeyBox>();
+    //Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();

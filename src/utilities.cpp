@@ -16,3 +16,11 @@ std::string getPromptContent(Engine::EntityPack &pack, std::string inputName)
 
     return textContent->getText();
 }
+
+raylib::KeyBoard getKeyInputContent(Engine::EntityPack &pack, std::string keyInputName)
+{
+    auto keyInput = pack.getEntity(keyInputName);
+
+    Component::KeyBox &keyBox = Game::CoreData::entityManager->getComponent<Component::KeyBox>(keyInput);
+    return keyBox.key;
+}

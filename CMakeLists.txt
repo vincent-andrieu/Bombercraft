@@ -35,6 +35,7 @@ set(SRCS
         src/Game/Factories/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
         src/GUI/Factories/TextInput/TextInputFactory.cpp
+        src/GUI/Factories/KeyInput/KeyInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp

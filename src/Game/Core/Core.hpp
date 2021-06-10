@@ -21,6 +21,7 @@
 
 #include "Scenes/DebugScene/DebugScene.hpp"
 
+#include "Components/KeyBox.hpp"
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
 #include "Components/FocusEvent/ClickFocusEvent.hpp"

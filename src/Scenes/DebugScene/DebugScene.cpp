@@ -13,6 +13,7 @@
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Label/LabelFactory.hpp"
 #include "GUI/Factories/TextInput/TextInputFactory.hpp"
+#include "GUI/Factories/KeyInput/KeyInputFactory.hpp"
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Slider/SliderFactory.hpp"
 #include "Components/FocusEvent/ClickFocusEvent.hpp"
@@ -81,6 +82,7 @@ void DebugScene::open()
         .fontSize = 16, .fontColor = raylib::RColor::RWHITE, .fontPath = "./Asset/Font/MinecraftRegular.ttf"};
     GUI::TextInputDynConf input1 = {.position = raylib::MyVector2(300, 75), .name = "input1", "player name"};
     GUI::TextInputDynConf input2 = {.position = raylib::MyVector2(500, 75), .name = "input2", "save name"};
+    GUI::KeyInputDynConf keyInput1 = {.position = raylib::MyVector2(300, 175), .name = "keyinput1"};
 
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
@@ -121,6 +123,7 @@ void DebugScene::open()
     GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
     GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
     GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
+    GUI::KeyInputFactory::create(this->localEntities, keyInput1, labelTextInput);
     std::cout << "---- BLOCK\n";
     GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
     GUI::SliderFactory::create(
@@ -150,6 +153,8 @@ void DebugScene::update()
         // METHOD FOR GETTING VALUE OF PROMPT
         // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
         // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
+        //METHOD FOR GETTING VALUE OF KEYINPUT
+        //std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY
