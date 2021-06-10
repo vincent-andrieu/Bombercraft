@@ -8,7 +8,7 @@
 #ifndef UTILITIES_HPP_
 #define UTILITIES_HPP_
 
-#include "GUI/Factories/LabelFactory.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
 std::string getPromptContent(Engine::EntityPack &pack, std::string inputName);

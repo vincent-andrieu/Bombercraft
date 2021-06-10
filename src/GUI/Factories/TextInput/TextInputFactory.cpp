@@ -11,47 +11,37 @@ using namespace GUI;
 
 const Game::EventRequirement clickFocusRequirement(Game::evtMouse::RIGHT | Game::evtMouse::LEFT);
 
-const Game::EventRequirement inputHandlerRequireement(0, false, {
-    raylib::KeyBoard::IKEY_A,
-    raylib::KeyBoard::IKEY_B,
-    raylib::KeyBoard::IKEY_C,
-    raylib::KeyBoard::IKEY_D,
-    raylib::KeyBoard::IKEY_E,
-    raylib::KeyBoard::IKEY_F,
-    raylib::KeyBoard::IKEY_G,
-    raylib::KeyBoard::IKEY_H,
-    raylib::KeyBoard::IKEY_I,
-    raylib::KeyBoard::IKEY_J,
-    raylib::KeyBoard::IKEY_K,
-    raylib::KeyBoard::IKEY_L,
-    raylib::KeyBoard::IKEY_M,
-    raylib::KeyBoard::IKEY_N,
-    raylib::KeyBoard::IKEY_O,
-    raylib::KeyBoard::IKEY_P,
-    raylib::KeyBoard::IKEY_Q,
-    raylib::KeyBoard::IKEY_R,
-    raylib::KeyBoard::IKEY_S,
-    raylib::KeyBoard::IKEY_T,
-    raylib::KeyBoard::IKEY_U,
-    raylib::KeyBoard::IKEY_V,
-    raylib::KeyBoard::IKEY_W,
-    raylib::KeyBoard::IKEY_X,
-    raylib::KeyBoard::IKEY_Y,
-    raylib::KeyBoard::IKEY_Z,
-    raylib::KeyBoard::IKEY_ZERO,
-    raylib::KeyBoard::IKEY_ONE,
-    raylib::KeyBoard::IKEY_TWO,
-    raylib::KeyBoard::IKEY_THREE,
-    raylib::KeyBoard::IKEY_FOUR,
-    raylib::KeyBoard::IKEY_FIVE,
-    raylib::KeyBoard::IKEY_SIX,
-    raylib::KeyBoard::IKEY_SEVEN,
-    raylib::KeyBoard::IKEY_EIGHT,
-    raylib::KeyBoard::IKEY_NINE,
-    raylib::KeyBoard::IKEY_BACKSPACE,
-    raylib::KeyBoard::IKEY_SPACE
- }
- );
+const Game::EventRequirement inputHandlerRequireement(0, false,
+    {
+        raylib::KeyBoard::IKEY_A,
+        raylib::KeyBoard::IKEY_B,
+        raylib::KeyBoard::IKEY_C,
+        raylib::KeyBoard::IKEY_D,
+        raylib::KeyBoard::IKEY_E,
+        raylib::KeyBoard::IKEY_F,
+        raylib::KeyBoard::IKEY_G,
+        raylib::KeyBoard::IKEY_H,
+        raylib::KeyBoard::IKEY_I,
+        raylib::KeyBoard::IKEY_J,
+        raylib::KeyBoard::IKEY_K,
+        raylib::KeyBoard::IKEY_L,
+        raylib::KeyBoard::IKEY_M,
+        raylib::KeyBoard::IKEY_N,
+        raylib::KeyBoard::IKEY_O,
+        raylib::KeyBoard::IKEY_P,
+        raylib::KeyBoard::IKEY_Q,
+        raylib::KeyBoard::IKEY_R,
+        raylib::KeyBoard::IKEY_S,
+        raylib::KeyBoard::IKEY_T,
+        raylib::KeyBoard::IKEY_U,
+        raylib::KeyBoard::IKEY_V,
+        raylib::KeyBoard::IKEY_W,
+        raylib::KeyBoard::IKEY_X,
+        raylib::KeyBoard::IKEY_Y,
+        raylib::KeyBoard::IKEY_Z,
+        raylib::KeyBoard::IKEY_BACKSPACE,
+        raylib::KeyBoard::IKEY_SPACE,
+    });
 
 const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_A, std::string("a")},
@@ -100,7 +90,7 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
     raylib::Text *textActual = dynamic_cast<raylib::Text *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
-    for (auto const& x : _letterMap) {
+    for (auto const &x : _letterMap) {
         if (focusState && Game::CoreData::eventManager->isKeyPressed(x.first)) {
             stringActual = textActual->getText();
             if (stringActual.length() < maxChar) {
@@ -119,19 +109,19 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
 };
 
 static Component::eventScript focusHandler = [](const Engine::Entity entityChild) {
-
     raylib::Rectangle *rectActual = dynamic_cast<raylib::Rectangle *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(entityChild).get("rectangle").get());
 
     if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
-        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent){
+        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
             focusEvent.changeFocus(false);
         });
         Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(entityChild).changeFocus(true);
     }
 };
 
-void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput, LabelConfig const &label)
+void TextInputFactory::create(
+    Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput, LabelConfig const &label)
 {
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + textInput.textPositionOffset;
@@ -140,10 +130,11 @@ void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
-            {"text", std::make_shared<raylib::Text>(dynConf.placeholder, textPos, label.fontSize, label.fontColor, label.fontPath)},
+            {"text",
+                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)},
             {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, textInput.color)},
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, textInput.size, textInput.borderColor)},
-    }));
+        }));
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequireement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
@@ -158,8 +149,11 @@ void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &
 
 TextInputConfig TextInputFactory::getStandardConfig()
 {
-    const TextInputConfig t = { .size = raylib::MyVector2(152, 27), .color = raylib::RColor::RBLACK,
-                                .borderSize = 2, .borderColor = raylib::RColor::RGRAY, .maxChar = 16,
-                                .textPositionOffset = raylib::MyVector2(5, 5)};
+    const TextInputConfig t = {.size = raylib::MyVector2(152, 27),
+        .color = raylib::RColor::RBLACK,
+        .borderSize = 2,
+        .borderColor = raylib::RColor::RGRAY,
+        .maxChar = 16,
+        .textPositionOffset = raylib::MyVector2(5, 5)};
     return t;
 }

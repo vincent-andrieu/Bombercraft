@@ -19,7 +19,7 @@
 #include "Components/TextInputConfig/TextInputConfig.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
-#include "GUI/Factories/LabelFactory.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
 #include "GameEngine.hpp"
 
 namespace GUI
@@ -40,14 +40,16 @@ namespace GUI
     };
 
     class TextInputFactory {
-        public:
-            ~TextInputFactory() = delete;
+      public:
+        ~TextInputFactory() = delete;
 
-            static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput, LabelConfig const &label);
-            static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label);
-            static TextInputConfig getStandardConfig();
-        protected:
-        private:
+        static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput,
+            LabelConfig const &label);
+        static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label);
+        static TextInputConfig getStandardConfig();
+
+      protected:
+      private:
     };
 } // namespace GUI
 

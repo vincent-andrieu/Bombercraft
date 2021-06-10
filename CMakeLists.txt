@@ -33,12 +33,13 @@ set(SRCS
         src/Game/Factories/Block/BlockFactory.cpp
         # GUI/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
-        src/GUI/Factories/LabelFactory.cpp
-        src/GUI/Factories/TextInputFactory.cpp
+        src/GUI/Factories/Label/LabelFactory.cpp
+        src/GUI/Factories/TextInput/TextInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Slider/SliderFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
