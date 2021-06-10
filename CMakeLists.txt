@@ -52,10 +52,14 @@ set(SRCS
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
+        src/Components/Sound/Sound.cpp
+        src/Components/Music/Music.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Sound/SoundSystem.cpp
+        src/Systems/Music/MusicSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
