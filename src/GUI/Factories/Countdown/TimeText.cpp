@@ -13,12 +13,12 @@ using namespace GUI;
 
 TimeText::TimeText(Engine::Entity owner, const std::string &text, const raylib::MyVector2 position, const std::size_t size,
     const raylib::RColor color, const std::string &fontPath)
-    : raylib::Text(text, position, size, color, fontPath),
+    : raylib::Text(text, fontPath, position, size, color),
       _timerComponent(Game::CoreData::entityManager->getComponent<Engine::Timer>(owner))
 {
 }
 
-void TimeText::setTime(double const& time)
+void TimeText::setTime(double const &time)
 {
     const std::size_t totalSeconds = static_cast<std::size_t>(time);
     const std::size_t minutes = (totalSeconds / 60);

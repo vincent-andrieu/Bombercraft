@@ -33,6 +33,11 @@ void raylib::Cuboid::setPosition(const MyVector3 position)
     this->_position = position;
 }
 
+const raylib::MyVector3 &raylib::Cuboid::getPosition() const
+{
+    return this->_position;
+}
+
 void raylib::Cuboid::setSize(const MyVector3 size)
 {
     this->_size = size;

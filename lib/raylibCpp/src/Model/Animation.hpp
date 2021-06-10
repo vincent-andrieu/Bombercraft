@@ -22,6 +22,7 @@ namespace raylib
         void draw();
 
         void setPosition(const MyVector3 position);
+        const MyVector3 &getPosition() const;
         void setRotation(const MyVector3 rotation);
         void setScale(const float scale);
         void setColor(const RColor color);

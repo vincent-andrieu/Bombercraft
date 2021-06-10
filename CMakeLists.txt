@@ -21,6 +21,7 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
+        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -29,17 +30,21 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
-        src/Game/Factories/ButtonFactory.cpp
         src/Game/Factories/Block/BlockFactory.cpp
         ## TMP
         src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
         src/Game/Factories/Map/Component/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
         # GUI/FACTORIES
+        src/Game/Factories/ButtonFactory.cpp
+        src/GUI/Factories/Label/LabelFactory.cpp
+        src/GUI/Factories/TextInput/TextInputFactory.cpp
+        src/GUI/Factories/KeyInput/KeyInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Slider/SliderFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -50,10 +55,12 @@ set(SRCS
         src/Components/Hitbox/Hitbox.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
+        src/Components/TextInputConfig/TextInputConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Physics/PhysicsSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp

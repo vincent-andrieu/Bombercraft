@@ -11,16 +11,18 @@
 #include "../Texture/ITexture.hpp"
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
+#include "I3DObject.hpp"
 
 namespace raylib
 {
-    class ISolid : public IRenderable {
+    class ISolid : public I3DObject {
       public:
         virtual ~ISolid() = default;
 
         virtual void draw() = 0;
 
         virtual void setPosition(const MyVector3 position) = 0;
+        virtual const MyVector3 &getPosition() const = 0;
         virtual void setSize(const MyVector3 size) = 0;
         virtual void setColor(const RColor color) = 0;
         virtual void setTexture(const std::shared_ptr<ITexture> &texture) = 0;

@@ -20,6 +20,7 @@ namespace raylib
         ObjectBox(const MyVector3 origin, const MyVector3 size);
         ~ObjectBox();
         void setSphere(const MyVector3 origin, const MyVector3 size);
+        void setOrigin(const MyVector3 origin);
         MyVector3 getBoxOrigin() const;
         MyVector3 getBoxSize() const;
         bool checkCollisionWith(const ObjectBox &box);

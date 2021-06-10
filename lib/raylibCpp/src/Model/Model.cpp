@@ -62,6 +62,11 @@ void raylib::Model::setPosition(const MyVector3 position)
     this->_position = position;
 }
 
+const raylib::MyVector3 &raylib::Model::getPosition() const
+{
+    return this->_position;
+}
+
 void raylib::Model::setRotation(const MyVector3 rotation)
 {
     float pitch = rotation.a;
