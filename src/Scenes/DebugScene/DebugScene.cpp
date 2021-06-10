@@ -10,6 +10,7 @@
 #include "Components/Hitbox/Hitbox.hpp"
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
+#include "GUI/Factories/Image/ImageFactory.hpp"
 
 using namespace Game;
 
@@ -21,8 +22,8 @@ static Component::eventScript clickHandler = [](const Engine::Entity) {
     // CoreData::eventManager
     std::cout << "Clicked!!!" << std::endl;
 };
-static Component::eventScript checkboxHandler = [](const Engine::Entity) {
-    std::cout << "Checkbox!!!" << std::endl;
+static GUI::checkboxHandler checkboxHandler = [](UNUSED Engine::Entity, bool &value) {
+    std::cout << "Checkbox: " << std::boolalpha << value << std::endl;
 };
 
 static const EventRequirement keyHandlerRequirements(0, false, {raylib::KeyBoard::IKEY_S}, {});
@@ -84,6 +85,7 @@ void DebugScene::open()
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
+    GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
 }
 
 void DebugScene::update()

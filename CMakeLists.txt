@@ -34,6 +34,7 @@ set(SRCS
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
+        src/GUI/Factories/Image/ImageFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -43,6 +44,7 @@ set(SRCS
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
         src/Components/Chrono/Chrono.cpp
+        src/Components/FocusEvent/ClickFocusEvent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
