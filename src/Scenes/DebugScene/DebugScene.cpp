@@ -11,6 +11,7 @@
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/Image/ImageFactory.hpp"
+#include "GUI/Factories/Slider/SliderFactory.hpp"
 
 using namespace Game;
 
@@ -53,9 +54,8 @@ void DebugScene::open()
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
     this->_entityManager.addComponent<Component::Render2D>(rect,
-           Component::render2dMapModels{
-            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}
-    });
+        Component::render2dMapModels{
+            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}});
     // ------------
     auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);
@@ -72,7 +72,7 @@ void DebugScene::open()
     auto moveableEntity = this->localEntities.createEntity("movableEntity");
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
-       std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
+        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
     this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
     this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20.0f, 0.0f);
     this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, raylib::MyVector3(50, 50, 50),
@@ -84,8 +84,15 @@ void DebugScene::open()
 
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
-    GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
-    GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "test");
+    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(200, 200), raylib::MyVector2(50, 50),
+        "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::SliderFactory::create(
+        this->localEntities, raylib::MyVector2(400, 80),
+        [](const Engine::Entity entity, GUI::sliderValue &value) {
+            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
+        },
+        0, 100, 60);
 }
 
 void DebugScene::update()
