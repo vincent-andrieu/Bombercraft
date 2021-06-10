@@ -22,15 +22,16 @@ std::unordered_map<BlockFactory::BlockType, std::function<void(const Engine::Ent
     {BlockType::BLOCK_BONUS_WALLPASS, BlockFactory::wallPassBonusFactory},
 };
 
-void BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name)
+Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = BlockFactory::getModel(position, type);
-    const Engine::Entity &entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
+    Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
     BlockFactory::internalFactory(entity, type, position, size);
+    return entity;
 }
 
 std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &pos, BlockType type)

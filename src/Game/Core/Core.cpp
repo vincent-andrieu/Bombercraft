@@ -8,6 +8,7 @@
 #include "Core.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
+#include "Game/Factories/Map/Component/Matrix2D.hpp"
 
 using namespace Game;
 
@@ -15,6 +16,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 {
     CoreData::_window->open();
     /// COMPONENTS - DEFINITION
+    CoreData::entityManager->registerComponent<Component::Matrix2D>();
     CoreData::entityManager->registerComponent<Component::Render2D>();
     CoreData::entityManager->registerComponent<Component::Render3D>();
     CoreData::entityManager->registerComponent<Component::ClickEvent>();

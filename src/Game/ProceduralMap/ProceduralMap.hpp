@@ -26,6 +26,7 @@ namespace GameModule
             unsigned int getSeed();
             void setSeed(unsigned int seed);
             void setModelSettings(std::unordered_map<TileType, unsigned char> linkList);
+            std::pair<size_t, size_t> getSize() const;
 
         private:
             void modelApply();

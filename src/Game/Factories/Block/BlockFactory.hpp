@@ -34,7 +34,7 @@ namespace GUI
         public:
             BlockFactory() = delete;
             ~BlockFactory() = delete;
-            static void create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name = "");
+            static Engine::Entity create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name = "");
 
         private:
             static std::shared_ptr<raylib::Model> getModel(const raylib::MyVector3 &pos, BlockType type);

@@ -31,6 +31,10 @@ set(SRCS
         ## GAME/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
         src/Game/Factories/Block/BlockFactory.cpp
+        ## TMP
+        src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
+        src/Game/Factories/Map/Component/Matrix2D.cpp
+        src/Game/Factories/Map/MapFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp

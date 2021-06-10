@@ -192,3 +192,13 @@ void ProceduralMap::clearMap()
         map_it_y++;
     }
 }
+
+std::pair<size_t, size_t> ProceduralMap::getSize() const
+{
+    size_t size_x = 0;
+    size_t size_y = this->_mapProcedural.size();
+
+    for (size_t y = 0; y < size_y; y++)
+        size_x = std::max(size_x, this->_mapProcedural[y].size());
+    return {size_x, size_y};
+}
