@@ -11,6 +11,12 @@
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/Image/ImageFactory.hpp"
+#include "GUI/Factories/LabelFactory.hpp"
+#include "GUI/Factories/TextInputFactory.hpp"
+#include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
+#include "Components/FocusEvent/ClickFocusEvent.hpp"
+#include "GUI/Factories/Countdown/CountdownFactory.hpp"
+#include "utilities.hpp"
 
 using namespace Game;
 
@@ -61,6 +67,15 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
 void DebugScene::open()
 {
     std::cout << "----OPEN\n";
+    const raylib::MyVector2 position(10, 70);
+    GUI::LabelConfig config = { .fontSize = 24, .fontColor = raylib::RColor::RBLUE, .fontPath = "./Asset/Font/MinecraftItalic.ttf"};
+    GUI::TextInputConfig TextInputConfig = { .size = raylib::MyVector2(152, 27), .color = raylib::RColor::RBLACK,
+                                            .borderSize = 2, .borderColor = raylib::RColor::RGRAY, .maxChar = 16,
+                                            .textPositionOffset = raylib::MyVector2(5, 5)};
+    GUI::LabelConfig labelTextInput = { .fontSize = 16, .fontColor = raylib::RColor::RWHITE, .fontPath = "./Asset/Font/MinecraftRegular.ttf"};
+    GUI::TextInputDynConf input1 = { .position = raylib::MyVector2(300, 75), .name = "input1", "player name"};
+    GUI::TextInputDynConf input2 = { .position = raylib::MyVector2(500, 75), .name = "input2", "save name"};
+
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
     this->_entityManager.addComponent<Component::Render2D>(rect,
@@ -97,8 +112,12 @@ void DebugScene::open()
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "chrono");
     GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
+    GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
+    GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
     std::cout << "---- BLOCK\n";
     GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
+
 }
 
 void DebugScene::update()
@@ -117,6 +136,9 @@ void DebugScene::update()
         hitbox.update();
         timer.update();
         this->eventDispatcher(this->_systemManager);
+        //METHOD FOR GETTING VALUE OF PROMPT
+        //std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
+        //std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY
