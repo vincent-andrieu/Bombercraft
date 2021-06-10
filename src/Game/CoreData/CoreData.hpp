@@ -21,7 +21,7 @@ namespace Game
     class CoreData {
       public:
         CoreData();
-        virtual ~CoreData();
+        ~CoreData();
 
       public:
         static std::unique_ptr<ConfigFile> settings;

@@ -13,7 +13,6 @@ using namespace Game;
 
 Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 {
-    CoreData::_window->open();
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Render2D>();
     CoreData::entityManager->registerComponent<Component::SingleRender2D>();
@@ -50,10 +49,4 @@ void Core::loop()
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
     }
-}
-
-Core::~Core()
-{
-    CoreData::~CoreData();
-    CoreData::_window->close();
 }
