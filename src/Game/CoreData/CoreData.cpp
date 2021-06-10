@@ -9,8 +9,6 @@
 
 using namespace Game;
 
-static const std::string CONFIG_FILE = "bomberman.config";
-
 std::shared_ptr<raylib::Camera> CoreData::camera = nullptr;
 std::shared_ptr<Engine::SystemManager> CoreData::_systemManager = nullptr;
 std::shared_ptr<Engine::EntityManager> CoreData::entityManager = nullptr;
@@ -30,13 +28,11 @@ CoreData::CoreData()
     if (CoreData::entityManager == nullptr)
         CoreData::entityManager = std::make_unique<Engine::EntityManager>(*CoreData::_systemManager);
     if (CoreData::sceneManager == nullptr)
-        CoreData::sceneManager = std::make_unique<Engine::SceneManager>(*CoreData::entityManager);
+        CoreData::sceneManager = std::make_unique<Engine::SceneManager>();
     if (CoreData::eventManager == nullptr)
         CoreData::eventManager = std::make_unique<raylib::Input>();
     if (CoreData::camera == nullptr) {
-        CoreData::camera = std::make_unique<raylib::Camera>(
-            CoreData::settings->getMyVector3("CAM_POSITION"),
-            CoreData::settings->getMyVector3("CAM_TARGET"),
-            CoreData::settings->getMyVector3("CAM_UP"));
+        CoreData::camera = std::make_unique<raylib::Camera>(CoreData::settings->getMyVector3("CAM_POSITION"),
+            CoreData::settings->getMyVector3("CAM_TARGET"), CoreData::settings->getMyVector3("CAM_UP"));
     }
 }

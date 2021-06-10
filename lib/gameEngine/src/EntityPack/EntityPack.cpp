@@ -21,7 +21,7 @@ Engine::Entity Engine::EntityPack::createEntity(const std::string &key)
     Entity entity;
 
     if (_entities.find(key) != _entities.end()) {
-        throw std::invalid_argument("Key already exist");
+        throw std::invalid_argument("Key " + key + " already exist");
     }
     entity = _entityManager.createEntity();
     _entities[key] = entity;
@@ -52,4 +52,13 @@ void Engine::EntityPack::unload()
     for (Entity e : _anonymousEntities) {
         _entityManager.removeEntity(e);
     }
+}
+
+void Engine::EntityPack::removeEntity(const string &key)
+{
+    if (_entities.find(key) == _entities.end()) {
+        throw std::invalid_argument("Key not found");
+    }
+    _entityManager.removeEntity(_entities[key]);
+    _entities.erase(key);
 }

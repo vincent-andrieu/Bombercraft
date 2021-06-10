@@ -60,6 +60,14 @@ void Render2D::draw()
     }
 }
 
+std::shared_ptr<raylib::IRenderable> &Render2D::get(const std::string &label)
+{
+    if (this->_modelIndex.find(label) == this->_modelIndex.end()) {
+        throw std::invalid_argument("in Render2D::get, Undefined label index");
+    }
+    return this->_models[_modelIndex[label]];
+}
+
 bool Render2D::save(Engine::SaveManager &saver) const
 {
     if (!Component::save(saver))

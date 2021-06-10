@@ -24,9 +24,19 @@ void raylib::Rectangle::setPosition(const MyVector2 position)
     this->_position = position;
 }
 
+raylib::MyVector2 raylib::Rectangle::getPosition() const
+{
+    return this->_position;
+}
+
 void raylib::Rectangle::setSize(const MyVector2 size)
 {
     this->_size = size;
+}
+
+raylib::MyVector2 raylib::Rectangle::getSize() const
+{
+    return this->_size;
 }
 
 void raylib::Rectangle::setColor(const RColor color)

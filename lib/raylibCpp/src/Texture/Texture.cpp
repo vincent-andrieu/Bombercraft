@@ -31,6 +31,10 @@ void raylib::Texture::draw()
         DrawTextureRec(this->_texture, this->_size, rayPos, _matchingColors.at(this->_color));
 }
 
+void raylib::Texture::update()
+{
+}
+
 void raylib::Texture::setPosition(const MyVector2 position)
 {
     this->_position = position;

@@ -25,7 +25,7 @@ namespace Component
         void trigger(Engine::Entity entity);
 
       private:
-        std::reference_wrapper<eventScript> _handler;
+        eventScript _handler;
         std::reference_wrapper<const Game::EventRequirement> _requirements;
     };
 } // namespace Component

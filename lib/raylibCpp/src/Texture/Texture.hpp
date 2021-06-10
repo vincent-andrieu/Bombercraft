@@ -21,6 +21,7 @@ namespace raylib
         ~Texture();
 
         void draw();
+        void update();
 
         void setPosition(const MyVector2 position);
         void setColor(const RColor color);

@@ -14,7 +14,7 @@ Component::AbstractEvent::AbstractEvent(eventScript &handler, Game::EventRequire
 
 void Component::AbstractEvent::trigger(Engine::Entity entity)
 {
-    if (_requirements.get().isTrigger(*Game::CoreData::eventManager)) {
-        (_handler.get())(entity);
+    if (this->_requirements.get().isTriggered(*Game::CoreData::eventManager)) {
+        this->_handler(entity);
     }
 }

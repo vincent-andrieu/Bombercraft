@@ -9,43 +9,37 @@
 
 using namespace GameModule;
 
-IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::unique_ptr<IConfigFile> &configFile)
+IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 : IA::IACore<TileType, BombermanAction>(pos, env), _range(0), _defaultValue(-1), _randomMove(0), _randomBombe(7)
 {
     // seed
-    if (configFile->isSetInFile("IA_SEED"))
-        this->setSeed(configFile->getInt("IA_SEED"));
+    if (Game::CoreData::settings->isSetInFile("IA_SEED"))
+        this->setSeed(Game::CoreData::settings->getInt("IA_SEED"));
     else
         std::cerr << "Random seed" << std::endl;
     // default value
-    if (configFile->isSetInFile("IA_INTERNAL_DEFAULT_VALUE"))
-        this->_defaultValue = configFile->getInt("IA_INTERNAL_DEFAULT_VALUE");
+    if (Game::CoreData::settings->isSetInFile("IA_INTERNAL_DEFAULT_VALUE"))
+        this->_defaultValue = Game::CoreData::settings->getInt("IA_INTERNAL_DEFAULT_VALUE");
     else
         std::cerr << "Default_value: " << this->_defaultValue << std::endl;
     // range
-    if (configFile->isSetInFile("IA_EXPLOSION_RANGE"))
-        this->_range = configFile->getInt("IA_EXPLOSION_RANGE");
+    if (Game::CoreData::settings->isSetInFile("IA_EXPLOSION_RANGE"))
+        this->_range = Game::CoreData::settings->getInt("IA_EXPLOSION_RANGE");
     else
         std::cerr << "Default range: " << this->_range << std::endl;
     // range
-    if (configFile->isSetInFile("IA_RANDOM_PROB"))
-        this->_randomMove = configFile->getInt("IA_RANDOM_PROB");
+    if (Game::CoreData::settings->isSetInFile("IA_RANDOM_PROB"))
+        this->_randomMove = Game::CoreData::settings->getInt("IA_RANDOM_PROB");
     else
         std::cerr << "Default %: " << this->_randomMove << std::endl;
     // random bombe
-    if (configFile->isSetInFile("IA_BOMBE_PROB"))
-        this->_randomBombe = configFile->getInt("IA_BOMBE_PROB");
+    if (Game::CoreData::settings->isSetInFile("IA_BOMBE_PROB"))
+        this->_randomBombe = Game::CoreData::settings->getInt("IA_BOMBE_PROB");
     else
         std::cerr << "Default bombe prob: 1/" << this->_randomBombe << std::endl;
     if (this->_randomBombe <= 0)
         throw IAExceptions("\"IA_BOMBE_PROB\" must be > 0");
     // SETINGS
-    this->IASettings();
-}
-
-IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, size_t range, int defaultValue)
-: IA::IACore<TileType, BombermanAction>(pos, env), _range(range), _defaultValue(defaultValue), _randomMove(0), _randomBombe(7)
-{
     this->IASettings();
 }
 

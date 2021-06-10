@@ -18,11 +18,15 @@
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Systems/Event/EventSystem.hpp"
+#include "Systems/Physics/PhysicsSystem.hpp"
 
 #include "Scenes/DebugScene/DebugScene.hpp"
 
+#include "Components/KeyBox.hpp"
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
+#include "Components/FocusEvent/ClickFocusEvent.hpp"
+#include "Components/TextInputConfig/TextInputConfig.hpp"
 #include "Components/MouseMoveEvent.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
 

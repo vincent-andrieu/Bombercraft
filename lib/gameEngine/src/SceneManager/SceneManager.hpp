@@ -17,7 +17,7 @@ namespace Engine
 {
     class SceneManager {
         public:
-            SceneManager(EntityManager &entityManager);
+            SceneManager();
             ~SceneManager();
 
         void run();
@@ -33,8 +33,10 @@ namespace Engine
 
         std::shared_ptr<AbstractScene> getCurrentScene();
 
+      private:
+        void setCurrentScene(std::shared_ptr<AbstractScene> scene);
+
         private:
-            EntityManager &_entityManager;
             std::shared_ptr<AbstractScene> _currentScene;
             std::vector<std::shared_ptr<AbstractScene>> _scenes;
             std::vector<std::reference_wrapper<const std::type_info>> _types;
@@ -54,8 +56,6 @@ namespace Engine
         }
         _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
         _types.emplace_back(typeid(T));
-        if (_currentScene == nullptr)
-            _currentScene = _scenes.back();
     }
 
     template <typename T>
@@ -72,7 +72,7 @@ namespace Engine
         }
         index = std::distance(_types.begin(), type_it);
         if (_currentScene == _scenes[index]) {
-            _currentScene = (_scenes.size()) ? _scenes.front() : nullptr;
+            this->setCurrentScene((!_scenes.empty()) ? _scenes.front() : nullptr);
         }
         _types[index] = _types.back();
         _types.pop_back();
@@ -93,7 +93,7 @@ namespace Engine
             throw std::exception();
         }
         index = std::distance(_types.begin(), type_it);
-        _currentScene = _scenes[index];
+        this->setCurrentScene(_scenes[index]);
     }
 }
 
