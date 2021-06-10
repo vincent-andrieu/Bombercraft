@@ -21,6 +21,7 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
+        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -31,6 +32,7 @@ set(SRCS
         # GUI/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
         src/GUI/Factories/LabelFactory.cpp
+        src/GUI/Factories/TextInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
@@ -44,6 +46,7 @@ set(SRCS
         src/Components/Hitbox/Hitbox.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
+        src/Components/TextInputConfig/TextInputConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
