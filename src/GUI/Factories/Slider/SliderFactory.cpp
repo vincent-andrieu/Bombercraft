@@ -70,7 +70,6 @@ sliderValue SliderFactory::_getValueFromRange(const float &position, const slide
 {
     if (position < 0 || position > size.a)
         throw std::out_of_range("slider position is over limits");
-    std::cout << "position: " << position << ", maxValue: " << maxValue << ", size.a: " << size.a << std::endl;
     return (position * maxValue) / size.a;
 }
 
