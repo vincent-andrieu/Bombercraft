@@ -23,8 +23,8 @@ static Component::eventScript clickHandler = [](const Engine::Entity) {
     // CoreData::eventManager
     std::cout << "Clicked!!!" << std::endl;
 };
-static Component::eventScript checkboxHandler = [](const Engine::Entity) {
-    std::cout << "Checkbox!!!" << std::endl;
+static GUI::checkboxHandler checkboxHandler = [](UNUSED Engine::Entity, bool &value) {
+    std::cout << "Checkbox: " << std::boolalpha << value << std::endl;
 };
 
 static const EventRequirement keyHandlerRequirements(0, false, {raylib::KeyBoard::IKEY_S}, {});
@@ -40,6 +40,17 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto block = scene->localEntities.getEntity("redBlock");
     static_cast<raylib::Cuboid *>(CoreData::entityManager->getComponent<Component::Render3D>(block).modele.get())
         ->setColor(raylib::RColor::RGREEN);
+
+    Engine::Entity chrono = scene->localEntities.getEntity("chrono");
+    Engine::Timer &timer = CoreData::entityManager->getComponent<Engine::Timer>(chrono);
+
+    if (timer.isPaused()) {
+        timer.resume();
+        std::cout << "Resume counter" << std::endl;
+    } else {
+        timer.pause();
+        std::cout << "Pause counter" << std::endl;
+    }
 };
 
 /// --------------------------------------------------------------------------------------------
@@ -84,7 +95,7 @@ void DebugScene::open()
 
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
-    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "test");
+    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
     GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(200, 200), raylib::MyVector2(50, 50),
         "Asset/Interface/PowerUpBox.png", "testImage");
     GUI::SliderFactory::create(
