@@ -25,7 +25,7 @@ void System::MusicSystem::play(const string &entityName)
         Engine::Entity musicEntity = scenePack.getEntity(entityName);
 
         if (_entityManager.hasComponent<Component::Music>(musicEntity) == false) {
-            std::cerr << "Warning: SoundSystem::update entity " << entityName << " does not have a Sound component." << std::endl;
+            std::cerr << "Warning: MusicSystem::update entity " << entityName << " does not have a Music component." << std::endl;
         } else {
             auto sound = _entityManager.getComponent<Component::Music>(musicEntity);
 
@@ -33,7 +33,7 @@ void System::MusicSystem::play(const string &entityName)
             sound.sound->play();
         }
     } catch (std::invalid_argument const& e) {
-        std::cerr << "Warning: SoundSystem::update entity " << entityName << " not found." << std::endl;
+        std::cerr << "Warning: MusicSystem::update entity " << entityName << " not found." << std::endl;
     }
 }
 
