@@ -19,12 +19,14 @@
 
 namespace GUI
 {
+    using checkboxHandler = std::function<void(const Engine::Entity, bool &)>;
+
     class CheckboxFactory {
       public:
         CheckboxFactory() = delete;
         ~CheckboxFactory() = delete;
 
-        static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 position, Component::eventScript clickHandler,
+        static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 position, checkboxHandler clickHandler,
             bool isDefaultChecked = false);
         static raylib::RColor getCheckColor(bool isChecked);
 

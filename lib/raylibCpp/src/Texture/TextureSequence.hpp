@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** IndieStudio
 ** File description:
-** Texture
+** Texture Sequence
 */
 
-#ifndef TEXTURE_HPP
-#define TEXTURE_HPP
+#ifndef TEXTURE_SEQUENCE_HPP
+#define TEXTURE_SEQUENCE_HPP
 
 #include "../../include/object.hpp"
 
@@ -14,11 +14,11 @@
 
 namespace raylib
 {
-    class Texture : public ITexture {
+    class TextureSequence : public ITexture {
       public:
-        Texture(const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
+        TextureSequence(const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
             const RColor color = RColor::RWHITE);
-        ~Texture();
+        ~TextureSequence();
 
         void draw();
         void update();
@@ -35,9 +35,11 @@ namespace raylib
         MyVector2 _position;
         RColor _color;
         string _path;
-        Texture2D _texture;
+        std::vector<Texture2D> _textures;
+        size_t _currentFrame;
+        size_t _frameNumber;
         Rectangle _size;
     };
 }; // namespace raylib
 
-#endif // TEXTURE_HPP
+#endif // TEXTURE_SEQUENCE_HPP
