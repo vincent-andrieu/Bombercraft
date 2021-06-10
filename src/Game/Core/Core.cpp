@@ -36,7 +36,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
     CoreData::_systemManager->createSystem<System::ClickFocusSystem>();
     CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::PhysicsSystem>();
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));

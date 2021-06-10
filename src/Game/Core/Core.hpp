@@ -18,6 +18,7 @@
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Systems/Event/EventSystem.hpp"
+#include "Systems/Physics/PhysicsSystem.hpp"
 
 #include "Scenes/DebugScene/DebugScene.hpp"
 
