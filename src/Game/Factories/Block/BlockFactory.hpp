@@ -32,24 +32,25 @@ namespace GUI
             };
 
         public:
-            BlockFactory(Engine::EntityPack &entities, const std::string &name, raylib::MyVector3 pos, BlockType type);
-            ~BlockFactory();
+            BlockFactory() = delete;
+            ~BlockFactory() = delete;
+            static void create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name = "");
 
         private:
-            std::shared_ptr<raylib::Model> getModel(raylib::MyVector3 pos, BlockType type) const;
+            static std::shared_ptr<raylib::Model> getModel(const raylib::MyVector3 &pos, BlockType type);
             // FACTORY
-            void internalFactory(BlockType type, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void internalFactory(Engine::Entity entity, BlockType type, raylib::MyVector3 pos, raylib::MyVector3 size);
 
             // FACTORY_FUNC
-            void softFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void hardFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void bombFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void blastFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            /*void floorFactory(raylib::MyVector3 pos, raylib::MyVector3 size);*/
-            void boomUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void fireUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void speedUpBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
-            void wallPassBonusFactory(raylib::MyVector3 pos, raylib::MyVector3 size) const;
+            static void softFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void hardFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void bombFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void blastFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            /*void floorFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);*/
+            static void boomUpBonusFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void fireUpBonusFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void speedUpBonusFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
+            static void wallPassBonusFactory(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size);
 
             // HANDLER
             static void handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, Engine::Entity entity);
@@ -61,21 +62,7 @@ namespace GUI
             static void handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
         private:
-            BlockType _type;
-            std::string _name;
-            Engine::Entity _entity;
-            raylib::MyVector3 _pos;
-            std::unordered_map<BlockType, std::function<void(raylib::MyVector3 pos, raylib::MyVector3 size)>> _factory = {
-                {BlockType::BLOCK_HARD, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->hardFactory(pos, size);}},
-                {BlockType::BLOCK_SOFT, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->softFactory(pos, size);}},
-                {BlockType::BLOCK_BOMB, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->bombFactory(pos, size);}},
-                {BlockType::BLOCK_BLAST, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->blastFactory(pos, size);}},
-                {BlockType::BLOCK_FLOOR, nullptr},
-                {BlockType::BLOCK_BONUS_BOOMUP, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->boomUpBonusFactory(pos, size);}},
-                {BlockType::BLOCK_BONUS_FIREUP, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->fireUpBonusFactory(pos, size);}},
-                {BlockType::BLOCK_BONUS_SPEEDUP, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->speedUpBonusFactory(pos, size);}},
-                {BlockType::BLOCK_BONUS_WALLPASS, [this](raylib::MyVector3 pos, raylib::MyVector3 size) {this->wallPassBonusFactory(pos, size);}},
-            };
+            static std::unordered_map<BlockType, std::function<void(Engine::Entity entity, raylib::MyVector3 pos, raylib::MyVector3 size)>> _factory;
     };
 }
 
