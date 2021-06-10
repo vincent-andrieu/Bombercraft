@@ -36,3 +36,13 @@ CoreData::CoreData()
             CoreData::settings->getMyVector3("CAM_TARGET"), CoreData::settings->getMyVector3("CAM_UP"));
     }
 }
+
+CoreData::~CoreData()
+{
+    CoreData::settings.reset();
+    CoreData::sceneManager.reset();
+    CoreData::entityManager.reset();
+    CoreData::_systemManager.reset();
+    CoreData::camera.reset();
+    CoreData::eventManager.reset();
+}

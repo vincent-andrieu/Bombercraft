@@ -32,7 +32,7 @@ namespace Game
     class Core : public CoreData {
       public:
         Core();
-        ~Core();
+        virtual ~Core();
 
         void loop();
 
