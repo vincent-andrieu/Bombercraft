@@ -9,24 +9,23 @@
 
 using namespace GUI;
 
-void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, std::string const &label, LabelConfig const &config)
+void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, string const &label, LabelConfig const &config)
 {
     Engine::Entity entity = pack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({
-            {"text", std::make_shared<raylib::Text>(label, position, config.fontSize, config.fontColor, config.fontPath)}
-    }));
+        Component::render2dMapModels(
+            {{"text", std::make_shared<raylib::Text>(label, config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
-void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, std::size_t const &label, LabelConfig const &config)
+void LabelFactory::create(
+    Engine::EntityPack &pack, raylib::MyVector2 position, std::size_t const &label, LabelConfig const &config)
 {
     Engine::Entity entity = pack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({
-            {"text", std::make_shared<raylib::Text>(std::to_string(label), position, config.fontSize, config.fontColor, config.fontPath)}
-    }));
+        Component::render2dMapModels({{"text",
+            std::make_shared<raylib::Text>(toString(label), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
 void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, int const &label, LabelConfig const &config)
@@ -34,9 +33,8 @@ void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, 
     Engine::Entity entity = pack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({
-            {"text", std::make_shared<raylib::Text>(std::to_string(label), position, config.fontSize, config.fontColor, config.fontPath)}
-    }));
+        Component::render2dMapModels({{"text",
+            std::make_shared<raylib::Text>(toString(label), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
 void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, float const &label, LabelConfig const &config)
@@ -44,7 +42,6 @@ void LabelFactory::create(Engine::EntityPack &pack, raylib::MyVector2 position, 
     Engine::Entity entity = pack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({
-            {"text", std::make_shared<raylib::Text>(std::to_string(label), position, config.fontSize, config.fontColor, config.fontPath)}
-    }));
+        Component::render2dMapModels({{"text",
+            std::make_shared<raylib::Text>(toString(label), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
