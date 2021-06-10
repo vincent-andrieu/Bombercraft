@@ -7,7 +7,7 @@
 #ifndef BOMBERMAN_SINGLERENDER2D_HPP
 #define BOMBERMAN_SINGLERENDER2D_HPP
 
-#include "Render2D.hpp"
+#include "ARender2D.hpp"
 
 namespace Component
 {

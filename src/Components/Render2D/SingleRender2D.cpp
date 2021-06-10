@@ -41,6 +41,7 @@ bool Component::SingleRender2D::save(Engine::SaveManager &saver) const
     }
     return true;
 }
+
 bool Component::SingleRender2D::load(Engine::SaveManager &saver)
 {
     if (!Component::load(saver))

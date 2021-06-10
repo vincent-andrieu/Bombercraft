@@ -57,6 +57,7 @@ set(SRCS
         src/Components/TextInputConfig/TextInputConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
+        src/Systems/Render2D/singleRender2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
         # SCENES
@@ -67,7 +68,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-)
+        )
 
 add_executable(${NAME} ${SRCS})
 

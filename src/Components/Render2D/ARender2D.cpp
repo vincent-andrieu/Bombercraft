@@ -63,10 +63,3 @@ std::shared_ptr<raylib::IRenderable> &ARender2D::get(const std::string &label)
     }
     return this->_models[_modelIndex[label]];
 }
-
-void ARender2D::draw()
-{
-    for (auto &model : _models) {
-        model->draw();
-    }
-}

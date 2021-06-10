@@ -93,7 +93,9 @@ void DebugScene::open()
     raylib::MyVector3 blockPos(0, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(
         block, std::make_shared<raylib::Cuboid>(nullptr, blockPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RRED));
-    this->_entityManager.addComponent<Component::Hitbox>(block, blockPos, raylib::MyVector3(50, 50, 50),
+    this->_entityManager.addComponent<Component::Hitbox>(block,
+        blockPos,
+        raylib::MyVector3(50, 50, 50),
         [](const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
             auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
             auto cube = static_cast<raylib::Cuboid *>(cubeComponent.modele.get());
@@ -107,7 +109,9 @@ void DebugScene::open()
         std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
     this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
     this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20.0f, 0.0f);
-    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, raylib::MyVector3(50, 50, 50),
+    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity,
+        moveableEntityPos,
+        raylib::MyVector3(50, 50, 50),
         [](UNUSED const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
         });
     // Events
@@ -117,19 +121,27 @@ void DebugScene::open()
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
-    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(200, 200), raylib::MyVector2(50, 50),
-        "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::ImageFactory::create(this->localEntities,
+        raylib::MyVector2(200, 200),
+        raylib::MyVector2(50, 50),
+        "Asset/Interface/PowerUpBox.png",
+        "testImage");
     GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
     GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
     GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
     std::cout << "---- BLOCK\n";
     GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
     GUI::SliderFactory::create(
-        this->localEntities, raylib::MyVector2(500, 160),
+        this->localEntities,
+        raylib::MyVector2(500, 160),
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
-        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+        "Value: ",
+        raylib::MyVector2(60, 10),
+        0,
+        100,
+        60);
     GUI::ButtonFactory::create(
         this->localEntities, {20, 20}, "my_button_label", GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
 }
@@ -138,6 +150,7 @@ void DebugScene::update()
 {
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+        auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
         auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
@@ -147,6 +160,7 @@ void DebugScene::update()
         physics.update(dt);
         render3D.update();
         render2D.update();
+        singleRender2D.update();
         hitbox.update();
         timer.update();
         this->eventDispatcher(this->_systemManager);

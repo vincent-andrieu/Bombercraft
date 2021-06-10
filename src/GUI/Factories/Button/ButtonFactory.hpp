@@ -30,8 +30,6 @@ namespace GUI
         const raylib::RColor fontColor;
         const std::string fontPath;
         const Game::EventRequirement requirements;
-        Component::eventScript clickHandler;
-        Component::eventScript moveHandler;
     };
 
     class ButtonFactory {
