@@ -29,7 +29,6 @@ void DataMatrix::save(std::pair<size_t, size_t> pos, Engine::Entity entity, GUI:
         throw std::out_of_range("Invalide size");
     if (pos.first > this->_size.first || pos.second > this->_size.second)
         throw std::out_of_range("Invalide pos");
-    std::cout << this->_matrix.size() << std::endl;
     this->_matrix[pos.second][pos.first].first = entity;
     this->_matrix[pos.second][pos.first].second = category;
 }
