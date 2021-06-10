@@ -54,6 +54,7 @@ std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &p
         default: typeInStr = "DEFAULT"; break;
     }
     texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
+    std::cout << "texture: " << texturePath << std::endl;
     return std::make_shared<raylib::Model>(texturePath, modelPath, pos, raylib::RColor::RWHITE);
 }
 

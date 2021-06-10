@@ -23,8 +23,12 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
     std::srand((seed) ? seed : std::time(nullptr));
     for (size_t y = 0; y < map.size(); y++) {
         for (size_t x = 0; x < map[y].size(); x++) {
-            tmpBlockType = MapFactory::blockTypeSinceTile(map[y][x]);
-            tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType);
+            if (map[y][x] != GameModule::TileType::TILE_EMPTY) {
+                tmpBlockType = MapFactory::blockTypeSinceTile(map[y][x]);
+                tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType);
+                matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
+            }
+            tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR);
             matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
         }
     }
@@ -55,6 +59,20 @@ GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<si
     });
     endMap = map.getProceduralMap();
     sizeDest = map.getSize();
+    // for (auto it_y : endMap) {
+    //     for (auto it_x : it_y) {
+    //         switch (it_x)
+    //         {
+    //             case TileType::TILE_BONUS: std::cerr << '?'; break;
+    //             case TileType::TILE_EMPTY: std::cerr << '.'; break;
+    //             case TileType::TILE_HARD: std::cerr << 'x'; break;
+    //             case TileType::TILE_SOFT: std::cerr << '#'; break;
+    //             case TileType::TILE_DEFAULT: std::cerr << '!'; break;
+    //             default: std::cerr << '-'; break;
+    //         }
+    //     }
+    //     std::cerr << std::endl;
+    // }
     return endMap;
 }
 
