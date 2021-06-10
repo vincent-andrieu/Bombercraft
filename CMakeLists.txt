@@ -30,12 +30,12 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
+        src/Game/Factories/Block/BlockFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
-        src/GUI/Factories/Block/BlockFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
