@@ -21,10 +21,11 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
     this->_texturePath = texturePath;
     if (texturePath.compare("") != 0) {
         if (DirectoryExists(texturePath.data())) {
-            filenames = GetDirectoryFiles(_path.data(), &count);
-            ChangeDirectory(_path.data());
+            filenames = GetDirectoryFiles(_texturePath.data(), &count);
+            ChangeDirectory(_texturePath.data());
             for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
+                if (!DirectoryExists(filenames[i]))
+                    _textures.push_back(LoadTexture(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
