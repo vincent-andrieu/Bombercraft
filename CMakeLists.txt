@@ -31,6 +31,7 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
+        src/Game/Factories/Sound/AudioFactory.cpp
         # GUI/FACTORIES
         src/Game/Factories/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
