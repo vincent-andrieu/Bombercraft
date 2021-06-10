@@ -28,9 +28,11 @@ namespace raylib
     MyVector2 operator+(MyVector2 const &first, MyVector2 const &second);
     MyVector2 operator-(MyVector2 const &first, MyVector2 const &second);
     MyVector2 operator*(MyVector2 const &first, MyVector2 const &second);
-    MyVector2 operator*(float first, MyVector2 const &second);
-    MyVector2 operator*(MyVector2 const &first, float second);
+    MyVector2 operator*(const float first, MyVector2 const &second);
+    MyVector2 operator*(MyVector2 const &first, const float second);
     MyVector2 operator/(MyVector2 const &first, MyVector2 const &second);
+    MyVector2 operator/(MyVector2 const &first, const float second);
+    MyVector2 operator/(const float first, MyVector2 const &second);
     bool operator==(MyVector2 const &first, MyVector2 const &second);
     std::ostream &operator<<(std::ostream &stream, MyVector2 const &vector);
 }; // namespace raylib
