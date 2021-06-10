@@ -23,6 +23,11 @@ void ObjectBox::setSphere(const MyVector3 origin, const MyVector3 size)
     this->_size = size;
 }
 
+void ObjectBox::setOrigin(const MyVector3 origin)
+{
+    this->_origin = origin;
+}
+
 MyVector3 ObjectBox::getBoxOrigin() const
 {
     return this->_origin;

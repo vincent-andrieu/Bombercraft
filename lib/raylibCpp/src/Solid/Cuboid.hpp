@@ -23,6 +23,7 @@ namespace raylib
         void draw();
 
         void setPosition(const MyVector3 position);
+        const MyVector3 &getPosition() const;
         void setSize(const MyVector3 size);
         void setColor(const RColor color);
         void setTexture(const std::shared_ptr<ITexture> &texture);

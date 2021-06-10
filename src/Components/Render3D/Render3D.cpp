@@ -9,7 +9,7 @@
 
 using namespace Component;
 
-Render3D::Render3D(std::shared_ptr<raylib::IRenderable> object) : modele(object)
+Render3D::Render3D(std::shared_ptr<raylib::I3DObject> object) : modele(object)
 {
 }
 

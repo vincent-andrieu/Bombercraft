@@ -56,6 +56,7 @@ set(SRCS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Physics/PhysicsSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
