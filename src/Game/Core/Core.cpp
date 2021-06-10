@@ -35,20 +35,20 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Music>();
     CoreData::entityManager->registerComponent<Component::Sound>();
     /// SYSTEMS - CREATION
-    CoreData::_systemManager->createSystem<System::Render3DSystem>();
-    CoreData::_systemManager->createSystem<System::Render2DSystem>();
-    CoreData::_systemManager->createSystem<System::ClickEventSystem>();
-    CoreData::_systemManager->createSystem<System::KeyEventSystem>();
-    CoreData::_systemManager->createSystem<System::MouseEventSystem>();
-    CoreData::_systemManager->createSystem<System::ClickFocusSystem>();
-    CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<System::HitboxSystem>();
-    CoreData::_systemManager->createSystem<System::MusicSystem>();
-    CoreData::_systemManager->createSystem<System::SoundSystem>();
+    CoreData::systemManager->createSystem<System::Render3DSystem>();
+    CoreData::systemManager->createSystem<System::Render2DSystem>();
+    CoreData::systemManager->createSystem<System::ClickEventSystem>();
+    CoreData::systemManager->createSystem<System::KeyEventSystem>();
+    CoreData::systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::systemManager->createSystem<System::ClickFocusSystem>();
+    CoreData::systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<System::HitboxSystem>();
+    CoreData::systemManager->createSystem<System::MusicSystem>();
+    CoreData::systemManager->createSystem<System::SoundSystem>();
     // SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
-    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->setScene<DebugScene>();
 }
 
