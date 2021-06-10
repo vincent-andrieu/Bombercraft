@@ -63,3 +63,8 @@ void raylib::Music::setPitch(const float pitch)
     this->_pitch = pitch;
     SetMusicPitch(this->_music, this->_pitch);
 }
+
+bool raylib::Music::isPlaying() const
+{
+    return IsMusicStreamPlaying(this->_music);
+}

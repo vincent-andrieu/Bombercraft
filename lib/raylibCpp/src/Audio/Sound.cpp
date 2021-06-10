@@ -62,3 +62,8 @@ void raylib::Sound::setPitch(const float pitch)
     this->_pitch = pitch;
     SetSoundPitch(this->_sound, this->_pitch);
 }
+
+bool raylib::Sound::isPlaying() const
+{
+    return IsSoundPlaying(this->_sound);
+}
