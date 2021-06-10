@@ -97,6 +97,8 @@ void DebugScene::open()
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
     GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "chrono");
     GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
+    std::cout << "---- BLOCK\n";
+    GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
 }
 
 void DebugScene::update()
