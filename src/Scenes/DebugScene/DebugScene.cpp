@@ -145,7 +145,14 @@ void DebugScene::open()
         0,
         100,
         60);
-    GUI::ButtonFactory::create(localEntities, {20, 20}, "my_label", GUI::ButtonFactory::getStandardButtonConfig(), "button_text");
+    GUI::ButtonFactory::create(localEntities,
+        {20, 20},
+        "my_label",
+        GUI::ButtonFactory::getStandardButtonConfig(),
+        "button_text",
+        [](const Engine::Entity entity) {
+            std::cout << "Hello " << entity << std::endl;
+        });
 }
 
 void DebugScene::update()

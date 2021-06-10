@@ -46,7 +46,8 @@ namespace GUI
             const raylib::MyVector2 &position,
             const string &label,
             ButtonConfig const &conf,
-            const std::string &text);
+            const std::string &text,
+            const Component::eventScript &clickAction);
     };
 } // namespace GUI
 

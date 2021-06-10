@@ -33,8 +33,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     const string &label,
     const GUI::ButtonConfig &conf,
-    const std::string &text // TODO add click action, event script that would be captured in my_clickHandler and executed on click
-)
+    const std::string &text, // TODO add click action, event script that would be captured in clickHandler and execute on click
+    const Component::eventScript &clickAction)
 {
     raylib::MyVector2 my_position(position);
     raylib::MyVector2 my_size(conf.size);
@@ -59,12 +59,13 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
             my_render.setActRender2D("idle");
         }
     };
-    Component::eventScript my_clickHandler = [position, my_size](const Engine::Entity entity) {
+    Component::eventScript my_clickHandler = [position, my_size, clickAction](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
 
         if (Game::CoreData::eventManager->MouseIsOverClicked(position, my_size)) {
             //            my_render.setActRender2D("clicked"); // TODO have click texture ?
             my_render.setActRender2D("hover");
+            clickAction(entity);
         } else {
             my_render.setActRender2D("idle");
         }
