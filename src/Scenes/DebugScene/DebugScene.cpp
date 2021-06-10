@@ -124,7 +124,7 @@ void DebugScene::open()
     std::cout << "---- BLOCK\n";
     GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
     GUI::SliderFactory::create(
-        this->localEntities, raylib::MyVector2(400, 80),
+        this->localEntities, raylib::MyVector2(500, 160),
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
