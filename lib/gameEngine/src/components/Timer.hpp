@@ -10,11 +10,11 @@
 
 #include "Component/Component.hpp"
 #include "Script.hpp"
-#include <ctime>
+#include <chrono>
 
 namespace Engine
 {
-    #define NOW ((static_cast<double>(clock()) / CLOCKS_PER_SEC) * 10.0f)
+    #define NOW (((double)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / 1000.0f)
 
     class Timer : public Component<Timer> {
       public:
@@ -25,15 +25,23 @@ namespace Engine
 
         bool eval(Entity entity);
 
+        void pause();
+        void resume();
+        bool isPaused() const;
+
         [[nodiscard]] double getDelta() const;
 
         bool save(SaveManager &saver) const override;
         bool load(SaveManager &saver) override;
 
+      public:
         double interval;    // in seconds
-      protected:
         double startTime;   // in seconds
         Script script;
+
+      private:
+        bool _inPause;
+        double _savedDuration;
     };
 } // namespace Engine
 

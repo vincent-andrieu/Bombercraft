@@ -10,7 +10,7 @@
 using namespace Engine;
 
 Timer::Timer(double seconds, EntityManager &entityManager, SceneManager &sceneManager, scriptHandler handler)
-    : interval(seconds), startTime(NOW), script(entityManager, sceneManager, handler)
+    : interval(seconds), startTime(NOW), script(entityManager, sceneManager, handler), _inPause(false), _savedDuration(0)
 {
 }
 
@@ -21,12 +21,14 @@ void Timer::start()
 
 bool Timer::eval(Entity entity)
 {
-    double delta = (NOW - this->startTime);
+    if (!_inPause) {
+        double delta = (NOW - this->startTime);
 
-    if (delta >= interval) {
-        this->start();
-        script.trigger(entity);
-        return true;
+        if (delta >= interval) {
+            this->start();
+            script.trigger(entity);
+            return true;
+        }
     }
     return false;
 }
@@ -69,4 +71,25 @@ bool Timer::load(SaveManager &saver)
         return false;
     }
     return true;
+}
+
+void Timer::pause()
+{
+    if (!this->_inPause) {
+        this->_inPause = true;
+        this->_savedDuration = this->getDelta();
+    }
+}
+
+void Timer::resume()
+{
+    if (this->_inPause) {
+        this->_inPause = false;
+        this->startTime = (NOW - _savedDuration);
+    }
+}
+
+bool Timer::isPaused() const
+{
+    return _inPause;
 }

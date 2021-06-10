@@ -39,6 +39,17 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto block = scene->localEntities.getEntity("redBlock");
     static_cast<raylib::Cuboid *>(CoreData::entityManager->getComponent<Component::Render3D>(block).modele.get())
         ->setColor(raylib::RColor::RGREEN);
+
+  Engine::Entity chrono = scene->localEntities.getEntity("chrono");
+  Engine::Timer &timer = CoreData::entityManager->getComponent<Engine::Timer>(chrono);
+
+  if (timer.isPaused()) {
+      timer.resume();
+      std::cout << "Resume counter" << std::endl;
+  } else {
+      timer.pause();
+      std::cout << "Pause counter" << std::endl;
+  }
 };
 
 /// --------------------------------------------------------------------------------------------
@@ -84,7 +95,7 @@ void DebugScene::open()
 
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
-    GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
+    GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "chrono");
     GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
 }
 
