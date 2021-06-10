@@ -36,7 +36,7 @@ namespace raylib
         MyVector3 _rotation;
         float _scale;
         RColor _color;
-        Texture2D _texture;
+        std::vector<Texture2D> _textures;
         std::string _texturePath;
         string _path;
         RModel _model;

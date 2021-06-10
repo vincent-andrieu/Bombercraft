@@ -18,36 +18,18 @@ raylib::Animation::Animation(const std::string &texturePath, const string &dirpa
     this->_scale = 1.0f;
     this->_color = color;
     this->_textures = {};
-    if (texturePath.compare("") != 0) {
-        if (DirectoryExists(texturePath.data())) {
-            filenames = GetDirectoryFiles(_path.data(), &count);
-            ChangeDirectory(_path.data());
-            for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
-            }
-            ClearDirectoryFiles();
-            ChangeDirectory(workingDirectory);
-        } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
-        }
-    }
+    if (texturePath.compare("") != 0)
+        getNewTexture(texturePath);
     this->_path = dirpath;
     this->_currentFrame = 0;
     this->_start = std::chrono::system_clock::now();
     if (DirectoryExists(_path.data())) {
-        filenames = GetDirectoryFiles(_path.data(), &count);
-        ChangeDirectory(_path.data());
+        filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
             if (IsFileExtension(filenames[i], ".obj"))
                 _models.push_back(LoadModel(filenames[i]));
         }
-        ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory);
-    }
-    if (_textures.size() == 0)
-        return;
-    for (size_t i = 0; i < _models.size(); i++) {
-        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, _textures[i % _textures.size()]);
+        LeaveDirectoryAndClearFileNames(workingDirectory);
     }
 }
 
@@ -57,6 +39,64 @@ raylib::Animation::~Animation()
         UnloadModel(this->_models[i]);
     }
     this->_models.clear();
+    for (size_t i = 0; i < _textures.size(); i++) {
+        for (size_t j = 0; j < _textures[i].size(); j++) {
+            UnloadTexture(_textures[i][j]);
+        }
+    }
+}
+
+void raylib::Animation::getNewTexture(const std::string &texturePath)
+{
+    char **filenames = nullptr;
+    char **subFilenames = nullptr;
+    int count = 0;
+    int subCount = 0;
+    const char *workingDirectory = GetWorkingDirectory();
+
+    if (DirectoryExists(texturePath.data())) {
+        filenames = goInDirectoryAndGetFileNames(_path, &count);
+        for (size_t i = 0; i < (size_t) count; i++) {
+            if (DirectoryExists(filenames[i])) {
+                _textures.push_back({});
+                subFilenames = goInDirectoryAndGetFileNames(filenames[i], &subCount);
+                for (size_t j = 0; j < (size_t) subCount; j++)
+                    _textures[_textures.size() - 1].push_back(LoadTexture(subFilenames[j]));
+                LeaveDirectoryAndClearFileNames(_path);
+            } else if (FileExists(filenames[i]))
+                _textures.push_back({LoadTexture(filenames[i])});
+        }
+        LeaveDirectoryAndClearFileNames(workingDirectory);
+    } else if (FileExists(texturePath.data()))
+        _textures.push_back({LoadTexture(texturePath.data())});
+}
+
+char **raylib::Animation::goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count)
+{
+    char **filenames = nullptr;
+
+    filenames = GetDirectoryFiles(directoryPath.data(), count);
+    ChangeDirectory(directoryPath.data());
+    return filenames;
+}
+
+void raylib::Animation::LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath)
+{
+    ClearDirectoryFiles();
+    ChangeDirectory(oldDirectoryPath.data());
+}
+
+void raylib::Animation::setNewTexture()
+{
+    if (_textures.size() == 0)
+        return;
+    for (size_t i = 0; i < _models.size(); i++) {
+        if (_textures[i % _textures.size()].size() == 0)
+            continue;
+        for (size_t j = 0; j < _models[i].materialCount; j++) {
+            SetMaterialTexture(&_models[i].materials[j], MAP_DIFFUSE, _textures[i % _textures.size()][j % _textures[i].size()]);
+        }
+    }
 }
 
 void raylib::Animation::draw()
@@ -89,7 +129,8 @@ void raylib::Animation::setRotation(const MyVector3 rotation)
 
     this->_rotation = rotation;
     for (size_t i = 0; i < this->_models.size(); i++) {
-        this->_models[i].transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
+        this->_models[i].transform =
+            MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
     }
 }
 
@@ -123,7 +164,8 @@ void raylib::Animation::setPath(const string &path)
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {
-        this->_models[i].transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
+        this->_models[i].transform =
+            MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
     }
 }
 
@@ -134,23 +176,9 @@ void raylib::Animation::setTexture(const std::string &texturePath)
     const char *workingDirectory = GetWorkingDirectory();
 
     if (texturePath.compare("") != 0) {
-        if (DirectoryExists(texturePath.data())) {
-            filenames = GetDirectoryFiles(_path.data(), &count);
-            ChangeDirectory(_path.data());
-            for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
-            }
-            ClearDirectoryFiles();
-            ChangeDirectory(workingDirectory);
-        } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
-        }
+        getNewTexture(texturePath);
     }
-    if (_textures.size() == 0)
-        return;
-    for (size_t i = 0; i < _models.size(); i++) {
-        SetMaterialTexture(&_models[i].materials[0], MAP_DIFFUSE, _textures[i % _textures.size()]);
-    }
+    setNewTexture();
 }
 
 string raylib::Animation::getPath() const
