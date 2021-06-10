@@ -16,16 +16,16 @@ namespace raylib
 {
     class Text : public IText {
       public:
-        explicit Text(string text,
+        explicit Text(const string &text,
             MyVector2 position = {0, 0},
             size_t size = 1,
             RColor color = RColor::RWHITE,
             const std::shared_ptr<raylib::Font> &font = std::make_shared<raylib::Font>());
-        explicit Text(string text,
+        explicit Text(const string &text,
+            const string &fontPath = "",
             MyVector2 position = {0, 0},
             size_t size = 1,
-            RColor color = RColor::RWHITE,
-            const string &fontPath = "");
+            RColor color = RColor::RWHITE);
         ~Text() override
         {
             _font = nullptr;

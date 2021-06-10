@@ -16,6 +16,13 @@ namespace GUI
     void standardButtonHandler(const Engine::Entity entity) // TODO make one handler for click and one for move
     {
         Component::SingleRender2D my_render2D(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
+
+        //        if () {
+        //            my_render2D.setActRender2D();
+        //        } else {
+        //        }
+        //
+        //        Game::CoreData::entityManager->getComponent<Component::ClickEvent>()
         //        my_render2D.setActRender2D("hover"); // TODO change depending on mouse position and activate script if clicked
     }
 } // namespace GUI
@@ -28,7 +35,7 @@ ButtonConfig ButtonFactory::getStandardButtonConfig()
         Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_CLICKED_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"),
-        {10, 10},
+        {180, 20},
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         raylib::RColor::RWHITE,
         Game::CoreData::settings->getString("STANDARD_FONT"),

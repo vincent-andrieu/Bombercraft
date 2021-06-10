@@ -9,26 +9,45 @@
 
 raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
 {
+    char **filenames = nullptr;
+    int count = 0;
+    const char *workingDirectory = GetWorkingDirectory();
+
     this->_position = position;
     this->_rotation = {0.0f, 0.0f, 0.0f};
     this->_scale = 1.0f;
     this->_color = color;
-    this->_texture = {0};
+    this->_textures = {};
     this->_texturePath = texturePath;
     if (texturePath.compare("") != 0) {
-        if (FileExists(texturePath.data())) {
-            _texture = LoadTexture(texturePath.data());
+        if (DirectoryExists(texturePath.data())) {
+            filenames = GetDirectoryFiles(_texturePath.data(), &count);
+            ChangeDirectory(_texturePath.data());
+            for (size_t i = 0; i < (size_t) count; i++) {
+                if (!DirectoryExists(filenames[i]))
+                    _textures.push_back(LoadTexture(filenames[i]));
+            }
+            ClearDirectoryFiles();
+            ChangeDirectory(workingDirectory);
+        } else if (FileExists(texturePath.data())) {
+            _textures.push_back(LoadTexture(texturePath.data()));
         }
     }
     this->_path = filepath;
     this->_model = LoadModel(filepath.data());
-    if (texturePath.compare("") != 0)
-        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture);
+    if (_textures.size() == 0)
+        return;
+    for (size_t i = 0; i < _model.materialCount; i++) {
+        SetMaterialTexture(&_model.materials[i], MAP_DIFFUSE, _textures[i % _textures.size()]);
+    }
 }
 
 raylib::Model::~Model()
 {
     UnloadModel(this->_model);
+    for (size_t i = 0; i < _textures.size(); i++) {
+        UnloadTexture(_textures[i]);
+    }
 }
 
 void raylib::Model::draw()
@@ -77,17 +96,32 @@ void raylib::Model::setPath(const string &path)
 
 void raylib::Model::setTexture(const std::string &texturePath)
 {
-    if (_texturePath.compare("") != 0) {
-        UnloadTexture(_texture);
-    }
+    char **filenames = nullptr;
+    int count = 0;
+    const char *workingDirectory = GetWorkingDirectory();
+
+    for (size_t i = 0; i < _textures.size(); i++)
+        UnloadTexture(_textures[i]);
+    _textures.clear();
     _texturePath = texturePath;
     if (texturePath.compare("") != 0) {
-        if (FileExists(texturePath.data())) {
-            _texture = LoadTexture(texturePath.data());
+        if (DirectoryExists(texturePath.data())) {
+            filenames = GetDirectoryFiles(_path.data(), &count);
+            ChangeDirectory(_path.data());
+            for (size_t i = 0; i < (size_t) count; i++) {
+                _textures.push_back(LoadTexture(filenames[i]));
+            }
+            ClearDirectoryFiles();
+            ChangeDirectory(workingDirectory);
+        } else if (FileExists(texturePath.data())) {
+            _textures.push_back(LoadTexture(texturePath.data()));
         }
     }
-    if (texturePath.compare("") != 0)
-        SetMaterialTexture(&_model.materials[0], MAP_DIFFUSE, _texture);
+    if (_textures.size() == 0)
+        return;
+    for (size_t i = 0; i < _model.materialCount; i++) {
+        SetMaterialTexture(&_model.materials[i], MAP_DIFFUSE, _textures[i % _textures.size()]);
+    }
 }
 
 string raylib::Model::getPath() const

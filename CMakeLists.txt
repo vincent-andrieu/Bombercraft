@@ -21,6 +21,7 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
+        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -29,12 +30,16 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
+        src/Game/Factories/Block/BlockFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Button/ButtonFactory.cpp
+        src/GUI/Factories/Label/LabelFactory.cpp
+        src/GUI/Factories/TextInput/TextInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Slider/SliderFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -49,6 +54,7 @@ set(SRCS
         src/Components/MouseMoveEvent.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
+        src/Components/TextInputConfig/TextInputConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -61,7 +67,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        )
+)
 
 add_executable(${NAME} ${SRCS})
 

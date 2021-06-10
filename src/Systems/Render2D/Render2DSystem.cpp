@@ -10,16 +10,17 @@
 
 System::Render2DSystem::Render2DSystem() : AbstractSystem(*Game::CoreData::entityManager)
 {
-    this->setRequirements<Component::Render2D>();
     this->setRequirements<Component::SingleRender2D>();
+    this->setRequirements<Component::Render2D>();
 }
 
 void System::Render2DSystem::update()
 {
     for (const Engine::Entity &entity : this->getManagedEntities()) {
+        auto [singleRender] = Game::CoreData::entityManager->getComponents<Component::SingleRender2D>(entity);
+        singleRender.draw(); // TODO find a way to be able to choose the order of draw
+                             //  (if a texture needs to be drawn behind  an other)
         auto [render] = Game::CoreData::entityManager->getComponents<Component::Render2D>(entity);
         render.draw();
-        auto [singleRender] = Game::CoreData::entityManager->getComponents<Component::SingleRender2D>(entity);
-        singleRender.draw();
     }
 }

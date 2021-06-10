@@ -27,12 +27,14 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();
     CoreData::entityManager->registerComponent<Component::Chrono>();
+    CoreData::entityManager->registerComponent<Component::TextInputConfig>();
     /// SYSTEMS - CREATION
     CoreData::_systemManager->createSystem<System::Render3DSystem>();
     CoreData::_systemManager->createSystem<System::Render2DSystem>();
     CoreData::_systemManager->createSystem<System::ClickEventSystem>();
     CoreData::_systemManager->createSystem<System::KeyEventSystem>();
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::_systemManager->createSystem<System::ClickFocusSystem>();
     CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
     CoreData::_systemManager->createSystem<System::HitboxSystem>();

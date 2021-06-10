@@ -12,6 +12,13 @@
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/Image/ImageFactory.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
+#include "GUI/Factories/TextInput/TextInputFactory.hpp"
+#include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
+#include "GUI/Factories/Slider/SliderFactory.hpp"
+#include "Components/FocusEvent/ClickFocusEvent.hpp"
+#include "GUI/Factories/Countdown/CountdownFactory.hpp"
+#include "utilities.hpp"
 
 using namespace Game;
 
@@ -40,6 +47,17 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto block = scene->localEntities.getEntity("redBlock");
     static_cast<raylib::Cuboid *>(CoreData::entityManager->getComponent<Component::Render3D>(block).modele.get())
         ->setColor(raylib::RColor::RGREEN);
+
+    Engine::Entity chrono = scene->localEntities.getEntity("chrono");
+    Engine::Timer &timer = CoreData::entityManager->getComponent<Engine::Timer>(chrono);
+
+    if (timer.isPaused()) {
+        timer.resume();
+        std::cout << "Resume counter" << std::endl;
+    } else {
+        timer.pause();
+        std::cout << "Pause counter" << std::endl;
+    }
 };
 
 /// --------------------------------------------------------------------------------------------
@@ -51,12 +69,25 @@ DebugScene::DebugScene(Engine::SystemManager &systemManager) : AbstractScene(sys
 void DebugScene::open()
 {
     std::cout << "----OPEN\n";
+    const raylib::MyVector2 position(10, 70);
+    GUI::LabelConfig config = {
+        .fontSize = 24, .fontColor = raylib::RColor::RBLUE, .fontPath = "./Asset/Font/MinecraftItalic.ttf"};
+    GUI::TextInputConfig TextInputConfig = {.size = raylib::MyVector2(152, 27),
+        .color = raylib::RColor::RBLACK,
+        .borderSize = 2,
+        .borderColor = raylib::RColor::RGRAY,
+        .maxChar = 16,
+        .textPositionOffset = raylib::MyVector2(5, 5)};
+    GUI::LabelConfig labelTextInput = {
+        .fontSize = 16, .fontColor = raylib::RColor::RWHITE, .fontPath = "./Asset/Font/MinecraftRegular.ttf"};
+    GUI::TextInputDynConf input1 = {.position = raylib::MyVector2(300, 75), .name = "input1", "player name"};
+    GUI::TextInputDynConf input2 = {.position = raylib::MyVector2(500, 75), .name = "input2", "save name"};
+
     /// ENTITIES - CREATION
     auto rect = this->localEntities.createEntity("whiteRectangle");
     this->_entityManager.addComponent<Component::Render2D>(rect,
-           Component::render2dMapModels{
-            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}
-    });
+        Component::render2dMapModels{
+            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}});
     // ------------
     auto block = this->localEntities.createEntity("redBlock");
     raylib::MyVector3 blockPos(0, 20, 0);
@@ -73,7 +104,7 @@ void DebugScene::open()
     auto moveableEntity = this->localEntities.createEntity("movableEntity");
     raylib::MyVector3 moveableEntityPos(20, 20, 0);
     this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
-       std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
+        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(50, 50, 50), raylib::RColor::RMAGENTA));
     this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
     this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 20.0f, 0.0f);
     this->_entityManager.addComponent<Component::Hitbox>(moveableEntity, moveableEntityPos, raylib::MyVector3(50, 50, 50),
@@ -85,8 +116,20 @@ void DebugScene::open()
 
     ///// FACTORIES
     GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
-    GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "test");
-    GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
+    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(200, 200), raylib::MyVector2(50, 50),
+        "Asset/Interface/PowerUpBox.png", "testImage");
+    GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
+    GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
+    GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
+    std::cout << "---- BLOCK\n";
+    GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
+    GUI::SliderFactory::create(
+        this->localEntities, raylib::MyVector2(500, 160),
+        [](const Engine::Entity entity, GUI::sliderValue &value) {
+            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
+        },
+        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
     GUI::ButtonFactory::create(
         this->localEntities, {20, 20}, "my_button_label", GUI::ButtonFactory::getStandardButtonConfig(), "my_button_text");
 }
@@ -107,6 +150,9 @@ void DebugScene::update()
         hitbox.update();
         timer.update();
         this->eventDispatcher(this->_systemManager);
+        // METHOD FOR GETTING VALUE OF PROMPT
+        // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
+        // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY

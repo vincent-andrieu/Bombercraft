@@ -7,18 +7,18 @@
 
 #include "Text.hpp"
 
-#include <utility>
-
-raylib::Text::Text(
-    string text, const MyVector2 position, const size_t size, const RColor color, const std::shared_ptr<raylib::Font> &font)
-    : _text(std::move(text)), _position(position), _size(size), _font(font), _color(color)
+raylib::Text::Text(const string &text,
+    const MyVector2 position,
+    const size_t size,
+    const RColor color,
+    const std::shared_ptr<raylib::Font> &font)
+    : _text(text), _position(position), _size(size), _font(font), _color(color)
 {
     this->_limit = {-1, -1, -1, -1};
 }
 
-raylib::Text::Text(
-    string text, const raylib::MyVector2 position, const size_t size, const raylib::RColor color, const string &fontPath)
-    : _text(std::move(text)), _position(position), _size(size), _font(std::make_shared<raylib::Font>(fontPath)), _color(color)
+raylib::Text::Text(const string &text, const string &fontPath, MyVector2 position, size_t size, RColor color)
+    : _text(text), _position(position), _size(size), _font(std::make_shared<raylib::Font>(fontPath)), _color(color)
 {
     this->_limit = {-1, -1, -1, -1};
 }

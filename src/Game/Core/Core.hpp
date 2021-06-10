@@ -24,6 +24,7 @@
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
 #include "Components/FocusEvent/ClickFocusEvent.hpp"
+#include "Components/TextInputConfig/TextInputConfig.hpp"
 #include "Components/MouseMoveEvent.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
 

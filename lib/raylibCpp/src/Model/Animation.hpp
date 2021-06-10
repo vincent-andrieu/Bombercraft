@@ -31,11 +31,16 @@ namespace raylib
         [[nodiscard]] std::string getPath() const;
 
       private:
+        void getNewTexture(const std::string &texturePath);
+        char **goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count);
+        void LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath);
+        void setNewTexture();
+
         MyVector3 _position;
         MyVector3 _rotation;
         float _scale;
         RColor _color;
-        std::vector<Texture2D> _textures;
+        std::vector<std::vector<Texture2D>> _textures;
         std::string _path;
         std::vector<RModel> _models;
         size_t _currentFrame;
