@@ -19,7 +19,7 @@ raylib::Text::Text(
 }
 
 raylib::Text::Text(
-    const string &text, const raylib::MyVector2 position, const size_t size, const raylib::RColor color, const string &fontPath)
+    const string &text, const string &fontPath, const raylib::MyVector2 position, const size_t size, const raylib::RColor color)
 {
     this->_text = text;
     this->_position = position;
