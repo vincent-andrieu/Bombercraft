@@ -73,7 +73,7 @@ MyVector2 raylib::operator/(MyVector2 const &first, MyVector2 const &second)
     return MyVector2(one, two);
 }
 
-MyVector2 operator/(MyVector2 const &first, const float second)
+MyVector2 raylib::operator/(MyVector2 const &first, const float second)
 {
     float one = 0;
     float two = 0;
@@ -85,7 +85,7 @@ MyVector2 operator/(MyVector2 const &first, const float second)
     return MyVector2(one, two);
 }
 
-MyVector2 operator/(const float first, MyVector2 const &second)
+MyVector2 raylib::operator/(const float first, MyVector2 const &second)
 {
     float one = 0;
     float two = 0;
