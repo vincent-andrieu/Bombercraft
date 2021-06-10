@@ -9,10 +9,9 @@
 
 using namespace GUI;
 
-const Game::EventRequirement clickFocusRequirement(Game::evtMouse::RIGHT | Game::evtMouse::LEFT);
+static const Game::EventRequirement clickFocusRequirement(Game::evtMouse::RIGHT | Game::evtMouse::LEFT);
 
-const Game::EventRequirement inputHandlerRequireement(0,
-    false,
+static const Game::EventRequirement inputHandlerRequireement(0, false,
     {
         raylib::KeyBoard::IKEY_A,
         raylib::KeyBoard::IKEY_B,
@@ -44,7 +43,7 @@ const Game::EventRequirement inputHandlerRequireement(0,
         raylib::KeyBoard::IKEY_SPACE,
     });
 
-const std::map<raylib::KeyBoard, std::string> _letterMap = {
+static const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_A, std::string("a")},
     {raylib::KeyBoard::IKEY_B, std::string("b")},
     {raylib::KeyBoard::IKEY_C, std::string("c")},

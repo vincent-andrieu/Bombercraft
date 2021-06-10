@@ -35,6 +35,7 @@ set(SRCS
         src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
         src/GUI/Factories/TextInput/TextInputFactory.cpp
+        src/GUI/Factories/KeyInput/KeyInputFactory.cpp
         src/GUI/Factories/Checkbox/CheckboxFactory.cpp
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
@@ -60,6 +61,7 @@ set(SRCS
         src/Systems/Render2D/singleRender2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Physics/PhysicsSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp

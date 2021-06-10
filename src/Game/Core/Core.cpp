@@ -23,6 +23,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Component::KeyBox>();
+    //Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();
@@ -37,7 +39,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::_systemManager->createSystem<System::MouseEventSystem>();
     CoreData::_systemManager->createSystem<System::ClickFocusSystem>();
     CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::_systemManager->createSystem<System::PhysicsSystem>();
     CoreData::_systemManager->createSystem<System::HitboxSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));

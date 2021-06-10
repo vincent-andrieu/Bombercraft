@@ -125,6 +125,11 @@ void raylib::Animation::setPosition(const MyVector3 position)
     this->_position = position;
 }
 
+const raylib::MyVector3 &raylib::Animation::getPosition() const
+{
+    return this->_position;
+}
+
 void raylib::Animation::setRotation(const MyVector3 rotation)
 {
     float pitch = rotation.a;

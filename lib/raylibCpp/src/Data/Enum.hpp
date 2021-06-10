@@ -42,6 +42,7 @@ namespace raylib
 
     enum class KeyBoard
     {
+        IKEY_NULL = 0,
         IKEY_A,
         IKEY_B,
         IKEY_C,
