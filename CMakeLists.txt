@@ -35,6 +35,7 @@ set(SRCS
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Block/BlockFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -57,8 +58,6 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        # GUI
-        src/GUI/Entities/Block/Block.cpp
 )
 
 add_executable(${NAME} ${SRCS})
