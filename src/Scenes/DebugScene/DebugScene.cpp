@@ -11,6 +11,7 @@
 #include "GUI/Factories/Checkbox/CheckboxFactory.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/Image/ImageFactory.hpp"
+#include "Game/Factories/Map/MapFactory.hpp"
 
 using namespace Game;
 
@@ -98,7 +99,8 @@ void DebugScene::open()
     GUI::CountdownFactory::create(this->localEntities, {350, 0}, 60, "chrono");
     GUI::ImageFactory::create(this->localEntities, {200, 200}, {50, 50}, "Asset/Interface/PowerUpBox.png", "testImage");
     std::cout << "---- BLOCK\n";
-    GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
+    //GUI::BlockFactory::create(this->localEntities, {0, 0, 0}, GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
+    GUI::MapFactory::create(this->localEntities);
 }
 
 void DebugScene::update()

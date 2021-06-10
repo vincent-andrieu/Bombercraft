@@ -32,6 +32,7 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
 
 GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<size_t, size_t> &sizeDest)
 {
+    GameModule::MapType endMap;
     GameModule::ProceduralMap map(seed);
     std::vector<std::vector<int>> tab = Game::CoreData::settings->getTabTabInt("MAP_CONFIG");
     std::vector<std::vector<TileDisponibility>> settings;
@@ -52,8 +53,9 @@ GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<si
         {TileType::TILE_EMPTY, Game::CoreData::settings->getInt("EMPTY_POURCENT")},
         {TileType::TILE_SOFT, Game::CoreData::settings->getInt("SOFT__POURCENT")},
     });
+    endMap = map.getProceduralMap();
     sizeDest = map.getSize();
-    return map.getProceduralMap();
+    return endMap;
 }
 
 GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType tile)
