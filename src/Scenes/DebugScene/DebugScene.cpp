@@ -103,7 +103,7 @@ void DebugScene::open()
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
-        0, 100, 60);
+        "Yo", 0, 100, 60);
 }
 
 void DebugScene::update()

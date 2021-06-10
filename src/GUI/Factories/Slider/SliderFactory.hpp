@@ -15,6 +15,9 @@
 #define SLIDER_CONFIG_BACKGROUND_COLOR "SLIDER_BACKGROUND_COLOR"
 #define SLIDER_CONFIG_SELECTOR_SIZE    "SLIDER_SELECTOR_SIZE"
 #define SLIDER_CONFIG_SELECTOR_COLOR   "SLIDER_SELECTOR_COLOR"
+#define SLIDER_CONFIG_LABEL_SIZE       "SLIDER_LABEL_SIZE"
+#define SLIDER_CONFIG_LABEL_COLOR      "SLIDER_LABEL_COLOR"
+#define SLIDER_CONFIG_LABEL_FONT       "SLIDER_LABEL_FONT"
 
 namespace GUI
 {
@@ -27,7 +30,7 @@ namespace GUI
         ~SliderFactory() = delete;
 
         static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 &position, sliderHandler clickHandler,
-            sliderValue minValue = 0, sliderValue maxValue = 100, sliderValue defaultValue = 0);
+            const string &label = "", sliderValue minValue = 0, sliderValue maxValue = 100, sliderValue defaultValue = 0);
 
       private:
         static const Game::EventRequirement _clickHandlerRequirements;
