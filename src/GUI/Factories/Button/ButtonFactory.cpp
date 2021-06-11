@@ -9,7 +9,7 @@
 
 using namespace GUI;
 
-static const Game::EventRequirement clickHandlerRequirements(Game::evtMouse::LEFT);
+static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
 
 ButtonConfig ButtonFactory::getStandardButtonConfig()
 {
