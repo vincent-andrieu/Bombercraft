@@ -32,6 +32,7 @@ namespace Engine
         void setScene();
 
         std::shared_ptr<AbstractScene> getCurrentScene();
+        void updateScene();
 
       private:
         void setCurrentScene(std::shared_ptr<AbstractScene> scene);
@@ -40,6 +41,7 @@ namespace Engine
             std::shared_ptr<AbstractScene> _currentScene;
             std::vector<std::shared_ptr<AbstractScene>> _scenes;
             std::vector<std::reference_wrapper<const std::type_info>> _types;
+            std::shared_ptr<AbstractScene> _nextScene;
     };
 
     template <typename T, typename... Args>
@@ -93,7 +95,11 @@ namespace Engine
             throw std::exception();
         }
         index = std::distance(_types.begin(), type_it);
-        this->setCurrentScene(_scenes[index]);
+        if (_currentScene == nullptr) {
+            this->setCurrentScene(_scenes[index]);
+        } else {
+            _nextScene = _scenes[index];
+        }
     }
 }
 

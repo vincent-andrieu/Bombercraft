@@ -10,7 +10,7 @@
 using namespace Engine;
 
 SceneManager::SceneManager()
-    : _currentScene(nullptr)
+    : _currentScene(nullptr), _nextScene(nullptr)
 {
 }
 
@@ -38,5 +38,13 @@ void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
     _currentScene = scene;
     if (_currentScene) {
         _currentScene->open();
+    }
+}
+
+void SceneManager::updateScene()
+{
+    if (_nextScene != nullptr) {
+        this->setCurrentScene(_nextScene);
+        _nextScene = nullptr;
     }
 }
