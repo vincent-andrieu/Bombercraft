@@ -18,6 +18,8 @@
 #include "Components/FocusEvent/ClickFocusEvent.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "utilities.hpp"
+#include "Game/Factories/Sound/AudioFactory.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 
 using namespace Game;
 
@@ -57,6 +59,9 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
         timer.pause();
         std::cout << "Pause counter" << std::endl;
     }
+    // TEST AUDIO
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("Fight4");
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("ActiveBomb");
 };
 
 /// --------------------------------------------------------------------------------------------
@@ -129,6 +134,8 @@ void DebugScene::open()
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
         "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+    AudioFactory::create(this->localEntities, AudioType::MUSIC, "Asset/Music/Fight4.mp3", "Fight4");
+    AudioFactory::create(this->localEntities, AudioType::SOUND, "Asset/Sound/ActiveBomb.ogg", "ActiveBomb");
 }
 
 void DebugScene::update()
