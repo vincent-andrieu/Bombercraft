@@ -72,6 +72,7 @@ set(SRCS
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
+        src/Scenes/OptionsMenu/OptionsMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
