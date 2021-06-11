@@ -18,6 +18,7 @@ raylib::Animation::Animation(const std::string &texturePath, const string &dirpa
     this->_scale = 1.0f;
     this->_color = color;
     this->_textures = {};
+    this->_texturePath = texturePath;
     if (texturePath.compare("") != 0)
         getNewTexture(texturePath);
     this->_path = dirpath;
@@ -26,8 +27,11 @@ raylib::Animation::Animation(const std::string &texturePath, const string &dirpa
     if (DirectoryExists(_path.data())) {
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
-            if (IsFileExtension(filenames[i], ".obj"))
-                _models.push_back(LoadModel(filenames[i]));
+            if (IsFileExtension(filenames[i], ".obj")) {
+                std::tuple<std::string, std::string> mdr = {filenames[i], this->_texturePath};
+                auto tmp = raylib::Model::_loaderManager->load(mdr);
+                _models.push_back(tmp);
+            }
         }
         LeaveDirectoryAndClearFileNames(workingDirectory);
     }
@@ -35,15 +39,6 @@ raylib::Animation::Animation(const std::string &texturePath, const string &dirpa
 
 raylib::Animation::~Animation()
 {
-    for (size_t i = 0; i < this->_models.size(); i++) {
-        UnloadModel(this->_models[i]);
-    }
-    this->_models.clear();
-    for (size_t i = 0; i < _textures.size(); i++) {
-        for (size_t j = 0; j < _textures[i].size(); j++) {
-            UnloadTexture(_textures[i][j]);
-        }
-    }
 }
 
 void raylib::Animation::getNewTexture(const std::string &texturePath)
@@ -64,15 +59,15 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
                 subFilenames = goInDirectoryAndGetFileNames(filenames[i], &subCount);
                 for (size_t j = 0; j < (size_t) subCount; j++) {
                     if (!DirectoryExists(subFilenames[i]))
-                        _textures[_textures.size() - 1].push_back(LoadTexture(subFilenames[j]));
+                        _textures[_textures.size() - 1].push_back(raylib::Texture::_loaderManager->load(subFilenames[j]));
                 }
                 LeaveDirectoryAndClearFileNames(texturePath);
             } else if (FileExists(filenames[i]))
-                _textures.push_back({LoadTexture(filenames[i])});
+                _textures.push_back({raylib::Texture::_loaderManager->load(filenames[i])});
         }
         LeaveDirectoryAndClearFileNames(workingDirectory);
     } else if (FileExists(texturePath.data()))
-        _textures.push_back({LoadTexture(texturePath.data())});
+        _textures.push_back({raylib::Texture::_loaderManager->load(texturePath.data())});
 }
 
 char **raylib::Animation::goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count)
@@ -163,13 +158,10 @@ void raylib::Animation::setPath(const string &path)
     int count = 0;
 
     this->_path = path;
-    for (size_t i = 0; i < this->_models.size(); i++) {
-        UnloadModel(this->_models[i]);
-    }
     this->_models.clear();
     filenames = GetDirectoryFiles(this->_path.data(), &count);
     for (size_t i = 0; i < (size_t) count; i++) {
-        this->_models.push_back(LoadModel(filenames[i]));
+        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}));
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {
@@ -185,6 +177,7 @@ void raylib::Animation::setTexture(const std::string &texturePath)
     const char *workingDirectory = GetWorkingDirectory();
 
     if (texturePath.compare("") != 0) {
+        this->_texturePath = texturePath;
         getNewTexture(texturePath);
     }
     setNewTexture();

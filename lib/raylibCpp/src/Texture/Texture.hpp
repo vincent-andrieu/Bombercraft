@@ -16,8 +16,11 @@ namespace raylib
 {
     class Texture : public ITexture {
       public:
-        Texture(const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
-            const RColor color = RColor::RWHITE);
+        Texture(const string &path,
+            const MyVector2 size = {-1, -1},
+            const MyVector2 position = {0, 0},
+            const RColor color = RColor::RWHITE,
+            const bool scaleMode = true);
         ~Texture();
 
         void draw();
@@ -27,9 +30,19 @@ namespace raylib
         void setColor(const RColor color);
         void setPath(const string &path);
         void setSize(const MyVector2 size);
+        void setScaleMode(const bool mode);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
+
+        void setLoaderManager();
+        std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> getLoaderManager() const;
+
+        static std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> _loaderManager;
+
+      private:
+        static Texture2D myTextureLoad(const std::string &str);
+        static void myTextureUnload(Texture2D &texture);
 
       private:
         MyVector2 _position;
@@ -37,6 +50,7 @@ namespace raylib
         string _path;
         Texture2D _texture;
         Rectangle _size;
+        bool _scaleMode;
     };
 }; // namespace raylib
 

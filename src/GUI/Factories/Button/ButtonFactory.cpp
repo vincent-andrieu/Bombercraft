@@ -9,16 +9,16 @@
 
 using namespace GUI;
 
-static const Game::EventRequirement clickHandlerRequirements(Game::evtMouse::LEFT);
+static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
 
-ButtonConfig ButtonFactory::getStandardButtonConfig()
+ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &buttonSize)
 {
     ButtonConfig my_standard{
         Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_CLICKED_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"),
-        {180, 20},
+        buttonSize,
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         raylib::RColor::RWHITE,
         Game::CoreData::settings->getString("STANDARD_FONT"),
@@ -61,7 +61,6 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     };
     Component::eventScript my_clickHandler = [position, my_size, clickAction](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
-
         if (Game::CoreData::eventManager->MouseIsOverClicked(position, my_size)) {
             //            my_render.setActRender2D("clicked"); // TODO have click texture ?
             my_render.setActRender2D("hover");

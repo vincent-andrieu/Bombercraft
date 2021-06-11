@@ -17,7 +17,7 @@
 using namespace Game;
 
 /// [Test] - Event Handler
-static const EventRequirement clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
+static const EventRequirement clickHandlerRequirements(CLK_LEFT | CLK_RIGHT);
 static Component::eventScript clickHandler = [](const Engine::Entity) {
     // CoreData::entityManager
     // CoreData::sceneManager
@@ -28,7 +28,7 @@ static GUI::checkboxHandler checkboxHandler = [](UNUSED Engine::Entity, bool &va
     std::cout << "Checkbox: " << std::boolalpha << value << std::endl;
 };
 
-static const EventRequirement keyHandlerRequirements(0, false, {raylib::KeyBoard::IKEY_S}, {});
+static const EventRequirement keyHandlerRequirements({raylib::KeyBoard::IKEY_S}, {});
 static Component::eventScript keyHandler = [](const Engine::Entity) {
     auto scene = CoreData::sceneManager->getCurrentScene();
     auto entity = scene->localEntities.createAnonymousEntity();
@@ -65,7 +65,7 @@ void SplashScreenScene::update()
 {
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto physics = this->_systemManager.getSystem<Engine::PhysicsSystem>();
+        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
         auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();

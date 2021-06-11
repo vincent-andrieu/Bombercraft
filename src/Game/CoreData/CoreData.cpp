@@ -49,5 +49,8 @@ CoreData::~CoreData()
     CoreData::systemManager.reset();
     CoreData::camera.reset();
     CoreData::eventManager.reset();
+    raylib::Font::_loaderManager.reset();
+    raylib::Model::_loaderManager.reset();
+    raylib::Texture::_loaderManager.reset();
     CoreData::_window->close();
 }

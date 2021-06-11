@@ -10,13 +10,15 @@
 
 #include "../../include/object.hpp"
 
-#include "ITexture.hpp"
+#include "Texture.hpp"
 
 namespace raylib
 {
     class TextureSequence : public ITexture {
       public:
-        TextureSequence(const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
+        TextureSequence(const string &path,
+            const MyVector2 size = {-1, -1},
+            const MyVector2 position = {0, 0},
             const RColor color = RColor::RWHITE);
         ~TextureSequence();
 
@@ -27,6 +29,7 @@ namespace raylib
         void setColor(const RColor color);
         void setPath(const string &path);
         void setSize(const MyVector2 size);
+        void setScaleMode(const bool mode);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
@@ -39,6 +42,7 @@ namespace raylib
         size_t _currentFrame;
         size_t _frameNumber;
         Rectangle _size;
+        bool _scaleMode;
     };
 }; // namespace raylib
 

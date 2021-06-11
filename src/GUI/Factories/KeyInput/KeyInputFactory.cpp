@@ -9,9 +9,9 @@
 
 using namespace GUI;
 
-static const Game::EventRequirement clickFocusRequirement(Game::evtMouse::RIGHT | Game::evtMouse::LEFT);
+static const Game::EventRequirement clickFocusRequirement(Game::CLK_RIGHT | Game::CLK_LEFT);
 
-static const Game::EventRequirement inputHandlerRequireement(0, false,
+static const Game::EventRequirement inputHandlerRequireement(
     {
         raylib::KeyBoard::IKEY_A,
         raylib::KeyBoard::IKEY_B,
@@ -108,7 +108,7 @@ static const Game::EventRequirement inputHandlerRequireement(0, false,
         raylib::KeyBoard::IKEY_KP_ADD,
         raylib::KeyBoard::IKEY_KP_ENTER,
         raylib::KeyBoard::IKEY_KP_EQUAL,
-    });
+    }, {});
 
 static const std::map<raylib::KeyBoard, std::string> keytoStr = {
     {raylib::KeyBoard::IKEY_A, "A"},
@@ -150,8 +150,8 @@ static const std::map<raylib::KeyBoard, std::string> keytoStr = {
     {raylib::KeyBoard::IKEY_SPACE, "SPACE"},
     {raylib::KeyBoard::IKEY_UP, "KEY UP"},
     {raylib::KeyBoard::IKEY_DOWN, "KEY DOWN"},
-    {raylib::KeyBoard::IKEY_RIGHT, "KEY RIGHT"},
-    {raylib::KeyBoard::IKEY_LEFT, "KEY LEFT"},
+    {raylib::KeyBoard::IKEY_RIGHT, "KEY CLK_RIGHT"},
+    {raylib::KeyBoard::IKEY_LEFT, "KEY CLK_LEFT"},
     {raylib::KeyBoard::IKEY_BACKSPACE, "BACKSPACE"},
     {raylib::KeyBoard::IKEY_SPACE, "SPACE"},
     {raylib::KeyBoard::IKEY_ESCAPE, "ESCAPE"},
@@ -180,14 +180,14 @@ static const std::map<raylib::KeyBoard, std::string> keytoStr = {
     {raylib::KeyBoard::IKEY_F10, "F10"},
     {raylib::KeyBoard::IKEY_F11, "F11"},
     {raylib::KeyBoard::IKEY_F12, "F12"},
-    {raylib::KeyBoard::IKEY_L_SHIFT, "LEFT SHIFT"},
-    {raylib::KeyBoard::IKEY_L_CTRL, "LEFT CTRL"},
-    {raylib::KeyBoard::IKEY_L_ALT, "LEFT ALT"},
+    {raylib::KeyBoard::IKEY_L_SHIFT, "CLK_LEFT SHIFT"},
+    {raylib::KeyBoard::IKEY_L_CTRL, "CLK_LEFT CTRL"},
+    {raylib::KeyBoard::IKEY_L_ALT, "CLK_LEFT ALT"},
     {raylib::KeyBoard::IKEY_L_SUPER, "LEFT_SUPER"},
-    {raylib::KeyBoard::IKEY_R_SHIFT, "RIGHT SHIFT"},
-    {raylib::KeyBoard::IKEY_R_CTRL, "RIGHT CTRL"},
-    {raylib::KeyBoard::IKEY_R_ALT, "RIGHT ALT"},
-    {raylib::KeyBoard::IKEY_R_SUPER, "RIGHT SUPER"},
+    {raylib::KeyBoard::IKEY_R_SHIFT, "CLK_RIGHT SHIFT"},
+    {raylib::KeyBoard::IKEY_R_CTRL, "CLK_RIGHT CTRL"},
+    {raylib::KeyBoard::IKEY_R_ALT, "CLK_RIGHT ALT"},
+    {raylib::KeyBoard::IKEY_R_SUPER, "CLK_RIGHT SUPER"},
     {raylib::KeyBoard::IKEY_KP_0, "KP 0"},
     {raylib::KeyBoard::IKEY_KP_1, "KP 1"},
     {raylib::KeyBoard::IKEY_KP_2, "KP 2"},

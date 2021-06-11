@@ -11,6 +11,7 @@
 #include "../../include/object.hpp"
 
 #include "IFont.hpp"
+#include "../LoaderManager/LoaderManager.hpp"
 
 namespace raylib
 {
@@ -24,6 +25,13 @@ namespace raylib
         [[nodiscard]] RFont getFont() const;
 
         void reset();
+
+        static std::shared_ptr<raylib::LoaderManager<RFont, std::string>> _loaderManager;
+
+      private:
+        void setLoaderManager();
+        static RFont myFontLoad(const std::string &str);
+        static void myFontUnload(RFont &font);
 
       private:
         string _path;

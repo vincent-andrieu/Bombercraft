@@ -26,7 +26,7 @@ class ConfigFile : public IConfigFile {
     [[nodiscard]] int getInt(const std::string &name) const override;
     [[nodiscard]] float getFloat(const std::string &name) const override;
     [[nodiscard]] std::string getString(const std::string &name) const override;
-    [[nodiscard]] std::pair<int, int> getPaire(const std::string &name) const override;
+    [[nodiscard]] std::pair<int, int> getPair(const std::string &name) const override;
 
     [[nodiscard]] std::vector<int> getTabInt(const std::string &name) const override;
     [[nodiscard]] std::vector<std::vector<int>> getTabTabInt(const std::string &name) const override;
