@@ -9,8 +9,8 @@
 
 using namespace Game;
 
-std::shared_ptr<raylib::Camera> CoreData::camera = nullptr;
-std::shared_ptr<Engine::SystemManager> CoreData::systemManager = nullptr;
+std::unique_ptr<raylib::Camera> CoreData::camera = nullptr;
+std::unique_ptr<Engine::SystemManager> CoreData::systemManager = nullptr;
 std::shared_ptr<Engine::EntityManager> CoreData::entityManager = nullptr;
 std::shared_ptr<Engine::SceneManager> CoreData::sceneManager = nullptr;
 std::shared_ptr<raylib::Input> CoreData::eventManager = nullptr;
@@ -29,11 +29,11 @@ CoreData::CoreData()
     if (CoreData::systemManager == nullptr)
         CoreData::systemManager = std::make_unique<Engine::SystemManager>();
     if (CoreData::entityManager == nullptr)
-        CoreData::entityManager = std::make_unique<Engine::EntityManager>(*CoreData::systemManager);
+        CoreData::entityManager = std::make_shared<Engine::EntityManager>(*CoreData::systemManager);
     if (CoreData::sceneManager == nullptr)
-        CoreData::sceneManager = std::make_unique<Engine::SceneManager>();
+        CoreData::sceneManager = std::make_shared<Engine::SceneManager>();
     if (CoreData::eventManager == nullptr)
-        CoreData::eventManager = std::make_unique<raylib::Input>();
+        CoreData::eventManager = std::make_shared<raylib::Input>();
     if (CoreData::camera == nullptr) {
         CoreData::camera = std::make_unique<raylib::Camera>(CoreData::settings->getMyVector3("CAM_POSITION"),
             CoreData::settings->getMyVector3("CAM_TARGET"),
