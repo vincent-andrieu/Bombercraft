@@ -11,14 +11,14 @@ using namespace GUI;
 
 static const Game::EventRequirement clickHandlerRequirements(Game::evtMouse::LEFT);
 
-ButtonConfig ButtonFactory::getStandardButtonConfig()
+ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &buttonSize)
 {
     ButtonConfig my_standard{
         Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_CLICKED_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"),
-        {180, 20},
+        buttonSize,
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         raylib::RColor::RWHITE,
         Game::CoreData::settings->getString("STANDARD_FONT"),
