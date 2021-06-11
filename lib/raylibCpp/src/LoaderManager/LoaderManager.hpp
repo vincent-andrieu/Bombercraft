@@ -9,6 +9,7 @@
 #define LOADERMANAGER_HPP
 
 #include "ILoaderManager.hpp"
+#include <cstring>
 #include <functional>
 #include <unordered_map>
 
@@ -34,12 +35,16 @@ namespace raylib
 
             const toLoadType &load(const stringType &loadIn)
             {
+                std::string toLoad(loadIn);
+
+                if (std::strncmp(toLoad.c_str(), "./", 2) == 0)
+                    toLoad = toLoad.substr(2, toLoad.size());
                 try {
-                    return this->_storage.at(loadIn);
+                    return this->_storage.at(toLoad);
                 } catch (const std::out_of_range &e) {
                     (void) e;
-                    this->_storage[loadIn] = this->_loadingFunc(loadIn);
-                    return this->_storage.at(loadIn);
+                    this->_storage[toLoad] = this->_loadingFunc(toLoad);
+                    return this->_storage.at(toLoad);
                 }
             }
         
