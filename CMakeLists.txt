@@ -31,6 +31,7 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
+        src/Game/Factories/Sound/AudioFactory.cpp
         ## TMP
         src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
         src/Game/Factories/Map/Component/Matrix2D.cpp
@@ -56,10 +57,12 @@ set(SRCS
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
+        src/Components/Sound/Sound.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Audio/AudioSystem.cpp
         src/Systems/Physics/PhysicsSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
