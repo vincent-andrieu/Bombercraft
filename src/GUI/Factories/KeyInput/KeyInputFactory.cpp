@@ -249,7 +249,7 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
             Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
         for (auto const &x : keytoStr) {
-            if (focusState && Game::CoreData::eventManager->isKeyPressed(x.first)) {
+            if (focusState && x.first != raylib::KeyBoard::IKEY_NULL && Game::CoreData::eventManager->isKeyPressed(x.first)) {
                 keyInputHandler(childEntity, x);
                 textActual->setText(x.second);
                 keyBox.key = x.first;
