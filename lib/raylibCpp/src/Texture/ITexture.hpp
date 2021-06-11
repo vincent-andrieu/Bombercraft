@@ -10,6 +10,7 @@
 
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
+#include "../LoaderManager/LoaderManager.hpp"
 
 namespace raylib
 {
