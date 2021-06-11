@@ -21,7 +21,6 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
-        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -79,6 +78,8 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
+        # UTILITIES
+        src/Utilities/utilities.cpp
         )
 
 add_executable(${NAME} ${SRCS})

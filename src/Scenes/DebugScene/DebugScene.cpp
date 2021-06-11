@@ -23,6 +23,7 @@
 #include "utilities.hpp"
 #include "Game/Factories/Sound/AudioFactory.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 using namespace Game;
 
@@ -148,21 +149,33 @@ void DebugScene::open()
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
-        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+        "Value: ",
+        raylib::MyVector2(60, 10),
+        0,
+        100,
+        60);
     // Audio
     AudioFactory::create(this->localEntities, AudioType::MUSIC, "Asset/Music/Fight4.mp3", "Fight4");
     AudioFactory::create(this->localEntities, AudioType::SOUND, "Asset/Sound/ActiveBomb.ogg", "ActiveBomb");
     // Button
     GUI::ButtonFactory::create(localEntities,
-                               {20, 20},
-                               "my_label",
-                               GUI::ButtonFactory::getStandardButtonConfig(),
-                               "button_text",
-                               [](const Engine::Entity entity) {
-                                 std::cout << "Hello " << entity << std::endl;
-                               });
+        {20, 20},
+        "my_label",
+        GUI::ButtonFactory::getStandardButtonConfig(),
+        "button_text",
+        [](const Engine::Entity entity) {
+            std::cout << "Hello " << entity << std::endl;
+        });
+    GUI::ButtonFactory::create(localEntities,
+        ProportionUtilities::getProportion(CoreData::settings->getMyVector2("WIN_SIZE"), {50, 50}, {180, 20}, {50, 50}),
+        "my_other_label",
+        GUI::ButtonFactory::getStandardButtonConfig(),
+        "button_text",
+        [](const Engine::Entity entity) {
+            std::cout << "Hello " << entity << std::endl;
+        });
     // Map
-    GUI::MapFactory::create(this->localEntities);  // DIPLAY MAP
+    GUI::MapFactory::create(this->localEntities); // DIPLAY MAP
     /*
         "CAM_POSITION": {
             "a": 32
@@ -175,6 +188,12 @@ void DebugScene::open()
             "c": 3
         }
     */
+    ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
+
+    std::cout << my_utility.getProportion({40, 40}) << std::endl;
+    std::cout << my_utility.getProportion({50.0f, 50}, {50.0f, 50}, {50.0f, 50}) << std::endl;
+    std::cout << ProportionUtilities::getProportion({1920, 1080}, {80, 10}) << std::endl;
+    std::cout << ProportionUtilities::getProportion({1920, 1080}, {36, 22}, {50, 50}, {50, 50}) << std::endl;
 }
 
 void DebugScene::update()
@@ -198,8 +217,8 @@ void DebugScene::update()
         // METHOD FOR GETTING VALUE OF PROMPT
         // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
         // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
-        //METHOD FOR GETTING VALUE OF KEYINPUT
-        //std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
+        // METHOD FOR GETTING VALUE OF KEYINPUT
+        // std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY
