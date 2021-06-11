@@ -22,7 +22,7 @@ void KeyBindingMenuScene::open()
     this->_selectedPlayer = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(0);
     this->_playerNumberTitle = "Player " + toString(this->_selectedPlayer->getPlayerId());
     GUI::LabelFactory::create(this->localEntities,
-        this->_resizer(43, 1),
+        this->_resizer(44, 1),
         "Controls",
         {
             static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),
@@ -30,21 +30,26 @@ void KeyBindingMenuScene::open()
             CoreData::settings->getString("DEF_FONT"),
         });
 
-    // const Component::eventScript changePlayerHandler = [this](UNUSED const Engine::Entity &entity) {
-    //     this->_selectedPlayer = this->_playerConfigSystem.update(this->_selectedPlayer);
-    //     this->_playerNumberTitle = "Player " + toString(this->_selectedPlayer.getPlayerId());
-    // };
-    // GUI::ButtonFactory::create(this->localEntities,
-    //     MyVector2(200, 100),
-    //     "playerNumberTitle",
-    //     GUI::ButtonFactory::getStandardButtonConfig(),
-    //     this->_playerNumberTitle,
-    //     changePlayerHandler);
+    const Component::eventScript changePlayerHandler = [this](const Engine::Entity &entity) {
+        this->_selectedPlayer =
+            &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(*this->_selectedPlayer);
+        this->_playerNumberTitle = "Player " + toString(this->_selectedPlayer->getPlayerId());
+        std::cout << this->_playerNumberTitle << std::endl;
+        Game::CoreData::entityManager->getComponent<raylib>(entity).
+    };
+    GUI::ButtonFactory::create(this->localEntities,
+        this->_resizer(47, 10),
+        "playerNumberTitle",
+        GUI::ButtonFactory::getStandardButtonConfig(),
+        this->_playerNumberTitle,
+        changePlayerHandler);
 }
 
 void KeyBindingMenuScene::update()
 {
-    auto render2DSystem = CoreData::systemManager->getSystem<System::Render2DSystem>();
+    auto &render2DSystem = CoreData::systemManager->getSystem<System::Render2DSystem>();
 
+    std::cout << this->_playerNumberTitle << std::endl;
     render2DSystem.update();
+    this->eventDispatcher(this->_systemManager);
 }

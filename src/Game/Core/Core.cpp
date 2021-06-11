@@ -69,6 +69,19 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_R_SHIFT,
         });
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
+
+    entity = CoreData::entityManager->createEntity();
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        1,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_Z,
+            raylib::KeyBoard::IKEY_S,
+            raylib::KeyBoard::IKEY_Q,
+            raylib::KeyBoard::IKEY_D,
+            raylib::KeyBoard::IKEY_W,
+            raylib::KeyBoard::IKEY_L_ALT,
+        });
+    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
     CoreData::sceneManager->setScene<KeyBindingMenuScene>();
     // CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
