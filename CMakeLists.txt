@@ -79,7 +79,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        )
+        src/Scenes/PauseMenuScene/PauseMenuScene.cpp src/Scenes/PauseMenuScene/PauseMenuScene.hpp)
 
 add_executable(${NAME} ${SRCS})
 

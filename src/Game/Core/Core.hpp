@@ -20,6 +20,7 @@
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Systems/Event/EventSystem.hpp"
 #include "Systems/Physics/PhysicsSystem.hpp"
+#include "Scenes/PauseMenuScene/PauseMenuScene.hpp"
 
 #include "Scenes/DebugScene/DebugScene.hpp"
 #include "Scenes/SplashScreen/SplashScreenScene.hpp"

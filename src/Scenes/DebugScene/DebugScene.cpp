@@ -148,21 +148,25 @@ void DebugScene::open()
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
-        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+        "Value: ",
+        raylib::MyVector2(60, 10),
+        0,
+        100,
+        60);
     // Audio
     AudioFactory::create(this->localEntities, AudioType::MUSIC, "Asset/Music/Fight4.mp3", "Fight4");
     AudioFactory::create(this->localEntities, AudioType::SOUND, "Asset/Sound/ActiveBomb.ogg", "ActiveBomb");
     // Button
     GUI::ButtonFactory::create(localEntities,
-                               {20, 20},
-                               "my_label",
-                               GUI::ButtonFactory::getStandardButtonConfig(),
-                               "button_text",
-                               [](const Engine::Entity entity) {
-                                 std::cout << "Hello " << entity << std::endl;
-                               });
+        {20, 20},
+        "my_label",
+        GUI::ButtonFactory::getStandardButtonConfig(),
+        "button_text",
+        [](const Engine::Entity entity) {
+            std::cout << "Hello " << entity << std::endl;
+        });
     // Map
-    GUI::MapFactory::create(this->localEntities);  // DIPLAY MAP
+    //    GUI::MapFactory::create(this->localEntities); // DIPLAY MAP
     /*
         "CAM_POSITION": {
             "a": 32
@@ -182,13 +186,13 @@ void DebugScene::update()
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
         auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
-        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
+        //        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
         auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
 
         float dt = 1.0f / 10.0f;
-        physics.update(dt);
+        //        physics.update(dt);
         render3D.update();
         singleRender2D.update();
         render2D.update();
@@ -198,8 +202,8 @@ void DebugScene::update()
         // METHOD FOR GETTING VALUE OF PROMPT
         // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
         // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
-        //METHOD FOR GETTING VALUE OF KEYINPUT
-        //std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
+        // METHOD FOR GETTING VALUE OF KEYINPUT
+        // std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY
