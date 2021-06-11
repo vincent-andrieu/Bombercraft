@@ -63,6 +63,7 @@ set(SRCS
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
+        src/Components/PlayerConfig/PlayerConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render2D/singleRender2DSystem.cpp
@@ -70,16 +71,18 @@ set(SRCS
         src/Systems/Hitbox/HitboxSystem.cpp
         src/Systems/Audio/AudioSystem.cpp
         src/Systems/Physics/PhysicsSystem.cpp
+        src/Systems/PlayerConfig/PlayerConfigSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp
+        src/Scenes/KeyBindingMenu/KeyBindingMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        )
+    )
 
 add_executable(${NAME} ${SRCS})
 

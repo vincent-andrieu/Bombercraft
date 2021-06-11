@@ -21,14 +21,14 @@
 namespace GUI
 {
     struct ButtonConfig {
-        const std::string idleTexturePath;
-        const std::string hoverTexturePath;
-        const std::string clickedTexturePath;
-        const std::string unavailableTexturePath;
+        const string idleTexturePath;
+        const string hoverTexturePath;
+        const string clickedTexturePath;
+        const string unavailableTexturePath;
         const raylib::MyVector2 size;
         const std::size_t fontSize;
         const raylib::RColor fontColor;
-        const std::string fontPath;
+        const string fontPath;
         const Game::EventRequirement requirements;
     };
 
@@ -44,9 +44,9 @@ namespace GUI
 
         static void create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
-            const string &label,
+            const string &name,
             ButtonConfig const &conf,
-            const std::string &text,
+            const string &label,
             const Component::eventScript &clickAction);
     };
 } // namespace GUI

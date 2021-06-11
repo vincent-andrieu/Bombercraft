@@ -31,21 +31,21 @@ ButtonConfig ButtonFactory::getStandardButtonConfig()
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
-    const string &label,
+    const string &name,
     const GUI::ButtonConfig &conf,
-    const std::string &text, // TODO add click action, event script that would be captured in clickHandler and execute on click
+    const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
     const Component::eventScript &clickAction)
 {
     raylib::MyVector2 my_position(position);
     raylib::MyVector2 my_size(conf.size);
-    Engine::Entity entity = pack.createEntity(label);
+    Engine::Entity entity = pack.createEntity(name);
     Component::render2dMapModels my_textureModels(
         {{"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
             {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
             {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
             {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}});
-    Component::render2dMapModels my_textModel({{"text",
-        std::make_shared<raylib::Text>(text,
+    Component::render2dMapModels my_textModel({{"label",
+        std::make_shared<raylib::Text>(label,
             my_position,
             conf.fontSize,
             conf.fontColor,

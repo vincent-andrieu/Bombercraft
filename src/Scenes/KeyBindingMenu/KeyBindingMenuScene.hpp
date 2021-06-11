@@ -10,21 +10,14 @@
 
 #include "GameEngine.hpp"
 #include "Systems/Render2D/Render2DSystem.hpp"
-#include "Game/Core/Core.hpp"
+#include "Game/CoreData/CoreData.hpp"
+#include "Systems/PlayerConfig/PlayerConfigSystem.hpp"
+#include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 
 #define CONF_GET_KEYBINDING(name) static_cast<raylib::KeyBoard>(Game::CoreData::settings->getInt(name))
 
 namespace Game
 {
-    struct KeyBindings {
-        raylib::KeyBoard moveUp;
-        raylib::KeyBoard moveDown;
-        raylib::KeyBoard moveLeft;
-        raylib::KeyBoard moveRight;
-        raylib::KeyBoard pause;
-        raylib::KeyBoard placeBomb;
-    };
-
     // static const std::array<KeyBindings, MAX_PLAYERS> defaultKeyBindings{{
     //     {
     //         raylib::KeyBoard::IKEY_Z,
@@ -69,10 +62,9 @@ namespace Game
 
         void update() override;
 
-        static std::array<KeyBindings, MAX_PLAYERS> usersKeyBindings;
-
-      protected:
-        uint _selectedPlayer = 0;
+      private:
+        string _playerNumberTitle;
+        Component::PlayerConfig *_selectedPlayer;
     };
 } // namespace Game
 
