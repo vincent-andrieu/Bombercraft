@@ -10,9 +10,9 @@
 raylib::Sound::Sound(const string &path, const float volume, const float pitch)
 {
     this->_path = path;
+    this->_sound = LoadSound(path.data());
     this->setVolume(volume);
     this->setPitch(pitch);
-    this->_sound = LoadSound(path.data());
 }
 
 raylib::Sound::~Sound()
