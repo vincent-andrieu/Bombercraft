@@ -23,6 +23,8 @@ namespace Game
         CoreData();
         ~CoreData();
 
+        static void moveCamera(const raylib::MyVector3 &position, const raylib::MyVector3 &target);
+
       public:
         static std::unique_ptr<ConfigFile> settings;
         static std::unique_ptr<raylib::Camera> camera;
