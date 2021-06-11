@@ -61,8 +61,6 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     };
     Component::eventScript my_clickHandler = [position, my_size, clickAction](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::SingleRender2D>(entity));
-        std::cout << "My Size: " << my_size << std::endl;
-        std::cout << "My position: " << position << std::endl;
         if (Game::CoreData::eventManager->MouseIsOverClicked(position, my_size)) {
             //            my_render.setActRender2D("clicked"); // TODO have click texture ?
             my_render.setActRender2D("hover");
