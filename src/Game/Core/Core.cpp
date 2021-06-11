@@ -10,6 +10,7 @@
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
+#include "Components/StringChoice/StringChoice.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Game/Factories/Map/Component/Matrix2D.hpp"
 
@@ -29,6 +30,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
     CoreData::entityManager->registerComponent<Component::KeyBox>();
+    CoreData::entityManager->registerComponent<Component::StringChoice>();
     // Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();

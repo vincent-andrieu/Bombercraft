@@ -62,6 +62,7 @@ set(SRCS
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
+        src/Components/StringChoice/StringChoice.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render2D/singleRender2DSystem.cpp
