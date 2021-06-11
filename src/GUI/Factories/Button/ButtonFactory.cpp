@@ -34,7 +34,7 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const string &name,
     const GUI::ButtonConfig &conf,
     const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
-    const Component::eventScript &clickAction)
+    const Component::eventScript clickAction)
 {
     raylib::MyVector2 my_position(position);
     raylib::MyVector2 my_size(conf.size);

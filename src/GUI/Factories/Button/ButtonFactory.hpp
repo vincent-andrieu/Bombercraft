@@ -47,7 +47,7 @@ namespace GUI
             const string &name,
             ButtonConfig const &conf,
             const string &label,
-            const Component::eventScript &clickAction);
+            const Component::eventScript clickAction);
     };
 } // namespace GUI
 

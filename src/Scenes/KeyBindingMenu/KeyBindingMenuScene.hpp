@@ -14,6 +14,8 @@
 #include "Systems/PlayerConfig/PlayerConfigSystem.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Utilities/ProportionUtilities.hpp"
+#include "GUI/Factories/Button/ButtonFactory.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
 
 #define CONF_GET_KEYBINDING(name) static_cast<raylib::KeyBoard>(Game::CoreData::settings->getInt(name))
 
@@ -64,6 +66,16 @@ namespace Game
         void update() override;
 
       private:
+        void _createKeysLabel();
+        void _createResetKeys();
+        void _createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler);
+
+        const GUI::LabelConfig _defaultLabelConfig = {
+            static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),
+            raylib::RColor::RWHITE,
+            CoreData::settings->getString("DEF_FONT"),
+        };
+        const GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getStandardButtonConfig();
         Component::PlayerConfig *_selectedPlayer;
         ProportionUtilities _resizer;
     };

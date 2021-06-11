@@ -10,7 +10,7 @@
 using namespace Component;
 
 Component::PlayerConfig::PlayerConfig(const uint playerId, PlayerKeyBindings defaultKeyBinding)
-    : _id(playerId), _keyBindings(defaultKeyBinding)
+    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding)
 {
 }
 
@@ -18,6 +18,7 @@ PlayerConfig &PlayerConfig::operator=(const PlayerConfig &src)
 {
     this->_id = src._id;
     this->_keyBindings = src._keyBindings;
+    this->_defaultKeyBinding = src._defaultKeyBinding;
 
     return *this;
 }
@@ -30,6 +31,11 @@ const uint &Component::PlayerConfig::getPlayerId() const
 const PlayerKeyBindings &Component::PlayerConfig::getPlayerKeyBindings() const
 {
     return this->_keyBindings;
+}
+
+const PlayerKeyBindings &PlayerConfig::getPlayerDefaultKeyBindings() const
+{
+    return this->_defaultKeyBinding;
 }
 
 void PlayerConfig::setKeyMoveUp(const raylib::KeyBoard &key)

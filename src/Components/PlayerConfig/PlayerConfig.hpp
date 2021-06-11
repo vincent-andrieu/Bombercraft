@@ -31,6 +31,7 @@ namespace Component
 
         const uint &getPlayerId() const;
         const PlayerKeyBindings &getPlayerKeyBindings() const;
+        const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         void setKeyMoveUp(const raylib::KeyBoard &key);
         void setKeyMoveDown(const raylib::KeyBoard &key);
         void setKeyMoveLeft(const raylib::KeyBoard &key);
@@ -41,6 +42,7 @@ namespace Component
       private:
         uint _id;
         PlayerKeyBindings _keyBindings;
+        PlayerKeyBindings _defaultKeyBinding;
     };
 } // namespace Component
 
