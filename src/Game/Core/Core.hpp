@@ -20,6 +20,7 @@
 #include "Systems/Event/EventSystem.hpp"
 
 #include "Scenes/DebugScene/DebugScene.hpp"
+#include "Scenes/SplashScreen/SplashScreenScene.hpp"
 
 #include "Components/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"

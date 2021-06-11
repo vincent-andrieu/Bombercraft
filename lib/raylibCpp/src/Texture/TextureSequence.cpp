@@ -12,6 +12,7 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
     const char *workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
+    std::vector<std::string> vectorOfFilenames = {};
 
     this->_path = path;
     this->_position = position;
@@ -25,7 +26,13 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
         this->_frameNumber = count;
         ChangeDirectory(_path.data());
         for (size_t i = 0; i < (size_t) count; i++) {
-            _textures.push_back(LoadTexture(filenames[i]));
+            vectorOfFilenames.push_back(filenames[i]);
+        }
+        std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
+        for (size_t i = 0; i < (size_t) count; i++) {
+            if (!DirectoryExists(vectorOfFilenames[i].data())) {
+                _textures.push_back(LoadTexture(vectorOfFilenames[i].data()));
+            }
         }
         ClearDirectoryFiles();
         ChangeDirectory(workingDirectory);
@@ -42,11 +49,12 @@ raylib::TextureSequence::~TextureSequence()
 void raylib::TextureSequence::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
+    Rectangle ogRect = {0, 0, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
 
     if (_size.width == -1)
-        DrawTexture(this->_textures[_currentFrame], this->_position.a, this->_position.b, _matchingColors.at(this->_color));
+        DrawTexturePro(this->_textures[_currentFrame], ogRect, ogRect, rayPos, 0, _matchingColors.at(this->_color));
     else
-        DrawTextureRec(this->_textures[_currentFrame], this->_size, rayPos, _matchingColors.at(this->_color));
+        DrawTexturePro(this->_textures[_currentFrame], ogRect, this->_size, rayPos, 0, _matchingColors.at(this->_color));
 }
 
 void raylib::TextureSequence::update()

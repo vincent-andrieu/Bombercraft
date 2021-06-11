@@ -39,6 +39,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::_systemManager));
     CoreData::sceneManager->setScene<DebugScene>();
 }
 
