@@ -48,8 +48,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
                  std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath)))},
             {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
             {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
-            {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
-            {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}});
+            /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
+            /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
     Component::eventScript my_moveHandler = [position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
@@ -72,6 +72,6 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
     my_render.unsetToDraw("hover");
-    my_render.unsetToDraw("clicked");
-    my_render.unsetToDraw("unavailable");
+    //    my_render.unsetToDraw("clicked");
+    //    my_render.unsetToDraw("unavailable");
 }
