@@ -13,8 +13,8 @@
 #include "IFactoryData.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
-#include "Components/ClickEvent.hpp"
-#include "Components/MouseMoveEvent.hpp"
+#include "Components/ClickEvent/ClickEvent.hpp"
+#include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Components/Render2D/Render2D.hpp"
 #include "Components/Render2D/SingleRender2D.hpp"
 

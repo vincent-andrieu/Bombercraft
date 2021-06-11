@@ -9,10 +9,10 @@
 #define EVENTSYSTEM_HPP
 
 #include "GameEngine.hpp"
-#include "Components/ClickEvent.hpp"
+#include "Components/ClickEvent/ClickEvent.hpp"
 #include "Components/FocusEvent/ClickFocusEvent.hpp"
 #include "Components/KeyEvent.hpp"
-#include "Components/MouseMoveEvent.hpp"
+#include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
 namespace System

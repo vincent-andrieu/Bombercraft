@@ -9,7 +9,7 @@
 #define SLIDER_ENTITY_HPP
 
 #include "Game/CoreData/CoreData.hpp"
-#include "Components/ClickEvent.hpp"
+#include "Components/ClickEvent/ClickEvent.hpp"
 
 #define SLIDER_CONFIG_SIZE             "SLIDER_SIZE"
 #define SLIDER_CONFIG_BACKGROUND_COLOR "SLIDER_BACKGROUND_COLOR"
@@ -29,17 +29,26 @@ namespace GUI
         SliderFactory() = delete;
         ~SliderFactory() = delete;
 
-        static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 &position, sliderHandler clickHandler,
-            const string &label = "", const raylib::MyVector2 &labelPos = raylib::MyVector2(0, 0), sliderValue minValue = 0,
-            sliderValue maxValue = 100, sliderValue defaultValue = 0);
+        static void create(Engine::EntityPack &entityPack,
+            const raylib::MyVector2 &position,
+            sliderHandler clickHandler,
+            const string &label = "",
+            const raylib::MyVector2 &labelPos = raylib::MyVector2(0, 0),
+            sliderValue minValue = 0,
+            sliderValue maxValue = 100,
+            sliderValue defaultValue = 0);
 
       private:
         static const Game::EventRequirement _clickHandlerRequirements;
-        static float _getRangeValue(const float &origin, const sliderValue &minValue, const sliderValue &maxValue,
-            const sliderValue &value, const float &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).a,
+        static float _getRangeValue(const float &origin,
+            const sliderValue &minValue,
+            const sliderValue &maxValue,
+            const sliderValue &value,
+            const float &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).a,
             const float &selectorSize = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE).a);
 
-        static sliderValue _getValueFromRange(const float &position, const sliderValue &maxValue,
+        static sliderValue _getValueFromRange(const float &position,
+            const sliderValue &maxValue,
             const raylib::MyVector2 &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE));
 
         static const raylib::MyVector2 _getSliderMousePos(const raylib::MyVector2 &position,

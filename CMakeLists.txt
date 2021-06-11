@@ -57,8 +57,8 @@ set(SRCS
         src/Components/Render2D/SingleRender2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
-        src/Components/ClickEvent.cpp
-        src/Components/MouseMoveEvent.cpp
+        src/Components/ClickEvent/ClickEvent.cpp
+        src/Components/MouseMoveEvent/MouseMoveEvent.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
