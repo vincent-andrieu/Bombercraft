@@ -51,9 +51,7 @@ set(SRCS
         src/Game/IABomberman/IACore.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
-        src/Components/Render2D/ARender2D.cpp
         src/Components/Render2D/Render2D.cpp
-        src/Components/Render2D/SingleRender2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
         src/Components/ClickEvent/ClickEvent.cpp
@@ -65,7 +63,6 @@ set(SRCS
         src/Components/PlayerConfig/PlayerConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
-        src/Systems/Render2D/singleRender2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
         src/Systems/Audio/AudioSystem.cpp

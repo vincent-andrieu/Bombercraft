@@ -8,19 +8,43 @@
 #ifndef RENDER2D_HPP
 #define RENDER2D_HPP
 
-#include "ARender2D.hpp"
+#include "GameEngine.hpp"
+#include "raylib.hpp"
+#include <memory>
+#include <vector>
+#include <unordered_map>
+#include <map>
+#include <set>
 
 namespace Component
 {
-    class Render2D : public ARender2D, public Engine::Component<Render2D> {
+    using render2dMapModels = std::unordered_map<std::string, std::shared_ptr<raylib::IRenderable>>;
+    //    using render2dMapModels = std::map<std::string, std::shared_ptr<raylib::IRenderable>>;
+
+    class Render2D : public Engine::Component<Render2D> {
       public:
         explicit Render2D(render2dMapModels const &models);
         ~Render2D() = default;
 
-        void draw() override;
+        void draw();
+
+        void add(std::shared_ptr<raylib::IRenderable> model, const std::string &label);
+        void remove(const std::string &label);
+
+        std::shared_ptr<raylib::IRenderable> &get(const std::string &label);
+
+        void unsetToDraw(const std::string &label);
+        void setToDrawFirst(const std::string &label);
+        void setToDrawLast(const std::string &label);
 
         bool save(Engine::SaveManager &saver) const override;
         bool load(Engine::SaveManager &saver) override;
+
+      protected:
+        std::vector<std::shared_ptr<raylib::IRenderable>> _models;
+        std::unordered_map<std::string, std::size_t> _modelIndex;
+        std::unordered_map<std::size_t, std::string> _labelIndex;
+        std::set<std::size_t> _modelsToDrawIndex;
     };
 } // namespace Component
 

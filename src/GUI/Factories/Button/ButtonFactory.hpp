@@ -16,7 +16,6 @@
 #include "Components/ClickEvent/ClickEvent.hpp"
 #include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Components/Render2D/Render2D.hpp"
-#include "Components/Render2D/SingleRender2D.hpp"
 
 namespace GUI
 {

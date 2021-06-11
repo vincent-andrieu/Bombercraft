@@ -20,7 +20,6 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Matrix2D>();
     CoreData::entityManager->registerComponent<Component::Render2D>();
-    CoreData::entityManager->registerComponent<Component::SingleRender2D>();
     CoreData::entityManager->registerComponent<Component::Render3D>();
     CoreData::entityManager->registerComponent<Component::ClickEvent>();
     CoreData::entityManager->registerComponent<Component::ClickFocusEvent>();
@@ -40,7 +39,6 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
-    CoreData::systemManager->createSystem<System::singleRender2DSystem>();
     CoreData::systemManager->createSystem<System::ClickEventSystem>();
     CoreData::systemManager->createSystem<System::KeyEventSystem>();
     CoreData::systemManager->createSystem<System::MouseEventSystem>();
@@ -84,7 +82,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
     CoreData::sceneManager->setScene<KeyBindingMenuScene>();
-    // CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
+    // CoreData::sceneManager->createScene<PauseMenuScene>(*CoreData::systemManager);
     // CoreData::sceneManager->setScene<MainMenuScene>();
 }
 
