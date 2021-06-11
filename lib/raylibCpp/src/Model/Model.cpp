@@ -34,8 +34,7 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
         }
     }
     this->_path = filepath;
-    if (FileExists(filepath.data()))
-        this->_model = LoadModel(filepath.data());
+    this->_model = LoadModel(filepath.data());
     if (_textures.size() == 0)
         return;
     for (size_t i = 0; i < _model.materialCount; i++) {
