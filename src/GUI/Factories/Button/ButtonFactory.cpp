@@ -39,11 +39,12 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     raylib::MyVector2 my_position(position);
     raylib::MyVector2 my_size(conf.size);
     Engine::Entity entity = pack.createEntity(name);
-    Component::render2dMapModels my_textureModels(
-        {{"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
-            {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
-            {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
-            {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}});
+    Component::render2dMapModels my_textureModels({
+        {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
+        {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
+        {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
+        {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)},
+    });
     Component::render2dMapModels my_textModel({{"label",
         std::make_shared<raylib::Text>(label,
             my_position,
