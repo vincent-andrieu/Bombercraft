@@ -29,7 +29,7 @@ namespace GUI
         const std::size_t fontSize;
         const raylib::RColor fontColor;
         const std::string fontPath;
-        const Game::EventRequirement requirements;
+        const Game::EventRequirement &requirements;
     };
 
     class ButtonFactory {
