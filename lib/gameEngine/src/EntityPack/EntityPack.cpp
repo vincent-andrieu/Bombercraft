@@ -53,3 +53,12 @@ void Engine::EntityPack::unload()
         _entityManager.removeEntity(e);
     }
 }
+
+void Engine::EntityPack::removeEntity(const string &key)
+{
+    if (_entities.find(key) == _entities.end()) {
+        throw std::invalid_argument("Key not found");
+    }
+    _entityManager.removeEntity(_entities[key]);
+    _entities.erase(key);
+}

@@ -32,6 +32,8 @@ namespace raylib
             void setVolume(const float volume);
             void setPitch(const float pitch);
 
+            bool isPlaying() const;
+
         private :
             std::string _path;
             float _volume;

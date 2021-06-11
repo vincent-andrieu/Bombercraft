@@ -8,12 +8,9 @@
 #include "Texture.hpp"
 
 raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color)
+    : _path(path), _position(position), _color(color), _texture(LoadTexture(path.data())),
+      _size({this->_position.a, this->_position.b, size.a, size.b})
 {
-    this->_path = path;
-    this->_position = position;
-    this->_color = color;
-    this->_texture = LoadTexture(path.data());
-    this->_size = {this->_position.a, this->_position.b, size.a, size.b};
 }
 
 raylib::Texture::~Texture()

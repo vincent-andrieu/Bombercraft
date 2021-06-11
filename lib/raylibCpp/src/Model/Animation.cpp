@@ -55,14 +55,18 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     const char *workingDirectory = GetWorkingDirectory();
 
     if (DirectoryExists(texturePath.data())) {
-        filenames = goInDirectoryAndGetFileNames(_path, &count);
+        filenames = goInDirectoryAndGetFileNames(texturePath, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
+            if (strcmp(filenames[i], "..") == 0 || strcmp(filenames[i], ".") == 0)
+                continue;
             if (DirectoryExists(filenames[i])) {
                 _textures.push_back({});
                 subFilenames = goInDirectoryAndGetFileNames(filenames[i], &subCount);
-                for (size_t j = 0; j < (size_t) subCount; j++)
-                    _textures[_textures.size() - 1].push_back(LoadTexture(subFilenames[j]));
-                LeaveDirectoryAndClearFileNames(_path);
+                for (size_t j = 0; j < (size_t) subCount; j++) {
+                    if (!DirectoryExists(subFilenames[i]))
+                        _textures[_textures.size() - 1].push_back(LoadTexture(subFilenames[j]));
+                }
+                LeaveDirectoryAndClearFileNames(texturePath);
             } else if (FileExists(filenames[i]))
                 _textures.push_back({LoadTexture(filenames[i])});
         }
@@ -119,6 +123,11 @@ void raylib::Animation::draw()
 void raylib::Animation::setPosition(const MyVector3 position)
 {
     this->_position = position;
+}
+
+const raylib::MyVector3 &raylib::Animation::getPosition() const
+{
+    return this->_position;
 }
 
 void raylib::Animation::setRotation(const MyVector3 rotation)

@@ -7,7 +7,7 @@
 
 #include "Rectangle.hpp"
 
-raylib::Rectangle::Rectangle(const MyVector2 position, const MyVector2 size, const RColor color)
+raylib::Rectangle::Rectangle(const MyVector2 position, const MyVector2 size, const RColor color, int i)
 {
     this->_position = position;
     this->_size = size;

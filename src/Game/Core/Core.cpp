@@ -8,14 +8,18 @@
 #include "Core.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
+#include "Components/Sound/Sound.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
+#include "Game/Factories/Map/Component/Matrix2D.hpp"
 
 using namespace Game;
 
 Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 {
-    CoreData::_window->open();
     /// COMPONENTS - DEFINITION
+    CoreData::entityManager->registerComponent<Component::Matrix2D>();
     CoreData::entityManager->registerComponent<Component::Render2D>();
+    CoreData::entityManager->registerComponent<Component::SingleRender2D>();
     CoreData::entityManager->registerComponent<Component::Render3D>();
     CoreData::entityManager->registerComponent<Component::ClickEvent>();
     CoreData::entityManager->registerComponent<Component::ClickFocusEvent>();
@@ -23,23 +27,30 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Component::KeyBox>();
+    // Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();
     CoreData::entityManager->registerComponent<Component::Chrono>();
+    CoreData::entityManager->registerComponent<Component::TextInputConfig>();
+    CoreData::entityManager->registerComponent<Component::Sound>();
     /// SYSTEMS - CREATION
-    CoreData::_systemManager->createSystem<System::Render3DSystem>();
-    CoreData::_systemManager->createSystem<System::Render2DSystem>();
-    CoreData::_systemManager->createSystem<System::ClickEventSystem>();
-    CoreData::_systemManager->createSystem<System::KeyEventSystem>();
-    CoreData::_systemManager->createSystem<System::MouseEventSystem>();
-    CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<System::HitboxSystem>();
+    CoreData::systemManager->createSystem<System::Render3DSystem>();
+    CoreData::systemManager->createSystem<System::Render2DSystem>();
+    CoreData::systemManager->createSystem<System::singleRender2DSystem>();
+    CoreData::systemManager->createSystem<System::ClickEventSystem>();
+    CoreData::systemManager->createSystem<System::KeyEventSystem>();
+    CoreData::systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::systemManager->createSystem<System::ClickFocusSystem>();
+    CoreData::systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<System::HitboxSystem>();
+    CoreData::systemManager->createSystem<System::AudioSystem>();
     // SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
-    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
-    CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->setScene<DebugScene>();
 }
 
@@ -50,5 +61,4 @@ void Core::loop()
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
     }
-    CoreData::_window->close();
 }

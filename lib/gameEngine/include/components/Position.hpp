@@ -13,7 +13,7 @@
 namespace Engine
 {
     struct Position : public Component<Position> {
-        Position(float x, float y) : x(x), y(y)
+        Position(float x, float y, float z = 0) : x(x), y(y), z(z)
         {
         }
         Position() : x(0), y(0)
@@ -22,6 +22,7 @@ namespace Engine
 
         float x;
         float y;
+        float z;
     };
 } // namespace Engine
 

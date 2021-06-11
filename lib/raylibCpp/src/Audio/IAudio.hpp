@@ -22,6 +22,8 @@ namespace raylib
         virtual void pause() = 0;
         virtual void update() = 0;
 
+        virtual bool isPlaying() const = 0;
+
         virtual void setPath(const string &path) = 0;
         virtual void setVolume(const float volume) = 0;
         virtual void setPitch(const float pitch) = 0;

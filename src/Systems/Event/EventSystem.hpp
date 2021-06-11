@@ -10,6 +10,7 @@
 
 #include "GameEngine.hpp"
 #include "Components/ClickEvent.hpp"
+#include "Components/FocusEvent/ClickFocusEvent.hpp"
 #include "Components/KeyEvent.hpp"
 #include "Components/MouseMoveEvent.hpp"
 #include "Game/CoreData/CoreData.hpp"
@@ -35,6 +36,7 @@ namespace System
     };
 
     using ClickEventSystem = EventSystem<Component::ClickEvent>;
+    using ClickFocusSystem = EventSystem<Component::ClickFocusEvent>;
     using KeyEventSystem = EventSystem<Component::KeyEvent>;
     using MouseEventSystem = EventSystem<Component::MouseMoveEvent>;
 } // namespace System

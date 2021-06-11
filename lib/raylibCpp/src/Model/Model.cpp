@@ -21,10 +21,11 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
     this->_texturePath = texturePath;
     if (texturePath.compare("") != 0) {
         if (DirectoryExists(texturePath.data())) {
-            filenames = GetDirectoryFiles(_path.data(), &count);
-            ChangeDirectory(_path.data());
+            filenames = GetDirectoryFiles(_texturePath.data(), &count);
+            ChangeDirectory(_texturePath.data());
             for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
+                if (!DirectoryExists(filenames[i]))
+                    _textures.push_back(LoadTexture(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
@@ -59,6 +60,11 @@ void raylib::Model::draw()
 void raylib::Model::setPosition(const MyVector3 position)
 {
     this->_position = position;
+}
+
+const raylib::MyVector3 &raylib::Model::getPosition() const
+{
+    return this->_position;
 }
 
 void raylib::Model::setRotation(const MyVector3 rotation)
