@@ -25,7 +25,7 @@ namespace Game
 
         void open();
 
-        void update();
+        void update() override;
     };
 } // namespace Game
 
