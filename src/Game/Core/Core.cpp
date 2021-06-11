@@ -8,6 +8,8 @@
 #include "Core.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
+#include "Components/Sound/Sound.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 #include "Game/Factories/Map/Component/Matrix2D.hpp"
 
 using namespace Game;
@@ -32,19 +34,21 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Engine::Script>();
     CoreData::entityManager->registerComponent<Component::Chrono>();
     CoreData::entityManager->registerComponent<Component::TextInputConfig>();
+    CoreData::entityManager->registerComponent<Component::Sound>();
     /// SYSTEMS - CREATION
-    CoreData::_systemManager->createSystem<System::Render3DSystem>();
-    CoreData::_systemManager->createSystem<System::Render2DSystem>();
-    CoreData::_systemManager->createSystem<System::ClickEventSystem>();
-    CoreData::_systemManager->createSystem<System::KeyEventSystem>();
-    CoreData::_systemManager->createSystem<System::MouseEventSystem>();
-    CoreData::_systemManager->createSystem<System::ClickFocusSystem>();
-    CoreData::_systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
-    CoreData::_systemManager->createSystem<System::PhysicsSystem>();
-    CoreData::_systemManager->createSystem<System::HitboxSystem>();
+    CoreData::systemManager->createSystem<System::Render3DSystem>();
+    CoreData::systemManager->createSystem<System::Render2DSystem>();
+    CoreData::systemManager->createSystem<System::ClickEventSystem>();
+    CoreData::systemManager->createSystem<System::KeyEventSystem>();
+    CoreData::systemManager->createSystem<System::MouseEventSystem>();
+    CoreData::systemManager->createSystem<System::ClickFocusSystem>();
+    CoreData::systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
+    CoreData::systemManager->createSystem<System::HitboxSystem>();
+    CoreData::systemManager->createSystem<System::AudioSystem>();
     // SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>((*CoreData::_systemManager));
-    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::_systemManager));
+    CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->setScene<DebugScene>();
 }
 
