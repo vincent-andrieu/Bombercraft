@@ -46,7 +46,7 @@ CoreData::~CoreData()
     CoreData::settings.reset();
     CoreData::sceneManager.reset();
     CoreData::entityManager.reset();
-    CoreData::_systemManager.reset();
+    CoreData::systemManager.reset();
     CoreData::camera.reset();
     CoreData::eventManager.reset();
     CoreData::_window->close();
