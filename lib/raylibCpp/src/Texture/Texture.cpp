@@ -7,9 +7,9 @@
 
 #include "Texture.hpp"
 
-raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color)
+raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color, const bool scaleMode)
     : _path(path), _position(position), _color(color), _texture(LoadTexture(path.data())),
-      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true)
+      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(scaleMode)
 {
 }
 
@@ -22,12 +22,13 @@ void raylib::Texture::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
     Rectangle ogRect = {0, 0, (float) _texture.width, (float) _texture.height};
+    Rectangle position = {this->_position.a, this->_position.b, (float)_texture.width, (float)_texture.height};
 
     if (_scaleMode) {
         if (_size.width == -1)
-            DrawTexturePro(this->_texture, ogRect, ogRect, rayPos, 0, _matchingColors.at(this->_color));
+            DrawTexturePro(this->_texture, ogRect, position, {0, 0}, 0, _matchingColors.at(this->_color));
         else
-            DrawTexturePro(this->_texture, ogRect, this->_size, rayPos, 0, _matchingColors.at(this->_color));
+            DrawTexturePro(this->_texture, ogRect, this->_size, {0, 0}, 0, _matchingColors.at(this->_color));
     } else {
         if (_size.width == -1)
             DrawTexture(this->_texture, this->_position.a, this->_position.b, _matchingColors.at(this->_color));
