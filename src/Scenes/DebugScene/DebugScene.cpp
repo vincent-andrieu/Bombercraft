@@ -164,7 +164,7 @@ void DebugScene::open()
             std::cout << "Hello " << entity << std::endl;
         });
     GUI::ButtonFactory::create(localEntities,
-        ProportionUtilities::getProportion(CoreData::settings->getMyVector2("WIN_SIZE"), {50, 50}, {180, 20}, {50, 50}),
+        ProportionUtilities::getProportionWin(CoreData::settings->getMyVector2("WIN_SIZE"), {50, 50}, {180, 20}, {50, 50}),
         "my_other_label",
         GUI::ButtonFactory::getStandardButtonConfig(),
         "button_text",
@@ -189,8 +189,8 @@ void DebugScene::open()
 
     std::cout << my_utility.getProportion({40, 40}) << std::endl;
     std::cout << my_utility.getProportion({50.0f, 50}, {50.0f, 50}, {50.0f, 50}) << std::endl;
-    std::cout << ProportionUtilities::getProportion({1920, 1080}, {80, 10}) << std::endl;
-    std::cout << ProportionUtilities::getProportion({1920, 1080}, {36, 22}, {50, 50}, {50, 50}) << std::endl;
+    std::cout << ProportionUtilities::getProportionWin({1920, 1080}, {80, 10}) << std::endl;
+    std::cout << ProportionUtilities::getProportionWin({1920, 1080}, {36, 22}, {50, 50}, {50, 50}) << std::endl;
 }
 
 void DebugScene::update()
