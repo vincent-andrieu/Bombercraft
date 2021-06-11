@@ -9,9 +9,7 @@
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
-#include "Components/Music/Music.hpp"
-#include "Systems/Music/MusicSystem.hpp"
-#include "Systems/Sound/SoundSystem.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 
 using namespace Game;
 
@@ -32,7 +30,6 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Engine::Script>();
     CoreData::entityManager->registerComponent<Component::Chrono>();
     CoreData::entityManager->registerComponent<Component::TextInputConfig>();
-    CoreData::entityManager->registerComponent<Component::Music>();
     CoreData::entityManager->registerComponent<Component::Sound>();
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
@@ -44,8 +41,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<Engine::TimerSystem>(*CoreData::entityManager);
     CoreData::systemManager->createSystem<Engine::PhysicsSystem>(*CoreData::entityManager);
     CoreData::systemManager->createSystem<System::HitboxSystem>();
-    CoreData::systemManager->createSystem<System::MusicSystem>();
-    CoreData::systemManager->createSystem<System::SoundSystem>();
+    CoreData::systemManager->createSystem<System::AudioSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));

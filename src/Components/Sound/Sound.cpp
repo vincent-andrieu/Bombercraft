@@ -7,6 +7,6 @@
 
 #include "Sound.hpp"
 
-Component::Sound::Sound(std::shared_ptr<raylib::Sound> sound) : sound(sound)
+Component::Sound::Sound(std::shared_ptr<raylib::Sound> sound, bool isMusic) : sound(sound), isMusic(isMusic)
 {
 }

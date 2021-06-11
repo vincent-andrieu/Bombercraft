@@ -16,10 +16,11 @@ namespace Component
 {
     class Sound : public Engine::Component<Sound> {
       public:
-        explicit Sound(std::shared_ptr<raylib::Sound> sound);
+        explicit Sound(std::shared_ptr<raylib::Sound> sound, bool isMusic);
         virtual ~Sound() = default;
 
         std::shared_ptr<raylib::Sound> sound;
+        bool isMusic;
     };
 }
 

@@ -6,7 +6,6 @@
 */
 
 #include "Components/Sound/Sound.hpp"
-#include "Components/Music/Music.hpp"
 #include "AudioFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "raylib.hpp"
@@ -22,19 +21,15 @@ void AudioFactory::create(Engine::EntityPack &entityPack, AudioType type, std::s
     std::string const &name)
 {
     Engine::Entity entity;
+    bool isMusic = (type == AudioType::MUSIC);
 
     if (name.empty()) {
-        entity = entityPack.createAnonymousEntity();
+        throw std::invalid_argument("AudioFactory::create Invalid entity name");
     } else {
         entity = entityPack.createEntity(name);
     }
-    if (type == AudioType::SOUND) {
-        CoreData::entityManager->addComponent<Component::Sound>(
-            entity, std::make_shared<raylib::Sound>(filePath, config.volume, config.pitch));
-    } else if (type == AudioType::MUSIC) {
-        CoreData::entityManager->addComponent<Component::Music>(
-            entity, std::make_shared<raylib::Music>(filePath, config.volume, config.pitch));
-    }
+    CoreData::entityManager->addComponent<Component::Sound>(
+        entity, std::make_shared<raylib::Sound>(filePath, config.volume, config.pitch), isMusic);
 }
 
 void AudioFactory::create(Engine::EntityPack &entityPack, AudioType type, std::string const &filePath, std::string const &name)
