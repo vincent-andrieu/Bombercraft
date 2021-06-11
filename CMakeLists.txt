@@ -21,7 +21,6 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
-        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -75,11 +74,15 @@ set(SRCS
         src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp
+        src/Scenes/PauseMenuScene/PauseMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-        src/Scenes/PauseMenuScene/PauseMenuScene.cpp src/Scenes/PauseMenuScene/PauseMenuScene.hpp)
+        # UTILITIES
+        src/Utilities/utilities.cpp
+        src/Utilities/ProportionUtilities.hpp
+        )
 
 add_executable(${NAME} ${SRCS})
 

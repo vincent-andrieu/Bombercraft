@@ -52,8 +52,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    CoreData::sceneManager->setScene<PauseMenuScene>();
-    //    CoreData::sceneManager->setScene<SplashScreenScene>();
+    //    CoreData::sceneManager->setScene<PauseMenuScene>();
+    CoreData::sceneManager->setScene<DebugScene>();
 }
 
 void Core::loop()

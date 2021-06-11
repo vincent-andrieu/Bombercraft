@@ -40,7 +40,7 @@ namespace raylib
         RRAYWHITE
     };
 
-    enum class KeyBoard
+    enum class KeyBoard : uint
     {
         IKEY_NULL = 0,
         IKEY_A,

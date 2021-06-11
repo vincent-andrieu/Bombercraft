@@ -192,7 +192,7 @@ float ConfigFile::getFloat(const std::string &name) const
     return value;
 }
 
-std::pair<int, int> ConfigFile::getPaire(const std::string &name) const
+std::pair<int, int> ConfigFile::getPair(const std::string &name) const
 {
     std::string input;
     std::string line = getLineByName(name);

@@ -28,7 +28,7 @@ class IConfigFile {
     virtual int getInt(const std::string &name) const = 0;
     virtual float getFloat(const std::string &name) const = 0;
     virtual std::string getString(const std::string &name) const = 0;
-    virtual std::pair<int, int> getPaire(const std::string &name) const = 0;
+    virtual std::pair<int, int> getPair(const std::string &name) const = 0;
 
     virtual raylib::MyVector2 getMyVector2(const std::string &name) const = 0;
     virtual raylib::MyVector3 getMyVector3(const std::string &name) const = 0;

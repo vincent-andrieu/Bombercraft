@@ -12,7 +12,7 @@ using namespace raylib;
 using namespace GUI;
 using namespace Game;
 
-const EventRequirement SliderFactory::_clickHandlerRequirements(evtMouse::LEFT | evtMouse::RIGHT);
+const EventRequirement SliderFactory::_clickHandlerRequirements(Game::CLK_LEFT | Game::CLK_RIGHT);
 
 void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &position, sliderHandler sliderHandler,
     const string &label, const raylib::MyVector2 &labelPos, sliderValue minValue, sliderValue maxValue, sliderValue defaultValue)

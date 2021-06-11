@@ -28,7 +28,7 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
         std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
         for (size_t i = 0; i < (size_t) count; i++) {
             if (!DirectoryExists(vectorOfFilenames[i].data())) {
-                _textures.push_back(LoadTexture(vectorOfFilenames[i].data()));
+                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
             }
         }
         ClearDirectoryFiles();
@@ -38,8 +38,6 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
 
 raylib::TextureSequence::~TextureSequence()
 {
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(this->_textures[i]);
 }
 
 void raylib::TextureSequence::draw()
@@ -86,8 +84,6 @@ void raylib::TextureSequence::setPath(const string &path)
     char **filenames = nullptr;
     int count = 0;
 
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(this->_textures[i]);
     this->_textures.clear();
     this->_path = path;
     this->_currentFrame = 0;
@@ -98,7 +94,7 @@ void raylib::TextureSequence::setPath(const string &path)
         this->_frameNumber = count;
         ChangeDirectory(_path.data());
         for (size_t i = 0; i < (size_t) count; i++) {
-            _textures.push_back(LoadTexture(filenames[i]));
+            _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
         }
         ClearDirectoryFiles();
         ChangeDirectory(workingDirectory);

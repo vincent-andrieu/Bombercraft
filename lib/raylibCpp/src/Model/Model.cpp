@@ -7,8 +7,13 @@
 
 #include "Model.hpp"
 
+std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> raylib::Model::_loaderManager = nullptr;
+
 raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
 {
+    if (!this->_loaderManager)
+        this->setLoaderManager();
+
     char **filenames = nullptr;
     int count = 0;
     const char *workingDirectory = GetWorkingDirectory();
@@ -25,16 +30,16 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
             ChangeDirectory(_texturePath.data());
             for (size_t i = 0; i < (size_t) count; i++) {
                 if (!DirectoryExists(filenames[i]))
-                    _textures.push_back(LoadTexture(filenames[i]));
+                    _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
         } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
+            _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
     }
     this->_path = filepath;
-    this->_model = LoadModel(filepath.data());
+    this->_model = raylib::Model::_loaderManager->load({filepath.data(), this->_texturePath.data()});
     if (_textures.size() == 0)
         return;
     for (size_t i = 0; i < _model.materialCount; i++) {
@@ -44,10 +49,6 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
 
 raylib::Model::~Model()
 {
-    UnloadModel(this->_model);
-    for (size_t i = 0; i < _textures.size(); i++) {
-        UnloadTexture(_textures[i]);
-    }
 }
 
 void raylib::Model::draw()
@@ -94,8 +95,7 @@ void raylib::Model::setPath(const string &path)
     float roll = this->_rotation.c;
 
     this->_path = path;
-    UnloadModel(this->_model);
-    this->_model = LoadModel(path.data());
+    this->_model = raylib::Model::_loaderManager->load({path.data(), this->_texturePath.data()});
     this->_model.transform = MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
 }
 
@@ -105,8 +105,6 @@ void raylib::Model::setTexture(const std::string &texturePath)
     int count = 0;
     const char *workingDirectory = GetWorkingDirectory();
 
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(_textures[i]);
     _textures.clear();
     _texturePath = texturePath;
     if (texturePath.compare("") != 0) {
@@ -114,12 +112,12 @@ void raylib::Model::setTexture(const std::string &texturePath)
             filenames = GetDirectoryFiles(_path.data(), &count);
             ChangeDirectory(_path.data());
             for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
+                _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
         } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
+            _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
     }
     if (_textures.size() == 0)
@@ -132,4 +130,24 @@ void raylib::Model::setTexture(const std::string &texturePath)
 string raylib::Model::getPath() const
 {
     return this->_path;
+}
+
+void raylib::Model::setLoaderManager()
+{
+    if (!this->_loaderManager) {
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+    } else {
+        this->_loaderManager.reset();
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+    }
+}
+
+RModel raylib::Model::myModelLoad(const std::tuple<std::string, std::string> &str)
+{
+    return LoadModel(std::get<0>(str).data());
+}
+
+void raylib::Model::myModelUnload(RModel &model)
+{
+    UnloadModel(model);
 }

@@ -29,7 +29,7 @@ namespace GUI
         const std::size_t fontSize;
         const raylib::RColor fontColor;
         const std::string fontPath;
-        const Game::EventRequirement requirements;
+        const Game::EventRequirement &requirements;
     };
 
     class ButtonFactory {
@@ -40,7 +40,7 @@ namespace GUI
          * @brief Build the standard config for a button
          * @throw If configuration file information retrieval fails
          */
-        static ButtonConfig getStandardButtonConfig();
+        static ButtonConfig getStandardButtonConfig(const raylib::MyVector2 &buttonSize = raylib::MyVector2(180, 20));
 
         static void create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
