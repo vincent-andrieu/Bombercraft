@@ -8,6 +8,7 @@
 #include "Core.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
@@ -53,6 +54,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SkinChoiceScene>();
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
     //CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
