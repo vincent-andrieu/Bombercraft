@@ -209,22 +209,6 @@ static const std::map<raylib::KeyBoard, string> keytoStr = {
     {raylib::KeyBoard::IKEY_KP_EQUAL, "KP EQUAL"},
 };
 
-static Component::eventScript inputHandler = [](const Engine::Entity &childEntity) {
-    const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
-    Component::KeyBox &keyBox = Game::CoreData::entityManager->getComponent<Component::KeyBox>(childEntity);
-
-    string stringActual;
-    raylib::Text *textActual = dynamic_cast<raylib::Text *>(
-        Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
-
-    for (auto const &x : keytoStr) {
-        if (focusState && Game::CoreData::eventManager->isKeyPressed(x.first)) {
-            textActual->setText(x.second);
-            keyBox.key = x.first;
-        }
-    }
-};
-
 static Component::eventScript focusHandler = [](const Engine::Entity entityChild) {
     raylib::Rectangle *rectActual = dynamic_cast<raylib::Rectangle *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(entityChild).get("rectangle").get());
@@ -237,8 +221,11 @@ static Component::eventScript focusHandler = [](const Engine::Entity entityChild
     }
 };
 
-void KeyInputFactory::create(
-    Engine::EntityPack &pack, KeyInputDynConf const &dynConf, LabelConfig const &label, KeyInputConfig const &keyInput)
+void KeyInputFactory::create(Engine::EntityPack &pack,
+    KeyInputDynConf const &dynConf,
+    LabelConfig const &label,
+    KeyInputConfig const &keyInput,
+    const KeyInputEventScript keyInputHandler)
 {
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + keyInput.textPositionOffset;
@@ -253,6 +240,22 @@ void KeyInputFactory::create(
             {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
         }));
+
+    const Component::eventScript inputHandler = [keyInputHandler](const Engine::Entity &childEntity) {
+        const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
+        Component::KeyBox &keyBox = Game::CoreData::entityManager->getComponent<Component::KeyBox>(childEntity);
+
+        raylib::Text *textActual = dynamic_cast<raylib::Text *>(
+            Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
+
+        for (auto const &x : keytoStr) {
+            if (focusState && Game::CoreData::eventManager->isKeyPressed(x.first)) {
+                keyInputHandler(childEntity, x);
+                textActual->setText(x.second);
+                keyBox.key = x.first;
+            }
+        }
+    };
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequireement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
     Game::CoreData::entityManager->addComponent<Component::KeyBox>(entity);

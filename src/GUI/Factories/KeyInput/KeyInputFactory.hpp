@@ -26,6 +26,8 @@
 
 namespace GUI
 {
+    using KeyInputEventScript = std::function<void(const Engine::Entity &, const std::pair<const raylib::KeyBoard, string> &)>;
+
     struct KeyInputConfig {
         const raylib::MyVector2 size;
         const raylib::RColor color;
@@ -44,10 +46,14 @@ namespace GUI
       public:
         ~KeyInputFactory() = delete;
 
-        static void create(Engine::EntityPack &pack,
+        static void create(
+            Engine::EntityPack &pack,
             KeyInputDynConf const &dynConf,
             LabelConfig const &label,
-            KeyInputConfig const &keyInput = KeyInputFactory::getStandardConfig());
+            KeyInputConfig const &keyInput = KeyInputFactory::getStandardConfig(),
+            const KeyInputEventScript keyInputHandler = [](UNUSED const Engine::Entity &entity,
+                                                            UNUSED const std::pair<const raylib::KeyBoard, string> &key) {
+            });
         static KeyInputConfig getStandardConfig();
 
       protected:
