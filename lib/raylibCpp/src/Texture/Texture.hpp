@@ -16,7 +16,9 @@ namespace raylib
 {
     class Texture : public ITexture {
       public:
-        Texture(const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
+        Texture(const string &path,
+            const MyVector2 size = {-1, -1},
+            const MyVector2 position = {0, 0},
             const RColor color = RColor::RWHITE);
         ~Texture();
 
@@ -27,6 +29,7 @@ namespace raylib
         void setColor(const RColor color);
         void setPath(const string &path);
         void setSize(const MyVector2 size);
+        void setScaleMode(const bool mode);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
@@ -37,6 +40,7 @@ namespace raylib
         string _path;
         Texture2D _texture;
         Rectangle _size;
+        bool _scaleMode;
     };
 }; // namespace raylib
 

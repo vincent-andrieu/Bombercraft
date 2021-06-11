@@ -10,8 +10,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.001
 Ns 225.000000
@@ -22,8 +20,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.002
 Ns 225.000000
@@ -34,8 +30,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.003
 Ns 225.000000
@@ -46,8 +40,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.004
 Ns 225.000000
@@ -58,8 +50,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.005
 Ns 225.000000
@@ -70,8 +60,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.006
 Ns 225.000000
@@ -82,8 +70,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
 
 newmtl Fire.007
 Ns 225.000000
@@ -94,5 +80,3 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
-map_d C:\\Users\\Thomas Jouanolle\\Desktop\\Temp\\Asset\\Texture\\Bomb\\Fire\\Fire1.png
