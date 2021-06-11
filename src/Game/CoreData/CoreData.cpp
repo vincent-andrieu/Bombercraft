@@ -22,7 +22,10 @@ CoreData::CoreData()
 {
     CoreData::settings = std::make_unique<ConfigFile>(CONFIG_FILE);
     CoreData::_window = std::make_unique<raylib::Window>(CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("WIN_TITLE"), static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
+        CoreData::settings->getString("WIN_TITLE"),
+        static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
+
+    CoreData::_window->open();
     if (CoreData::systemManager == nullptr)
         CoreData::systemManager = std::make_unique<Engine::SystemManager>();
     if (CoreData::entityManager == nullptr)
@@ -33,6 +36,18 @@ CoreData::CoreData()
         CoreData::eventManager = std::make_unique<raylib::Input>();
     if (CoreData::camera == nullptr) {
         CoreData::camera = std::make_unique<raylib::Camera>(CoreData::settings->getMyVector3("CAM_POSITION"),
-            CoreData::settings->getMyVector3("CAM_TARGET"), CoreData::settings->getMyVector3("CAM_UP"));
+            CoreData::settings->getMyVector3("CAM_TARGET"),
+            CoreData::settings->getMyVector3("CAM_UP"));
     }
+}
+
+CoreData::~CoreData()
+{
+    CoreData::settings.reset();
+    CoreData::sceneManager.reset();
+    CoreData::entityManager.reset();
+    CoreData::_systemManager.reset();
+    CoreData::camera.reset();
+    CoreData::eventManager.reset();
+    CoreData::_window->close();
 }

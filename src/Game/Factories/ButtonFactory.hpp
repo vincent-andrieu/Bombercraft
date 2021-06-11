@@ -31,29 +31,3 @@ namespace Game
         std::string fontPath;
         EventRequirement requirements;
     };
-
-    class ButtonDynamicConfig : public IDynFactoryData {
-      public:
-        ButtonDynamicConfig(raylib::MyVector2 const &position, std::string const &label, Component::eventScript &handler);
-
-        raylib::MyVector2 position;
-        std::string label;
-        Component::eventScript &handler;
-    };
-
-    const auto buttonFactory = [](Engine::EntityPack &pack, IStaticFactoryData const &staticData,
-                                   IDynFactoryData const &dynamicData) {
-        Engine::Entity entity = pack.createAnonymousEntity();
-        const auto &staticConf = *dynamic_cast<const ButtonStaticConfig *>(&staticData);
-        const auto &dynConf = *dynamic_cast<const ButtonDynamicConfig *>(&dynamicData);
-
-        CoreData::entityManager->addComponent<Component::ClickEvent>(entity, dynConf.handler, staticConf.requirements);
-        CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, dynConf.handler, staticConf.requirements);
-        CoreData::entityManager->addComponent<Component::Render2D>(entity,
-            Component::render2dMapModels{
-                {"background", std::make_shared<raylib::Texture>(staticConf.texturePath, dynConf.position)}});
-        return entity;
-    };
-} // namespace Game
-
-#endif // BUTTONFACTORY_HPP

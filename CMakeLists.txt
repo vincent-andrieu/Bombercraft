@@ -37,7 +37,7 @@ set(SRCS
         src/Game/Factories/Map/Component/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
         # GUI/FACTORIES
-        src/Game/Factories/ButtonFactory.cpp
+        src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
         src/GUI/Factories/TextInput/TextInputFactory.cpp
         src/GUI/Factories/KeyInput/KeyInputFactory.cpp
@@ -51,15 +51,20 @@ set(SRCS
         src/Game/IABomberman/IACore.cpp
         # COMPONENTS
         src/Components/Render3D/Render3D.cpp
+        src/Components/Render2D/ARender2D.cpp
         src/Components/Render2D/Render2D.cpp
+        src/Components/Render2D/SingleRender2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
+        src/Components/ClickEvent.cpp
+        src/Components/MouseMoveEvent.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
+        src/Systems/Render2D/singleRender2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
         src/Systems/Audio/AudioSystem.cpp
@@ -72,7 +77,7 @@ set(SRCS
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-)
+        )
 
 add_executable(${NAME} ${SRCS})
 

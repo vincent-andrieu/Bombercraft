@@ -40,16 +40,16 @@ bool Game::EventRequirement::triggerClick(raylib::Input &eventManager) const
 
 bool Game::EventRequirement::triggerKey(raylib::Input &eventManager) const
 {
-    for (const auto &key : _handledKeyRelease) {
-        if (eventManager.isKeyReleased(key)) {
-            return true;
-        }
-    }
-    for (const auto &key : _handledKeyPress) {
-        if (eventManager.isKeyPressed(key)) {
-            return true;
-        }
-    }
+    //    for (const auto &key : _handledKeyRelease) {
+    //        if (eventManager.isKeyReleased(key)) {
+    //            return true;
+    //        }
+    //    }
+    //    for (const auto &key : _handledKeyPress) {
+    //        if (eventManager.isKeyPressed(key)) {
+    //            return true;
+    //        }
+    //    }
     return false;
 }
 

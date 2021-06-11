@@ -15,11 +15,7 @@ namespace Component
 {
     class ClickEvent : public AbstractEvent, public Engine::Component<ClickEvent> {
       public:
-        ClickEvent(eventScript &handler, Game::EventRequirement const &requirements) : AbstractEvent(handler, requirements)
-        {
-        }
-
-        virtual ~ClickEvent() = default;
+        explicit ClickEvent(eventScript &handler, const Game::EventRequirement &requirements);
     };
 } // namespace Component
 

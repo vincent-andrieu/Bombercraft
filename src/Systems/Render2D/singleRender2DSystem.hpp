@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 02/06/2021 Render2DSystem.hpp.h
+** 02/06/2021 singleRender2DSystem.hpp
 */
 
-#ifndef RENDER2DSYSTEM_HPP
-#define RENDER2DSYSTEM_HPP
+#ifndef SINGLERENDER2DSYSTEM_HPP
+#define SINGLERENDER2DSYSTEM_HPP
 
 #include "GameEngine.hpp"
 #include "Components/Render2D/Render2D.hpp"
@@ -14,12 +14,12 @@
 
 namespace System
 {
-    class Render2DSystem : public Engine::AbstractSystem {
+    class singleRender2DSystem : public Engine::AbstractSystem {
       public:
-        Render2DSystem();
+        singleRender2DSystem();
 
         void update();
     };
 } // namespace System
 
-#endif // RENDER2DSYSTEM_HPP
+#endif // SINGLERENDER2DSYSTEM_HPP
