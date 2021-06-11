@@ -64,7 +64,6 @@ namespace Game
         void update() override;
 
       private:
-        string _playerNumberTitle;
         Component::PlayerConfig *_selectedPlayer;
         ProportionUtilities _resizer;
     };
