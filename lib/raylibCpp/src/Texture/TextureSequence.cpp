@@ -46,12 +46,13 @@ void raylib::TextureSequence::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
     Rectangle ogRect = {0, 0, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
+    Rectangle position = {this->_position.a, this->_position.b, (float)_textures[_currentFrame].width, (float)_textures[_currentFrame].height};
 
     if (_scaleMode) {
         if (_size.width == -1)
-            DrawTexturePro(this->_textures[_currentFrame], ogRect, ogRect, rayPos, 0, _matchingColors.at(this->_color));
+            DrawTexturePro(this->_textures[_currentFrame], ogRect, position, {0, 0}, 0, _matchingColors.at(this->_color));
         else
-            DrawTexturePro(this->_textures[_currentFrame], ogRect, this->_size, rayPos, 0, _matchingColors.at(this->_color));
+            DrawTexturePro(this->_textures[_currentFrame], ogRect, this->_size, {0, 0}, 0, _matchingColors.at(this->_color));
     } else {
         if (_size.width == -1)
             DrawTexture(this->_textures[_currentFrame], this->_position.a, this->_position.b, _matchingColors.at(this->_color));
