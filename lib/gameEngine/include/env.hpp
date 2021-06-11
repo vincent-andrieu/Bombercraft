@@ -9,6 +9,7 @@
 #define ENV_HPP
 
 #define MAX_COMPONENT 32
-#define MAX_SYSTEM 8
+#define MAX_SYSTEM    8
+#define MAX_PLAYERS   4
 
 #endif // ENV_HPP
