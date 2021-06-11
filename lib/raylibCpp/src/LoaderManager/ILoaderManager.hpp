@@ -12,12 +12,12 @@
 
 namespace raylib
 {
-    template <typename toLoadType>
+    template <typename toLoadType, typename stringType>
     class ILoaderManager
     {
         public:
             virtual ~ILoaderManager() = default;
-            virtual const toLoadType &load(const std::string &loadIn) = 0;
+            virtual const toLoadType &load(const stringType &loadIn) = 0;
     };
 };
 

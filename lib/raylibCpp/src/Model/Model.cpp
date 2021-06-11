@@ -25,12 +25,12 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
             ChangeDirectory(_texturePath.data());
             for (size_t i = 0; i < (size_t) count; i++) {
                 if (!DirectoryExists(filenames[i]))
-                    _textures.push_back(LoadTexture(filenames[i]));
+                    _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
         } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
+            _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
     }
     this->_path = filepath;
@@ -45,9 +45,6 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
 raylib::Model::~Model()
 {
     UnloadModel(this->_model);
-    for (size_t i = 0; i < _textures.size(); i++) {
-        UnloadTexture(_textures[i]);
-    }
 }
 
 void raylib::Model::draw()
@@ -105,8 +102,6 @@ void raylib::Model::setTexture(const std::string &texturePath)
     int count = 0;
     const char *workingDirectory = GetWorkingDirectory();
 
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(_textures[i]);
     _textures.clear();
     _texturePath = texturePath;
     if (texturePath.compare("") != 0) {
@@ -114,12 +109,12 @@ void raylib::Model::setTexture(const std::string &texturePath)
             filenames = GetDirectoryFiles(_path.data(), &count);
             ChangeDirectory(_path.data());
             for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(LoadTexture(filenames[i]));
+                _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory);
         } else if (FileExists(texturePath.data())) {
-            _textures.push_back(LoadTexture(texturePath.data()));
+            _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
     }
     if (_textures.size() == 0)

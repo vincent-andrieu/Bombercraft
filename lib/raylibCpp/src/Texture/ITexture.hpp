@@ -10,6 +10,7 @@
 
 #include "../../include/object.hpp"
 #include "../../include/IRenderable.hpp"
+#include "../LoaderManager/LoaderManager.hpp"
 
 namespace raylib
 {
@@ -27,6 +28,9 @@ namespace raylib
 
         virtual Texture2D getTexture() const = 0;
         virtual string getPath() const = 0;
+
+        virtual void setLoaderManager() = 0;
+        virtual std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> getLoaderManager() const = 0;
     };
 }; // namespace raylib
 

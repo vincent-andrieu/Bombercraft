@@ -11,6 +11,7 @@
 #include "../../include/object.hpp"
 
 #include "IModel.hpp"
+#include "../Texture/Texture.hpp"
 
 namespace raylib
 {

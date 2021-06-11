@@ -14,11 +14,11 @@
 
 namespace raylib
 {
-    template <typename toLoadType>
-    class LoaderManager// : public ILoaderManager<toLoadType>
+    template <typename toLoadType, typename stringType>
+    class LoaderManager : public ILoaderManager<toLoadType, stringType>
     {
         public:
-            LoaderManager(std::function<toLoadType (const std::string &)> load, std::function<void (toLoadType &)> unload = nullptr) : _loadingFunc(load), _unloadingFunc(unload)
+            LoaderManager(std::function<toLoadType (const stringType &)> load, std::function<void (toLoadType &)> unload = nullptr) : _loadingFunc(load), _unloadingFunc(unload)
             {
             }
 
@@ -32,7 +32,7 @@ namespace raylib
                 this->_storage.clear();
             }
 
-            const toLoadType &load(const std::string &loadIn)
+            const toLoadType &load(const stringType &loadIn)
             {
                 try {
                     return this->_storage.at(loadIn);
@@ -44,9 +44,9 @@ namespace raylib
             }
         
         private:
-            std::function<toLoadType (const std::string &)> _loadingFunc;
+            std::function<toLoadType (const stringType &)> _loadingFunc;
             std::function<void (toLoadType &)> _unloadingFunc;
-            std::unordered_map<std::string, toLoadType> _storage;
+            std::unordered_map<stringType, toLoadType> _storage;
     };
 };
 
