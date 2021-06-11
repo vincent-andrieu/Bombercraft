@@ -30,8 +30,15 @@ namespace raylib
         void setColor(const RColor color);
         void setPath(const string &path);
         void setTexture(const std::string &texturePath);
+        void setLoaderManager();
 
         [[nodiscard]] string getPath() const;
+
+        static std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> _loaderManager;
+
+      private:
+        static RModel myModelLoad(const std::tuple<std::string, std::string> &str);
+        static void myModelUnload(RModel &model);
 
       private:
         MyVector3 _position;

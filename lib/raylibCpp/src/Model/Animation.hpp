@@ -12,6 +12,7 @@
 
 #include "IModel.hpp"
 #include "../Texture/Texture.hpp"
+#include "../Model/Model.hpp"
 
 namespace raylib
 {
@@ -47,6 +48,7 @@ namespace raylib
         std::vector<RModel> _models;
         size_t _currentFrame;
         std::chrono::system_clock::time_point _start;
+        std::string _texturePath;
     };
 }; // namespace raylib
 
