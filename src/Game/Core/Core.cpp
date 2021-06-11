@@ -62,5 +62,6 @@ void Core::loop()
         CoreData::_window->clear();
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
+        CoreData::sceneManager->updateScene();
     }
 }
