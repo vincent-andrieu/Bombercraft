@@ -22,7 +22,7 @@ void KeyBindingMenuScene::open()
     this->_selectedPlayer = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(0);
     this->_playerNumberTitle = "Player " + toString(this->_selectedPlayer->getPlayerId());
     GUI::LabelFactory::create(this->localEntities,
-        MyVector2(200, 50),
+        this->_resizer(50, 5),
         "Controls",
         {
             static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),

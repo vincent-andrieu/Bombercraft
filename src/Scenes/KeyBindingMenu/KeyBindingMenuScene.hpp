@@ -13,6 +13,7 @@
 #include "Game/CoreData/CoreData.hpp"
 #include "Systems/PlayerConfig/PlayerConfigSystem.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 #define CONF_GET_KEYBINDING(name) static_cast<raylib::KeyBoard>(Game::CoreData::settings->getInt(name))
 
@@ -65,6 +66,7 @@ namespace Game
       private:
         string _playerNumberTitle;
         Component::PlayerConfig *_selectedPlayer;
+        ProportionUtilities _resizer;
     };
 } // namespace Game
 
