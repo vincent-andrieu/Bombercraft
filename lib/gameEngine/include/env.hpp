@@ -8,7 +8,7 @@
 #ifndef ENV_HPP
 #define ENV_HPP
 
-#define MAX_COMPONENT 32
-#define MAX_SYSTEM 8
+#define MAX_COMPONENT 100
+#define MAX_SYSTEM 100
 
 #endif // ENV_HPP

@@ -7,15 +7,22 @@
 
 #include "Texture.hpp"
 
+std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> raylib::Texture::_loaderManager = nullptr;
+
 raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color, const bool scaleMode)
-    : _path(path), _position(position), _color(color), _texture(LoadTexture(path.data())),
-      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(scaleMode)
 {
+    if (!this->_loaderManager)
+        this->setLoaderManager();
+    this->_path = path;
+    this->_position = position;
+    this->_color = color;
+    this->_texture = this->_loaderManager->load(path.data());
+    this->_size = {this->_position.a, this->_position.b, size.a, size.b};
+    this->_scaleMode = scaleMode;
 }
 
 raylib::Texture::~Texture()
 {
-    UnloadTexture(this->_texture);
 }
 
 void raylib::Texture::draw()
@@ -56,8 +63,7 @@ void raylib::Texture::setColor(const RColor color)
 void raylib::Texture::setPath(const string &path)
 {
     this->_path = path;
-    UnloadTexture(this->_texture);
-    this->_texture = LoadTexture(path.data());
+    this->_texture = this->_loaderManager->load(path.data());
 }
 
 void raylib::Texture::setSize(const MyVector2 size)
@@ -79,4 +85,29 @@ Texture2D raylib::Texture::getTexture() const
 string raylib::Texture::getPath() const
 {
     return this->_path;
+}
+
+void raylib::Texture::setLoaderManager()
+{
+    if (!this->_loaderManager) {
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+    } else {
+        this->_loaderManager.reset();
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+    }
+}
+
+std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> raylib::Texture::getLoaderManager() const
+{
+    return this->_loaderManager;
+}
+
+Texture2D raylib::Texture::myTextureLoad(const std::string &str)
+{
+    return LoadTexture(str.data());
+}
+
+void raylib::Texture::myTextureUnload(Texture2D &texture)
+{
+    UnloadTexture(texture);
 }
