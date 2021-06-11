@@ -93,66 +93,67 @@ void DebugScene::open()
     GUI::KeyInputDynConf keyInput1 = {.position = raylib::MyVector2(300, 175), .name = "keyinput1"};
 
     /// ENTITIES - CREATION
-//    auto rect = this->localEntities.createEntity("whiteRectangle");
-//    this->_entityManager.addComponent<Component::Render2D>(rect,
-//        Component::render2dMapModels{
-//            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}});
-//    // ------------
-//    auto block = this->localEntities.createEntity("redBlock");
-//    raylib::MyVector3 blockPos(-40, -50, 0);
-//    this->_entityManager.addComponent<Component::Render3D>(
-//        block, std::make_shared<raylib::Cuboid>(nullptr, blockPos, raylib::MyVector3(10, 10, 10), raylib::RColor::RRED));
-//    this->_entityManager.addComponent<Component::Hitbox>(block,
-//        blockPos,
-//        raylib::MyVector3(10, 10, 10),
-//        [](const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
-//            auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
-//
-//            cubeComponent.modele->setColor(raylib::RColor::RBLUE);
-//        });
+    //    auto rect = this->localEntities.createEntity("whiteRectangle");
+    //    this->_entityManager.addComponent<Component::Render2D>(rect,
+    //        Component::render2dMapModels{
+    //            {"recTest", std::make_shared<raylib::Rectangle>(raylib::MyVector2(10, 10), raylib::MyVector2(20, 20))}});
+    //    // ------------
+    //    auto block = this->localEntities.createEntity("redBlock");
+    //    raylib::MyVector3 blockPos(-40, -50, 0);
+    //    this->_entityManager.addComponent<Component::Render3D>(
+    //        block, std::make_shared<raylib::Cuboid>(nullptr, blockPos, raylib::MyVector3(10, 10, 10), raylib::RColor::RRED));
+    //    this->_entityManager.addComponent<Component::Hitbox>(block,
+    //        blockPos,
+    //        raylib::MyVector3(10, 10, 10),
+    //        [](const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
+    //            auto cubeComponent = Game::Core::entityManager->getComponent<Component::Render3D>(fromEntity);
+    //
+    //            cubeComponent.modele->setColor(raylib::RColor::RBLUE);
+    //        });
     // ------------
-//    auto moveableEntity = this->localEntities.createEntity("movableEntity");
-//    raylib::MyVector3 moveableEntityPos(-70, -50, 0);
-//    this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
-//        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(10, 10, 10), raylib::RColor::RMAGENTA));
-//    this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
-//    this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 1.0f, 0.0f);
-//    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity,
-//        moveableEntityPos,
-//        raylib::MyVector3(10, 10, 10),
-//        [](UNUSED const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
-//        });
-//    // Events
-//    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
-//    this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
+    //    auto moveableEntity = this->localEntities.createEntity("movableEntity");
+    //    raylib::MyVector3 moveableEntityPos(-70, -50, 0);
+    //    this->_entityManager.addComponent<Component::Render3D>(moveableEntity,
+    //        std::make_shared<raylib::Cuboid>(nullptr, moveableEntityPos, raylib::MyVector3(10, 10, 10),
+    //        raylib::RColor::RMAGENTA));
+    //    this->_entityManager.addComponent<Engine::Position>(moveableEntity, 100.0f, 20.0f);
+    //    this->_entityManager.addComponent<Engine::Velocity>(moveableEntity, 1.0f, 0.0f);
+    //    this->_entityManager.addComponent<Component::Hitbox>(moveableEntity,
+    //        moveableEntityPos,
+    //        raylib::MyVector3(10, 10, 10),
+    //        [](UNUSED const Engine::Entity &fromEntity, UNUSED const Engine::Entity &toEntity) {
+    //        });
+    //    // Events
+    //    this->_entityManager.addComponent<Component::ClickEvent>(block, clickHandler, clickHandlerRequirements);
+    //    this->_entityManager.addComponent<Component::KeyEvent>(block, keyHandler, keyHandlerRequirements);
 
     ///// FACTORIES
-//    GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
-//    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
-//    GUI::ImageFactory::create(this->localEntities,
-//        raylib::MyVector2(200, 200),
-//        raylib::MyVector2(50, 50),
-//        "Asset/Interface/PowerUpBox.png",
-//        "testImage");
-//    GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
-//    GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
-//    GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
-//    GUI::KeyInputFactory::create(this->localEntities, keyInput1, labelTextInput);
+    //    GUI::CheckboxFactory::create(this->localEntities, raylib::MyVector2(50, 50), checkboxHandler);
+    //    GUI::CountdownFactory::create(this->localEntities, raylib::MyVector2(350, 0), 60, "chrono");
+    //    GUI::ImageFactory::create(this->localEntities,
+    //        raylib::MyVector2(200, 200),
+    //        raylib::MyVector2(50, 50),
+    //        "Asset/Interface/PowerUpBox.png",
+    //        "testImage");
+    //    GUI::LabelFactory::create(this->localEntities, raylib::MyVector2(200, 200), "Hello World", config);
+    //    GUI::TextInputFactory::create(this->localEntities, input1, labelTextInput);
+    //    GUI::TextInputFactory::create(this->localEntities, input2, TextInputConfig, labelTextInput);
+    //    GUI::KeyInputFactory::create(this->localEntities, keyInput1, labelTextInput);
     // Block
     std::cout << "---- BLOCK\n";
-//    GUI::BlockFactory::create(
-//        this->localEntities, raylib::MyVector3(0, 0, 0), GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
-//    // Slider
-//    GUI::SliderFactory::create(
-//        this->localEntities,
-//        raylib::MyVector2(500, 160),
-//        [](const Engine::Entity entity, GUI::sliderValue &value) {
-//            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
-//        },
-//        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
+    //    GUI::BlockFactory::create(
+    //        this->localEntities, raylib::MyVector3(0, 0, 0), GUI::BlockFactory::BlockType::BLOCK_BOMB, "myBlock");
+    //    // Slider
+    //    GUI::SliderFactory::create(
+    //        this->localEntities,
+    //        raylib::MyVector2(500, 160),
+    //        [](const Engine::Entity entity, GUI::sliderValue &value) {
+    //            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
+    //        },
+    //        "Value: ", raylib::MyVector2(60, 10), 0, 100, 60);
     // Audio
-//    AudioFactory::create(this->localEntities, AudioType::MUSIC, "Asset/Music/Fight4.mp3", "Fight4");
-//    AudioFactory::create(this->localEntities, AudioType::SOUND, "Asset/Sound/ActiveBomb.ogg", "ActiveBomb");
+    //    AudioFactory::create(this->localEntities, AudioType::MUSIC, "Asset/Music/Fight4.mp3", "Fight4");
+    //    AudioFactory::create(this->localEntities, AudioType::SOUND, "Asset/Sound/ActiveBomb.ogg", "ActiveBomb");
     // Button
     GUI::ButtonFactory::create(localEntities,
         {20, 20},
@@ -197,13 +198,13 @@ void DebugScene::update()
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
         auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
-        //        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
+        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
         auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
 
         float dt = 1.0f / 10.0f;
-        //        physics.update(dt);
+        physics.update(dt);
         render3D.update();
         singleRender2D.update();
         render2D.update();
