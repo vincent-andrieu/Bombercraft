@@ -19,7 +19,8 @@ namespace raylib
         Texture(const string &path,
             const MyVector2 size = {-1, -1},
             const MyVector2 position = {0, 0},
-            const RColor color = RColor::RWHITE);
+            const RColor color = RColor::RWHITE,
+            const bool scaleMode = true);
         ~Texture();
 
         void draw();
