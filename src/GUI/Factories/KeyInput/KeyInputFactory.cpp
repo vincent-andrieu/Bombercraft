@@ -108,9 +108,11 @@ static const Game::EventRequirement inputHandlerRequireement(
         raylib::KeyBoard::IKEY_KP_ADD,
         raylib::KeyBoard::IKEY_KP_ENTER,
         raylib::KeyBoard::IKEY_KP_EQUAL,
-    }, {});
+    },
+    {});
 
-static const std::map<raylib::KeyBoard, std::string> keytoStr = {
+static const std::map<raylib::KeyBoard, string> keytoStr = {
+    {raylib::KeyBoard::IKEY_NULL, ""},
     {raylib::KeyBoard::IKEY_A, "A"},
     {raylib::KeyBoard::IKEY_B, "B"},
     {raylib::KeyBoard::IKEY_C, "C"},
@@ -211,7 +213,7 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
     const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
     Component::KeyBox &keyBox = Game::CoreData::entityManager->getComponent<Component::KeyBox>(childEntity);
 
-    std::string stringActual;
+    string stringActual;
     raylib::Text *textActual = dynamic_cast<raylib::Text *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
@@ -236,7 +238,7 @@ static Component::eventScript focusHandler = [](const Engine::Entity entityChild
 };
 
 void KeyInputFactory::create(
-    Engine::EntityPack &pack, KeyInputDynConf const &dynConf, KeyInputConfig const &keyInput, LabelConfig const &label)
+    Engine::EntityPack &pack, KeyInputDynConf const &dynConf, LabelConfig const &label, KeyInputConfig const &keyInput)
 {
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + keyInput.textPositionOffset;
@@ -246,20 +248,14 @@ void KeyInputFactory::create(
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
             {"text",
-                std::make_shared<raylib::Text>("", label.fontPath, textPos, label.fontSize, label.fontColor)},
+                std::make_shared<raylib::Text>(
+                    keytoStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
             {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
         }));
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequireement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
     Game::CoreData::entityManager->addComponent<Component::KeyBox>(entity);
-}
-
-void KeyInputFactory::create(Engine::EntityPack &pack, KeyInputDynConf const &dynConf, LabelConfig const &label)
-{
-    KeyInputConfig const &keyInput = KeyInputFactory::getStandardConfig();
-
-    KeyInputFactory::create(pack, dynConf, keyInput, label);
 }
 
 KeyInputConfig KeyInputFactory::getStandardConfig()

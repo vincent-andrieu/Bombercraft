@@ -36,23 +36,23 @@ namespace GUI
 
     struct KeyInputDynConf {
         const raylib::MyVector2 position;
-        const std::string name;
+        const string name;
+        const raylib::KeyBoard key = raylib::KeyBoard::IKEY_NULL;
     };
 
     class KeyInputFactory {
-        public:
-            ~KeyInputFactory() = delete;
+      public:
+        ~KeyInputFactory() = delete;
 
-        static void create(Engine::EntityPack &pack, KeyInputDynConf const &dynConf, KeyInputConfig const &keyInput,
-                LabelConfig const &label);
-        static void create(Engine::EntityPack &pack, KeyInputDynConf const &dynConf, LabelConfig const &label);
+        static void create(Engine::EntityPack &pack,
+            KeyInputDynConf const &dynConf,
+            LabelConfig const &label,
+            KeyInputConfig const &keyInput = KeyInputFactory::getStandardConfig());
         static KeyInputConfig getStandardConfig();
 
-        protected:
-        private:
-};
-}
-
-
+      protected:
+      private:
+    };
+} // namespace GUI
 
 #endif /* !KEYINPUTFACTORY_HPP_ */
