@@ -15,7 +15,7 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
-#include "GUI/Factories/Label/LabelFactory.hpp"
+#include "GUI/Factories/KeyInput/KeyInputFactory.hpp"
 
 #define CONF_GET_KEYBINDING(name) static_cast<raylib::KeyBoard>(Game::CoreData::settings->getInt(name))
 
@@ -68,7 +68,8 @@ namespace Game
       private:
         void _createKeysLabel();
         void _createResetKeys();
-        void _createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler);
+        inline void _createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler);
+        void _createKeysInput();
 
         const GUI::LabelConfig _defaultLabelConfig = {
             static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),
@@ -76,6 +77,7 @@ namespace Game
             CoreData::settings->getString("DEF_FONT"),
         };
         const GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getStandardButtonConfig();
+        const GUI::KeyInputConfig _keyInputDefaultConfig = GUI::KeyInputFactory::getStandardConfig();
         Component::PlayerConfig *_selectedPlayer;
         ProportionUtilities _resizer;
     };
