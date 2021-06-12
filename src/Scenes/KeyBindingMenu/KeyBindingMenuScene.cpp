@@ -6,9 +6,14 @@
 */
 
 #include "KeyBindingMenuScene.hpp"
+#include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 
 using namespace Game;
 using namespace raylib;
+
+static const Component::eventScript doneButtonHandler = [](UNUSED const Engine::Entity &entity) {
+    CoreData::sceneManager->setScene<OptionsMenuScene>();
+};
 
 KeyBindingMenuScene::KeyBindingMenuScene(Engine::SystemManager &systemManager)
     : AbstractScene(systemManager, *Game::CoreData::entityManager), _selectedPlayer(nullptr)
@@ -51,6 +56,9 @@ void KeyBindingMenuScene::open()
             this->_selectedPlayer->resetAllKeyBindings();
             this->_refreshKeys();
         });
+
+    GUI::ButtonFactory::create(
+        this->localEntities, this->_resizer(80, 90), "doneButton", this->_buttonDefaultConfig, "Done", doneButtonHandler);
 }
 
 void KeyBindingMenuScene::update()
