@@ -8,7 +8,6 @@
 #include "PauseMenuScene.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
 #include "Systems/Render2D/Render2DSystem.hpp"
-#include "Systems/Render2D/singleRender2DSystem.hpp"
 
 Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
     : AbstractScene(systemManager, *Game::CoreData::entityManager)
@@ -29,11 +28,9 @@ void Game::PauseMenuScene::open()
 
 void Game::PauseMenuScene::update()
 {
-    auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
 
     try {
-        singleRender2D.update();
         render2D.update();
         this->eventDispatcher(this->_systemManager);
     } catch (std::invalid_argument const &e) {

@@ -15,7 +15,6 @@
 
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Systems/Render2D/Render2DSystem.hpp"
-#include "Systems/Render2D/singleRender2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Systems/Event/EventSystem.hpp"
