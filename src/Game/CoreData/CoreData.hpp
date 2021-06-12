@@ -30,9 +30,9 @@ namespace Game
         static std::shared_ptr<Engine::SceneManager> sceneManager;
         static std::shared_ptr<raylib::Input> eventManager;
         static std::unique_ptr<Engine::SystemManager> systemManager;
+        static std::unique_ptr<raylib::Window> _window;
 
       protected:
-        static std::unique_ptr<raylib::Window> _window;
     };
 } // namespace Game
 

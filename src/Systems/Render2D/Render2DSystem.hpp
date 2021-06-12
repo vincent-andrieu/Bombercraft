@@ -10,7 +10,6 @@
 
 #include "GameEngine.hpp"
 #include "Components/Render2D/Render2D.hpp"
-#include "Components/Render2D/SingleRender2D.hpp"
 
 namespace System
 {

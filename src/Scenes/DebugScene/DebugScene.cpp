@@ -197,7 +197,6 @@ void DebugScene::update()
 {
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
         auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
@@ -206,7 +205,6 @@ void DebugScene::update()
         float dt = 1.0f / 10.0f;
         physics.update(dt);
         render3D.update();
-        singleRender2D.update();
         render2D.update();
         hitbox.update();
         timer.update();
