@@ -24,8 +24,8 @@ namespace GUI
         const string hoverTexturePath;
         const string clickedTexturePath;
         const string unavailableTexturePath;
-        const raylib::MyVector2 size;
-        const std::size_t fontSize;
+        raylib::MyVector2 size;
+        std::size_t fontSize;
         const raylib::RColor fontColor;
         const string fontPath;
         const Game::EventRequirement &requirements;

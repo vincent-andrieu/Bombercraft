@@ -18,19 +18,22 @@ static const Component::eventScript doneButtonHandler = [](UNUSED const Engine::
 KeyBindingMenuScene::KeyBindingMenuScene(Engine::SystemManager &systemManager)
     : AbstractScene(systemManager, *Game::CoreData::entityManager), _selectedPlayer(nullptr)
 {
+    this->_buttonDefaultConfig.fontSize = 30;
 }
 
 void KeyBindingMenuScene::open()
 {
     this->_selectedPlayer = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(0);
 
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(44, 1), "Controls", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
 
     // Change player
+    GUI::ButtonConfig changePlayerButtonConfig = this->_buttonDefaultConfig;
+    changePlayerButtonConfig.size = MyVector2(170, 60);
     GUI::ButtonFactory::create(this->localEntities,
-        this->_resizer(47, 10),
+        this->_resizer(44, 10),
         "playerNumberTitle",
-        this->_buttonDefaultConfig,
+        changePlayerButtonConfig,
         "Player " + toString(this->_selectedPlayer->getPlayerId()),
         [this](const Engine::Entity &entity) {
             this->_selectedPlayer =
@@ -47,10 +50,12 @@ void KeyBindingMenuScene::open()
 
     this->_createKeysInput();
 
+    GUI::ButtonConfig bottomButtonsConfig = this->_buttonDefaultConfig;
+    bottomButtonsConfig.size = MyVector2(350, 60);
     GUI::ButtonFactory::create(this->localEntities,
-        this->_resizer(30, 90),
+        this->_resizer(20, 90),
         "resetKeysButton",
-        this->_buttonDefaultConfig,
+        bottomButtonsConfig,
         "Reset keys",
         [this](UNUSED const Engine::Entity &entity) {
             this->_selectedPlayer->resetAllKeyBindings();
@@ -58,7 +63,7 @@ void KeyBindingMenuScene::open()
         });
 
     GUI::ButtonFactory::create(
-        this->localEntities, this->_resizer(60, 90), "doneButton", this->_buttonDefaultConfig, "Done", doneButtonHandler);
+        this->localEntities, this->_resizer(60, 90), "doneButton", bottomButtonsConfig, "Done", doneButtonHandler);
 }
 
 void KeyBindingMenuScene::update()

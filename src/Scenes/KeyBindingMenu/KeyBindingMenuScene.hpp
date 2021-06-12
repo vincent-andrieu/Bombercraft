@@ -75,12 +75,12 @@ namespace Game
         void _refreshKeys(const Engine::Entity &entity, const raylib::KeyBoard &defaultKey);
 
         const GUI::LabelConfig _defaultLabelConfig = {
-            static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),
+            30,
             raylib::RColor::RWHITE,
             CoreData::settings->getString("DEF_FONT"),
         };
-        const GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getStandardButtonConfig();
-        const GUI::KeyInputConfig _keyInputDefaultConfig = GUI::KeyInputFactory::getStandardConfig();
+        GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(130, 60));
+        GUI::KeyInputConfig _keyInputDefaultConfig = GUI::KeyInputFactory::getStandardConfig();
         Component::PlayerConfig *_selectedPlayer;
         ProportionUtilities _resizer;
     };
