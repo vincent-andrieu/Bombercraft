@@ -19,6 +19,8 @@ namespace raylib
         MyVector2(const float a, const float b);
         MyVector2(const MyVector2 &src);
 
+        MyVector2 &operator=(MyVector2 const &src);
+
         static Vector2 makeVector2(const MyVector2 vector);
 
       public:
