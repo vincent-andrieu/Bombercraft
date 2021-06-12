@@ -76,6 +76,7 @@ set(SRCS
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
+        src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

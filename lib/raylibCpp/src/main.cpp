@@ -7,7 +7,10 @@
 
 #include "raylib.hpp"
 
-static void moveCamera(std::shared_ptr<IInput> input, MyVector3 *camPos, std::shared_ptr<ICamera> camera)
+#include <thread>
+#include <mutex>
+
+static void moveCamera(std::shared_ptr<raylib::IInput> input, raylib::MyVector3 *camPos, std::shared_ptr<raylib::ICamera> camera)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_DOWN)) {
         camPos->b -= 1.0f;
@@ -27,7 +30,7 @@ static void moveCamera(std::shared_ptr<IInput> input, MyVector3 *camPos, std::sh
     }
 }
 
-static void changeScreenSize(std::shared_ptr<IInput> input, MyVector2 *windowSize, std::shared_ptr<IWindow> window)
+static void changeScreenSize(std::shared_ptr<raylib::IInput> input, raylib::MyVector2 *windowSize, std::shared_ptr<raylib::IWindow> window)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_Z)) {
         windowSize->a += 100;
@@ -43,7 +46,7 @@ static void changeScreenSize(std::shared_ptr<IInput> input, MyVector2 *windowSiz
     }
 }
 
-static void drawCube(std::shared_ptr<ISolid> cube, MyVector3 cubePos)
+static void drawCube(std::shared_ptr<raylib::ISolid> cube, raylib::MyVector3 cubePos)
 {
     cube->setColor(raylib::RColor::RLIGHTGRAY);
     cube->setPosition(cubePos);
@@ -57,7 +60,7 @@ static void drawCube(std::shared_ptr<ISolid> cube, MyVector3 cubePos)
     cube->draw();
 }
 
-static void manageCubeTexture(std::shared_ptr<IInput> input, std::shared_ptr<ISolid> cube, std::shared_ptr<ITexture> texture)
+static void manageCubeTexture(std::shared_ptr<raylib::IInput> input, std::shared_ptr<raylib::ISolid> cube, std::shared_ptr<raylib::ITexture> texture)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_Q))
         cube->setTexture(texture);
@@ -69,7 +72,7 @@ static void manageCubeTexture(std::shared_ptr<IInput> input, std::shared_ptr<ISo
         texture->setPath("../../../Asset/Texture/Nether/Ground/Netherrack.png");
 }
 
-static void manageMusic(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> music)
+static void manageMusic(std::shared_ptr<raylib::IInput> input, std::shared_ptr<raylib::IAudio> music)
 {
     static float pitch = 1.0f;
 
@@ -91,7 +94,7 @@ static void manageMusic(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> m
     }
 }
 
-static void manageSound(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> sound)
+static void manageSound(std::shared_ptr<raylib::IInput> input, std::shared_ptr<raylib::IAudio> sound)
 {
     if (input->isKeyPressed(raylib::KeyBoard::IKEY_G)) {
         sound->setPath("../../../Asset/Sound/ButtonClick.ogg");
@@ -103,7 +106,7 @@ static void manageSound(std::shared_ptr<IInput> input, std::shared_ptr<IAudio> s
     }
 }
 
-static void manageModel(std::shared_ptr<IInput> input, std::shared_ptr<IModel> model, std::shared_ptr<IModel> animation)
+static void manageModel(std::shared_ptr<raylib::IInput> input, std::shared_ptr<raylib::IModel> model, std::shared_ptr<raylib::IModel> animation)
 {
     static bool inAnim = false;
 
@@ -121,33 +124,33 @@ static void manageModel(std::shared_ptr<IInput> input, std::shared_ptr<IModel> m
 
 int main(void)
 {
-    MyVector2 windowSize(1200, 800);
-    MyVector3 camPos(0, -5.0f, 10.0f);
-    MyVector3 camTarget(0, 0, 0);
-    MyVector3 camUp(0.0f, 1.0f, 0.0f);
-    MyVector3 cubePos(0, 0, 0);
-    MyVector3 cubeSize(2.0f, 2.0f, 2.0f);
-    MyVector2 texturePos(100.0f, 0.0f);
-    MyVector2 rectPos(100.0f, 0.0f);
-    MyVector2 rectSize(600.0f, 100.0f);
-    MyVector2 textPos(0.0f, 130.0f);
-    MyVector4 textLimit(0.0f, 0.0f, 100.0f, 100.0f);
+    raylib::MyVector2 windowSize(1200, 800);
+    raylib::MyVector3 camPos(0, -5.0f, 10.0f);
+    raylib::MyVector3 camTarget(0, 0, 0);
+    raylib::MyVector3 camUp(0.0f, 1.0f, 0.0f);
+    raylib::MyVector3 cubePos(0, 0, 0);
+    raylib::MyVector3 cubeSize(2.0f, 2.0f, 2.0f);
+    raylib::MyVector2 texturePos(100.0f, 0.0f);
+    raylib::MyVector2 rectPos(100.0f, 0.0f);
+    raylib::MyVector2 rectSize(600.0f, 100.0f);
+    raylib::MyVector2 textPos(0.0f, 130.0f);
+    raylib::MyVector4 textLimit(0.0f, 0.0f, 100.0f, 100.0f);
     size_t textSize = 25;
-    MyVector3 modelPos(0, 0, 1);
-    MyVector3 modelRot(-90, 0, 0);
+    raylib::MyVector3 modelPos(0, 0, 1);
+    raylib::MyVector3 modelRot(-90, 0, 0);
     float scale = 0.5;
-    std::shared_ptr<IWindow> window = std::make_shared<raylib::Window>(windowSize, "Bootstrap", raylib::RColor::RWHITE);
-    std::shared_ptr<IInput> input = std::make_shared<raylib::Input>();
-    std::shared_ptr<ICamera> camera = std::make_shared<raylib::Camera>(camPos, camTarget, camUp);
-    std::shared_ptr<ISolid> cube = std::make_shared<raylib::Cuboid>(nullptr, cubePos, cubeSize, raylib::RColor::RLIGHTGRAY);
-    std::shared_ptr<IShape> rect = std::make_shared<raylib::Rectangle>(rectPos, rectSize, raylib::RColor::RORANGE);
-    std::shared_ptr<IText> text = std::make_shared<raylib::Text>("Ca va mon amigos ?", textPos, textSize, raylib::RColor::RPINK);
-    std::shared_ptr<ITexture> texture = nullptr;
-    std::shared_ptr<ITexture> texture2 = nullptr;
-    std::shared_ptr<IAudio> music = nullptr;
-    std::shared_ptr<IAudio> sound = nullptr;
-    std::shared_ptr<IModel> model = nullptr;
-    std::shared_ptr<IModel> animation = nullptr;
+    std::shared_ptr<raylib::IWindow> window = std::make_shared<raylib::Window>(windowSize, "Bootstrap", raylib::RColor::RWHITE);
+    std::shared_ptr<raylib::IInput> input = std::make_shared<raylib::Input>();
+    std::shared_ptr<raylib::ICamera> camera = std::make_shared<raylib::Camera>(camPos, camTarget, camUp);
+    std::shared_ptr<raylib::ISolid> cube = std::make_shared<raylib::Cuboid>(nullptr, cubePos, cubeSize, raylib::RColor::RLIGHTGRAY);
+    std::shared_ptr<raylib::IShape> rect = std::make_shared<raylib::Rectangle>(rectPos, rectSize, raylib::RColor::RORANGE);
+    std::shared_ptr<raylib::IText> text = std::make_shared<raylib::Text>("Ca va mon amigos ?", textPos, textSize, raylib::RColor::RPINK);
+    std::shared_ptr<raylib::ITexture> texture = nullptr;
+    std::shared_ptr<raylib::ITexture> texture2 = nullptr;
+    std::shared_ptr<raylib::IAudio> music = nullptr;
+    std::shared_ptr<raylib::IAudio> sound = nullptr;
+    std::shared_ptr<raylib::IModel> model = nullptr;
+    std::shared_ptr<raylib::IModel> animation = nullptr;
 
     window->setCamera(camera);
     window->open();
@@ -166,23 +169,29 @@ int main(void)
         "../../../Asset/Skin/Basic_Test.png", "../../../Asset/Animation/Anim_Walk_20", modelPos, raylib::RColor::RWHITE);
     animation->setRotation(modelRot);
     animation->setScale(scale);
-    while (window->isOpen()) {
-        window->clear();
-        changeScreenSize(input, &windowSize, window);
-        moveCamera(input, &camPos, camera);
-        manageCubeTexture(input, cube, texture2);
-        manageMusic(input, music);
-        manageSound(input, sound);
-        rect->draw();
-        texture->draw();
-        music->update();
-        text->draw();
-        camera->begin3D();
-        drawCube(cube, cubePos);
-        manageModel(input, model, animation);
-        camera->end3D();
-        window->refresh();
-    }
+    std::mutex lock;
+    std::thread thread([&lock, &window, &camera, &cube, &rect, &texture, &text, &cubePos]() {
+        lock.lock();
+        while (window->isOpen()) {
+            window->clear();
+//            changeScreenSize(input, &windowSize, window);
+//            moveCamera(input, &camPos, camera);
+//            manageCubeTexture(input, cube, texture2);
+//            manageMusic(input, music);
+//            manageSound(input, sound);
+            rect->draw();
+            texture->draw();
+//            music->update();
+            text->draw();
+            camera->begin3D();
+            drawCube(cube, cubePos);
+//            manageModel(input, model, animation);
+            camera->end3D();
+            window->refresh();
+        }
+        lock.unlock();
+    });
+    thread.join();
     window->close();
     return 0;
 }

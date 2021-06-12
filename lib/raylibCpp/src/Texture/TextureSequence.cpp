@@ -28,7 +28,8 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
         std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
         for (size_t i = 0; i < (size_t) count; i++) {
             if (!DirectoryExists(vectorOfFilenames[i].data())) {
-                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
+                _textures.push_back(LoadTexture(vectorOfFilenames[i].data()));
+//                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
             }
         }
         ClearDirectoryFiles();

@@ -6,7 +6,6 @@
 */
 
 #include "Core.hpp"
-#include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
@@ -53,8 +52,9 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
     //CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    CoreData::sceneManager->setScene<MainMenuScene>();
+    SceneLoader::setScene<SplashScreenScene>();
 }
 
 void Core::loop()
