@@ -48,7 +48,7 @@ void KeyBindingMenuScene::open()
     this->_createKeysInput();
 
     GUI::ButtonFactory::create(this->localEntities,
-        this->_resizer(20, 90),
+        this->_resizer(30, 90),
         "resetKeysButton",
         this->_buttonDefaultConfig,
         "Reset keys",
@@ -58,7 +58,7 @@ void KeyBindingMenuScene::open()
         });
 
     GUI::ButtonFactory::create(
-        this->localEntities, this->_resizer(80, 90), "doneButton", this->_buttonDefaultConfig, "Done", doneButtonHandler);
+        this->localEntities, this->_resizer(60, 90), "doneButton", this->_buttonDefaultConfig, "Done", doneButtonHandler);
 }
 
 void KeyBindingMenuScene::update()
