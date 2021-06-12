@@ -111,7 +111,7 @@ static const Game::EventRequirement inputHandlerRequireement(
     },
     {});
 
-static const std::map<raylib::KeyBoard, string> keytoStr = {
+const std::map<raylib::KeyBoard, string> KeyInputFactory::keyToStr = {
     {raylib::KeyBoard::IKEY_NULL, ""},
     {raylib::KeyBoard::IKEY_A, "A"},
     {raylib::KeyBoard::IKEY_B, "B"},
@@ -236,7 +236,7 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
         Component::render2dMapModels({
             {"text",
                 std::make_shared<raylib::Text>(
-                    keytoStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
+                    keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
             {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
         }));
@@ -248,7 +248,7 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
         raylib::Text *textActual = dynamic_cast<raylib::Text *>(
             Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
-        for (auto const &x : keytoStr) {
+        for (auto const &x : keyToStr) {
             if (focusState && x.first != raylib::KeyBoard::IKEY_NULL && Game::CoreData::eventManager->isKeyPressed(x.first)) {
                 keyInputHandler(childEntity, x);
                 textActual->setText(x.second);

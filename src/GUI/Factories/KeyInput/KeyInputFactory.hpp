@@ -55,6 +55,7 @@ namespace GUI
                                                             UNUSED const std::pair<const raylib::KeyBoard, string> &key) {
             });
         static KeyInputConfig getStandardConfig();
+        static const std::map<raylib::KeyBoard, string> keyToStr;
 
       protected:
       private:

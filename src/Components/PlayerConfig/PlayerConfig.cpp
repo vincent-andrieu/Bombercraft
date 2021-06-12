@@ -38,6 +38,11 @@ const PlayerKeyBindings &PlayerConfig::getPlayerDefaultKeyBindings() const
     return this->_defaultKeyBinding;
 }
 
+void PlayerConfig::resetAllKeyBindings()
+{
+    this->_keyBindings = this->_defaultKeyBinding;
+}
+
 void PlayerConfig::setKeyMoveUp(const raylib::KeyBoard &key)
 {
     this->_keyBindings.moveUp = key;

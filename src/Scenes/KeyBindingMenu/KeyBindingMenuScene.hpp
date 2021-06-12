@@ -70,6 +70,9 @@ namespace Game
         void _createResetKeys();
         inline void _createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler);
         void _createKeysInput();
+        void _refreshKeys();
+        void _refreshKeys(const string &name, const raylib::KeyBoard &defaultKey);
+        void _refreshKeys(const Engine::Entity &entity, const raylib::KeyBoard &defaultKey);
 
         const GUI::LabelConfig _defaultLabelConfig = {
             static_cast<size_t>(CoreData::settings->getInt("DEF_FONT_SIZE")),
