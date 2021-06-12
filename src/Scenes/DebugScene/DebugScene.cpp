@@ -80,12 +80,12 @@ void DebugScene::open()
     const raylib::MyVector2 position(10, 70);
     GUI::LabelConfig config = {
         .fontSize = 24, .fontColor = raylib::RColor::RBLUE, .fontPath = "./Asset/Font/MinecraftItalic.ttf"};
-    GUI::TextInputConfig TextInputConfig = {.size = raylib::MyVector2(152, 27),
-        .color = raylib::RColor::RBLACK,
-        .borderSize = 2,
-        .borderColor = raylib::RColor::RGRAY,
-        .maxChar = 16,
-        .textPositionOffset = raylib::MyVector2(5, 5)};
+    // GUI::TextInputConfig TextInputConfig = {.size = raylib::MyVector2(152, 27),
+    //     .color = raylib::RColor::RBLACK,
+    //     .borderSize = 2,
+    //     .borderColor = raylib::RColor::RGRAY,
+    //     .maxChar = 16,
+    //     .textPositionOffset = raylib::MyVector2(5, 5)};
     GUI::LabelConfig labelTextInput = {
         .fontSize = 16, .fontColor = raylib::RColor::RWHITE, .fontPath = "./Asset/Font/MinecraftRegular.ttf"};
     GUI::TextInputDynConf input1 = {.position = raylib::MyVector2(300, 75), .name = "input1", "player name"};

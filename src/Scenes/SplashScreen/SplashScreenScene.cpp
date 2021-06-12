@@ -50,10 +50,10 @@ SplashScreenScene::SplashScreenScene(Engine::SystemManager &systemManager)
 {
 }
 
-static void task1(std::string msg)
-{
-    std::cout << "\tTASK 1 = " << msg << std::endl;
-}
+// static void task1(std::string msg)
+// {
+//     std::cout << "\tTASK 1 = " << msg << std::endl;
+// }
 
 void SplashScreenScene::open()
 {
