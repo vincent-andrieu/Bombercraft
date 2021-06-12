@@ -31,13 +31,16 @@ void raylib::Window::close()
 
 void raylib::Window::clear()
 {
-    BeginDrawing();
-    ClearBackground(_matchingColors.at(this->_color));
+    if (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(_matchingColors.at(this->_color));
+    }
 }
 
 void raylib::Window::refresh()
 {
-    EndDrawing();
+    if (!WindowShouldClose())
+        EndDrawing();
 }
 
 void raylib::Window::setSize(const MyVector2 size)
