@@ -29,7 +29,10 @@ SaveManager::~SaveManager()
         file.second->close();
 }
 
-inline bool SaveManager::directoryExists(const string &dirname)
+//TO REVIEW: https://en.cppreference.com/w/cpp/filesystem/exists
+// first arg of exists and is directory: const std::filesystem::path& p
+//inline bool SaveManager::directoryExists(const string &dirname)
+inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_directory(dirname)) {
         return true;
@@ -37,7 +40,9 @@ inline bool SaveManager::directoryExists(const string &dirname)
     return false;
 }
 
-inline bool SaveManager::fileExists(const string &dirname)
+//TO REVIEW: SAME PROBLEME
+//inline bool SaveManager::fileExists(const string &dirname)
+inline bool SaveManager::fileExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_regular_file(dirname)) {
         return true;

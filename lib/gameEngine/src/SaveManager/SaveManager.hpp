@@ -37,8 +37,8 @@ namespace Engine
 
         std::filesystem::path getFileDir(const string &filename);
 
-        static bool directoryExists(const string &dirname);
-        static bool fileExists(const string &dirname);
+        static bool directoryExists(const std::filesystem::path &dirname);
+        static bool fileExists(const std::filesystem::path &dirname);
 
         /**
          * @brief Create a Directory from the current working directory
