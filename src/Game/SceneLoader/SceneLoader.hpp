@@ -18,7 +18,6 @@
 
 #include <thread>
 #include <mutex>
-#include <unistd.h>
 
 namespace Game
 {
