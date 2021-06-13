@@ -16,7 +16,7 @@ EntityManager::EntityManager(SystemManager &sysManager) : _systemManager(sysMana
 
 EntityManager::~EntityManager()
 {
-    save("last_save");
+    // save("last_save");
 }
 
 void EntityManager::allocate(std::size_t size)
