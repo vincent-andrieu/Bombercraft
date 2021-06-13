@@ -32,8 +32,8 @@ namespace Engine
         virtual bool tryRemove(Entity entity) override;
         Entity getOwner(const T &component);
 
-        void save(Engine::SaveManager &saver) const override;
-        void load(Engine::SaveManager &saver) override;
+        // void save(Engine::SaveManager &saver) const override;
+        // void load(Engine::SaveManager &saver) override;
 
         std::vector<T> &getComponents();
 
@@ -43,17 +43,17 @@ namespace Engine
         std::unordered_map<Entity, Index> _ownersIndex;
         std::vector<Signature> &_entitySignatures;
 
-        void saveEntities(Engine::SaveManager &saver) const;
-        void saveEntity(Engine::SaveManager &saver, Entity owner) const;
-        void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
+        // void saveEntities(Engine::SaveManager &saver) const;
+        // void saveEntity(Engine::SaveManager &saver, Entity owner) const;
+        // void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
         //        void saveEntityComponentIndex(Engine::SaveManager &saver, Entity owner) const;
-        void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
+        // void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
 
-        void loadEntities(Engine::SaveManager &saver);
-        void loadEntity(Engine::SaveManager &saver, Entity owner);
-        void loadEntitySignature(Engine::SaveManager &saver, Entity owner);
+        // void loadEntities(Engine::SaveManager &saver);
+        // void loadEntity(Engine::SaveManager &saver, Entity owner);
+        // void loadEntitySignature(Engine::SaveManager &saver, Entity owner);
         //        void loadEntityComponentIndex(Engine::SaveManager &saver, Entity owner) ;
-        void loadEntityComponents(Engine::SaveManager &saver, Entity owner);
+        //void loadEntityComponents(Engine::SaveManager &saver, Entity owner);
     };
 
     template <typename T>
@@ -114,54 +114,54 @@ namespace Engine
         return _componentOwners[index];
     }
 
-    template <typename T> void ComponentTypeRegister<T>::save(Engine::SaveManager &saver) const
-    {
-        //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
-        //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
-        saveEntities(saver);
-    }
+    // template <typename T> void ComponentTypeRegister<T>::save(Engine::SaveManager &saver) const
+    // {
+    //     //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+    //     //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+    //     saveEntities(saver);
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver) const
-    {
-        for (const auto &owner : _componentOwners) {
-            saveEntity(saver, owner);
-        }
-    }
+    // template <typename T> void ComponentTypeRegister<T>::saveEntities(Engine::SaveManager &saver) const
+    // {
+    //     for (const auto &owner : _componentOwners) {
+    //         saveEntity(saver, owner);
+    //     }
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntity(Engine::SaveManager &saver, Entity owner) const
-    {
-        const std::string dirPrefix("Entity_");
-        const std::string dirname(dirPrefix + std::to_string(owner));
+    // template <typename T> void ComponentTypeRegister<T>::saveEntity(Engine::SaveManager &saver, Entity owner) const
+    // {
+    //     const std::string dirPrefix("Entity_");
+    //     const std::string dirname(dirPrefix + std::to_string(owner));
 
-        try {
-            if (!Engine::SaveManager::directoryExists(dirname))
-                saver.createDirectory(dirname);
-            saver.setWorkingDirectory(dirname);
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-        saveEntitySignature(saver, owner);
-        saveEntityComponents(saver, owner);
-        try {
-            saver.unsetWorkingDirectory();
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-    }
+    //     try {
+    //         if (!Engine::SaveManager::directoryExists(dirname))
+    //             saver.createDirectory(dirname);
+    //         saver.setWorkingDirectory(dirname);
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    //     saveEntitySignature(saver, owner);
+    //     saveEntityComponents(saver, owner);
+    //     try {
+    //         saver.unsetWorkingDirectory();
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntitySignature(Engine::SaveManager &saver, Entity owner) const
-    {
-        const std::string filename("EntitySignature");
+    // template <typename T> void ComponentTypeRegister<T>::saveEntitySignature(Engine::SaveManager &saver, Entity owner) const
+    // {
+    //     const std::string filename("EntitySignature");
 
-        try {
-            saver.createFile(filename);
-            saver.setWritingFile(filename);
-            saver.writeActFile(_entitySignatures[owner]);
-            saver.closeWritingFile();
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-    }
+    //     try {
+    //         saver.createFile(filename);
+    //         saver.setWritingFile(filename);
+    //         saver.writeActFile(_entitySignatures[owner]);
+    //         saver.closeWritingFile();
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    // }
 
     //    template <typename T> void ComponentTypeRegister<T>::saveEntityComponentIndex(Engine::SaveManager &saver, Entity
     //    owner) const
@@ -174,56 +174,56 @@ namespace Engine
     //        saver.closeFile(filename);
     //}
 
-    template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner) const
-    {
-        _components.at(_ownersIndex.at(owner)).save(saver);
-    }
+    // template <typename T> void ComponentTypeRegister<T>::saveEntityComponents(Engine::SaveManager &saver, Entity owner) const
+    // {
+    //     _components.at(_ownersIndex.at(owner)).save(saver);
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::load(Engine::SaveManager &saver)
-    {
-        //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
-        //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
-        loadEntities(saver);
-    }
+    // template <typename T> void ComponentTypeRegister<T>::load(Engine::SaveManager &saver)
+    // {
+    //     //        saver.createDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+    //     //        saver.setWorkingDirectory("game_" + saver.getGameNb()); // TODO put this elsewhere
+    //     loadEntities(saver);
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::loadEntities(Engine::SaveManager &saver)
-    {
-        for (const auto &owner : _componentOwners) {
-            loadEntity(saver, owner);
-        }
-    }
+    // template <typename T> void ComponentTypeRegister<T>::loadEntities(Engine::SaveManager &saver)
+    // {
+    //     for (const auto &owner : _componentOwners) {
+    //         loadEntity(saver, owner);
+    //     }
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::loadEntity(Engine::SaveManager &saver, Entity owner)
-    {
-        const std::string dirPrefix("Entity_");
-        const std::string dirname(dirPrefix + std::to_string(owner));
+    // template <typename T> void ComponentTypeRegister<T>::loadEntity(Engine::SaveManager &saver, Entity owner)
+    // {
+    //     const std::string dirPrefix("Entity_");
+    //     const std::string dirname(dirPrefix + std::to_string(owner));
 
-        try {
-            saver.setWorkingDirectory(dirname);
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-        loadEntitySignature(saver, owner);
-        loadEntityComponents(saver, owner);
-        try {
-            saver.unsetWorkingDirectory();
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-    }
+    //     try {
+    //         saver.setWorkingDirectory(dirname);
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    //     loadEntitySignature(saver, owner);
+    //     loadEntityComponents(saver, owner);
+    //     try {
+    //         saver.unsetWorkingDirectory();
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    // }
 
-    template <typename T> void ComponentTypeRegister<T>::loadEntitySignature(Engine::SaveManager &saver, Entity owner)
-    {
-        const std::string filename("EntitySignature");
+    // template <typename T> void ComponentTypeRegister<T>::loadEntitySignature(Engine::SaveManager &saver, Entity owner)
+    // {
+    //     const std::string filename("EntitySignature");
 
-        try {
-            saver.setWritingFile(filename);
-            saver.writeActFile(_entitySignatures[owner]);
-            saver.closeWritingFile();
-        } catch (const std::filesystem::filesystem_error &my_e) {
-            SaveManager::printException(my_e);
-        }
-    }
+    //     try {
+    //         saver.setWritingFile(filename);
+    //         saver.writeActFile(_entitySignatures[owner]);
+    //         saver.closeWritingFile();
+    //     } catch (const std::filesystem::filesystem_error &my_e) {
+    //         SaveManager::printException(my_e);
+    //     }
+    // }
 
     //    template <typename T> void ComponentTypeRegister<T>::loadEntityComponentIndex(Engine::SaveManager &saver, Entity
     //    owner)
@@ -235,10 +235,10 @@ namespace Engine
     //        saver.closeFile(filename);
     //}
 
-    template <typename T> void ComponentTypeRegister<T>::loadEntityComponents(Engine::SaveManager &saver, Entity owner)
-    {
-        _components.at(_ownersIndex.at(owner)).load(saver);
-    }
+    // template <typename T> void ComponentTypeRegister<T>::loadEntityComponents(Engine::SaveManager &saver, Entity owner)
+    // {
+    //     _components.at(_ownersIndex.at(owner)).load(saver);
+    // }
 
     template <typename T> std::vector<T> &ComponentTypeRegister<T>::getComponents()
     {

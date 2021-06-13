@@ -19,35 +19,35 @@ void Hitbox::trigger(const Engine::Entity &fromEntity, const Engine::Entity &toE
     this->_handler(fromEntity, toEntity);
 }
 
-bool Hitbox::save(Engine::SaveManager &saver) const
-{
-    if (!Component::save(saver))
-        return false;
-    try {
-        saver.createFile(COMP_SAVE_FILE);
-        saver.setWritingFile(COMP_SAVE_FILE);
-        saver.writeActFile(objectBox);
-        saver.writeActFile(_handler);
-        saver.closeWritingFile();
-    } catch (const std::filesystem::filesystem_error &my_e) {
-        Engine::SaveManager::printException(my_e);
-        return false;
-    }
-    return true;
-}
-bool Hitbox::load(Engine::SaveManager &saver)
-{
-    if (!Component::load(saver))
-        return false;
-    try {
-        saver.createFile(COMP_SAVE_FILE);
-        saver.setReadingFile(COMP_SAVE_FILE);
-        saver.readActFile(objectBox);
-        saver.readActFile(_handler);
-        saver.closeReadingFile();
-    } catch (const std::filesystem::filesystem_error &my_e) {
-        Engine::SaveManager::printException(my_e);
-        return false;
-    }
-    return true;
-}
+// bool Hitbox::save(Engine::SaveManager &saver) const
+// {
+//     if (!Component::save(saver))
+//         return false;
+//     try {
+//         saver.createFile(COMP_SAVE_FILE);
+//         saver.setWritingFile(COMP_SAVE_FILE);
+//         saver.writeActFile(objectBox);
+//         saver.writeActFile(_handler);
+//         saver.closeWritingFile();
+//     } catch (const std::filesystem::filesystem_error &my_e) {
+//         Engine::SaveManager::printException(my_e);
+//         return false;
+//     }
+//     return true;
+// }
+// bool Hitbox::load(Engine::SaveManager &saver)
+// {
+//     if (!Component::load(saver))
+//         return false;
+//     try {
+//         saver.createFile(COMP_SAVE_FILE);
+//         saver.setReadingFile(COMP_SAVE_FILE);
+//         saver.readActFile(objectBox);
+//         saver.readActFile(_handler);
+//         saver.closeReadingFile();
+//     } catch (const std::filesystem::filesystem_error &my_e) {
+//         Engine::SaveManager::printException(my_e);
+//         return false;
+//     }
+//     return true;
+// }

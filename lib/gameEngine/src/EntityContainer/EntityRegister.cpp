@@ -46,40 +46,40 @@ void EntityRegister::remove(Entity entity)
     _freeEntities.push_back(entity);
 }
 
-void EntityRegister::save(SaveManager &saver) const
-{
-    saveFreeEntities(saver);
-}
+// // void EntityRegister::save(SaveManager &saver) const
+// // {
+// //     saveFreeEntities(saver);
+// // }
 
-void EntityRegister::load(SaveManager &saver)
-{
-    loadFreeEntities(saver);
-}
+// void EntityRegister::load(SaveManager &saver)
+// {
+//     loadFreeEntities(saver);
+// }
 
-void EntityRegister::saveFreeEntities(SaveManager &saver) const
-{
-    const std::string filename("FreeEntities");
+// void EntityRegister::saveFreeEntities(SaveManager &saver) const
+// {
+//     const std::string filename("FreeEntities");
 
-    try {
-        saver.createFile(filename);
-        saver.setWritingFile(filename);
-        saver.writeActFile(_freeEntities);
-        saver.closeWritingFile();
-    } catch (const std::filesystem::filesystem_error &my_e) {
-        SaveManager::printException(my_e);
-    }
-}
+//     try {
+//         saver.createFile(filename);
+//         saver.setWritingFile(filename);
+//         saver.writeActFile(_freeEntities);
+//         saver.closeWritingFile();
+//     } catch (const std::filesystem::filesystem_error &my_e) {
+//         SaveManager::printException(my_e);
+//     }
+// }
 
-void EntityRegister::loadFreeEntities(SaveManager &saver)
-{
-    const std::string filename("FreeEntities");
+// void EntityRegister::loadFreeEntities(SaveManager &saver)
+// {
+//     const std::string filename("FreeEntities");
 
-    _freeEntities.clear();
-    try {
-        saver.setWritingFile(filename);
-        saver.readActFile(_freeEntities);
-        saver.closeWritingFile();
-    } catch (const std::filesystem::filesystem_error &my_e) {
-        SaveManager::printException(my_e);
-    }
-}
+//     _freeEntities.clear();
+//     try {
+//         saver.setWritingFile(filename);
+//         saver.readActFile(_freeEntities);
+//         saver.closeWritingFile();
+//     } catch (const std::filesystem::filesystem_error &my_e) {
+//         SaveManager::printException(my_e);
+//     }
+// }

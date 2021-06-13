@@ -37,8 +37,8 @@ namespace Component
         void setToDrawFirst(const std::string &label);
         void setToDrawLast(const std::string &label);
 
-        bool save(Engine::SaveManager &saver) const override;
-        bool load(Engine::SaveManager &saver) override;
+        // bool save(Engine::SaveManager &saver) const override;
+        // bool load(Engine::SaveManager &saver) override;
 
       protected:
         std::vector<std::shared_ptr<raylib::IRenderable>> _models;

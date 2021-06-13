@@ -6,7 +6,7 @@
  */
 
 #include "SaveManager.hpp"
-
+/*
 using namespace Engine;
 
 SaveManager::SaveManager(const std::string &dirname)
@@ -206,3 +206,4 @@ void SaveManager::printException(const std::filesystem::filesystem_error &except
 {
     std::cerr << except.what() << std::endl;
 }
+*/

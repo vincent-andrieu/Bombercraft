@@ -31,8 +31,8 @@ namespace Engine
 
         [[nodiscard]] double getDelta() const;
 
-        bool save(SaveManager &saver) const override;
-        bool load(SaveManager &saver) override;
+        // bool save(SaveManager &saver) const override;
+        // bool load(SaveManager &saver) override;
 
       public:
         double interval;    // in seconds
