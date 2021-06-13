@@ -8,6 +8,10 @@
 #ifndef ENUM_HPP
 #define ENUM_HPP
 
+#ifdef _WIN32
+  typedef unsigned int uint;
+#endif
+
 namespace raylib
 {
     enum class RColor

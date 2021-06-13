@@ -9,6 +9,9 @@
 #define EVENTREQUIREMENT_HPP
 
 #include "raylib.hpp"
+#ifdef _WIN32
+  typedef unsigned int uint;
+#endif
 #include <vector>
 
 namespace Game
