@@ -93,11 +93,11 @@ namespace Engine
         {
             write(_writingFiles.begin()->first, value, size);
         }
-        template <typename T> void readActFile(const T value)
+        template <typename T> void readActFile(T &value)
         {
             read(_readingFiles.begin()->first, value);
         }
-        template <typename T, typename N> void readActFile(const T value, const N size)
+        template <typename T, typename N> void readActFile(T value, const N size)
         {
             read(_readingFiles.begin()->first, value, size);
         }
