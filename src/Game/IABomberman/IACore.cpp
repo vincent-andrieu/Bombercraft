@@ -115,6 +115,7 @@ void IACore<TileType, Action>::setIAMovement(std::function<void(std::vector<std:
 template <typename TileType, typename Action>
 void IACore<TileType, Action>::applyIAMovement(Movement move)
 {
+    this->_prevPos = this->_pos;
     switch (move)
     {
         case Movement::IA_MOVE_UP: this->_pos.second--; break;
