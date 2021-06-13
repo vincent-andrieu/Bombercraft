@@ -11,7 +11,7 @@ using namespace IA;
 
 template <typename TileType, typename Action>
 IACore<TileType, Action>::IACore(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, unsigned int seed)
-: _pos(pos), _prevPos({-1, -1}), _env(env), _isRunnable({0}), _seed(seed), _actLink({0}), _MovementFunc(nullptr)
+: _pos(pos), _prevPos(pos), _env(env), _isRunnable({0}), _seed(seed), _actLink({0}), _MovementFunc(nullptr)
 {
 }
 
