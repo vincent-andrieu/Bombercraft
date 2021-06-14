@@ -63,7 +63,8 @@ void GameScene::open()
     raylib::MyVector2 countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
     GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
-        CoreData::settings->getInt("DEF_COUNTDOWN"), handlerGameTimeout);
+        CoreData::settings->getInt("STANDARD_COUNTDOWN"),
+        handlerGameTimeout);
     /// MAP
     GUI::MapFactory::create(this->localEntities, "gameMap");
     /// Camera
