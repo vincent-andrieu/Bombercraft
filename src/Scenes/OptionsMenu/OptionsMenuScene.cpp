@@ -41,7 +41,7 @@ void OptionsMenuScene::open()
         std::cout << "Video settings" << std::endl;
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls", [](const Engine::Entity) {
-        std::cout << "Controls" << std::endl;
+        CoreData::sceneManager->setScene<KeyBindingMenuScene>();
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", [](const Engine::Entity) {
         std::cout << "Ressource Pack" << std::endl;
