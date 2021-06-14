@@ -92,7 +92,6 @@ set(SRCS
         # UTILITIES
         src/Utilities/utilities.cpp
         src/Utilities/ProportionUtilities.hpp
-        #        src/GUI/guiConstants.cpp
         )
 
 add_executable(${NAME} ${SRCS})
