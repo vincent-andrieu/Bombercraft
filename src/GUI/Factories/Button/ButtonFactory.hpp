@@ -40,6 +40,10 @@ namespace GUI
          * @throw If configuration file information retrieval fails
          */
         static ButtonConfig getStandardButtonConfig(const raylib::MyVector2 &buttonSize = raylib::MyVector2(180, 20));
+        static ButtonConfig getSizedButtonConfig(const raylib::MyVector2 &winPercent);
+        static ButtonConfig getLargeButtonConfig();
+        static ButtonConfig getMediumButtonConfig();
+        static ButtonConfig getSmallButtonConfig();
 
         static void create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,

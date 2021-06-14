@@ -18,6 +18,7 @@
 
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 #include "Systems/Render2D/Render2DSystem.hpp"
 
@@ -32,6 +33,6 @@ namespace Game
 
         void update();
     };
-}
+} // namespace Game
 
 #endif // MAINMENUSCENE_HPP
