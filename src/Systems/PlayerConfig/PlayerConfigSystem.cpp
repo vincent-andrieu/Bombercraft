@@ -20,7 +20,7 @@ System::PlayerConfigSystem::PlayerConfigSystem() : AbstractSystem(*Game::Core::e
  * @param playerId
  * @return const Component::PlayerConfig&
  */
-Component::PlayerConfig &System::PlayerConfigSystem::getPlayerFromID(const uint playerId) const
+Component::PlayerConfig &System::PlayerConfigSystem::getPlayerFromID(const Component::PlayerID &playerId) const
 {
     for (const Engine::Entity &entity : this->getManagedEntities()) {
         Component::PlayerConfig &playerConfComp = this->_entityManager.getComponent<Component::PlayerConfig>(entity);

@@ -17,7 +17,7 @@ namespace System
       public:
         PlayerConfigSystem();
 
-        Component::PlayerConfig &getPlayerFromID(const uint playerId) const;
+        Component::PlayerConfig &getPlayerFromID(const Component::PlayerID &playerId) const;
         const std::vector<Component::PlayerConfig> getPlayers() const;
         Component::PlayerConfig &getNextPlayer(const Component::PlayerConfig &playerConfig) const;
     };
