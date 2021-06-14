@@ -26,7 +26,8 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const bool centered)
 {
     const auto entity = entityPack.createAnonymousEntity();
-    const MyVector2 &selectorSize = MyVector2(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE), size.b);
+    const MyVector2 &selectorSize =
+        MyVector2(static_cast<float>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE)), size.b);
 
     auto my_position(position);
     if (centered)

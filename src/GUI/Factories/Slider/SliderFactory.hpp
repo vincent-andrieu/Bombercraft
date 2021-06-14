@@ -56,7 +56,7 @@ namespace GUI
             const float &mousePos = Game::CoreData::eventManager->getMousePos().a,
             const float &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).a,
             const raylib::MyVector2 &selectorSize = raylib::MyVector2(
-                Game::CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE),
+                static_cast<float>(Game::CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE)),
                 Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).b));
     };
 } // namespace GUI
