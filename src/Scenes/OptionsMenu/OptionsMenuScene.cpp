@@ -6,6 +6,7 @@
 */
 
 #include "OptionsMenuScene.hpp"
+#include "Scenes/SoundOption/SoundOptionScene.hpp"
 
 using namespace Game;
 
@@ -14,14 +15,12 @@ OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
-static const std::vector<raylib::MyVector2> buttonPosition = {
-    raylib::MyVector2(50, 150),
+static const std::vector<raylib::MyVector2> buttonPosition = {raylib::MyVector2(50, 150),
     raylib::MyVector2(650, 150),
     raylib::MyVector2(50, 210),
     raylib::MyVector2(650, 210),
     raylib::MyVector2(50, 270),
-    raylib::MyVector2(650, 270)
-};
+    raylib::MyVector2(650, 270)};
 
 void OptionsMenuScene::open()
 {
@@ -35,6 +34,7 @@ void OptionsMenuScene::open()
         std::cout << "Skin Customization" << std::endl;
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<SoundOptionScene>();
         std::cout << "Music & Sounds" << std::endl;
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", [](const Engine::Entity) {

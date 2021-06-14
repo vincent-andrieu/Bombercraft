@@ -7,9 +7,11 @@
 
 #include "Core.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
+#include "Components/Option/OptionComponent.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Game/Factories/Map/Component/Matrix2D.hpp"
 
@@ -36,6 +38,10 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Chrono>();
     CoreData::entityManager->registerComponent<Component::TextInputConfig>();
     CoreData::entityManager->registerComponent<Component::Sound>();
+    CoreData::entityManager->registerComponent<Component::OptionComponent>();
+    /// COMPONENTS - CREATION
+    Engine::Entity options = this->globalEntities.createEntity("options");
+    CoreData::entityManager->addComponent<Component::OptionComponent>(options, CoreData::settings->getFloat("DEF_SOUND_VOLUME"));
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
@@ -48,7 +54,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
-    // SCENES - CREATION
+    /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
@@ -56,6 +62,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SoundOptionScene>();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,

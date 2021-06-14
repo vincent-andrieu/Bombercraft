@@ -61,6 +61,7 @@ set(SRCS
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
         src/Components/PlayerConfig/PlayerConfig.cpp
+        src/Components/Option/OptionComponent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -77,6 +78,7 @@ set(SRCS
         src/Scenes/KeyBindingMenu/KeyBindingMenuScene.cpp
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
+        src/Scenes/SoundOption/SoundOptionScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
