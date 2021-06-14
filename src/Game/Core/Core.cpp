@@ -56,7 +56,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    // DEBUG - START
+    // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
         0,
