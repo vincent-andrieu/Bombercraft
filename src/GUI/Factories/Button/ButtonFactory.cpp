@@ -51,26 +51,27 @@ ButtonConfig ButtonFactory::getLargeButtonConfig()
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
-    const string &label,
+    const string &name,
     const GUI::ButtonConfig &conf,
-    const std::string &text, // TODO add click action, event script that would be captured in clickHandler and execute on click
-    const Component::eventScript &clickAction)
+    const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
+    const Component::eventScript clickAction)
 {
     const auto &my_position(position);
     const auto &my_size(conf.size);
-    const auto entity = pack.createEntity(label);
-    auto my_text(std::make_shared<raylib::Text>(text,
+    const auto entity = pack.createEntity(name);
+    auto my_label(std::make_shared<raylib::Text>(label,
         my_position,
         conf.fontSize,
         conf.fontColor,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
-    auto my_textPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_text->getSize(), {50, 50}));
-    my_text->setPosition(my_textPosition);
-    Component::render2dMapModels my_models({{"text", my_text},
+    auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
+    my_label->setPosition(my_labelPosition);
+    Component::render2dMapModels my_models({{"label", my_label},
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
         {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
         /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
         /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
+
     Component::eventScript my_moveHandler = [position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 

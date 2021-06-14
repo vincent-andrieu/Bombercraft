@@ -31,8 +31,10 @@ void SplashScreenScene::open()
 {
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
 
-    GUI::ImageSequenceFactory::create(this->localEntities, {0, 0}, {windowSize.a, windowSize.b}, "Asset/SplashScreen", "splashScreen", 0.05f);
-    this->_entityManager.addComponent<Component::KeyEvent>(this->localEntities.getEntity("splashScreen"), keyHandler, keyHandlerRequirements);
+    GUI::ImageSequenceFactory::create(
+        this->localEntities, {0, 0}, {windowSize.a, windowSize.b}, "Asset/SplashScreen", "splashScreen", 0.05f);
+    this->_entityManager.addComponent<Component::KeyEvent>(
+        this->localEntities.getEntity("splashScreen"), keyHandler, keyHandlerRequirements);
 }
 
 void SplashScreenScene::update()

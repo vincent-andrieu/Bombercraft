@@ -17,6 +17,7 @@ std::shared_ptr<raylib::Input> CoreData::eventManager = nullptr;
 std::unique_ptr<ConfigFile> CoreData::settings = nullptr;
 
 std::unique_ptr<raylib::Window> CoreData::_window = nullptr;
+bool CoreData::_loop = true;
 
 CoreData::CoreData()
 {
@@ -41,6 +42,11 @@ CoreData::CoreData()
     }
 }
 
+void CoreData::quit()
+{
+    CoreData::_loop = false;
+}
+
 CoreData::~CoreData()
 {
     CoreData::settings.reset();
@@ -54,3 +60,4 @@ CoreData::~CoreData()
     raylib::Texture::_loaderManager.reset();
     CoreData::_window->close();
 }
+

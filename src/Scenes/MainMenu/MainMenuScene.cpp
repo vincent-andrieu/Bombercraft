@@ -17,7 +17,7 @@ MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
 void MainMenuScene::open()
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
-    static const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+    const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
 
     ProportionUtilities my_utility(windowSize);
     const std::vector<raylib::MyVector2> buttonPosition = {my_utility.getProportion({25, 40}),
@@ -48,7 +48,7 @@ void MainMenuScene::open()
         });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
-            // CoreData::_window->close();
+            CoreData::quit();
         });
 }
 

@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
@@ -27,6 +28,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
     CoreData::entityManager->registerComponent<Component::KeyBox>();
+    CoreData::entityManager->registerComponent<Component::PlayerConfig>();
     // Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
@@ -45,20 +47,48 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::PhysicsSystem>();
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
+    CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
     // SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    //    SceneLoader::setScene<MainMenuScene>();
-    CoreData::sceneManager->setScene<MainMenuScene>();
+    // DEBUG - START - Remove when players with PlayerConfig Component will be added
+    auto entity = CoreData::entityManager->createEntity();
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        0,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_UP,
+            raylib::KeyBoard::IKEY_DOWN,
+            raylib::KeyBoard::IKEY_LEFT,
+            raylib::KeyBoard::IKEY_RIGHT,
+            raylib::KeyBoard::IKEY_END,
+            raylib::KeyBoard::IKEY_R_SHIFT,
+        });
+    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
+
+    entity = CoreData::entityManager->createEntity();
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        1,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_Z,
+            raylib::KeyBoard::IKEY_S,
+            raylib::KeyBoard::IKEY_Q,
+            raylib::KeyBoard::IKEY_D,
+            raylib::KeyBoard::IKEY_W,
+            raylib::KeyBoard::IKEY_L_ALT,
+        });
+    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
+    // DEBUG - END
+    SceneLoader::setScene<MainMenuScene>();
 }
 
 void Core::loop()
 {
-    while (CoreData::_window->isOpen()) {
+    while (CoreData::_window->isOpen() && this->_loop == true) {
         CoreData::_window->clear();
         CoreData::sceneManager->run();
         CoreData::_window->refresh();
