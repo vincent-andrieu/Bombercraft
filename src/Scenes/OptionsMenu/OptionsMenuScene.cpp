@@ -32,7 +32,7 @@ void OptionsMenuScene::open()
     GUI::ImageFactory::create(scene->localEntities,
         raylib::MyVector2(0, 0),
         CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("DEF_BACKGROUND"),
+        CoreData::settings->getString("STANDARD_BACKGROUND"),
         false);
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
@@ -69,48 +69,7 @@ void OptionsMenuScene::open()
         60);
     GUI::ButtonFactory::create(
         scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<MainMenuScene>();
-        });
-    // BACKGROUND
-    GUI::ImageFactory::create(scene->localEntities,
-        raylib::MyVector2(0, 0),
-        CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("STANDARD_BACKGROUND"),
-        false);
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
-            std::cout << "Skin Customization" << std::endl;
-        });
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
-            std::cout << "Music & Sounds" << std::endl;
-        });
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", [](const Engine::Entity) {
-            std::cout << "Video settings" << std::endl;
-        });
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<KeyBindingMenuScene>();
-        });
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", [](const Engine::Entity) {
-            std::cout << "Ressource Pack" << std::endl;
-        });
-    GUI::SliderFactory::create(
-        this->localEntities,
-        buttonPosition[5],
-        [](const Engine::Entity entity, GUI::sliderValue &value) {
-            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
-        },
-        "FOV: ",
-        raylib::MyVector2(60, 10),
-        raylib::MyVector2(0, 0),
-        200,
-        60);
-    GUI::ButtonFactory::create(
-        scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<MainMenuScene>();
+            CoreData::sceneManager->setScene(CoreData::sceneManager->getLastScene());
         });
 }
 

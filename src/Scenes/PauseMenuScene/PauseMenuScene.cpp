@@ -33,7 +33,7 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Back to Game",
         [](const Engine::Entity) {
-            //          CoreData::sceneManager->setScene<Game::Game>();
+            //            CoreData::sceneManager->setScene<Game::Game>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 60}, my_buttonConfig.size),
@@ -41,7 +41,7 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Options...",
         [](const Engine::Entity) {
-            //          CoreData::sceneManager->setScene<Game::Options>();
+            CoreData::sceneManager->setScene<Game::OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 70}, my_buttonConfig.size),
