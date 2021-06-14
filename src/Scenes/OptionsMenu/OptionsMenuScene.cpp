@@ -56,7 +56,7 @@ void OptionsMenuScene::open()
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<KeyBindingMenuScene>();
     });
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", handlerDefaultButton);
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "resourcePack", largeButton, "Resource Pack", handlerDefaultButton);
     GUI::SliderFactory::create(this->localEntities, buttonPosition[5],
            [](const Engine::Entity entity, GUI::sliderValue &value) {
                std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
