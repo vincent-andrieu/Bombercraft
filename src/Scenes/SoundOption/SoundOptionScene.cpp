@@ -21,7 +21,7 @@ extern std::unique_ptr<Game::Core> core;
 
 static void handler_slider(Engine::Entity, GUI::sliderValue &value)
 {
-    float volume = ((float)value / 100);
+    float volume = ((float) value / 100);
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
@@ -53,8 +53,15 @@ void Game::SoundOptionScene::open()
             CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     /// Slider
-    GUI::SliderFactory::create(this->localEntities, raylib::MyVector2(100, 50), handler_slider, "Master Volume: ",
-        {150, 10}, Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE), 0, 100, (options.volume * 100));
+    GUI::SliderFactory::create(this->localEntities,
+        raylib::MyVector2(100, 50),
+        handler_slider,
+        "Master Volume: ",
+        {150, 10},
+        Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
+        0,
+        100,
+        static_cast<GUI::sliderValue>(options.volume * 100));
 }
 
 void Game::SoundOptionScene::update()
