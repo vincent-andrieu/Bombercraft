@@ -26,9 +26,15 @@ Render2D::Render2D(render2dMapModels const &models)
 
 void Render2D::draw()
 {
-    for (auto &index : _modelsToDrawIndex) {
-        _models.at(index)->draw();
-    }
+    #ifdef __linux__
+        for (auto &index : _modelsToDrawIndex) {
+            _models.at(index)->draw();
+        }
+    #elif _WIN32
+        for (auto it = _modelsToDrawIndex.rbegin(); it != _modelsToDrawIndex.rend();  it++ ) {
+            _models.at(*it)->draw();
+        }
+    #endif
 }
 
 void Render2D::add(std::shared_ptr<raylib::IRenderable> model, const std::string &label)

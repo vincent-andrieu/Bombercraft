@@ -36,17 +36,17 @@ ButtonConfig ButtonFactory::getSizedButtonConfig(const raylib::MyVector2 &winPer
 
 ButtonConfig ButtonFactory::getSmallButtonConfig()
 {
-    return getSizedButtonConfig({10, 8});
+    return getSizedButtonConfig(raylib::MyVector2(13, 8));
 }
 
 ButtonConfig ButtonFactory::getMediumButtonConfig()
 {
-    return getSizedButtonConfig({24.5, 8});
+    return getSizedButtonConfig(raylib::MyVector2(24.5, 8));
 }
 
 ButtonConfig ButtonFactory::getLargeButtonConfig()
 {
-    return getSizedButtonConfig({50, 8});
+    return getSizedButtonConfig(raylib::MyVector2(50, 8));
 }
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
@@ -76,8 +76,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
         if (Game::CoreData::eventManager->MouseIsOver(position, my_size)) {
-            my_render.unsetToDraw("idle");
             my_render.setToDrawFirst("hover");
+            my_render.unsetToDraw("idle");
         } else {
             my_render.unsetToDraw("hover");
             my_render.setToDrawFirst("idle");

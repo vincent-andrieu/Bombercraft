@@ -74,7 +74,7 @@ void ProceduralMap::generateMap()
     this->_mapProcedural.clear();
     this->mapInitEmpty();
     for (auto proba : this->_mapProba) {
-        this->randomFill(proba.second, proba.first);
+        this->randomFill((float)proba.second, proba.first);
     }
     this->clearMap();
     this->modelApply();

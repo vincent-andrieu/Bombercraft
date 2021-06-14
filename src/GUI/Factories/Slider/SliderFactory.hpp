@@ -33,7 +33,8 @@ namespace GUI
             const raylib::MyVector2 &position,
             sliderHandler clickHandler,
             const string &label = "",
-            const raylib::MyVector2 &labelPos = raylib::MyVector2(0, 0),
+            const raylib::MyVector2 &labelOffset = raylib::MyVector2(0, 0),
+            const raylib::MyVector2 &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
             sliderValue minValue = 0,
             sliderValue maxValue = 100,
             sliderValue defaultValue = 0);

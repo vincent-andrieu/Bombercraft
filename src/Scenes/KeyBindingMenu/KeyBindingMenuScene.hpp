@@ -79,7 +79,7 @@ namespace Game
             raylib::RColor::RWHITE,
             CoreData::settings->getString("STANDARD_FONT"),
         };
-        GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(130, 60));
+        GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getSmallButtonConfig();
         GUI::KeyInputConfig _keyInputDefaultConfig = GUI::KeyInputFactory::getStandardConfig();
         Component::PlayerConfig *_selectedPlayer;
         ProportionUtilities _resizer;

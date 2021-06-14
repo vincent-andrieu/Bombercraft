@@ -9,11 +9,13 @@
 #include <iostream>
 #include "Game/Core/Core.hpp"
 
+std::unique_ptr<Game::Core> core;
+
 int main(void)
 {
     try {
-        Game::Core core;
-        core.loop();
+        core = std::make_unique<Game::Core>();
+        core->loop();
     } catch (const ParserExceptions &e) {
         std::cerr << "Fatal error: " << e.what() << std::endl;
         return EXIT_FAILURE;
@@ -30,6 +32,6 @@ int main(void)
         std::cerr << "Warning: Caught unknown exceptions" << std::endl;
         return EXIT_FAILURE;
     }
-
+    core.reset();
     return EXIT_SUCCESS;
 }

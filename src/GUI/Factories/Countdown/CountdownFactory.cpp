@@ -56,7 +56,7 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
         entity = entityPack.createEntity(name);
     }
     CoreData::entityManager->addComponent<Engine::Timer>(
-        entity, refreshMsTime, *CoreData::entityManager, *CoreData::sceneManager, &timer_handler);
+        entity, (double)refreshMsTime, *CoreData::entityManager, *CoreData::sceneManager, &timer_handler);
     raylib::MyVector2 textPos(position.a + 5, position.b + 5);
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{

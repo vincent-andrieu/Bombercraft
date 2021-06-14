@@ -9,22 +9,24 @@
 
 using namespace GUI;
 
-std::unordered_map<BlockFactory::BlockType, std::function<void(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)>> BlockFactory::_factory =
-{
-    {BlockType::BLOCK_HARD, BlockFactory::hardFactory},
-    {BlockType::BLOCK_SOFT, BlockFactory::softFactory},
-    {BlockType::BLOCK_BOMB, BlockFactory::bombFactory},
-    {BlockType::BLOCK_BLAST, BlockFactory::blastFactory},
-    {BlockType::BLOCK_FLOOR, nullptr},
-    {BlockType::BLOCK_BONUS_BOOMUP, BlockFactory::boomUpBonusFactory},
-    {BlockType::BLOCK_BONUS_FIREUP, BlockFactory::fireUpBonusFactory},
-    {BlockType::BLOCK_BONUS_SPEEDUP, BlockFactory::speedUpBonusFactory},
-    {BlockType::BLOCK_BONUS_WALLPASS, BlockFactory::wallPassBonusFactory},
+std::unordered_map<BlockFactory::BlockType,
+    std::function<void(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)>>
+    BlockFactory::_factory = {
+        {BlockType::BLOCK_HARD, BlockFactory::hardFactory},
+        {BlockType::BLOCK_SOFT, BlockFactory::softFactory},
+        {BlockType::BLOCK_BOMB, BlockFactory::bombFactory},
+        {BlockType::BLOCK_BLAST, BlockFactory::blastFactory},
+        {BlockType::BLOCK_FLOOR, nullptr},
+        {BlockType::BLOCK_BONUS_BOOMUP, BlockFactory::boomUpBonusFactory},
+        {BlockType::BLOCK_BONUS_FIREUP, BlockFactory::fireUpBonusFactory},
+        {BlockType::BLOCK_BONUS_SPEEDUP, BlockFactory::speedUpBonusFactory},
+        {BlockType::BLOCK_BONUS_WALLPASS, BlockFactory::wallPassBonusFactory},
 };
 
-Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name)
+Engine::Entity BlockFactory::create(
+    Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name)
 {
-    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
+    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = BlockFactory::getModel(position, type);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
@@ -40,8 +42,7 @@ std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &p
     std::string texturePath;
     std::string typeInStr;
 
-    switch (type)
-    {
+    switch (type) {
         case BlockType::BLOCK_SOFT: typeInStr = "SOFT"; break;
         case BlockType::BLOCK_HARD: typeInStr = "HARD"; break;
         case BlockType::BLOCK_BOMB: typeInStr = "BOMB"; break;
@@ -57,10 +58,12 @@ std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &p
     return std::make_shared<raylib::Model>(texturePath, modelPath, pos, raylib::RColor::RWHITE);
 }
 
-void BlockFactory::internalFactory(const Engine::Entity &entity, BlockType type, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
+void BlockFactory::internalFactory(
+    const Engine::Entity &entity, BlockType type, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
     try {
-        std::function<void (const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)> func = BlockFactory::_factory.at(type);
+        std::function<void(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)> func =
+            BlockFactory::_factory.at(type);
 
         if (func)
             func(entity, pos, size);
@@ -87,7 +90,8 @@ void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVec
     if (bombCountdown < 0)
         bombCountdown = 0;
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision);
-    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBombTimer);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(
+        entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBombTimer);
 }
 
 void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -96,7 +100,8 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
 
     if (blastTime < 0)
         blastTime = 0;
-    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(
+        entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity);
 }
 
@@ -120,8 +125,8 @@ void BlockFactory::wallPassBonusFactory(const Engine::Entity &entity, const rayl
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerWallPass);
 }
 
-
-void BlockFactory::handlerBlastTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+void BlockFactory::handlerBlastTimer(
+    Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     // TODO remove blast
     (void) sceneManager;
@@ -166,7 +171,8 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
     (void) toEntity; // TODO give bonus to this entity if player
 }
 
-void BlockFactory::handlerBombTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+void BlockFactory::handlerBombTimer(
+    Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     Engine::Position &pos = entityManager.getComponent<Engine::Position>(entity);
 
