@@ -22,12 +22,16 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const MyVector2 &size,
     sliderValue minValue,
     sliderValue maxValue,
-    sliderValue defaultValue)
+    sliderValue defaultValue,
+    const bool centered)
 {
     const auto entity = entityPack.createAnonymousEntity();
     const MyVector2 &selectorSize = MyVector2(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE), size.b);
 
-    auto background = std::make_shared<raylib::Rectangle>(
+    if (centered)
+        position = position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
+
+    const auto &background = std::make_shared<raylib::Rectangle>(
         position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
     auto selector = std::make_shared<raylib::Rectangle>(
         MyVector2(

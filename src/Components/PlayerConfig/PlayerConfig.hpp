@@ -34,7 +34,7 @@ namespace Component
       public:
         PlayerConfig(const PlayerID playerId,
             PlayerKeyBindings defaultKeyBinding,
-            const string &defaultSkinPath = Game::CoreData::settings->getString("DEF_SKIN_PATH"));
+            const string &defaultSkinPath = Game::CoreData::settings->getString("STANDARD_SKIN_PATH"));
         virtual ~PlayerConfig() = default;
 
         PlayerConfig &operator=(const PlayerConfig &src);

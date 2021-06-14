@@ -44,11 +44,11 @@ void Game::SoundOptionScene::open()
 
     /// Background
     GUI::ImageFactory::create(
-        this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("DEF_BACKGROUND"), false);
+        this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     /// Quit button
     GUI::ButtonFactory::create(
         this->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<OptionsMenuScene>();
+            CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         });
     /// Slider
     GUI::SliderFactory::create(this->localEntities,

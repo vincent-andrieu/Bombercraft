@@ -66,7 +66,8 @@ static void rotateHandler(Engine::EntityManager &em, Engine::SceneManager &, con
 
 static void cancelHandler(UNUSED const Engine::Entity &entity)
 {
-    Game::CoreData::sceneManager->setScene<OptionsMenuScene>();
+
+    Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
 }
 
 Game::SkinChoiceScene::SkinChoiceScene()

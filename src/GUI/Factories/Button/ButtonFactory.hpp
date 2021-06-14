@@ -43,6 +43,7 @@ namespace GUI
         static ButtonConfig getSizedButtonConfig(const raylib::MyVector2 &winPercent);
         static ButtonConfig getLargeButtonConfig();
         static ButtonConfig getMediumButtonConfig();
+        static ButtonConfig getBigButtonConfig();
         static ButtonConfig getSmallButtonConfig();
 
         static void create(Engine::EntityPack &pack,
@@ -50,8 +51,15 @@ namespace GUI
             const string &name,
             ButtonConfig const &conf,
             const string &label,
-            const Component::eventScript clickAction);
+            const Component::eventScript clickAction,
+            bool centered = false);
+
+        static const raylib::MyVector2 SmallProportions;
+        static const raylib::MyVector2 MediumProportions;
+        static const raylib::MyVector2 BigProportions;
+        static const raylib::MyVector2 LargeProportions;
     };
+
 } // namespace GUI
 
 #endif // BUTTONFACTORY_HPP
