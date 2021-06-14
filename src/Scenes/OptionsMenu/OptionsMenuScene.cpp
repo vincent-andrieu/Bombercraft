@@ -12,20 +12,20 @@
 
 using namespace Game;
 
-static void handlerDefaultButton(Engine::Entity entity)
-{
-    static std::size_t counter = 1;
+// static void handlerDefaultButton(Engine::Entity entity)
+// {
+//     static std::size_t counter = 1;
 
-    auto &render = CoreData::entityManager->getComponent<Component::Render2D>(entity);
-    raylib::Text &label = *static_cast<raylib::Text *>(render.get("label").get());
+//     auto &render = CoreData::entityManager->getComponent<Component::Render2D>(entity);
+//     raylib::Text &label = *static_cast<raylib::Text *>(render.get("label").get());
 
-    std::ostringstream os;
-    for (std::size_t i = 0; i < counter; i++) {
-        os << "Nope.";
-    }
-    label.setText(os.str());
-    counter = (counter == 6) ? 0 : counter + 1;
-}
+//     std::ostringstream os;
+//     for (std::size_t i = 0; i < counter; i++) {
+//         os << "Nope.";
+//     }
+//     label.setText(os.str());
+//     counter = (counter == 6) ? 0 : counter + 1;
+// }
 
 OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
