@@ -20,7 +20,8 @@ namespace raylib
             const MyVector2 size = {-1, -1},
             const MyVector2 position = {0, 0},
             const RColor color = RColor::RWHITE,
-            const bool scaleMode = true);
+            const bool scaleMode = true,
+            const MyVector2 rectPosition = {-1, -1});
         ~Texture();
 
         void draw();
@@ -31,9 +32,11 @@ namespace raylib
         void setPath(const string &path);
         void setSize(const MyVector2 size);
         void setScaleMode(const bool mode);
+        void setRect(const MyVector2 rect);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
+        [[nodiscard]] MyVector2 getRect() const;
 
         void setLoaderManager();
         std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> getLoaderManager() const;

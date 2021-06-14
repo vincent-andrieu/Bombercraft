@@ -113,6 +113,12 @@ void raylib::TextureSequence::setScaleMode(const bool mode)
     _scaleMode = mode;
 }
 
+void raylib::TextureSequence::setRect(const MyVector2 rect)
+{
+    this->_size.x = rect.a;
+    this->_size.y = rect.b;
+}
+
 Texture2D raylib::TextureSequence::getTexture() const
 {
     return this->_textures[_currentFrame];
@@ -121,4 +127,9 @@ Texture2D raylib::TextureSequence::getTexture() const
 string raylib::TextureSequence::getPath() const
 {
     return this->_path;
+}
+
+raylib::MyVector2 raylib::TextureSequence::getRect() const
+{
+    return MyVector2(this->_size.x, this->_size.y);
 }

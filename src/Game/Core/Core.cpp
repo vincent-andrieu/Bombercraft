@@ -39,6 +39,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::TextInputConfig>();
     CoreData::entityManager->registerComponent<Component::Sound>();
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
+    CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(
