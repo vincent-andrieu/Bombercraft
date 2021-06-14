@@ -492,3 +492,32 @@ bool ConfigFile::isSetInFile(const std::string &name) const
 
     return line.size();
 }
+
+std::vector<std::string> ConfigFile::getTabString(const std::string &name) const
+{
+    size_t cutIn = 0;
+    std::string input;
+    std::vector<std::string> tab;
+    std::vector<std::string> parse;
+    std::string line = getLineByName(name);
+    std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
+
+    if (line.empty())
+        throw ParserExceptions(errmsg_notVariable + name);
+    if (!std::regex_search(line, regexp))
+        throw ParserExceptions(errmsg_notTab + line);
+    input = this->getAfterMatch(line, ": [");
+    input.pop_back();
+    parse = this->getParseIn(",", input, true);
+    for (auto once : parse) {
+        if (once.back() == '"') {
+            cutIn = once.size() - 2;
+        } else if (once.back() == ',') {
+            cutIn = once.size() - 3;
+        } else {
+            cutIn = once.size();
+        }
+        tab.push_back(once.substr(1, cutIn));
+    }
+    return tab;
+}
