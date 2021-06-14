@@ -105,6 +105,7 @@ void Core::loop()
     // DEBUG - END
     SceneLoader::setScene<MainMenuScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+    CoreData::_window->setExitKey();
     while (CoreData::_window->isOpen() && this->_loop == true) {
         CoreData::_window->clear();
         CoreData::sceneManager->run();
