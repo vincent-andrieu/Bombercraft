@@ -35,6 +35,7 @@ class IConfigFile {
     virtual raylib::MyVector4 getMyVector4(const std::string &name) const = 0;
 
     virtual std::vector<int> getTabInt(const std::string &name) const = 0;
+    virtual std::vector<std::string> getTabString(const std::string &name) const = 0;
     virtual std::vector<std::vector<int>> getTabTabInt(const std::string &name) const = 0;
     /*
     ** OTHER
