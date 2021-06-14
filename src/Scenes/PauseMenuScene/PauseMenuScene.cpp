@@ -33,7 +33,7 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Back to Game",
         [](const Engine::Entity) {
-            //            CoreData::sceneManager->setScene<Game::Game>();
+            CoreData::sceneManager->setScene<Game::GameScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 60}, my_buttonConfig.size),

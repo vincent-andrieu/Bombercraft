@@ -8,10 +8,11 @@
 #ifndef SCENEMANAGER_HPP_
 #define SCENEMANAGER_HPP_
 
+#include <vector>
+#include <stack>
 #include "AbstractScene/AbstractScene.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "env.hpp"
-#include <vector>
 
 namespace Engine
 {
@@ -30,7 +31,8 @@ namespace Engine
         template <typename T> void setScene();
         void setScene(const std::shared_ptr<AbstractScene> &scene);
 
-        std::shared_ptr<AbstractScene> getLastScene();
+        void pushLastScene();
+        std::shared_ptr<AbstractScene> peekLastScene();
         std::shared_ptr<AbstractScene> getCurrentScene();
         void updateScene();
 
@@ -44,7 +46,7 @@ namespace Engine
         std::vector<std::shared_ptr<AbstractScene>> _scenes;
         std::vector<std::reference_wrapper<const std::type_info>> _types;
         std::shared_ptr<AbstractScene> _nextScene;
-        std::shared_ptr<AbstractScene> _lastScene{nullptr};
+        std::stack<std::shared_ptr<AbstractScene>> _lastScenes;
     };
 
     template <typename T, typename... Args> void SceneManager::createScene(Args &&...args)
@@ -99,7 +101,7 @@ namespace Engine
         if (_currentScene == nullptr) {
             this->setCurrentScene(_scenes[index]);
         } else {
-            _lastScene = _currentScene;
+            //            _lastScene = _currentScene;
             _nextScene = _scenes[index];
         }
     }

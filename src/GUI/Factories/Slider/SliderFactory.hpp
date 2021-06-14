@@ -37,7 +37,8 @@ namespace GUI
             const raylib::MyVector2 &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
             sliderValue minValue = 0,
             sliderValue maxValue = 100,
-            sliderValue defaultValue = 0);
+            sliderValue defaultValue = 0,
+            bool centered = false);
 
       private:
         static const Game::EventRequirement _clickHandlerRequirements;

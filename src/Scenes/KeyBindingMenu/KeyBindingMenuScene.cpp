@@ -12,7 +12,8 @@ using namespace Game;
 using namespace raylib;
 
 static const Component::eventScript doneButtonHandler = [](UNUSED const Engine::Entity &entity) {
-    CoreData::sceneManager->setScene<OptionsMenuScene>();
+
+    CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
 };
 
 KeyBindingMenuScene::KeyBindingMenuScene(Engine::SystemManager &systemManager)
@@ -29,7 +30,7 @@ void KeyBindingMenuScene::open()
     GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
         CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("DEF_BACKGROUND"),
+        CoreData::settings->getString("STANDARD_BACKGROUND"),
         false);
     GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
 
