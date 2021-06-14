@@ -92,7 +92,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
         });
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
-    SceneLoader::setScene<PauseMenuScene>();
+    SceneLoader::setScene<MainMenuScene>();
 }
 
 void Core::loop()
