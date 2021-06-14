@@ -9,7 +9,7 @@
 
 #include "Game/Factories/Sound/AudioFactory.hpp"
 
-extern std::unique_ptr<Game::Core> core;
+//extern std::unique_ptr<Game::Core> core;
 
 using namespace Game;
 
@@ -92,7 +92,7 @@ void MainMenuScene::open()
     raylib::MyVector2 splashPos(my_utility.getProportion({70, 30}));
     GUI::LabelFactory::create(scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
     GUI::LabelFactory::create(scene->localEntities, bottomRightPos, bottomRightText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomright");
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
+    //CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
     GUI::LabelFactory::create(scene->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
     Engine::Entity splashTxt = localEntities.getEntity("splash");
     CoreData::entityManager->addComponent<Engine::Timer>(splashTxt, 0.07, *CoreData::entityManager, *CoreData::sceneManager, [](Engine::EntityManager &, Engine::SceneManager &, const Engine::Entity entity) {
