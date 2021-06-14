@@ -30,7 +30,7 @@ void OptionsMenuScene::open()
     const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
 
     //BACKGROUND
-    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), raylib::MyVector2(1280, 720), "./Asset/Texture/dirt_32_32.png", false);
+    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), CoreData::settings->getMyVector2("WIN_SIZE"), CoreData::settings->getString("DEF_BACKGROUND"), false);
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
         std::cout << "Skin Customization" << std::endl;
     });
@@ -40,8 +40,8 @@ void OptionsMenuScene::open()
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", [](const Engine::Entity) {
         std::cout << "Video settings" << std::endl;
     });
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls", [](const Engine::Entity) {
-        std::cout << "Controls" << std::endl;
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<KeyBindingMenuScene>();
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", [](const Engine::Entity) {
         std::cout << "Ressource Pack" << std::endl;

@@ -11,16 +11,16 @@
 #include "Components/AbstractEvent/AbstractEvent.hpp"
 #include "GameEngine.hpp"
 
-namespace Component {
+namespace Component
+{
     class KeyEvent : public AbstractEvent, public Engine::Component<KeyEvent> {
       public:
-        KeyEvent(eventScript &handler, Game::EventRequirement const &requirements)
-            : AbstractEvent(handler, requirements)
-        {}
+        KeyEvent(eventScript handler, Game::EventRequirement const &requirements) : AbstractEvent(handler, requirements)
+        {
+        }
 
         virtual ~KeyEvent() = default;
-
     };
-}
+} // namespace Component
 
 #endif // KEYEVENT_HPP
