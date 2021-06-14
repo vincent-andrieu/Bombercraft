@@ -9,8 +9,8 @@
 
 using namespace Component;
 
-Component::PlayerConfig::PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding)
-    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding)
+Component::PlayerConfig::PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding, const string &defaultSkinPath)
+    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding), _skinPath(defaultSkinPath)
 {
 }
 
@@ -36,6 +36,11 @@ const PlayerKeyBindings &Component::PlayerConfig::getPlayerKeyBindings() const
 const PlayerKeyBindings &PlayerConfig::getPlayerDefaultKeyBindings() const
 {
     return this->_defaultKeyBinding;
+}
+
+const string &PlayerConfig::getSkinPath() const
+{
+    return this->_skinPath;
 }
 
 void PlayerConfig::resetAllKeyBindings()
@@ -71,4 +76,9 @@ void PlayerConfig::setKeyPause(const raylib::KeyBoard &key)
 void PlayerConfig::setKeyPlaceBomb(const raylib::KeyBoard &key)
 {
     this->_keyBindings.placeBomb = key;
+}
+
+void PlayerConfig::setSkinPath(const string &skinpath)
+{
+    this->_skinPath = skinpath;
 }

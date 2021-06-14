@@ -8,8 +8,8 @@
 #ifndef STRINGCHOICE_HPP
 #define STRINGCHOICE_HPP
 
-#include "GameEngine.hpp"
 #include <vector>
+#include "GameEngine.hpp"
 
 namespace Component
 {
@@ -21,11 +21,12 @@ namespace Component
         std::string get() const;
         void next();
         void prev();
+        void set(const std::string &skinPath);
 
       private:
         std::size_t _idx;
         std::vector<std::string> _choices;
     };
-}
+} // namespace Component
 
 #endif // STRINGCHOICE_HPP

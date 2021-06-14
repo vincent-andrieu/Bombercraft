@@ -7,8 +7,7 @@
 
 #include "StringChoice.hpp"
 
-Component::StringChoice::StringChoice(const std::vector<std::string> &choices)
-    : _idx(0), _choices(choices)
+Component::StringChoice::StringChoice(const std::vector<std::string> &choices) : _idx(0), _choices(choices)
 {
     if (choices.empty()) {
         throw std::invalid_argument("StringChoice empty choices.");
@@ -36,4 +35,14 @@ void Component::StringChoice::prev()
     } else {
         _idx--;
     }
+}
+
+void Component::StringChoice::set(const std::string &skinPath)
+{
+    for (size_t i = 0; i < this->_choices.size(); i++)
+        if (this->_choices.at(i) == skinPath) {
+            this->_idx = i;
+            return;
+        }
+    throw std::out_of_range(skinPath + " is not in skins list");
 }

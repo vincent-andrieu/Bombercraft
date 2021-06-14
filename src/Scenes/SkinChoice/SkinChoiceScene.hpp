@@ -10,6 +10,7 @@
 
 #include "GameEngine.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Components/PlayerConfig/PlayerConfig.hpp"
 
 namespace Game
 {
@@ -21,7 +22,10 @@ namespace Game
         void update();
 
         void open();
+
+      private:
+        Component::PlayerConfig *_selectedPlayer;
     };
-}
+} // namespace Game
 
 #endif // SKINCHOICESCENE_HPP
