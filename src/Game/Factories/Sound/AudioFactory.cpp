@@ -14,10 +14,14 @@ using namespace Game;
 
 const AudioConfig AudioFactory::getDefaultConfig()
 {
-    return AudioConfig{CoreData::settings->getFloat("DEF_SOUND_VOLUME"), CoreData::settings->getFloat("DEF_SOUND_PITCH")};
+    return AudioConfig{
+        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getFloat("STANDARD_SOUND_PITCH")};
 }
 
-void AudioFactory::create(Engine::EntityPack &entityPack, AudioType type, std::string const &filePath, AudioConfig const &config,
+void AudioFactory::create(Engine::EntityPack &entityPack,
+    AudioType type,
+    std::string const &filePath,
+    AudioConfig const &config,
     std::string const &name)
 {
     Engine::Entity entity;

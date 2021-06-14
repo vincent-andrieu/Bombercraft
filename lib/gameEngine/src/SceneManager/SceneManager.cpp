@@ -9,8 +9,7 @@
 
 using namespace Engine;
 
-SceneManager::SceneManager()
-    : _currentScene(nullptr), _nextScene(nullptr)
+SceneManager::SceneManager() : _currentScene(nullptr), _nextScene(nullptr)
 {
 }
 
@@ -54,4 +53,17 @@ void SceneManager::updateScene()
         this->setCurrentScene(_nextScene);
         _nextScene = nullptr;
     }
+}
+
+std::shared_ptr<AbstractScene> SceneManager::getLastScene()
+{
+    return _lastScene;
+}
+
+void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene)
+{
+    if (std::find(_scenes.begin(), _scenes.end(), scene) == _scenes.end())
+        return;
+    _lastScene = _currentScene;
+    _nextScene = scene;
 }

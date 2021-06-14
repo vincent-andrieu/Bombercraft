@@ -38,6 +38,7 @@
 #include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Components/PlayerConfig/PlayerConfig.hpp"
+#include "Components/PlayerInventory/PlayerInventory.hpp"
 
 namespace Game
 {

@@ -29,6 +29,7 @@ class ConfigFile : public IConfigFile {
     [[nodiscard]] std::pair<int, int> getPair(const std::string &name) const override;
 
     [[nodiscard]] std::vector<int> getTabInt(const std::string &name) const override;
+    [[nodiscard]] std::vector<std::string> getTabString(const std::string &name) const override;
     [[nodiscard]] std::vector<std::vector<int>> getTabTabInt(const std::string &name) const override;
 
     [[nodiscard]] raylib::MyVector2 getMyVector2(const std::string &name) const override;

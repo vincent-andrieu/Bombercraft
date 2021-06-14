@@ -46,6 +46,8 @@ void GameScene::open()
         raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, 0),
         raylib::MyVector2(0, windowSize.b - (windowSize.a / 15)),
         raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, windowSize.b - (windowSize.a / 15))};
+    const std::vector<Component::PlayerID> ids = {
+        Component::PlayerID::ALPHA, Component::PlayerID::BRAVO, Component::PlayerID::CHARLIE, Component::PlayerID::DELTA};
     size_t nbPlayer = 3;
     ProportionUtilities proportion(windowSize);
 
@@ -61,6 +63,7 @@ void GameScene::open()
             {windowSize.a / 15, windowSize.a / 15},
             texturesPath,
             GUI::InventoryFactory::getStandardLabelConfig(),
+            ids[i],
             inventoryNames[i]);
     }
     /// Chrono

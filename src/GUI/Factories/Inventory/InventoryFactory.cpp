@@ -9,15 +9,36 @@
 #include "Game/CoreData/CoreData.hpp"
 #include "Components/Render2D/Render2D.hpp"
 
-static void timer_handler(
-    Engine::EntityManager &entityManager, [[maybe_unused]] Engine::SceneManager &sceneManager, const Engine::Entity entity)
+static const std::vector<std::string> valueNames = {
+    "InventoryValueBomb",
+    "InventoryValueSpeed",
+    "InventoryValueWallPass",
+    "InventoryValueBlastRadius",
+};
+
+static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
+    [[maybe_unused]] Engine::SceneManager &sceneManager,
+    [[maybe_unused]] const Engine::Entity entity)
 {
     try {
-        std::cout << "\tUPDATE INVENTORY" << std::endl;
-        /*auto &render2d = entityManager.getComponent<Component::Render2D>(entity);
-        auto &imageSequence = *dynamic_cast<raylib::ITexture *>(render2d.get("imageSequence").get());
+        Component::PlayerInventoryInfo playerInventoryInfo;
+        std::shared_ptr<Engine::AbstractScene> scene = sceneManager.getCurrentScene();
+        auto &playerInventory = entityManager.getComponent<Component::PlayerInventory>(entity);
+        auto &bombValueRender2d = entityManager.getComponent<Component::Render2D>(
+            scene->localEntities.getEntity(valueNames[0] + toString(playerInventory.getPlayerId())));
+        auto &speedValueRender2d = entityManager.getComponent<Component::Render2D>(
+            scene->localEntities.getEntity(valueNames[1] + toString(playerInventory.getPlayerId())));
+        auto &wallPassValueRender2d = entityManager.getComponent<Component::Render2D>(
+            scene->localEntities.getEntity(valueNames[2] + toString(playerInventory.getPlayerId())));
+        auto &blastRadiusValueRender2d = entityManager.getComponent<Component::Render2D>(
+            scene->localEntities.getEntity(valueNames[3] + toString(playerInventory.getPlayerId())));
 
-        imageSequence.update();*/
+        playerInventoryInfo = playerInventory.getPlayerInventoryInfo();
+        (*dynamic_cast<raylib::IText *>(bombValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.bomb));
+        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.speed));
+        (*dynamic_cast<raylib::IText *>(wallPassValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.wallPass));
+        (*dynamic_cast<raylib::IText *>(blastRadiusValueRender2d.get("text").get()))
+            .setText(toString(playerInventoryInfo.blastRadius));
     } catch (...) {
         std::cerr << "TimerEntity::Handler, An exception occurred" << std::endl;
     }
@@ -32,8 +53,14 @@ GUI::LabelConfig GUI::InventoryFactory::getStandardLabelConfig(const int fontSiz
     } else {
         finalFontSize = fontSize;
     }
-    GUI::LabelConfig my_standard{finalFontSize, raylib::RColor::RWHITE, Game::CoreData::settings->getString("STANDARD_FONT")};
-    return my_standard;
+    GUI::LabelConfig myStandard{finalFontSize, raylib::RColor::RWHITE, Game::CoreData::settings->getString("STANDARD_FONT")};
+    return myStandard;
+}
+
+Component::PlayerInventoryInfo GUI::InventoryFactory::getDefaultPlayerInventory()
+{
+    Component::PlayerInventoryInfo myDefault{1, 1, false, 1};
+    return myDefault;
 }
 
 void GUI::InventoryFactory::create(Engine::EntityPack &entityPack,
@@ -41,6 +68,7 @@ void GUI::InventoryFactory::create(Engine::EntityPack &entityPack,
     const raylib::MyVector2 &boxSize,
     std::vector<std::string> const &texturesPath,
     GUI::LabelConfig const &labelconfig,
+    Component::PlayerID id,
     const std::string &name)
 {
     Engine::Entity entity;
@@ -50,6 +78,7 @@ void GUI::InventoryFactory::create(Engine::EntityPack &entityPack,
     raylib::MyVector2 valuePosition = {position.a + boxSize.a * (75.0f / 100.0f), position.b + boxSize.a * (65.0f / 100.0f)};
     std::vector<std::shared_ptr<raylib::Texture>> cases = {};
     std::vector<std::shared_ptr<raylib::Texture>> powerUp = {};
+    std::vector<size_t> defaultLabelValue = {1, 1, 0, 1};
 
     if (name.empty()) {
         entity = entityPack.createAnonymousEntity();
@@ -74,11 +103,10 @@ void GUI::InventoryFactory::create(Engine::EntityPack &entityPack,
             {"inventoryCase3", cases[2]},
             {"inventoryCase4", cases[3]}});
     for (size_t i = 0; i < 4; i++) {
-        GUI::LabelFactory::create(entityPack, valuePosition, 0, labelconfig);
+        GUI::LabelFactory::create(entityPack, valuePosition, defaultLabelValue[i], labelconfig, valueNames[i] + toString(id));
         valuePosition.a += boxSize.a;
     }
+    Game::CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, getDefaultPlayerInventory());
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, 1.0f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
-    /*    Game::CoreData::entityManager->addComponent<Engine::Timer>(
-            entity, frameRate, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);*/
 }

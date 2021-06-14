@@ -78,8 +78,8 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
 const TimerConfig CountdownFactory::getStandardConfig()
 {
     const TimerConfig t = {Game::CoreData::settings->getString("TIMER_TEXTURE"),
-        Game::CoreData::settings->getString("DEF_FONT"),
-        static_cast<std::size_t>(Game::CoreData::settings->getInt("DEF_FONT_SIZE")),
+        Game::CoreData::settings->getString("STANDARD_FONT"),
+        static_cast<std::size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         CONF_GET_COLOR("TIMER_COLOR"),
         Game::CoreData::settings->getMyVector2("TIMER_SIZE")};
     return t;
