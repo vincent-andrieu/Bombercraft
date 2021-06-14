@@ -18,6 +18,9 @@ void MainMenuScene::open()
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
     const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+    const size_t fontSize = (size_t)Game::CoreData::settings->getInt("SUB_FONT_SIZE");
+    const std::string bottomLeftText = Game::CoreData::settings->getString("HOME_BOTTOM_LEFT_TXT");
+    const std::string bottomRightText = Game::CoreData::settings->getString("HOME_BOTTOM_RIGHT_TXT");
 
     ProportionUtilities my_utility(windowSize);
     const std::vector<raylib::MyVector2> buttonPosition = {my_utility.getProportion({25, 40}),
@@ -70,6 +73,10 @@ void MainMenuScene::open()
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
             CoreData::quit();
         });
+    raylib::MyVector2 bottomLeftPos(my_utility.getProportion({1, 95}));
+    raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
+    GUI::LabelFactory::create(scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
+    GUI::LabelFactory::create(scene->localEntities, bottomRightPos, bottomRightText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomright");
 }
 
 void Game::MainMenuScene::update()
