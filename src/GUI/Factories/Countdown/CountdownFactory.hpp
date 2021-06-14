@@ -14,6 +14,8 @@
 
 namespace GUI
 {
+    using CountDownTimeout = std::function<void()>;
+
     struct TimerConfig {
         const std::string pathTexture;
         const std::string pathFont;
@@ -30,11 +32,20 @@ namespace GUI
 
         static const TimerConfig getStandardConfig();
 
-        static void create(Engine::EntityPack &entityPack, raylib::MyVector2 position, TimerConfig const &config,
-            std::size_t countdown, std::string const &name = "", std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
+        static void create(Engine::EntityPack &entityPack,
+            raylib::MyVector2 position,
+            TimerConfig const &config,
+            std::size_t countdown,
+            CountDownTimeout handler,
+            std::string const &name = "",
+            std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
 
-        static void create(Engine::EntityPack &entityPack, raylib::MyVector2 position, std::size_t countdown,
-            std::string const &name = "", std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
+        static void create(Engine::EntityPack &entityPack,
+            raylib::MyVector2 position,
+            std::size_t countdown,
+            CountDownTimeout handler,
+            std::string const &name = "",
+            std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
     };
 } // namespace GUI
 

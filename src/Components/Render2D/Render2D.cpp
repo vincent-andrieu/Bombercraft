@@ -85,14 +85,22 @@ void Render2D::setToDrawFirst(const string &label)
 {
     const auto &my_index(_modelIndex.at(label));
 
-    _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
+    #ifdef __linux__
+        _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
+    #elif _WIN32
+        _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
+    #endif
 }
 
 void Render2D::setToDrawLast(const string &label)
 {
     const auto &my_index(_modelIndex.at(label));
 
-    _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
+    #ifdef __linux__
+        _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
+    #elif _WIN32
+        _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
+    #endif
 }
 
 void Render2D::unsetToDraw(const string &label)

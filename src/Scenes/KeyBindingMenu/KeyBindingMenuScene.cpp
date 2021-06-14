@@ -29,7 +29,7 @@ void KeyBindingMenuScene::open()
     GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
         CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("STANDARD_BACKGROUND"),
+        CoreData::settings->getString("DEF_BACKGROUND"),
         false);
     GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
 
