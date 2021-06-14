@@ -10,9 +10,12 @@
 
 #include "GameEngine.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
 #include "GUI/Factories/Image/ImageFactory.hpp"
+#include "GUI/Factories/Button/ButtonFactory.hpp"
+#include "GUI/Factories/Slider/SliderFactory.hpp"
 
 #include "Systems/Render2D/Render2DSystem.hpp"
 

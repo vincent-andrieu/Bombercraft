@@ -6,8 +6,8 @@
 */
 
 #include "Core.hpp"
-#include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
@@ -82,8 +82,9 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
     CoreData::sceneManager->setScene<KeyBindingMenuScene>();
-    // CoreData::sceneManager->createScene<PauseMenuScene>(*CoreData::systemManager);
-    // CoreData::sceneManager->setScene<MainMenuScene>();
+    // CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
+    // CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
+    // SceneLoader::setScene<MainMenuScene>();
 }
 
 void Core::loop()

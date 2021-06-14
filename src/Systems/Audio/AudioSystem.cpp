@@ -36,7 +36,7 @@ void AudioSystem::play(std::string const& entityName)
             }
             sound.sound->play();
         }
-    } catch (std::invalid_argument const& e) {
+    } catch (UNUSED std::invalid_argument const& e) {
         std::cerr << "Warning: AudioSystem::update entity " << entityName << " not found." << std::endl;
     }
 }

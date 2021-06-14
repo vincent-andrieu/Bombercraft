@@ -46,7 +46,7 @@ namespace IA
 
         protected:
             std::pair<size_t, size_t> _pos;
-            std::pair<ssize_t, ssize_t> _prevPos;
+            std::pair<size_t, size_t> _prevPos;
             std::vector<std::vector<TileType>> _env;
             std::vector<TileType> _isRunnable;
             std::queue<Movement> _MovementQueue;

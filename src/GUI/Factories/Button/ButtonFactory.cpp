@@ -5,6 +5,7 @@
 ** 04/06/2021 ButtonEntity.cpp.cc
 */
 
+#include <Utilities/ProportionUtilities.hpp>
 #include "ButtonFactory.hpp"
 
 using namespace GUI;
@@ -36,21 +37,22 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
     const Component::eventScript clickAction)
 {
-    const raylib::MyVector2 &my_position(position);
-    raylib::MyVector2 my_size(conf.size);
-    Engine::Entity entity = pack.createEntity(name);
-    Component::render2dMapModels my_models({
-        {"label",
-            std::make_shared<raylib::Text>(label,
-                my_position,
-                conf.fontSize,
-                conf.fontColor,
-                std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath)))},
+    const auto &my_position(position);
+    const auto &my_size(conf.size);
+    const auto entity = pack.createEntity(label);
+    auto my_label(std::make_shared<raylib::Text>(label,
+        my_position,
+        conf.fontSize,
+        conf.fontColor,
+        std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
+    auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
+    my_label->setPosition(my_labelPosition);
+    Component::render2dMapModels my_models({{"text", my_label},
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
         {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
-        // {"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},
-        // {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)},
-    });
+        /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
+        /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
+
     Component::eventScript my_moveHandler = [position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 

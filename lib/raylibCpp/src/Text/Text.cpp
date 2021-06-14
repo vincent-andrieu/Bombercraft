@@ -99,3 +99,10 @@ void raylib::Text::removeLimit()
     this->_limit.width = -1;
     this->_limit.height = -1;
 }
+raylib::MyVector2 raylib::Text::getSize() const
+{
+    const int spacing = this->_size / 10;
+    Vector2 my_size(MeasureTextEx(this->_font->getFont(), this->_text.data(), this->_size, spacing));
+
+    return raylib::MyVector2(my_size.x, my_size.y);
+}
