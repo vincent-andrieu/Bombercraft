@@ -26,14 +26,15 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const bool centered)
 {
     const auto entity = entityPack.createAnonymousEntity();
-    const MyVector2 &selectorSize = MyVector2(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE), size.b);
+    const MyVector2 &selectorSize =
+        MyVector2(static_cast<float>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE)), size.b);
 
     auto my_position(position);
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
 
-    const auto &background = std::make_shared<raylib::Rectangle>(
-        my_position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
+    const auto &background =
+        std::make_shared<raylib::Rectangle>(my_position, size, CONF_GET_COLOR(SLIDER_CONFIG_BACKGROUND_COLOR));
     auto selector = std::make_shared<raylib::Rectangle>(
         MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
             my_position.b),
@@ -44,7 +45,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
         CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
     displayLabel->setPosition(
-        position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
+        my_position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
 
     Component::eventScript clickHandler =
         [selector, displayLabel, label, my_position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](

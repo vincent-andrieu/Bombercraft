@@ -23,13 +23,13 @@ void OptionsMenuScene::open()
     ProportionUtilities my_utility(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
 
     const std::vector<raylib::MyVector2> buttonPosition({
-        my_utility.getProportion({25, 20}),
-        my_utility.getProportion({75, 20}),
-        my_utility.getProportion({25, 30}),
-        my_utility.getProportion({75, 30}),
-        my_utility.getProportion({25, 40}),
-        my_utility.getProportion({75, 40}, GUI::ButtonFactory::BigProportions, {50, 50}),
-        my_utility.getProportion({50, 90}),
+        my_utility.getProportion(25, 20),
+        my_utility.getProportion(75, 20),
+        my_utility.getProportion(25, 30),
+        my_utility.getProportion(75, 30),
+        my_utility.getProportion(25, 40),
+        my_utility.getProportion(75, 40),
+        my_utility.getProportion(50, 90),
     });
 
     auto scene = CoreData::sceneManager->getCurrentScene();
