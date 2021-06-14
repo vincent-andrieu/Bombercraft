@@ -9,8 +9,9 @@
 #include "Game/CoreData/CoreData.hpp"
 #include "Components/Render2D/Render2D.hpp"
 
-static void timer_handler(
-    Engine::EntityManager &entityManager, [[maybe_unused]] Engine::SceneManager &sceneManager, const Engine::Entity entity)
+static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
+    [[maybe_unused]] Engine::SceneManager &sceneManager,
+    [[maybe_unused]] const Engine::Entity entity)
 {
     try {
         std::cout << "\tUPDATE INVENTORY" << std::endl;
