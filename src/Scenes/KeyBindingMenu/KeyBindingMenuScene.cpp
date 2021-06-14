@@ -23,7 +23,8 @@ KeyBindingMenuScene::KeyBindingMenuScene(Engine::SystemManager &systemManager)
 
 void KeyBindingMenuScene::open()
 {
-    this->_selectedPlayer = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(0);
+    this->_selectedPlayer =
+        &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(Component::PlayerID::ALPHA);
 
     GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
@@ -40,7 +41,7 @@ void KeyBindingMenuScene::open()
         "Player " + toString(this->_selectedPlayer->getPlayerId()),
         [this](const Engine::Entity &entity) {
             this->_selectedPlayer =
-                &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(*this->_selectedPlayer);
+                &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getNextPlayer(*this->_selectedPlayer);
             static_cast<raylib::Text *>(
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
                 ->setText("Player " + toString(this->_selectedPlayer->getPlayerId()));
