@@ -54,6 +54,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
     // DEBUG - START
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
@@ -81,10 +83,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
         });
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
-    CoreData::sceneManager->setScene<KeyBindingMenuScene>();
-    // CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
-    // CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    // SceneLoader::setScene<MainMenuScene>();
+    SceneLoader::setScene<MainMenuScene>();
 }
 
 void Core::loop()
