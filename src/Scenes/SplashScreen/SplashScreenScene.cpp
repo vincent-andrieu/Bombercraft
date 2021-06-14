@@ -12,7 +12,6 @@
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Image/ImageSequenceFactory.hpp"
-#include <thread>
 
 using namespace Game;
 
