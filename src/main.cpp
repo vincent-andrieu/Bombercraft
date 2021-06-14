@@ -11,25 +11,32 @@
 
 std::unique_ptr<Game::Core> core;
 
+static int running_end(const std::string &str)
+{
+    core.reset();
+    std::cerr << str << std::endl;
+    return EXIT_FAILURE;
+}
+
 int main(void)
 {
     try {
         core = std::make_unique<Game::Core>();
         core->loop();
     } catch (const ParserExceptions &e) {
-        std::cerr << "Fatal error: " << e.what() << std::endl;
+        running_end("Fatal error: " + std::string(e.what()));
         return EXIT_FAILURE;
     } catch (std::invalid_argument const &e) {
-        std::cerr << "Invalid argument : " << e.what() << std::endl;
+        running_end("Invalid argument : " + std::string(e.what()));
         return EXIT_FAILURE;
     } catch (std::filesystem::filesystem_error const &e) {
-        std::cerr << "Filesystem : " << e.what() << std::endl;
+        running_end("Filesystem : " + std::string(e.what()));
         return EXIT_FAILURE;
     } catch (std::exception const &e) {
-        std::cerr << e.what() << std::endl;
+        running_end(e.what());
         return EXIT_FAILURE;
     } catch (...) {
-        std::cerr << "Warning: Caught unknown exceptions" << std::endl;
+        running_end("Warning: Caught unknown exceptions");
         return EXIT_FAILURE;
     }
     core.reset();
