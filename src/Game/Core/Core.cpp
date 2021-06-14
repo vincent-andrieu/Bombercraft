@@ -42,7 +42,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
-    CoreData::entityManager->addComponent<Component::OptionComponent>(options, CoreData::settings->getFloat("DEF_SOUND_VOLUME"));
+    CoreData::entityManager->addComponent<Component::OptionComponent>(
+        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"));
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();

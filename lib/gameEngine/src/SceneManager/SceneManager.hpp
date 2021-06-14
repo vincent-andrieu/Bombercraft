@@ -16,56 +16,54 @@
 namespace Engine
 {
     class SceneManager {
-        public:
-            SceneManager();
-            ~SceneManager();
+      public:
+        SceneManager();
+        ~SceneManager();
 
         void run();
         void run(std::shared_ptr<AbstractScene> scene);
 
-        template <typename T, typename... Args>
-        void createScene(Args &&...sceneType);
+        template <typename T, typename... Args> void createScene(Args &&...sceneType);
 
-        template <typename T>
-        void remove();
+        template <typename T> void remove();
 
-        template <typename T>
-        void setScene();
+        template <typename T> void setScene();
+        void setScene(const std::shared_ptr<AbstractScene> &scene);
 
+        std::shared_ptr<AbstractScene> getLastScene();
         std::shared_ptr<AbstractScene> getCurrentScene();
         void updateScene();
 
-        template <typename T>
-        std::shared_ptr<AbstractScene> getScene();
+        template <typename T> std::shared_ptr<AbstractScene> getScene();
 
       private:
         void setCurrentScene(std::shared_ptr<AbstractScene> scene);
 
-        private:
-            std::shared_ptr<AbstractScene> _currentScene;
-            std::vector<std::shared_ptr<AbstractScene>> _scenes;
-            std::vector<std::reference_wrapper<const std::type_info>> _types;
-            std::shared_ptr<AbstractScene> _nextScene;
+      private:
+        std::shared_ptr<AbstractScene> _currentScene;
+        std::vector<std::shared_ptr<AbstractScene>> _scenes;
+        std::vector<std::reference_wrapper<const std::type_info>> _types;
+        std::shared_ptr<AbstractScene> _nextScene;
+        std::shared_ptr<AbstractScene> _lastScene{nullptr};
     };
 
-    template <typename T, typename... Args>
-    void SceneManager::createScene(Args &&...args)
+    template <typename T, typename... Args> void SceneManager::createScene(Args &&...args)
     {
         const std::type_info &type = typeid(T);
 
-        if (std::find_if(_types.begin(), _types.end(),
+        if (std::find_if(_types.begin(),
+                _types.end(),
                 [&type](auto &sceneType) {
                     return sceneType.get() == type;
                 })
             != _types.end()) {
-                throw std::exception();
+            throw std::exception();
         }
         _scenes.push_back(std::make_shared<T>(std::forward<Args>(args)...));
         _types.emplace_back(typeid(T));
     }
 
-    template <typename T>
-    void SceneManager::remove()
+    template <typename T> void SceneManager::remove()
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
@@ -86,8 +84,7 @@ namespace Engine
         _scenes.pop_back();
     }
 
-    template <typename T>
-    void SceneManager::setScene()
+    template <typename T> void SceneManager::setScene()
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
@@ -102,12 +99,12 @@ namespace Engine
         if (_currentScene == nullptr) {
             this->setCurrentScene(_scenes[index]);
         } else {
+            _lastScene = _currentScene;
             _nextScene = _scenes[index];
         }
     }
 
-    template <typename T>
-    std::shared_ptr<AbstractScene> SceneManager::getScene()
+    template <typename T> std::shared_ptr<AbstractScene> SceneManager::getScene()
     {
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
@@ -121,8 +118,6 @@ namespace Engine
         index = std::distance(_types.begin(), type_it);
         return _scenes[index];
     }
-}
-
-
+} // namespace Engine
 
 #endif /* !SCENEMANAGER_HPP_ */
