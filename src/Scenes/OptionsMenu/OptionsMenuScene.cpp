@@ -7,8 +7,24 @@
 
 #include "OptionsMenuScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
+#include <sstream>
 
 using namespace Game;
+
+static void handlerDefaultButton(Engine::Entity entity)
+{
+    static std::size_t counter = 1;
+
+    auto &render = CoreData::entityManager->getComponent<Component::Render2D>(entity);
+    raylib::Text &label = *static_cast<raylib::Text *>(render.get("label").get());
+
+    std::ostringstream os;
+    for (std::size_t i = 0; i < counter; i++) {
+        os << "Nope.";
+    }
+    label.setText(os.str());
+    counter = (counter == 6) ? 0 : counter + 1;
+}
 
 OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
@@ -35,17 +51,12 @@ void OptionsMenuScene::open()
     });
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<SoundOptionScene>();
-        std::cout << "Music & Sounds" << std::endl;
     });
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", [](const Engine::Entity) {
-        std::cout << "Video settings" << std::endl;
-    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[2], "videoSettings", largeButton, "Video Settings", handlerDefaultButton);
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<KeyBindingMenuScene>();
     });
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", [](const Engine::Entity) {
-        std::cout << "Ressource Pack" << std::endl;
-    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", handlerDefaultButton);
     GUI::SliderFactory::create(this->localEntities, buttonPosition[5],
            [](const Engine::Entity entity, GUI::sliderValue &value) {
                std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
