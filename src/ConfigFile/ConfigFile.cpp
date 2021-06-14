@@ -501,6 +501,7 @@ std::vector<std::string> ConfigFile::getTabString(const std::string &name) const
     std::vector<std::string> parse;
     std::string line = getLineByName(name);
     std::regex regexp("\"[a-zA-Z_]+\": \\[.*\\]$");
+    std::regex regexpIntern("\".*\",?$");
 
     if (line.empty())
         throw ParserExceptions(errmsg_notVariable + name);
@@ -510,6 +511,9 @@ std::vector<std::string> ConfigFile::getTabString(const std::string &name) const
     input.pop_back();
     parse = this->getParseIn(",", input, true);
     for (auto once : parse) {
+        std::cout << once << std::endl;
+        if (!std::regex_search(once, regexpIntern))
+            throw ParserExceptions("invalide line: " + line);
         if (once.back() == '"') {
             cutIn = once.size() - 2;
         } else if (once.back() == ',') {
