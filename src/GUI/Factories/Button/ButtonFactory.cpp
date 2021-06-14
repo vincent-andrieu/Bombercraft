@@ -5,13 +5,18 @@
 ** 04/06/2021 ButtonEntity.cpp.cc
 */
 
-#include <Utilities/ProportionUtilities.hpp>
 #include "ButtonFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
 using namespace GUI;
 
 static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
+
+const raylib::MyVector2 ButtonFactory::SmallProportions(13, 8);
+const raylib::MyVector2 ButtonFactory::MediumProportions(24.5, 8);
+const raylib::MyVector2 ButtonFactory::BigProportions(33, 8);
+const raylib::MyVector2 ButtonFactory::LargeProportions(50, 8);
 
 ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &buttonSize)
 {
@@ -36,17 +41,22 @@ ButtonConfig ButtonFactory::getSizedButtonConfig(const raylib::MyVector2 &winPer
 
 ButtonConfig ButtonFactory::getSmallButtonConfig()
 {
-    return getSizedButtonConfig(raylib::MyVector2(13, 8));
+    return getSizedButtonConfig(SmallProportions);
 }
 
 ButtonConfig ButtonFactory::getMediumButtonConfig()
 {
-    return getSizedButtonConfig(raylib::MyVector2(24.5, 8));
+    return getSizedButtonConfig(MediumProportions);
+}
+
+ButtonConfig ButtonFactory::getBigButtonConfig()
+{
+    return getSizedButtonConfig(BigProportions);
 }
 
 ButtonConfig ButtonFactory::getLargeButtonConfig()
 {
-    return getSizedButtonConfig(raylib::MyVector2(50, 8));
+    return getSizedButtonConfig(LargeProportions);
 }
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
@@ -54,10 +64,13 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const string &name,
     const GUI::ButtonConfig &conf,
     const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
-    const Component::eventScript clickAction)
+    const Component::eventScript clickAction,
+    const bool centered)
 {
-    const auto &my_position(position);
     const auto &my_size(conf.size);
+    auto my_position((position));
+    if (centered)
+        my_position = my_position - ProportionUtilities::getProportionWin(my_size, raylib::MyVector2(50, 50));
     const auto entity = pack.createEntity(name);
     auto my_label(std::make_shared<raylib::Text>(label,
         my_position,
@@ -72,10 +85,10 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
         /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
         /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
 
-    Component::eventScript my_moveHandler = [position, my_size](const Engine::Entity entity) {
+    Component::eventScript my_moveHandler = [my_position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
-        if (Game::CoreData::eventManager->MouseIsOver(position, my_size)) {
+        if (Game::CoreData::eventManager->MouseIsOver(my_position, my_size)) {
             my_render.setToDrawFirst("hover");
             my_render.unsetToDraw("idle");
         } else {
