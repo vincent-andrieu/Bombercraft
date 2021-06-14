@@ -23,7 +23,7 @@ PlayerConfig &PlayerConfig::operator=(const PlayerConfig &src)
     return *this;
 }
 
-const uint &Component::PlayerConfig::getPlayerId() const
+const PlayerID &Component::PlayerConfig::getPlayerId() const
 {
     return this->_id;
 }

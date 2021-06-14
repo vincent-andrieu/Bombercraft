@@ -37,7 +37,7 @@ namespace Component
 
         PlayerConfig &operator=(const PlayerConfig &src);
 
-        const uint &getPlayerId() const;
+        const PlayerID &getPlayerId() const;
         const PlayerKeyBindings &getPlayerKeyBindings() const;
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         void resetAllKeyBindings();
@@ -49,7 +49,7 @@ namespace Component
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
 
       private:
-        uint _id;
+        PlayerID _id;
         PlayerKeyBindings _keyBindings;
         PlayerKeyBindings _defaultKeyBinding;
     };
