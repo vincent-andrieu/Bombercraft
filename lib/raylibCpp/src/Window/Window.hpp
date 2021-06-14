@@ -31,6 +31,7 @@ namespace raylib
         void setCamera(const std::shared_ptr<ICamera> &camera);
         void setFPS(const int fps);
         void setExitKey(int key = KEY_INSERT);
+        void openURL(const std::string &url) const;
 
         [[nodiscard]] std::shared_ptr<ICamera> getCamera() const;
 

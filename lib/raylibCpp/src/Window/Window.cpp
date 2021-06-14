@@ -87,3 +87,7 @@ void raylib::Window::setExitKey(int key)
 {
     SetExitKey(key);
 }
+void raylib::Window::openURL(const std::string &url) const
+{
+    OpenURL(url.c_str());
+}
