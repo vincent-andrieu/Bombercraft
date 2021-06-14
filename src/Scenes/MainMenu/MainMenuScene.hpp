@@ -10,10 +10,13 @@
 
 #include "GameEngine.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
+
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Scenes/DebugScene/DebugScene.hpp"
 #include "Scenes/GameScene/GameScene.hpp"
+#include "Scenes/NewGameMenuScene/NewGameMenuScene.hpp"
+
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
 

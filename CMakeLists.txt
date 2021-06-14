@@ -84,6 +84,7 @@ set(SRCS
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         src/Scenes/GameScene/GameScene.cpp
         src/Scenes/SoundOption/SoundOptionScene.cpp
+        src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
@@ -91,7 +92,8 @@ set(SRCS
         # UTILITIES
         src/Utilities/utilities.cpp
         src/Utilities/ProportionUtilities.hpp
-    )
+        #        src/GUI/guiConstants.cpp
+        )
 
 add_executable(${NAME} ${SRCS})
 
