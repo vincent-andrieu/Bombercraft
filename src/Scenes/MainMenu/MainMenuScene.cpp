@@ -47,7 +47,7 @@ void MainMenuScene::open()
         });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
-            //CoreData::_window->close();
+            CoreData::quit();
         });
 }
 
