@@ -64,6 +64,11 @@ static void rotateHandler(Engine::EntityManager &em, Engine::SceneManager &, con
     model.setRotation({rotation.a, rotation.b + 1, rotation.c});
 }
 
+static void cancelHandler(UNUSED const Engine::Entity &entity)
+{
+    Game::CoreData::sceneManager->setScene<OptionsMenuScene>();
+}
+
 Game::SkinChoiceScene::SkinChoiceScene()
     : Engine::AbstractScene(*CoreData::systemManager, *CoreData::entityManager), _selectedPlayer(nullptr)
 {
@@ -106,8 +111,10 @@ void Game::SkinChoiceScene::open()
         });
     // Buttons
     GUI::ButtonFactory::create(
-        this->localEntities, my_utility(14, 90), "leftButton", mediumButtonConfig, "PREV", previousHandler);
-    GUI::ButtonFactory::create(this->localEntities, my_utility(74, 90), "rightButton", mediumButtonConfig, "NEXT", nextHandler);
+        this->localEntities, my_utility(25, 80), "leftButton", mediumButtonConfig, "Previous", previousHandler);
+    GUI::ButtonFactory::create(this->localEntities, my_utility(50.5, 80), "rightButton", mediumButtonConfig, "Next", nextHandler);
+    GUI::ButtonFactory::create(
+        this->localEntities, my_utility(25, 90), "cancelButton", mediumButtonConfig, "Cancel", cancelHandler);
     GUI::ButtonFactory::create(this->localEntities,
         my_utility(50.5, 90),
         "applyButton",
