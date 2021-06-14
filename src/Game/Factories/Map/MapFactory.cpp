@@ -59,20 +59,6 @@ GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<si
     });
     endMap = map.getProceduralMap();
     sizeDest = map.getSize();
-    // for (auto it_y : endMap) {
-    //     for (auto it_x : it_y) {
-    //         switch (it_x)
-    //         {
-    //             case TileType::TILE_BONUS: std::cerr << '?'; break;
-    //             case TileType::TILE_EMPTY: std::cerr << '.'; break;
-    //             case TileType::TILE_HARD: std::cerr << 'x'; break;
-    //             case TileType::TILE_SOFT: std::cerr << '#'; break;
-    //             case TileType::TILE_DEFAULT: std::cerr << '!'; break;
-    //             default: std::cerr << '-'; break;
-    //         }
-    //     }
-    //     std::cerr << std::endl;
-    // }
     return endMap;
 }
 
@@ -82,7 +68,7 @@ GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType
         case GameModule::TileType::TILE_HARD: return GUI::BlockFactory::BlockType::BLOCK_HARD; break;
         case GameModule::TileType::TILE_SOFT: return GUI::BlockFactory::BlockType::BLOCK_SOFT; break;
         case GameModule::TileType::TILE_EMPTY: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;
-        case GameModule::TileType::TILE_BONUS: return MapFactory::randomBonus(); break;
+        case GameModule::TileType::TILE_BONUS: return GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT; break;
         case GameModule::TileType::TILE_DEFAULT: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;
         case GameModule::TileType::TILE_EXPLOSION: return GUI::BlockFactory::BlockType::BLOCK_BLAST; break;
         default: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;

@@ -17,6 +17,7 @@ std::unordered_map<BlockFactory::BlockType,
         {BlockType::BLOCK_BOMB, BlockFactory::bombFactory},
         {BlockType::BLOCK_BLAST, BlockFactory::blastFactory},
         {BlockType::BLOCK_FLOOR, nullptr},
+        {BlockType::BLOCK_BONUS_SOFT, BlockFactory::softBonusFactory},
         {BlockType::BLOCK_BONUS_BOOMUP, BlockFactory::boomUpBonusFactory},
         {BlockType::BLOCK_BONUS_FIREUP, BlockFactory::fireUpBonusFactory},
         {BlockType::BLOCK_BONUS_SPEEDUP, BlockFactory::speedUpBonusFactory},
@@ -48,6 +49,7 @@ std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &p
         case BlockType::BLOCK_BOMB: typeInStr = "BOMB"; break;
         case BlockType::BLOCK_BLAST: typeInStr = "BLAST"; break;
         case BlockType::BLOCK_FLOOR: typeInStr = "FLOOR"; break;
+        case BlockType::BLOCK_BONUS_SOFT: typeInStr = "SOFT"; break;
         case BlockType::BLOCK_BONUS_BOOMUP: typeInStr = "BONUS_BOOMUP"; break;
         case BlockType::BLOCK_BONUS_FIREUP: typeInStr = "BONUS_FIREUP"; break;
         case BlockType::BLOCK_BONUS_SPEEDUP: typeInStr = "BONUS_SPEEDUP"; break;
@@ -103,6 +105,11 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity);
+}
+
+void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
+{
+    BlockFactory::softFactory(entity, pos, size);
 }
 
 void BlockFactory::boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
