@@ -49,6 +49,10 @@ namespace Game
 
         void loop();
 
+      private:
+        void loadMusic();
+        std::unordered_map<std::string, std::string> getMusicList() const;
+
       public:
         Engine::EntityPack globalEntities;
     };

@@ -23,10 +23,12 @@ void MainMenuScene::open()
     const std::string bottomRightText = Game::CoreData::settings->getString("HOME_BOTTOM_RIGHT_TXT");
 
     ProportionUtilities my_utility(windowSize);
-    const std::vector<raylib::MyVector2> buttonPosition = {my_utility.getProportion({25, 40}),
+    const std::vector<raylib::MyVector2> buttonPosition = {
+        my_utility.getProportion({25, 40}),
         my_utility.getProportion({25, 50}),
         my_utility.getProportion({25, 65}),
-        my_utility.getProportion({50.5, 65})};
+        my_utility.getProportion({50.5, 65}),
+    };
     const GUI::ButtonConfig largeButton(GUI::ButtonFactory::getLargeButtonConfig());
     const GUI::ButtonConfig mediumButton(GUI::ButtonFactory::getMediumButtonConfig());
 
@@ -57,22 +59,22 @@ void MainMenuScene::open()
         Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"),
         true);
     // BUTTON
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<GameScene>();
     });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
             std::cout << "Go to credit" << std::endl;
-        });
+    });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
+            CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<OptionsMenuScene>();
-        });
+    });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
             CoreData::quit();
-        });
+    });
     raylib::MyVector2 bottomLeftPos(my_utility.getProportion({1, 95}));
     raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
     GUI::LabelFactory::create(scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
