@@ -264,6 +264,6 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 KeyInputConfig KeyInputFactory::getStandardConfig()
 {
     const KeyInputConfig t = {
-        raylib::MyVector2(152, 27), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, raylib::MyVector2(5, 5)};
+        raylib::MyVector2(195, 40), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, raylib::MyVector2(5, 4)};
     return t;
 }
