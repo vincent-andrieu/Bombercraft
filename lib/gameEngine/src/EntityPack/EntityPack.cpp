@@ -52,6 +52,8 @@ void Engine::EntityPack::unload()
     for (Entity e : _anonymousEntities) {
         _entityManager.removeEntity(e);
     }
+    _entities.clear();
+    _anonymousEntities.clear();
 }
 
 void Engine::EntityPack::removeEntity(const std::string &key)
