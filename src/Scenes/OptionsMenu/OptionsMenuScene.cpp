@@ -30,7 +30,7 @@ void OptionsMenuScene::open()
     const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
 
     //BACKGROUND
-    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), raylib::MyVector2(1280, 720), "./Asset/Texture/dirt_32_32.png", false);
+    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), CoreData::settings->getMyVector2("WIN_SIZE"), CoreData::settings->getString("DEF_BACKGROUND"), false);
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
         std::cout << "Skin Customization" << std::endl;
     });

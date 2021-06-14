@@ -25,6 +25,11 @@ void KeyBindingMenuScene::open()
 {
     this->_selectedPlayer = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().update(0);
 
+    GUI::ImageFactory::create(this->localEntities,
+        raylib::MyVector2(0, 0),
+        CoreData::settings->getMyVector2("WIN_SIZE"),
+        CoreData::settings->getString("DEF_BACKGROUND"),
+        false);
     GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
 
     // Change player
