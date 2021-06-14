@@ -41,6 +41,7 @@ namespace Component
 
         const PlayerID &getPlayerId() const;
         const PlayerKeyBindings &getPlayerKeyBindings() const;
+        [[nodiscard]] std::vector<raylib::KeyBoard> getPlayerKeyList() const;
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         const string &getSkinPath() const;
         void resetAllKeyBindings();
