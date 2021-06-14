@@ -28,32 +28,33 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const auto entity = entityPack.createAnonymousEntity();
     const MyVector2 &selectorSize = MyVector2(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE), size.b);
 
+    auto my_position(position);
     if (centered)
-        position = position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
+        my_position = my_position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
 
     const auto &background = std::make_shared<raylib::Rectangle>(
-        position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
+        my_position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
     auto selector = std::make_shared<raylib::Rectangle>(
-        MyVector2(
-            SliderFactory::_getRangeValue(position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a), position.b),
+        MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
+            my_position.b),
         selectorSize,
         CONF_GET_COLOR(SLIDER_CONFIG_SELECTOR_COLOR));
     auto displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
-        position,
+        my_position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
         CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
     displayLabel->setPosition(
         position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
 
     Component::eventScript clickHandler =
-        [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](
+        [selector, displayLabel, label, my_position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](
             const Engine::Entity entity) {
-            if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
+            if (CoreData::eventManager->MouseIsOverClicked(my_position, size)) {
                 static sliderValue value = defaultValue;
                 const MyVector2 &mousePos = CoreData::eventManager->getMousePos();
-                const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(position, mousePos.a, size.a, selectorSize);
+                const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(my_position, mousePos.a, size.a, selectorSize);
 
-                value = SliderFactory::_getValueFromRange(mousePos.a - position.a, maxValue, size);
+                value = SliderFactory::_getValueFromRange(mousePos.a - my_position.a, maxValue, size);
                 selector->setPosition(sliderPos);
                 displayLabel->setText(label + toString(value));
                 sliderHandler(entity, value);
