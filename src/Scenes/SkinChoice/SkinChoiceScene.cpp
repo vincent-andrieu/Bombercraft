@@ -64,12 +64,6 @@ static void rotateHandler(Engine::EntityManager &em, Engine::SceneManager &, con
     model.setRotation({rotation.a, rotation.b + 1, rotation.c});
 }
 
-static void applyHandler(Engine::Entity const)
-{
-    // TODO : apply change
-    CoreData::sceneManager->setScene<OptionsMenuScene>();
-}
-
 Game::SkinChoiceScene::SkinChoiceScene()
     : Engine::AbstractScene(*CoreData::systemManager, *CoreData::entityManager), _selectedPlayer(nullptr)
 {
@@ -78,18 +72,20 @@ Game::SkinChoiceScene::SkinChoiceScene()
 void Game::SkinChoiceScene::open()
 {
     const raylib::MyVector2 window_size(CoreData::settings->getMyVector2("WIN_SIZE"));
-    ProportionUtilities my_utility(window_size);
+    const ProportionUtilities my_utility(window_size);
     CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
-    string modelPath = CoreData::settings->getString("CHARACTER_MODEL");
-    const GUI::ButtonConfig buttonConfig = GUI::ButtonFactory::getSmallButtonConfig();
+    const string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
+    const GUI::ButtonConfig &smallButtonConfig = GUI::ButtonFactory::getSmallButtonConfig();
+    const GUI::ButtonConfig &mediumButtonConfig = GUI::ButtonFactory::getMediumButtonConfig();
 
+    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/skinchoice.png", true);
+    // Change player button
     this->_selectedPlayer =
         &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(Component::PlayerID::ALPHA);
-    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/skinchoice.png", true);
     GUI::ButtonFactory::create(this->localEntities,
         my_utility(44, 10),
         "changePlayer",
-        buttonConfig,
+        smallButtonConfig,
         "Player " + toString(this->_selectedPlayer->getPlayerId()),
         [this](const Engine::Entity &entity) {
             // Change selected player
@@ -108,9 +104,21 @@ void Game::SkinChoiceScene::open()
             Component::Render3D &render = CoreData::entityManager->getComponent<Component::Render3D>(model);
             static_cast<raylib::Model *>(render.modele.get())->setTexture(this->_selectedPlayer->getSkinPath());
         });
-    GUI::ButtonFactory::create(this->localEntities, my_utility(14, 84), "leftButton", buttonConfig, "PREV", previousHandler);
-    GUI::ButtonFactory::create(this->localEntities, my_utility(74, 84), "rightButton", buttonConfig, "NEXT", nextHandler);
-    GUI::ButtonFactory::create(this->localEntities, my_utility(44, 84), "applyButton", buttonConfig, "APPLY", applyHandler);
+    // Buttons
+    GUI::ButtonFactory::create(
+        this->localEntities, my_utility(14, 90), "leftButton", mediumButtonConfig, "PREV", previousHandler);
+    GUI::ButtonFactory::create(this->localEntities, my_utility(74, 90), "rightButton", mediumButtonConfig, "NEXT", nextHandler);
+    GUI::ButtonFactory::create(this->localEntities,
+        my_utility(50.5, 90),
+        "applyButton",
+        mediumButtonConfig,
+        "Apply",
+        [this](UNUSED const Engine::Entity &entity) {
+            const Engine::Entity &model = CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("skin");
+            Component::StringChoice &choice = CoreData::entityManager->getComponent<Component::StringChoice>(model);
+            this->_selectedPlayer->setSkinPath(choice.get());
+        });
+    // Skin
     Engine::Entity skin = this->localEntities.createEntity("skin");
     CoreData::entityManager->addComponent<Component::Render3D>(
         skin, std::make_shared<raylib::Model>(this->_selectedPlayer->getSkinPath(), modelPath, raylib::MyVector3(0, -4, 0)));
