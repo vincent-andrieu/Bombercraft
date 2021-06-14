@@ -12,7 +12,7 @@ using namespace GUI;
 void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name, unsigned int seed)
 {
     Engine::Entity tmpEntityId;
-    GUI::BlockFactory::BlockType tmpBlockType;
+    GUI::BlockFactory::BlockType tmpBlockType = GUI::BlockFactory::BlockType::BLOCK_SOFT;
     std::pair<size_t, size_t> sizeDest;
     GameModule::MapType map = MapFactory::getProceduralMap(seed, sizeDest);
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
@@ -20,7 +20,7 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
 
     Game::CoreData::entityManager->addComponent<Component::Matrix2D>(entity, sizeDest);
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entity);
-    std::srand((seed) ? seed : std::time(nullptr));
+    std::srand((seed) ? seed : (unsigned int)std::time(nullptr));
     for (size_t y = 0; y < map.size(); y++) {
         for (size_t x = 0; x < map[y].size(); x++) {
             if (map[y][x] != GameModule::TileType::TILE_EMPTY) {

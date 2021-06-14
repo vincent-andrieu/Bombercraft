@@ -19,7 +19,7 @@ Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
 void Game::PauseMenuScene::open()
 {
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
-    auto my_buttonConfig(GUI::ButtonFactory::getStandardButtonConfig());
+    auto my_buttonConfig(GUI::ButtonFactory::getStandardButtonConfig(my_utility.getProportion({33, 10})));
     const std::string my_buttonNamePrefix("button_");
 
     GUI::ButtonFactory::create(localEntities,

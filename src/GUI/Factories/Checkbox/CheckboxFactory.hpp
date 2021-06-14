@@ -9,7 +9,7 @@
 #define CHECKBOX_ENTITY_HPP
 
 #include "Game/CoreData/CoreData.hpp"
-#include "Components/ClickEvent.hpp"
+#include "Components/ClickEvent/ClickEvent.hpp"
 
 #define CHECKBOX_CONFIG_SIZE          "CHECKBOX_SIZE"
 #define CHECKBOX_CONFIG_OUTLINE       "CHECKBOX_OUTLINE"
@@ -26,7 +26,9 @@ namespace GUI
         CheckboxFactory() = delete;
         ~CheckboxFactory() = delete;
 
-        static void create(Engine::EntityPack &entityPack, const raylib::MyVector2 position, checkboxHandler clickHandler,
+        static void create(Engine::EntityPack &entityPack,
+            const raylib::MyVector2 position,
+            checkboxHandler clickHandler,
             bool isDefaultChecked = false);
         static raylib::RColor getCheckColor(bool isChecked);
 

@@ -34,6 +34,7 @@ namespace Game
         bool loaded = false;
         std::shared_ptr<Engine::AbstractScene> loadingScene = CoreData::sceneManager->getScene<LoadingScreenScene>();
         std::mutex lock;
+
         std::thread thread([&lock, &loaded, &loadingScene]() {
             lock.lock();
             loadingScene->open();
@@ -45,10 +46,10 @@ namespace Game
             loadingScene->close();
             lock.unlock();
         });
-        CoreData::sceneManager->setScene<T>();
-        CoreData::sceneManager->updateScene();
         loaded = true;
         thread.join();
+        CoreData::sceneManager->setScene<T>();
+        CoreData::sceneManager->updateScene();
     };
 } // namespace Game
 

@@ -55,27 +55,32 @@ set(SRCS
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
-        src/Components/ClickEvent.cpp
-        src/Components/MouseMoveEvent.cpp
+        src/Components/ClickEvent/ClickEvent.cpp
+        src/Components/MouseMoveEvent/MouseMoveEvent.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
+        src/Components/PlayerConfig/PlayerConfig.cpp
+        src/Components/Option/OptionComponent.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
         src/Systems/Audio/AudioSystem.cpp
         src/Systems/Physics/PhysicsSystem.cpp
+        src/Systems/PlayerConfig/PlayerConfigSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/OptionsMenu/OptionsMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp
+        src/Scenes/KeyBindingMenu/KeyBindingMenuScene.cpp
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         src/Scenes/GameScene/GameScene.cpp
+        src/Scenes/SoundOption/SoundOptionScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
@@ -83,7 +88,7 @@ set(SRCS
         # UTILITIES
         src/Utilities/utilities.cpp
         src/Utilities/ProportionUtilities.hpp
-        )
+    )
 
 add_executable(${NAME} ${SRCS})
 

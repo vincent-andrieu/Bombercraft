@@ -62,3 +62,12 @@ void AudioSystem::stopMusic()
         }
     }
 }
+
+void AudioSystem::setVolume(float volume)
+{
+    for (Engine::Entity entity : this->getManagedEntities()) {
+        auto component = _entityManager.getComponent<Component::Sound>(entity);
+
+        component.sound->setVolume(volume);
+    }
+}

@@ -14,25 +14,26 @@ MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
-static const std::vector<raylib::MyVector2> buttonPosition = {
-    raylib::MyVector2(340, 325),
-    raylib::MyVector2(340, 400),
-    raylib::MyVector2(340, 505),
-    raylib::MyVector2(650, 505),
-};
-
 void MainMenuScene::open()
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
-    const GUI::ButtonConfig largeButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
-    const GUI::ButtonConfig mediumButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(290, 55));
-    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
 
+    ProportionUtilities my_utility(windowSize);
+    const std::vector<raylib::MyVector2> buttonPosition = {my_utility.getProportion({25, 40}),
+        my_utility.getProportion({25, 50}),
+        my_utility.getProportion({25, 65}),
+        my_utility.getProportion({50.5, 65})};
+    const GUI::ButtonConfig largeButton(GUI::ButtonFactory::getLargeButtonConfig());
+    const GUI::ButtonConfig mediumButton(GUI::ButtonFactory::getMediumButtonConfig());
+
+    raylib::MyVector2 logoSize(my_utility.getProportion({70, 25}));
     // GAME TITLE //340
     GUI::ImageFactory::create(scene->localEntities,
-        raylib::MyVector2((windowSize.a / 2) - (592 / 2), 50),
-        raylib::MyVector2(-1, -1),
-        "./Asset/Interface/TitleLogo.png");
+        my_utility.getProportion({50, 20}, logoSize, {50, 50}),
+        logoSize,
+        Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"),
+        true);
     // BUTTON
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
@@ -43,7 +44,7 @@ void MainMenuScene::open()
             std::cout << "Go to credit" << std::endl;
         });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[2], "options", mediumButton, "Options", [](const Engine::Entity) {
+        scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
             CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(

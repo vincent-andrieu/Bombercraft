@@ -27,6 +27,14 @@ MyVector2::MyVector2(const MyVector2 &src)
     this->b = src.b;
 }
 
+MyVector2 &MyVector2::operator=(MyVector2 const &src)
+{
+    this->a = src.a;
+    this->b = src.b;
+
+    return *this;
+}
+
 Vector2 MyVector2::makeVector2(const MyVector2 vector)
 {
     Vector2 v = {0};
