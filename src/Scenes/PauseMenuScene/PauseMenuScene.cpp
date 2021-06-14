@@ -19,16 +19,21 @@ Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
 void Game::PauseMenuScene::open()
 {
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
-    auto my_buttonConfig(GUI::ButtonFactory::getStandardButtonConfig(my_utility.getProportion({33, 10})));
+    auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
 
+    GUI::LabelFactory::createCentered(localEntities,
+        my_utility.getProportion(raylib::MyVector2(50, 20)),
+        "Game Menu",
+        GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
+
     GUI::ButtonFactory::create(localEntities,
-        my_utility.getProportion({50, 50}, my_buttonConfig.size),
+        my_utility.getProportion({50, 40}, my_buttonConfig.size),
         my_buttonNamePrefix + "continue",
         my_buttonConfig,
         "Back to Game",
         [](const Engine::Entity) {
-            //          CoreData::sceneManager->setScene<Game::Game>();
+            //            CoreData::sceneManager->setScene<Game::Game>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 60}, my_buttonConfig.size),
@@ -36,7 +41,7 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Options...",
         [](const Engine::Entity) {
-            //          CoreData::sceneManager->setScene<Game::Options>();
+            CoreData::sceneManager->setScene<Game::OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 70}, my_buttonConfig.size),

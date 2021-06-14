@@ -12,6 +12,8 @@
 #include <string>
 #include "GameEngine.hpp"
 #include "GUI/Factories/Label/LabelFactory.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
+#include "Components/PlayerInventory/PlayerInventory.hpp"
 
 namespace GUI
 {
@@ -26,9 +28,11 @@ namespace GUI
             const MyVector2 &boxSze,
             std::vector<std::string> const &texturesPath,
             GUI::LabelConfig const &labelconfig,
+            Component::PlayerID id,
             std::string const &name = "");
 
         static GUI::LabelConfig getStandardLabelConfig(const int fontSize = -1);
+        static Component::PlayerInventoryInfo getDefaultPlayerInventory();
     };
 } // namespace GUI
 

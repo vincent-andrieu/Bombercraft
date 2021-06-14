@@ -77,7 +77,7 @@ namespace Game
         const GUI::LabelConfig _defaultLabelConfig = {
             30,
             raylib::RColor::RWHITE,
-            CoreData::settings->getString("DEF_FONT"),
+            CoreData::settings->getString("STANDARD_FONT"),
         };
         GUI::ButtonConfig _buttonDefaultConfig = GUI::ButtonFactory::getSmallButtonConfig();
         GUI::KeyInputConfig _keyInputDefaultConfig = GUI::KeyInputFactory::getStandardConfig();

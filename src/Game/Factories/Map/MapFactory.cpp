@@ -15,12 +15,12 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
     GUI::BlockFactory::BlockType tmpBlockType = GUI::BlockFactory::BlockType::BLOCK_SOFT;
     std::pair<size_t, size_t> sizeDest;
     GameModule::MapType map = MapFactory::getProceduralMap(seed, sizeDest);
-    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("DEFAULT_BLOCK_SIZE");
+    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     const Engine::Entity &entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Component::Matrix2D>(entity, sizeDest);
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entity);
-    std::srand((seed) ? seed : (unsigned int)std::time(nullptr));
+    std::srand((seed) ? seed : (unsigned int) std::time(nullptr));
     for (size_t y = 0; y < map.size(); y++) {
         for (size_t x = 0; x < map[y].size(); x++) {
             if (map[y][x] != GameModule::TileType::TILE_EMPTY) {
@@ -28,7 +28,8 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
                 tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType);
                 matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
             }
-            tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR);
+            tmpEntityId = GUI::BlockFactory::create(
+                entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR);
             matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
         }
     }
@@ -43,11 +44,10 @@ GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<si
     std::vector<TileDisponibility> tmp;
     MapType end;
 
-    for (auto &b: tab) {
+    for (auto &b : tab) {
         tmp.clear();
-        std::transform(b.begin(), b.end(), std::back_inserter(tmp),
-            [](int n) {
-                return static_cast<TileDisponibility>(n); 
+        std::transform(b.begin(), b.end(), std::back_inserter(tmp), [](int n) {
+            return static_cast<TileDisponibility>(n);
         });
         settings.push_back(tmp);
     }
@@ -78,8 +78,7 @@ GameModule::MapType MapFactory::getProceduralMap(unsigned int seed, std::pair<si
 
 GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType tile)
 {
-    switch (tile)
-    {
+    switch (tile) {
         case GameModule::TileType::TILE_HARD: return GUI::BlockFactory::BlockType::BLOCK_HARD; break;
         case GameModule::TileType::TILE_SOFT: return GUI::BlockFactory::BlockType::BLOCK_SOFT; break;
         case GameModule::TileType::TILE_EMPTY: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;

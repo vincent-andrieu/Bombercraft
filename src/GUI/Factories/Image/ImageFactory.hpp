@@ -21,7 +21,7 @@ namespace GUI
         virtual ~ImageFactory() = 0;
 
         static void create(Engine::EntityPack &entityPack, const MyVector2 &position, const MyVector2 &size,
-            std::string const &filePath, const bool scale = false, std::string const &name = "");
+            std::string const &filePath, const bool scale = false, std::string const &name = "", const raylib::MyVector2 &rectPos = raylib::MyVector2(-1, -1));
     };
 } // namespace GUI
 
