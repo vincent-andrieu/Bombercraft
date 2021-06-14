@@ -44,7 +44,7 @@ void MainMenuScene::open()
         if (rect.a > backgroundSize.a) {
             pictureBg->setRect(raylib::MyVector2(0, rect.b));
         } else {
-            pictureBg->setRect(raylib::MyVector2(rect.a + 0.8, rect.b));
+            pictureBg->setRect(raylib::MyVector2((float)(rect.a + 0.8), rect.b));
         }
     });
     // GAME TITLE //340
