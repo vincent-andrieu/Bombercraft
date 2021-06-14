@@ -229,7 +229,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     int tmp;
 
     for (size_t i = 0; i < range; i++) {
-        tmp = x + (i * move);
+        tmp = (int)(x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -242,7 +242,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = y + (i * move);
+        tmp = (int)(y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -256,7 +256,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     }
     move = -1;
     for (size_t i = 0; i < range; i++) {
-        tmp = x + (i * move);
+        tmp = (int)(x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -269,7 +269,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = y + (i * move);
+        tmp = (int)(y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -333,7 +333,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
     cost = this->getCostArray(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
         if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
-            tmp.first = i;
+            tmp.first = (int)i;
             tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
         }
     }
@@ -345,7 +345,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
 
 bool IABomberman::isRandomMove() const
 {
-    int randomProba = this->_randomMove;
+    size_t randomProba = this->_randomMove;
 
     if (!randomProba)
         return false;

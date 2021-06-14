@@ -70,7 +70,7 @@ sliderValue SliderFactory::_getValueFromRange(const float &position, const slide
 {
     if (position < 0 || position > size.a)
         throw std::out_of_range("slider position is over limits");
-    return (position * maxValue) / size.a;
+    return (int)((position * maxValue) / size.a);
 }
 
 const MyVector2 SliderFactory::_getSliderMousePos(
