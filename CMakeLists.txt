@@ -31,6 +31,7 @@ set(SRCS
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
         src/Game/Factories/Sound/AudioFactory.cpp
+        src/Game/Factories/KeyManagementFactory/KeyManagementFactory.cpp
         ## TMP
         src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
         src/Game/Factories/Map/Component/Matrix2D.cpp

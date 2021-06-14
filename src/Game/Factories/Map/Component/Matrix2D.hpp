@@ -19,6 +19,7 @@ namespace Component
             virtual ~Matrix2D() = default;
 
             const std::shared_ptr<DataMatrix> &getData() const;
+            static raylib::MyVector3 getPositionAbs(size_t posx, size_t posy);
             const std::pair<Engine::Entity, GUI::BlockFactory::BlockType> &getData(std::pair<size_t, size_t> pos) const;
 
         private:

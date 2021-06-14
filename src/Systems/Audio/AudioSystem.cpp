@@ -16,13 +16,12 @@ AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
     this->setRequirements<Component::Sound>();
 }
 
-void AudioSystem::play(std::string const& entityName)
+void AudioSystem::play(std::string const& entityName, Engine::EntityPack &scenePack)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     if (scene == nullptr) {
         return;
     }
-    Engine::EntityPack &scenePack = scene->localEntities;
     try {
         Engine::Entity soundEntity = scenePack.getEntity(entityName);
 

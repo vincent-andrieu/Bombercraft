@@ -19,6 +19,7 @@
 
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"

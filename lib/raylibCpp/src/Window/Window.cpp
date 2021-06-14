@@ -82,3 +82,8 @@ bool raylib::Window::isOpen() const
 {
     return !WindowShouldClose();
 }
+
+void raylib::Window::setExitKey(int key)
+{
+    SetExitKey(key);
+}

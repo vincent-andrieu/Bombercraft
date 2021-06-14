@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 03/06/2021 KeyEvent.hpp.h
+** 03/06/2021 KeyEvent.hpp
 */
 
 #ifndef KEYEVENT_HPP
