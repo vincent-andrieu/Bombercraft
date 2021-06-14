@@ -96,13 +96,14 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_L_ALT,
         });
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
-    // DEBUG - END
-    SceneLoader::setScene<MainMenuScene>();
+    // MUSIC
     this->loadMusic();
 }
 
 void Core::loop()
 {
+    // DEBUG - END
+    SceneLoader::setScene<MainMenuScene>();
     while (CoreData::_window->isOpen() && this->_loop == true) {
         CoreData::_window->clear();
         CoreData::sceneManager->run();
