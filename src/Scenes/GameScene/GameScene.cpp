@@ -14,6 +14,8 @@
 
 using namespace Game;
 
+extern std::unique_ptr<Game::Core> core;
+
 static const std::vector<std::string> inventoryNames = {
     "GameInventory1",
     "GameInventory2",
@@ -72,6 +74,7 @@ void GameScene::open()
     CoreData::camera->setPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
     CoreData::camera->setTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
 }
 
 void GameScene::update()

@@ -25,6 +25,7 @@ namespace GUI
                 BLOCK_BOMB,
                 BLOCK_BLAST,
                 BLOCK_FLOOR,
+                BLOCK_BONUS_SOFT,
                 BLOCK_BONUS_BOOMUP,
                 BLOCK_BONUS_FIREUP,
                 BLOCK_BONUS_SPEEDUP,
@@ -47,6 +48,7 @@ namespace GUI
             static void bombFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
             static void blastFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
             /*void floorFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);*/
+            static void softBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
             static void boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
             static void fireUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
             static void speedUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);

@@ -55,8 +55,7 @@ void Game::SoundOptionScene::open()
         raylib::MyVector2(100, 50),
         handler_slider,
         "Master Volume: ",
-        {150, 10},
-        Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
+        GUI::ButtonFactory::getMediumButtonConfig().size,
         0,
         100,
         static_cast<GUI::sliderValue>(options.volume * 100));

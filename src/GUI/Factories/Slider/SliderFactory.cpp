@@ -19,7 +19,6 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const MyVector2 &position,
     sliderHandler sliderHandler,
     const string &label,
-    const MyVector2 &labelOffset,
     const MyVector2 &size,
     sliderValue minValue,
     sliderValue maxValue,
@@ -27,24 +26,26 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const bool centered)
 {
     const auto entity = entityPack.createAnonymousEntity();
-    const MyVector2 &selectorSize = CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE);
+    const MyVector2 &selectorSize =
+        MyVector2(static_cast<float>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE)), size.b);
 
     auto my_position(position);
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
 
-    auto background = std::make_shared<raylib::Rectangle>(
-        my_position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
+    const auto &background =
+        std::make_shared<raylib::Rectangle>(my_position, size, CONF_GET_COLOR(SLIDER_CONFIG_BACKGROUND_COLOR));
     auto selector = std::make_shared<raylib::Rectangle>(
         MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
             my_position.b),
         selectorSize,
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
+        CONF_GET_COLOR(SLIDER_CONFIG_SELECTOR_COLOR));
     auto displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
-        CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
-        my_position + labelOffset,
+        my_position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
+        CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
+    displayLabel->setPosition(
+        my_position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
 
     Component::eventScript clickHandler =
         [selector, displayLabel, label, my_position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](
