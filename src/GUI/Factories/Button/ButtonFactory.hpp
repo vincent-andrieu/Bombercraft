@@ -13,22 +13,21 @@
 #include "IFactoryData.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
-#include "Components/ClickEvent.hpp"
-#include "Components/MouseMoveEvent.hpp"
+#include "Components/ClickEvent/ClickEvent.hpp"
+#include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Components/Render2D/Render2D.hpp"
-#include "Components/Render2D/SingleRender2D.hpp"
 
 namespace GUI
 {
     struct ButtonConfig {
-        const std::string idleTexturePath;
-        const std::string hoverTexturePath;
-        const std::string clickedTexturePath;
-        const std::string unavailableTexturePath;
-        const raylib::MyVector2 size;
-        const std::size_t fontSize;
+        const string idleTexturePath;
+        const string hoverTexturePath;
+        const string clickedTexturePath;
+        const string unavailableTexturePath;
+        raylib::MyVector2 size;
+        std::size_t fontSize;
         const raylib::RColor fontColor;
-        const std::string fontPath;
+        const string fontPath;
         const Game::EventRequirement &requirements;
     };
 
@@ -41,13 +40,17 @@ namespace GUI
          * @throw If configuration file information retrieval fails
          */
         static ButtonConfig getStandardButtonConfig(const raylib::MyVector2 &buttonSize = raylib::MyVector2(180, 20));
+        static ButtonConfig getSizedButtonConfig(const raylib::MyVector2 &winPercent);
+        static ButtonConfig getLargeButtonConfig();
+        static ButtonConfig getMediumButtonConfig();
+        static ButtonConfig getSmallButtonConfig();
 
         static void create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
-            const string &label,
+            const string &name,
             ButtonConfig const &conf,
-            const std::string &text,
-            const Component::eventScript &clickAction);
+            const string &label,
+            const Component::eventScript clickAction);
     };
 } // namespace GUI
 

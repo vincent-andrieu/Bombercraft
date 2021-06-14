@@ -6,6 +6,7 @@
 */
 
 #include "OptionsMenuScene.hpp"
+#include "Scenes/SoundOption/SoundOptionScene.hpp"
 
 using namespace Game;
 
@@ -14,61 +15,44 @@ OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
-static const raylib::MyVector2 buttonSize = {
-    raylib::MyVector2(570, 55)
-};
+static const std::vector<raylib::MyVector2> buttonPosition = {raylib::MyVector2(50, 150),
+    raylib::MyVector2(650, 150),
+    raylib::MyVector2(50, 210),
+    raylib::MyVector2(650, 210),
+    raylib::MyVector2(50, 270),
+    raylib::MyVector2(650, 270)};
 
 void OptionsMenuScene::open()
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
+    const GUI::ButtonConfig largeButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(570, 55));
+    const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
 
-    auto background = scene->localEntities.createEntity("backgroud");
-
-    /*
-        const string &path, const MyVector2 size = {-1, -1}, const MyVector2 position = {0, 0},
-            const RColor color = RColor::RWHITE
-    */
-    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), raylib::MyVector2(1280, 720), "./Asset/Texture/dirt_32_32.png", false);
-
-    // CoreData::entityManager->addComponent<Component::Render2D>(background,
-    //     Component::render2dMapModels(
-    //         {
-    //             {"texture1", std::make_shared<raylib::Texture>("./Asset/Texture/dirt_32_32.png", raylib::MyVector2(1280, 720))}
-    //         }
-    //     )
-    // );
-
-    auto b1 = scene->localEntities.createEntity("b1");
-    CoreData::entityManager->addComponent<Component::Render2D>(b1,
-        Component::render2dMapModels(
-            {{"texture1", std::make_shared<raylib::Texture>("Asset/Interface/Button.png", buttonSize, raylib::MyVector2(50, 150), raylib::RColor::RGRAY)}
-    }));
-
-    auto b2 = scene->localEntities.createEntity("b2");
-    CoreData::entityManager->addComponent<Component::Render2D>(b2,
-        Component::render2dMapModels(
-            {
-                {"rectangle", std::make_shared<raylib::Rectangle>(raylib::MyVector2(650, 150), buttonSize, raylib::RColor::RGRAY)}
-            }
-        )
-    );
-
-    auto b3 = scene->localEntities.createEntity("b3");
-    CoreData::entityManager->addComponent<Component::Render2D>(b3,
-        Component::render2dMapModels(
-            {{"rectangle", std::make_shared<raylib::Rectangle>(raylib::MyVector2(50, 210), buttonSize, raylib::RColor::RGRAY)}
-    }));
-
-
-    auto done = scene->localEntities.createEntity("done");
-    CoreData::entityManager->addComponent<Component::Render2D>(done,
-        Component::render2dMapModels(
-            {
-                {"rectangle", std::make_shared<raylib::Rectangle>(raylib::MyVector2(310, 660), raylib::MyVector2(600, 55), raylib::RColor::RGRAY)}
-            }
-        )
-    );
-
+    //BACKGROUND
+    GUI::ImageFactory::create(scene->localEntities, raylib::MyVector2(0, 0), CoreData::settings->getMyVector2("WIN_SIZE"), CoreData::settings->getString("DEF_BACKGROUND"), false);
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
+        std::cout << "Skin Customization" << std::endl;
+    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<SoundOptionScene>();
+        std::cout << "Music & Sounds" << std::endl;
+    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", [](const Engine::Entity) {
+        std::cout << "Video settings" << std::endl;
+    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<KeyBindingMenuScene>();
+    });
+    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[4], "ressourcepack", largeButton, "Ressource Pack", [](const Engine::Entity) {
+        std::cout << "Ressource Pack" << std::endl;
+    });
+    GUI::SliderFactory::create(this->localEntities, buttonPosition[5],
+           [](const Engine::Entity entity, GUI::sliderValue &value) {
+               std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
+           }, "FOV: ", raylib::MyVector2(60, 10), Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE), 0, 200, 60);
+    GUI::ButtonFactory::create(scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<MainMenuScene>();
+    });
 }
 
 void Game::OptionsMenuScene::update()

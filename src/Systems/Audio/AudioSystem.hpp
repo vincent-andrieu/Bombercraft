@@ -25,6 +25,8 @@ namespace System
 
         void play(std::string const &entityName);
 
+        void setVolume(float volume);
+
         void stopAll();
         void stopMusic();
     };

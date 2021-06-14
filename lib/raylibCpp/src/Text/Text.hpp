@@ -45,6 +45,8 @@ namespace raylib
         void removeFont() override;
         void removeLimit() override;
 
+        [[nodiscard]] raylib::MyVector2 getSize() const;
+
       protected:
         string _text;
         MyVector2 _position;

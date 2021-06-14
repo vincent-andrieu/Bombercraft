@@ -149,11 +149,9 @@ void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &
 
 TextInputConfig TextInputFactory::getStandardConfig()
 {
-    const TextInputConfig t = {.size = raylib::MyVector2(152, 27),
-        .color = raylib::RColor::RBLACK,
-        .borderSize = 2,
-        .borderColor = raylib::RColor::RGRAY,
-        .maxChar = 16,
-        .textPositionOffset = raylib::MyVector2(5, 5)};
+    const TextInputConfig t = {raylib::MyVector2(152, 27),
+        raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY,
+        16, raylib::MyVector2(5, 5)
+    };
     return t;
 }

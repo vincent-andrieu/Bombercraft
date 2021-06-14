@@ -13,11 +13,13 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Scenes/DebugScene/DebugScene.hpp"
+#include "Scenes/GameScene/GameScene.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 #include "Systems/Render2D/Render2DSystem.hpp"
 
@@ -32,6 +34,6 @@ namespace Game
 
         void update();
     };
-}
+} // namespace Game
 
 #endif // MAINMENUSCENE_HPP

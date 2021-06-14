@@ -25,6 +25,13 @@ void SceneManager::run()
     }
 }
 
+void SceneManager::run(std::shared_ptr<AbstractScene> scene)
+{
+    if (scene != nullptr) {
+        scene->update();
+    }
+}
+
 std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
 {
     return _currentScene;

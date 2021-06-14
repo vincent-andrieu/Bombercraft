@@ -59,7 +59,7 @@ void ProceduralMap::setSeed(unsigned int seed)
 }
 
 
-void ProceduralMap::setModelSettings(std::unordered_map<TileType, unsigned char> linkList)
+void ProceduralMap::setModelSettings(std::unordered_map<TileType, int> linkList)
 {
     this->_mapProba.clear();
     this->_mapProba = linkList;
@@ -74,7 +74,7 @@ void ProceduralMap::generateMap()
     this->_mapProcedural.clear();
     this->mapInitEmpty();
     for (auto proba : this->_mapProba) {
-        this->randomFill(proba.second, proba.first);
+        this->randomFill((float)proba.second, proba.first);
     }
     this->clearMap();
     this->modelApply();
@@ -83,7 +83,7 @@ void ProceduralMap::generateMap()
 void ProceduralMap::randomFill(float prob, TileType type)
 {
     size_t totalTile = this->getTotalTile();
-    size_t nb = (prob / 100) * totalTile;
+    size_t nb = (size_t) ((prob / 100) * totalTile);
     size_t endTile = this->getTotalEmptyTile();
     size_t random = 0;
     GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();

@@ -78,19 +78,13 @@ void DebugScene::open()
 {
     std::cout << "----OPEN\n";
     const raylib::MyVector2 position(10, 70);
-    GUI::LabelConfig config = {
-        .fontSize = 24, .fontColor = raylib::RColor::RBLUE, .fontPath = "./Asset/Font/MinecraftItalic.ttf"};
-    GUI::TextInputConfig TextInputConfig = {.size = raylib::MyVector2(152, 27),
-        .color = raylib::RColor::RBLACK,
-        .borderSize = 2,
-        .borderColor = raylib::RColor::RGRAY,
-        .maxChar = 16,
-        .textPositionOffset = raylib::MyVector2(5, 5)};
-    GUI::LabelConfig labelTextInput = {
-        .fontSize = 16, .fontColor = raylib::RColor::RWHITE, .fontPath = "./Asset/Font/MinecraftRegular.ttf"};
-    GUI::TextInputDynConf input1 = {.position = raylib::MyVector2(300, 75), .name = "input1", "player name"};
-    GUI::TextInputDynConf input2 = {.position = raylib::MyVector2(500, 75), .name = "input2", "save name"};
-    GUI::KeyInputDynConf keyInput1 = {.position = raylib::MyVector2(300, 175), .name = "keyinput1"};
+    GUI::LabelConfig config = {24, raylib::RColor::RBLUE, "./Asset/Font/MinecraftItalic.ttf"};
+    // GUI::TextInputConfig TextInputConfig = {
+    //     raylib::MyVector2(152, 27), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, 16, raylib::MyVector2(5, 5)};
+    GUI::LabelConfig labelTextInput = {16, raylib::RColor::RWHITE, "./Asset/Font/MinecraftRegular.ttf"};
+    GUI::TextInputDynConf input1 = {raylib::MyVector2(300, 75), "input1", "player name"};
+    GUI::TextInputDynConf input2 = {raylib::MyVector2(500, 75), "input2", "save name"};
+    GUI::KeyInputDynConf keyInput1 = {raylib::MyVector2(300, 175), "keyinput1"};
 
     /// ENTITIES - CREATION
     //    auto rect = this->localEntities.createEntity("whiteRectangle");
@@ -164,7 +158,7 @@ void DebugScene::open()
             std::cout << "Hello " << entity << std::endl;
         });
     GUI::ButtonFactory::create(localEntities,
-        ProportionUtilities::getProportion(CoreData::settings->getMyVector2("WIN_SIZE"), {50, 50}, {180, 20}, {50, 50}),
+        ProportionUtilities::getProportionWin(CoreData::settings->getMyVector2("WIN_SIZE"), {50, 50}, {180, 20}, {50, 50}),
         "my_other_label",
         GUI::ButtonFactory::getStandardButtonConfig(),
         "button_text",
@@ -189,15 +183,14 @@ void DebugScene::open()
 
     std::cout << my_utility.getProportion({40, 40}) << std::endl;
     std::cout << my_utility.getProportion({50.0f, 50}, {50.0f, 50}, {50.0f, 50}) << std::endl;
-    std::cout << ProportionUtilities::getProportion({1920, 1080}, {80, 10}) << std::endl;
-    std::cout << ProportionUtilities::getProportion({1920, 1080}, {36, 22}, {50, 50}, {50, 50}) << std::endl;
+    std::cout << ProportionUtilities::getProportionWin({1920, 1080}, {80, 10}) << std::endl;
+    std::cout << ProportionUtilities::getProportionWin({1920, 1080}, {36, 22}, {50, 50}, {50, 50}) << std::endl;
 }
 
 void DebugScene::update()
 {
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto &singleRender2D = this->_systemManager.getSystem<System::singleRender2DSystem>();
         auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
         auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
@@ -206,7 +199,6 @@ void DebugScene::update()
         float dt = 1.0f / 10.0f;
         physics.update(dt);
         render3D.update();
-        singleRender2D.update();
         render2D.update();
         hitbox.update();
         timer.update();

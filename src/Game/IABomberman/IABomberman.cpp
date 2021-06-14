@@ -75,7 +75,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
 {
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
-    
+
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
     std::srand(this->_seed);
@@ -229,7 +229,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     int tmp;
 
     for (size_t i = 0; i < range; i++) {
-        tmp = x + (i * move);
+        tmp = (int)(x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -242,7 +242,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = y + (i * move);
+        tmp = (int)(y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -256,7 +256,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     }
     move = -1;
     for (size_t i = 0; i < range; i++) {
-        tmp = x + (i * move);
+        tmp = (int)(x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -269,7 +269,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = y + (i * move);
+        tmp = (int)(y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -288,14 +288,13 @@ IA::Movement IABomberman::getIAMovement()
 {
     IA::Movement tmp = IACore::getIAMovement();
 
-    if (this->_prevPos.first != -1 && this->_prevPos.second != -1)
-        if (this->isSecurePlace(this->_env[this->_prevPos.first][this->_prevPos.second])
-        && !this->isSecurePlace(this->_env[this->_pos.first][this->_pos.second])) {
-            this->clearQueue(this->_MovementQueue);
-            this->_pos = this->_prevPos;
-            std::cout << "On a encore eu de la chance" << std::endl;
-            return IA::Movement::IA_MOVE_NONE;
-        }
+    if (this->isSecurePlace(this->_env[this->_prevPos.first][this->_prevPos.second])
+    && !this->isSecurePlace(this->_env[this->_pos.first][this->_pos.second])) {
+        this->clearQueue(this->_MovementQueue);
+        this->_pos = this->_prevPos;
+        std::cout << "On a encore eu de la chance" << std::endl;
+        return IA::Movement::IA_MOVE_NONE;
+    }
     return tmp;
 }
 
@@ -334,7 +333,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
     cost = this->getCostArray(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
         if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
-            tmp.first = i;
+            tmp.first = (int)i;
             tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
         }
     }
@@ -346,12 +345,12 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
 
 bool IABomberman::isRandomMove() const
 {
-    int randomProba = this->_randomMove;
+    size_t randomProba = this->_randomMove;
 
     if (!randomProba)
         return false;
     std::srand(this->_seed);
-    if (std::rand() % 100 <= randomProba)
+    if ((size_t)(std::rand() % 100) <= randomProba)
         return true;
     return false;
 }

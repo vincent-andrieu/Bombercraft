@@ -24,6 +24,7 @@ namespace Game
         ~CoreData();
 
         static void moveCamera(const raylib::MyVector3 &position, const raylib::MyVector3 &target);
+        static void quit();
 
       public:
         static std::unique_ptr<ConfigFile> settings;
@@ -35,6 +36,7 @@ namespace Game
         static std::unique_ptr<raylib::Window> _window;
 
       protected:
+        static bool _loop;
     };
 } // namespace Game
 

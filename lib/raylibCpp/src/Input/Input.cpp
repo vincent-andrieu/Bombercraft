@@ -9,13 +9,13 @@
 
 using namespace raylib;
 
-Input::Input() : _previousMousePos(0, 0)
+Input::Input() : _previousMousePos(getMousePos())
 {
 }
 
 bool Input::isKeyPressed(KeyBoard key) const
 {
-    std::unordered_map<KeyBoard, int>::const_iterator keyLine = this->_keyList.find(key);
+    auto keyLine = this->_keyList.find(key);
 
     if (keyLine == this->_keyList.end())
         throw std::invalid_argument("isKeyPressed: key not found.");
@@ -27,29 +27,29 @@ bool Input::isKeyReleased(KeyBoard key) const
     return !this->isKeyPressed(key);
 }
 
-MyVector2 Input::getMousePos(void) const
+MyVector2 Input::getMousePos() const
 {
     Vector2 pos = GetMousePosition();
 
     return MyVector2(pos.x, pos.y);
 }
 
-bool Input::isMouseLeftPressed(void) const
+bool Input::isMouseLeftPressed() const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 }
 
-bool Input::isMouseRightPressed(void) const
+bool Input::isMouseRightPressed() const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
 }
 
-bool Input::isMouseMiddlePressed(void) const
+bool Input::isMouseMiddlePressed() const
 {
     return IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE);
 }
 
-bool Input::isMouseMoved(void)
+bool Input::isMouseMoved()
 {
     MyVector2 mouse_pos = this->getMousePos();
     MyVector2 previous_mouse_pos = this->_previousMousePos;

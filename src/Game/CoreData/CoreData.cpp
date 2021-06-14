@@ -17,6 +17,7 @@ std::shared_ptr<raylib::Input> CoreData::eventManager = nullptr;
 std::unique_ptr<ConfigFile> CoreData::settings = nullptr;
 
 std::unique_ptr<raylib::Window> CoreData::_window = nullptr;
+bool CoreData::_loop = true;
 
 CoreData::CoreData()
 {
@@ -39,6 +40,11 @@ CoreData::CoreData()
             CoreData::settings->getMyVector3("CAM_TARGET"),
             CoreData::settings->getMyVector3("CAM_UP"));
     }
+}
+
+void CoreData::quit()
+{
+    CoreData::_loop = false;
 }
 
 CoreData::~CoreData()
