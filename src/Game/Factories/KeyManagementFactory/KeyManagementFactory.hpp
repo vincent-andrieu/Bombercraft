@@ -10,11 +10,16 @@
 
 #include <unordered_map>
 
+#include "GameEngine.hpp"
+#include "raylib.hpp"
+
+#include "Components/AbstractEvent/AbstractEvent.hpp"
+
 namespace Game
 {
     class keyManagementFactory {
       public:
-        virtual ~ButtonFactory() = 0;
+        virtual ~keyManagementFactory() = 0;
         static void create(Engine::EntityPack &pack, std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTrigger);
     };
 } // namespace Game

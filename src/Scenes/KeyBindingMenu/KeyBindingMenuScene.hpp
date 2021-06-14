@@ -15,7 +15,7 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
-#include "GUI/Factories/Keys/KeyInput/KeyInputFactory.hpp"
+#include "GUI/Factories/KeyInput/KeyInputFactory.hpp"
 
 #define CONF_GET_KEYBINDING(name) static_cast<raylib::KeyBoard>(Game::CoreData::settings->getInt(name))
 

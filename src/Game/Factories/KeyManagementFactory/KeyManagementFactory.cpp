@@ -8,7 +8,7 @@
 #include "KeyManagementFactory.hpp"
 
 void Game::keyManagementFactory::create(
-    Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript> &keyTrigger)
+    Engine::EntityPack &pack, std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTrigger)
 {
-    const auto entity = pack.cre;
+    auto my_entity(pack.createAnonymousEntity());
 }
