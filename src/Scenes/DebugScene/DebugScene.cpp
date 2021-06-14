@@ -64,8 +64,8 @@ static Component::eventScript keyHandler = [](const Engine::Entity) {
         std::cout << "Pause counter" << std::endl;
     }
     // TEST AUDIO
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("Fight4");
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("ActiveBomb");
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("Fight4", scene->localEntities);
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("ActiveBomb", scene->localEntities);
 };
 
 /// --------------------------------------------------------------------------------------------

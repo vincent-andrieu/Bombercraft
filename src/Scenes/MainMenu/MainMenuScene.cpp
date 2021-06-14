@@ -7,6 +7,10 @@
 
 #include "MainMenuScene.hpp"
 
+#include "Game/Factories/Sound/AudioFactory.hpp"
+
+extern std::unique_ptr<Game::Core> core;
+
 using namespace Game;
 
 MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
@@ -77,6 +81,8 @@ void MainMenuScene::open()
     raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
     GUI::LabelFactory::create(scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
     GUI::LabelFactory::create(scene->localEntities, bottomRightPos, bottomRightText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomright");
+    //CoreData::systemManager->getSystem<System::AudioSystem>().setVolume(100);
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
 }
 
 void Game::MainMenuScene::update()
