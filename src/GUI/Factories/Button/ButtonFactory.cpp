@@ -7,6 +7,7 @@
 
 #include <Utilities/ProportionUtilities.hpp>
 #include "ButtonFactory.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 using namespace GUI;
 
@@ -14,8 +15,7 @@ static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
 
 ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &buttonSize)
 {
-    ButtonConfig my_standard{
-        Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
+    ButtonConfig my_standard{Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_CLICKED_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"),
@@ -23,12 +23,31 @@ ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &but
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
         raylib::RColor::RWHITE,
         Game::CoreData::settings->getString("STANDARD_FONT"),
-        clickHandlerRequirements,
-    };
+        clickHandlerRequirements};
     return my_standard;
 }
 
-// static const std::shared_ptr<raylib::Font> my_font(std::make_shared<raylib::Font>("conf.fontPath"));
+ButtonConfig ButtonFactory::getSizedButtonConfig(const raylib::MyVector2 &winPercent)
+{
+    static const auto &my_winSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+
+    return getStandardButtonConfig(ProportionUtilities::getProportionWin(my_winSize, winPercent));
+}
+
+ButtonConfig ButtonFactory::getSmallButtonConfig()
+{
+    return getSizedButtonConfig({10, 8});
+}
+
+ButtonConfig ButtonFactory::getMediumButtonConfig()
+{
+    return getSizedButtonConfig({24.5, 8});
+}
+
+ButtonConfig ButtonFactory::getLargeButtonConfig()
+{
+    return getSizedButtonConfig({50, 8});
+}
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
