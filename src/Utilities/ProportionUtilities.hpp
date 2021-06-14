@@ -8,6 +8,7 @@
 #define MY_CPP_CANEVA_PROPORTIONUTILITIES_HPP
 
 #include "raylib.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 class ProportionUtilities {
   public:
