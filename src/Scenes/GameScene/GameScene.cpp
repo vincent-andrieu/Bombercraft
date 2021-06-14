@@ -14,14 +14,6 @@
 
 using namespace Game;
 
-static const std::vector<std::string> texturesPath = {
-    "./Asset/Interface/PowerUpBox.png",
-    "./Asset/Interface/InventoryBomb.png",
-    "./Asset/Interface/InventorySpeed.png",
-    "./Asset/Interface/InventoryWallPass.png",
-    "./Asset/Interface/InventoryBlastRadius.png",
-};
-
 static const std::vector<std::string> inventoryNames = {
     "GameInventory1",
     "GameInventory2",
@@ -42,6 +34,7 @@ GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(syste
 void GameScene::open()
 {
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    const std::vector<std::string> texturesPath = CoreData::settings->getTabString("INVENTORY_TEXTURE");
     const std::vector<raylib::MyVector2> inventoryPosition = {raylib::MyVector2(0, 0),
         raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, 0),
         raylib::MyVector2(0, windowSize.b - (windowSize.a / 15)),
@@ -62,7 +55,7 @@ void GameScene::open()
             inventoryPosition[i],
             {windowSize.a / 15, windowSize.a / 15},
             texturesPath,
-            GUI::InventoryFactory::getStandardLabelConfig(),
+            GUI::InventoryFactory::getStandardLabelConfig(20),
             ids[i],
             inventoryNames[i]);
     }
