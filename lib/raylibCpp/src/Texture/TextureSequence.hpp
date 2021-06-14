@@ -30,9 +30,11 @@ namespace raylib
         void setPath(const string &path);
         void setSize(const MyVector2 size);
         void setScaleMode(const bool mode);
+        void setRect(const MyVector2 rect);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
+        [[nodiscard]]  MyVector2 getRect() const;
 
       private:
         MyVector2 _position;

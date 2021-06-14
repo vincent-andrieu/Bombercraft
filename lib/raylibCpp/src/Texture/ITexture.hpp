@@ -26,9 +26,11 @@ namespace raylib
         virtual void setPath(const string &path) = 0;
         virtual void setSize(const MyVector2 size) = 0;
         virtual void setScaleMode(const bool mode) = 0;
+        virtual void setRect(const MyVector2 rect) = 0;
 
         virtual Texture2D getTexture() const = 0;
         virtual string getPath() const = 0;
+        virtual MyVector2 getRect() const = 0;
     };
 }; // namespace raylib
 

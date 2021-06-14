@@ -9,7 +9,7 @@
 
 std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> raylib::Texture::_loaderManager = nullptr;
 
-raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color, const bool scaleMode)
+raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVector2 position, const RColor color, const bool scaleMode, const MyVector2 rectPosition)
 {
     if (!this->_loaderManager)
         this->setLoaderManager();
@@ -17,7 +17,11 @@ raylib::Texture::Texture(const string &path, const MyVector2 size, const MyVecto
     this->_position = position;
     this->_color = color;
     this->_texture = this->_loaderManager->load(path.data());
-    this->_size = {this->_position.a, this->_position.b, size.a, size.b};
+    if (rectPosition.a == -1 && rectPosition.b == -1) {
+        this->_size = {this->_position.a, this->_position.b, size.a, size.b};
+    } else {
+        this->_size = {rectPosition.a, rectPosition.b, size.a, size.b};
+    }
     this->_scaleMode = scaleMode;
 }
 
@@ -72,6 +76,12 @@ void raylib::Texture::setSize(const MyVector2 size)
     this->_size.height = size.b;
 }
 
+void raylib::Texture::setRect(const MyVector2 rect)
+{
+    this->_size.x = rect.a;
+    this->_size.y = rect.b;
+}
+
 void raylib::Texture::setScaleMode(const bool mode)
 {
     _scaleMode = mode;
@@ -85,6 +95,11 @@ Texture2D raylib::Texture::getTexture() const
 string raylib::Texture::getPath() const
 {
     return this->_path;
+}
+
+raylib::MyVector2 raylib::Texture::getRect() const
+{
+    return MyVector2(this->_size.x, this->_size.y);
 }
 
 void raylib::Texture::setLoaderManager()
