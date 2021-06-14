@@ -21,17 +21,11 @@ void Game::PauseMenuScene::open()
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
     auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
-    auto my_labelPosition(my_utility.getProportion(raylib::MyVector2(50, 20)));
-    //    GUI::LabelFactory();
-    auto my_label(std::make_shared<raylib::Text>("Game Menu",
-        my_labelPosition,
-        CoreData::settings->getInt("STANDARD_FONT_SIZE"),
-        raylib::RColor::RWHITE,
-        std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(CoreData::settings->getString("STANDARD_FONT")))));
-    my_labelPosition = my_labelPosition + ProportionUtilities::getProportionWin(my_label->getSize(), {50, 50});
-    my_label->setPosition(my_labelPosition);
 
-    Component::render2dMapModels my_models({{"label", my_label}});
+    GUI::LabelFactory::createCentered(localEntities,
+        my_utility.getProportion(raylib::MyVector2(50, 20)),
+        "Game Menu",
+        GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
 
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 40}, my_buttonConfig.size),
