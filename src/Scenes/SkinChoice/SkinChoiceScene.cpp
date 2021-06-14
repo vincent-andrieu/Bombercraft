@@ -76,7 +76,7 @@ void Game::SkinChoiceScene::open()
 {
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
     CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
-    std::string modelPath = CoreData::settings->getString("CHARACTER_MODEL");
+    string modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     const GUI::ButtonConfig buttonConfig = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(80, 55));
 
     GUI::ImageFactory::create(this->localEntities, {0, 0}, {1280, 720}, "Asset/Background/skinchoice.png", true);
