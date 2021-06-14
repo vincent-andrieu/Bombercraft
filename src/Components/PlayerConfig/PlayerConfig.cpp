@@ -9,7 +9,7 @@
 
 using namespace Component;
 
-Component::PlayerConfig::PlayerConfig(const uint playerId, PlayerKeyBindings defaultKeyBinding)
+Component::PlayerConfig::PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding)
     : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding)
 {
 }

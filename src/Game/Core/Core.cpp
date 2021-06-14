@@ -59,7 +59,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        0,
+        Component::PlayerID::ALPHA,
         Component::PlayerKeyBindings{
             raylib::KeyBoard::IKEY_UP,
             raylib::KeyBoard::IKEY_DOWN,
@@ -72,7 +72,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 
     entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        1,
+        Component::PlayerID::BRAVO,
         Component::PlayerKeyBindings{
             raylib::KeyBoard::IKEY_Z,
             raylib::KeyBoard::IKEY_S,
