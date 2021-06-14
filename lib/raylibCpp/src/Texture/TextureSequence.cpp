@@ -8,45 +8,56 @@
 #include "TextureSequence.hpp"
 
 raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 size, const MyVector2 position, const RColor color)
+    : _path(path), _position(position), _color(color), _currentFrame(0), _textures({}),
+      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true)
 {
     const char *workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
+    std::vector<std::string> vectorOfFilenames = {};
 
-    this->_path = path;
-    this->_position = position;
-    this->_color = color;
-    this->_currentFrame = 0;
     if (!DirectoryExists(path.data())) {
-        this->_textures = {};
         this->_frameNumber = 0;
     } else {
         filenames = GetDirectoryFiles(_path.data(), &count);
         this->_frameNumber = count;
         ChangeDirectory(_path.data());
         for (size_t i = 0; i < (size_t) count; i++) {
-            _textures.push_back(LoadTexture(filenames[i]));
+            vectorOfFilenames.push_back(filenames[i]);
+        }
+        std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
+        for (size_t i = 0; i < (size_t) count; i++) {
+            if (!DirectoryExists(vectorOfFilenames[i].data())) {
+                _textures.push_back(LoadTexture(vectorOfFilenames[i].data()));
+//                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
+            }
         }
         ClearDirectoryFiles();
         ChangeDirectory(workingDirectory);
     }
-    this->_size = {this->_position.a, this->_position.b, size.a, size.b};
 }
 
 raylib::TextureSequence::~TextureSequence()
 {
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(this->_textures[i]);
 }
 
 void raylib::TextureSequence::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
+    Rectangle ogRect = {0, 0, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
+    Rectangle position = {this->_position.a, this->_position.b, (float)_textures[_currentFrame].width, (float)_textures[_currentFrame].height};
 
-    if (_size.width == -1)
-        DrawTexture(this->_textures[_currentFrame], this->_position.a, this->_position.b, _matchingColors.at(this->_color));
-    else
-        DrawTextureRec(this->_textures[_currentFrame], this->_size, rayPos, _matchingColors.at(this->_color));
+    if (_scaleMode) {
+        if (_size.width == -1)
+            DrawTexturePro(this->_textures[_currentFrame], ogRect, position, {0, 0}, 0, _matchingColors.at(this->_color));
+        else
+            DrawTexturePro(this->_textures[_currentFrame], ogRect, this->_size, {0, 0}, 0, _matchingColors.at(this->_color));
+    } else {
+        if (_size.width == -1)
+            DrawTexture(this->_textures[_currentFrame], this->_position.a, this->_position.b, _matchingColors.at(this->_color));
+        else
+            DrawTextureRec(this->_textures[_currentFrame], this->_size, rayPos, _matchingColors.at(this->_color));
+    }
 }
 
 void raylib::TextureSequence::update()
@@ -74,8 +85,6 @@ void raylib::TextureSequence::setPath(const string &path)
     char **filenames = nullptr;
     int count = 0;
 
-    for (size_t i = 0; i < _textures.size(); i++)
-        UnloadTexture(this->_textures[i]);
     this->_textures.clear();
     this->_path = path;
     this->_currentFrame = 0;
@@ -86,7 +95,7 @@ void raylib::TextureSequence::setPath(const string &path)
         this->_frameNumber = count;
         ChangeDirectory(_path.data());
         for (size_t i = 0; i < (size_t) count; i++) {
-            _textures.push_back(LoadTexture(filenames[i]));
+            _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
         }
         ClearDirectoryFiles();
         ChangeDirectory(workingDirectory);
@@ -97,6 +106,11 @@ void raylib::TextureSequence::setSize(const MyVector2 size)
 {
     this->_size.width = size.a;
     this->_size.height = size.b;
+}
+
+void raylib::TextureSequence::setScaleMode(const bool mode)
+{
+    _scaleMode = mode;
 }
 
 Texture2D raylib::TextureSequence::getTexture() const

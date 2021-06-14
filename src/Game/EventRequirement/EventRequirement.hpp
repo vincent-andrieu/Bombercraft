@@ -9,30 +9,27 @@
 #define EVENTREQUIREMENT_HPP
 
 #include "raylib.hpp"
+#ifdef _WIN32
+  typedef unsigned int uint;
+#endif
 #include <vector>
-
-// typedef uint8_t uint;
 
 namespace Game
 {
-    enum class evtMouse : uint
+    enum MouseEventType : uint
     {
-        NONE = 0,
-        LEFT = 1,
-        RIGHT = 2,
-        MIDDLE = 4
+        CLK_NONE = 0b0,
+        CLK_LEFT = 0b1,
+        CLK_RIGHT = 0b10,
+        CLK_MIDDLE = 0b100
     };
-
-    uint operator|(evtMouse a, evtMouse b);
-    uint operator|(uint a, evtMouse b);
 
     class EventRequirement {
       public:
         EventRequirement() = delete;
-        explicit EventRequirement(const uint &click = 0, bool mouseMove = false, std::vector<raylib::KeyBoard> keyPress = {},
-            std::vector<raylib::KeyBoard> keyRelease = {});
-        explicit EventRequirement(const evtMouse &click = Game::evtMouse::NONE, bool mouseMove = false,
-            std::vector<raylib::KeyBoard> keyPress = {}, std::vector<raylib::KeyBoard> keyRelease = {});
+        explicit EventRequirement(uint click);
+        explicit EventRequirement(std::vector<raylib::KeyBoard> keyPress, std::vector<raylib::KeyBoard> keyRelease);
+        explicit EventRequirement(bool mouseMove);
 
         bool isTriggered(raylib::Input &eventManager) const;
 
@@ -43,9 +40,9 @@ namespace Game
 
       private:
         const uint _click;
-        const bool _mouseMoveEvent{false};
+        const bool _mouseMoveEvent;
+        const std::vector<raylib::KeyBoard> _handledKeyReleased;
         const std::vector<raylib::KeyBoard> _handledKeyPress;
-        const std::vector<raylib::KeyBoard> _handledKeyRelease;
     };
 } // namespace Game
 

@@ -21,7 +21,6 @@ include_directories(./src)
 ## SOURCES
 set(SRCS
         src/main.cpp
-        src/utilities.cpp
         # GAME
         src/Game/Core/Core.cpp
         src/Game/CoreData/CoreData.cpp
@@ -31,12 +30,13 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
+        src/Game/Factories/Sound/AudioFactory.cpp
         ## TMP
         src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
         src/Game/Factories/Map/Component/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
         # GUI/FACTORIES
-        src/Game/Factories/ButtonFactory.cpp
+        src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
         src/GUI/Factories/TextInput/TextInputFactory.cpp
         src/GUI/Factories/KeyInput/KeyInputFactory.cpp
@@ -44,6 +44,7 @@ set(SRCS
         src/GUI/Factories/Countdown/CountdownFactory.cpp
         src/GUI/Factories/Countdown/TimeText.cpp
         src/GUI/Factories/Image/ImageFactory.cpp
+        src/GUI/Factories/Image/ImageSequenceFactory.cpp
         src/GUI/Factories/Slider/SliderFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
@@ -53,23 +54,37 @@ set(SRCS
         src/Components/Render2D/Render2D.cpp
         src/Components/AbstractEvent/AbstractEvent.cpp
         src/Components/Hitbox/Hitbox.cpp
+        src/Components/ClickEvent/ClickEvent.cpp
+        src/Components/MouseMoveEvent/MouseMoveEvent.cpp
         src/Components/Chrono/Chrono.cpp
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
+        src/Components/Sound/Sound.cpp
+        src/Components/PlayerConfig/PlayerConfig.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
         src/Systems/Hitbox/HitboxSystem.cpp
+        src/Systems/Audio/AudioSystem.cpp
         src/Systems/Physics/PhysicsSystem.cpp
+        src/Systems/PlayerConfig/PlayerConfigSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
+        src/Scenes/OptionsMenu/OptionsMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
+        src/Scenes/SplashScreen/SplashScreenScene.cpp
+        src/Scenes/KeyBindingMenu/KeyBindingMenuScene.cpp
+        src/Scenes/PauseMenuScene/PauseMenuScene.cpp
+        src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
         src/Exceptions/Exceptions.cpp
-)
+        # UTILITIES
+        src/Utilities/utilities.cpp
+        src/Utilities/ProportionUtilities.hpp
+    )
 
 add_executable(${NAME} ${SRCS})
 

@@ -7,7 +7,7 @@
 
 #include "AbstractEvent.hpp"
 
-Component::AbstractEvent::AbstractEvent(eventScript &handler, Game::EventRequirement const &requirements)
+Component::AbstractEvent::AbstractEvent(eventScript &handler, const Game::EventRequirement &requirements)
     : _handler(handler), _requirements(requirements)
 {
 }

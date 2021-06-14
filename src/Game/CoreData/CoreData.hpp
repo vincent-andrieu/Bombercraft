@@ -21,18 +21,21 @@ namespace Game
     class CoreData {
       public:
         CoreData();
-        ~CoreData() = default;
+        ~CoreData();
+
+        static void quit();
 
       public:
         static std::unique_ptr<ConfigFile> settings;
-        static std::shared_ptr<raylib::Camera> camera;
+        static std::unique_ptr<raylib::Camera> camera;
         static std::shared_ptr<Engine::EntityManager> entityManager;
         static std::shared_ptr<Engine::SceneManager> sceneManager;
         static std::shared_ptr<raylib::Input> eventManager;
+        static std::unique_ptr<Engine::SystemManager> systemManager;
+        static std::unique_ptr<raylib::Window> _window;
 
       protected:
-        static std::shared_ptr<Engine::SystemManager> _systemManager;
-        static std::unique_ptr<raylib::Window> _window;
+        static bool _loop;
     };
 } // namespace Game
 

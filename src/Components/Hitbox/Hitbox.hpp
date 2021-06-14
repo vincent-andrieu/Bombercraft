@@ -25,8 +25,8 @@ namespace Component
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
-        bool save(Engine::SaveManager &saver) const override;
-        bool load(Engine::SaveManager &saver) override;
+        // bool save(Engine::SaveManager &saver) const override;
+        // bool load(Engine::SaveManager &saver) override;
 
         std::shared_ptr<ObjectBox> objectBox;
 

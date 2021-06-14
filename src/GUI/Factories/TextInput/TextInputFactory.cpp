@@ -9,9 +9,9 @@
 
 using namespace GUI;
 
-static const Game::EventRequirement clickFocusRequirement(Game::evtMouse::RIGHT | Game::evtMouse::LEFT);
+static const Game::EventRequirement clickFocusRequirement(Game::CLK_RIGHT | Game::CLK_LEFT);
 
-static const Game::EventRequirement inputHandlerRequireement(0, false,
+static const Game::EventRequirement inputHandlerRequirement(
     {
         raylib::KeyBoard::IKEY_A,
         raylib::KeyBoard::IKEY_B,
@@ -41,7 +41,7 @@ static const Game::EventRequirement inputHandlerRequireement(0, false,
         raylib::KeyBoard::IKEY_Z,
         raylib::KeyBoard::IKEY_BACKSPACE,
         raylib::KeyBoard::IKEY_SPACE,
-    });
+    }, {});
 
 static const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_A, std::string("a")},
@@ -136,7 +136,7 @@ void TextInputFactory::create(
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, textInput.size, textInput.borderColor)},
         }));
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
-    Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequireement);
+    Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequirement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
 }
 
@@ -149,11 +149,9 @@ void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &
 
 TextInputConfig TextInputFactory::getStandardConfig()
 {
-    const TextInputConfig t = {.size = raylib::MyVector2(152, 27),
-        .color = raylib::RColor::RBLACK,
-        .borderSize = 2,
-        .borderColor = raylib::RColor::RGRAY,
-        .maxChar = 16,
-        .textPositionOffset = raylib::MyVector2(5, 5)};
+    const TextInputConfig t = {raylib::MyVector2(152, 27),
+        raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY,
+        16, raylib::MyVector2(5, 5)
+    };
     return t;
 }

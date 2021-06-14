@@ -23,6 +23,7 @@
 #include <memory>
 #include <stdexcept>
 #include <chrono>
+#include <algorithm>
 
 /*
 ** CONTAINER

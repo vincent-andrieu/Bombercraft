@@ -20,7 +20,7 @@ namespace Component
 
     class AbstractEvent {
       public:
-        AbstractEvent(eventScript &handler, Game::EventRequirement const &requirements);
+        explicit AbstractEvent(eventScript &handler, const Game::EventRequirement &requirements);
 
         void trigger(Engine::Entity entity);
 

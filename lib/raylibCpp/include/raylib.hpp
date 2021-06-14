@@ -49,6 +49,7 @@
 
 #include "../src/Texture/ITexture.hpp"
 #include "../src/Texture/Texture.hpp"
+#include "../src/Texture/TextureSequence.hpp"
 
 #include "../src/Window/IWindow.hpp"
 #include "../src/Window/Window.hpp"

@@ -8,6 +8,10 @@
 #ifndef ENUM_HPP
 #define ENUM_HPP
 
+#ifdef _WIN32
+  typedef unsigned int uint;
+#endif
+
 namespace raylib
 {
     enum class RColor
@@ -40,7 +44,7 @@ namespace raylib
         RRAYWHITE
     };
 
-    enum class KeyBoard
+    enum class KeyBoard : uint
     {
         IKEY_NULL = 0,
         IKEY_A,

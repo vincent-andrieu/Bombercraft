@@ -60,7 +60,7 @@ namespace Engine
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
-        SaveManager _saver{"Engine_Save"};
+        //SaveManager _saver{"Engine_Save"};
 
         template <typename T> void checkComponentType() const;
 
