@@ -23,6 +23,8 @@ namespace Game
         CoreData();
         ~CoreData();
 
+        static void quit();
+
       public:
         static std::unique_ptr<ConfigFile> settings;
         static std::unique_ptr<raylib::Camera> camera;
@@ -33,6 +35,7 @@ namespace Game
         static std::unique_ptr<raylib::Window> _window;
 
       protected:
+        static bool _loop;
     };
 } // namespace Game
 

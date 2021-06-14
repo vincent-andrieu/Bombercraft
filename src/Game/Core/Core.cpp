@@ -89,7 +89,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 
 void Core::loop()
 {
-    while (CoreData::_window->isOpen()) {
+    while (CoreData::_window->isOpen() && this->_loop == true) {
         CoreData::_window->clear();
         CoreData::sceneManager->run();
         CoreData::_window->refresh();

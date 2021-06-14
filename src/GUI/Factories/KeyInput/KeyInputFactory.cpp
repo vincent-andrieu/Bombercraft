@@ -263,10 +263,10 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 
 KeyInputConfig KeyInputFactory::getStandardConfig()
 {
-    const KeyInputConfig t = {.size = raylib::MyVector2(152, 27),
-        .color = raylib::RColor::RBLACK,
-        .borderSize = 2,
-        .borderColor = raylib::RColor::RGRAY,
-        .textPositionOffset = raylib::MyVector2(5, 5)};
+    const KeyInputConfig t = {raylib::MyVector2(152, 27),
+        raylib::RColor::RBLACK,
+        2,
+        raylib::RColor::RGRAY,
+        raylib::MyVector2(5, 5)};
     return t;
 }
