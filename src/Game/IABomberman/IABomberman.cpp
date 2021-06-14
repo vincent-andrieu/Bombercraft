@@ -75,7 +75,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
 {
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
-    
+
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
     std::srand(this->_seed);
@@ -350,7 +350,7 @@ bool IABomberman::isRandomMove() const
     if (!randomProba)
         return false;
     std::srand(this->_seed);
-    if (std::rand() % 100 <= randomProba)
+    if ((size_t)(std::rand() % 100) <= randomProba)
         return true;
     return false;
 }

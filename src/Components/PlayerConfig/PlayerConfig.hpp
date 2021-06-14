@@ -13,6 +13,14 @@
 
 namespace Component
 {
+    enum PlayerID
+    {
+        ALPHA = 0,
+        BRAVO = 1,
+        CHARLIE = 2,
+        DELTA = 3
+    };
+
     struct PlayerKeyBindings {
         raylib::KeyBoard moveUp;
         raylib::KeyBoard moveDown;
@@ -24,12 +32,12 @@ namespace Component
 
     class PlayerConfig : public Engine::Component<PlayerConfig> {
       public:
-        PlayerConfig(const uint playerId, PlayerKeyBindings defaultKeyBinding);
+        PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding);
         virtual ~PlayerConfig() = default;
 
         PlayerConfig &operator=(const PlayerConfig &src);
 
-        const uint &getPlayerId() const;
+        const PlayerID &getPlayerId() const;
         const PlayerKeyBindings &getPlayerKeyBindings() const;
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         void resetAllKeyBindings();
@@ -41,7 +49,7 @@ namespace Component
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
 
       private:
-        uint _id;
+        PlayerID _id;
         PlayerKeyBindings _keyBindings;
         PlayerKeyBindings _defaultKeyBinding;
     };

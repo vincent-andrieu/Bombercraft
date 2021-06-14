@@ -20,7 +20,7 @@ System::PlayerConfigSystem::PlayerConfigSystem() : AbstractSystem(*Game::Core::e
  * @param playerId
  * @return const Component::PlayerConfig&
  */
-Component::PlayerConfig &System::PlayerConfigSystem::update(const uint playerId) const
+Component::PlayerConfig &System::PlayerConfigSystem::getPlayerFromID(const uint playerId) const
 {
     for (const Engine::Entity &entity : this->getManagedEntities()) {
         Component::PlayerConfig &playerConfComp = this->_entityManager.getComponent<Component::PlayerConfig>(entity);
@@ -35,7 +35,7 @@ Component::PlayerConfig &System::PlayerConfigSystem::update(const uint playerId)
  *
  * @return const std::vector<const Component::PlayerConfig &>
  */
-const std::vector<Component::PlayerConfig> System::PlayerConfigSystem::update() const
+const std::vector<Component::PlayerConfig> System::PlayerConfigSystem::getPlayers() const
 {
     std::vector<Component::PlayerConfig> playersConf;
 
@@ -51,7 +51,7 @@ const std::vector<Component::PlayerConfig> System::PlayerConfigSystem::update() 
  * @param playerConfig
  * @return const Component::PlayerConfig&
  */
-Component::PlayerConfig &System::PlayerConfigSystem::update(const Component::PlayerConfig &playerConfig) const
+Component::PlayerConfig &System::PlayerConfigSystem::getNextPlayer(const Component::PlayerConfig &playerConfig) const
 {
     const auto &entities = this->getManagedEntities();
 
