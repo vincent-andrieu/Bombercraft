@@ -49,7 +49,7 @@ void OptionsMenuScene::open()
     GUI::SliderFactory::create(this->localEntities, buttonPosition[5],
            [](const Engine::Entity entity, GUI::sliderValue &value) {
                std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
-           }, "FOV: ", raylib::MyVector2(60, 10), 0, 200, 60);
+           }, "FOV: ", raylib::MyVector2(60, 10), Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE), 0, 200, 60);
     GUI::ButtonFactory::create(scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<MainMenuScene>();
     });

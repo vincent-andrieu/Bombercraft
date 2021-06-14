@@ -14,11 +14,17 @@ using namespace Game;
 
 const EventRequirement SliderFactory::_clickHandlerRequirements(Game::CLK_LEFT | Game::CLK_RIGHT);
 
-void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &position, sliderHandler sliderHandler,
-    const string &label, const raylib::MyVector2 &labelPos, sliderValue minValue, sliderValue maxValue, sliderValue defaultValue)
+void SliderFactory::create(Engine::EntityPack &entityPack,
+    const MyVector2 &position,
+    sliderHandler sliderHandler,
+    const string &label,
+    const MyVector2 &labelOffset,
+    const MyVector2 &size,
+    sliderValue minValue,
+    sliderValue maxValue,
+    sliderValue defaultValue)
 {
     const auto entity = entityPack.createAnonymousEntity();
-    const MyVector2 &size = CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE);
     const MyVector2 &selectorSize = CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE);
 
     auto background = std::make_shared<raylib::Rectangle>(
@@ -26,25 +32,28 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
     auto selector = std::make_shared<raylib::Rectangle>(
         MyVector2(
             SliderFactory::_getRangeValue(position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a), position.b),
-        selectorSize, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
-    auto displayLabel =
-        std::make_shared<raylib::Text>(label + toString(defaultValue), CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
-            position + labelPos, CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
-            static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
+        selectorSize,
+        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
+    auto displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
+        CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
+        position + labelOffset,
+        CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
+        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
 
-    Component::eventScript clickHandler = [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue,
-                                              defaultValue, sliderHandler](const Engine::Entity entity) {
-        if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
-            static sliderValue value = defaultValue;
-            const MyVector2 &mousePos = CoreData::eventManager->getMousePos();
-            const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(position, mousePos.a, size.a, selectorSize);
+    Component::eventScript clickHandler =
+        [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](
+            const Engine::Entity entity) {
+            if (CoreData::eventManager->MouseIsOverClicked(position, size)) {
+                static sliderValue value = defaultValue;
+                const MyVector2 &mousePos = CoreData::eventManager->getMousePos();
+                const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(position, mousePos.a, size.a, selectorSize);
 
-            value = SliderFactory::_getValueFromRange(mousePos.a - position.a, maxValue, size);
-            selector->setPosition(sliderPos);
-            displayLabel->setText(label + toString(value));
-            sliderHandler(entity, value);
-        }
-    };
+                value = SliderFactory::_getValueFromRange(mousePos.a - position.a, maxValue, size);
+                selector->setPosition(sliderPos);
+                displayLabel->setText(label + toString(value));
+                sliderHandler(entity, value);
+            }
+        };
 
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{
@@ -52,8 +61,12 @@ void SliderFactory::create(Engine::EntityPack &entityPack, const MyVector2 &posi
     CoreData::entityManager->addComponent<Component::ClickEvent>(entity, clickHandler, SliderFactory::_clickHandlerRequirements);
 }
 
-float SliderFactory::_getRangeValue(const float &origin, const sliderValue &minValue, const sliderValue &maxValue,
-    const sliderValue &value, const float &size, const float &selectorSize)
+float SliderFactory::_getRangeValue(const float &origin,
+    const sliderValue &minValue,
+    const sliderValue &maxValue,
+    const sliderValue &value,
+    const float &size,
+    const float &selectorSize)
 {
     if (value < minValue || value > maxValue)
         throw std::out_of_range("slider value is over limits");
