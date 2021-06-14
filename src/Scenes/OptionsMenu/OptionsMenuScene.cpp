@@ -9,6 +9,7 @@
 #include "OptionsMenuScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 using namespace Game;
 
@@ -32,42 +33,42 @@ OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
-static const std::vector<raylib::MyVector2> buttonPosition = {raylib::MyVector2(50, 150),
-    raylib::MyVector2(650, 150),
-    raylib::MyVector2(50, 210),
-    raylib::MyVector2(650, 210),
-    raylib::MyVector2(50, 270),
-    raylib::MyVector2(650, 270)};
-
 void OptionsMenuScene::open()
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
-    const GUI::ButtonConfig largeButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(570, 55));
-    const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
+    const raylib::MyVector2 &window_size = CoreData::settings->getMyVector2("WIN_SIZE");
+    const ProportionUtilities resizer(window_size);
+    const GUI::ButtonConfig &menuButtons = GUI::ButtonFactory::getMediumButtonConfig();
+    const GUI::ButtonConfig &doneButton = GUI::ButtonFactory::getLargeButtonConfig();
+    const std::vector<raylib::MyVector2> buttonPosition = {
+        resizer(raylib::MyVector2(25, 25)),
+        resizer(raylib::MyVector2(50.5, 25)),
+        resizer(raylib::MyVector2(25, 35)),
+        resizer(raylib::MyVector2(50.5, 35)),
+        resizer(raylib::MyVector2(25, 45)),
+        resizer(raylib::MyVector2(50.5, 45)),
+    };
 
     // BACKGROUND
-    GUI::ImageFactory::create(scene->localEntities,
-        raylib::MyVector2(0, 0),
-        CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("DEF_BACKGROUND"),
-        false);
+    GUI::ImageFactory::create(
+        scene->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("DEF_BACKGROUND"), false);
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization...", [](const Engine::Entity) {
+        scene->localEntities, buttonPosition[0], "skin", menuButtons, "Skin Customization...", [](const Engine::Entity) {
             CoreData::sceneManager->setScene<SkinChoiceScene>();
         });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
+        scene->localEntities, buttonPosition[1], "music", menuButtons, "Music & Sounds", [](const Engine::Entity) {
             CoreData::sceneManager->setScene<SoundOptionScene>();
             std::cout << "Music & Sounds" << std::endl;
         });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[2], "video settings", largeButton, "Video Settings", handlerDefaultButton);
+        scene->localEntities, buttonPosition[2], "video settings", menuButtons, "Video Settings", handlerDefaultButton);
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[3], "controls", largeButton, "Controls...", [](const Engine::Entity) {
+        scene->localEntities, buttonPosition[3], "controls", menuButtons, "Controls...", [](const Engine::Entity) {
             CoreData::sceneManager->setScene<KeyBindingMenuScene>();
         });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[4], "resourcePack", largeButton, "Resource Pack", handlerDefaultButton);
+        scene->localEntities, buttonPosition[4], "resourcePack", menuButtons, "Resource Pack", handlerDefaultButton);
     GUI::SliderFactory::create(
         this->localEntities,
         buttonPosition[5],
@@ -75,13 +76,16 @@ void OptionsMenuScene::open()
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
         },
         "FOV: ",
-        raylib::MyVector2(60, 10),
-        Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
+        menuButtons.size,
         0,
         200,
         60);
-    GUI::ButtonFactory::create(
-        scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
+    GUI::ButtonFactory::create(scene->localEntities,
+        resizer(raylib::MyVector2(50, 80), doneButton.size, raylib::MyVector2(50, 0)),
+        "done",
+        doneButton,
+        "Done",
+        [](const Engine::Entity) {
             CoreData::sceneManager->setScene<MainMenuScene>();
         });
 }

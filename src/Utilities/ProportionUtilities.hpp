@@ -26,8 +26,9 @@ class ProportionUtilities {
         return this->getProportion(x, y);
     };
 
-    [[nodiscard]] inline raylib::MyVector2 operator()(
-        const raylib::MyVector2 &percent, const raylib::MyVector2 &objectSize, const raylib::MyVector2 &percentOffset) const
+    [[nodiscard]] inline raylib::MyVector2 operator()(const raylib::MyVector2 &percent,
+        const raylib::MyVector2 &objectSize,
+        const raylib::MyVector2 &percentOffset = raylib::MyVector2(50, 50)) const
     {
         return this->getProportion(percent, objectSize, percentOffset);
     };
@@ -44,7 +45,7 @@ class ProportionUtilities {
 
     [[nodiscard]] inline raylib::MyVector2 getProportion(const raylib::MyVector2 &percent,
         const raylib::MyVector2 &objectSize,
-        const raylib::MyVector2 &percentOffset = {50, 50}) const
+        const raylib::MyVector2 &percentOffset = raylib::MyVector2(50, 50)) const
     {
         return raylib::MyVector2(_windowSize * (percent / 100) - (objectSize * (percentOffset / 100)));
     };

@@ -7,6 +7,7 @@
 
 #include "SliderFactory.hpp"
 #include "Components/Render2D/Render2D.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 using namespace raylib;
 using namespace GUI;
@@ -18,14 +19,13 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     const MyVector2 &position,
     sliderHandler sliderHandler,
     const string &label,
-    const MyVector2 &labelOffset,
     const MyVector2 &size,
     sliderValue minValue,
     sliderValue maxValue,
     sliderValue defaultValue)
 {
     const auto entity = entityPack.createAnonymousEntity();
-    const MyVector2 &selectorSize = CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE);
+    const MyVector2 &selectorSize = MyVector2(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE), size.b);
 
     auto background = std::make_shared<raylib::Rectangle>(
         position, size, static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_BACKGROUND_COLOR)));
@@ -33,12 +33,13 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
         MyVector2(
             SliderFactory::_getRangeValue(position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a), position.b),
         selectorSize,
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_COLOR)));
+        CONF_GET_COLOR(SLIDER_CONFIG_SELECTOR_COLOR));
     auto displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
-        CoreData::settings->getString(SLIDER_CONFIG_LABEL_FONT),
-        position + labelOffset,
+        position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
-        static_cast<RColor>(CoreData::settings->getInt(SLIDER_CONFIG_LABEL_COLOR)));
+        CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
+    displayLabel->setPosition(
+        position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
 
     Component::eventScript clickHandler =
         [selector, displayLabel, label, position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](
@@ -83,7 +84,7 @@ sliderValue SliderFactory::_getValueFromRange(const float &position, const slide
 {
     if (position < 0 || position > size.a)
         throw std::out_of_range("slider position is over limits");
-    return (int)((position * maxValue) / size.a);
+    return (int) ((position * maxValue) / size.a);
 }
 
 const MyVector2 SliderFactory::_getSliderMousePos(
