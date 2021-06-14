@@ -32,8 +32,8 @@ set(SRCS
         src/Game/Factories/Block/BlockFactory.cpp
         src/Game/Factories/Sound/AudioFactory.cpp
         ## TMP
-        src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
-        src/Game/Factories/Map/Component/Matrix2D.cpp
+        src/Components/Matrix2D/DataMatrix/DataMatrix.cpp
+        src/Components/Matrix2D/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Button/ButtonFactory.cpp
