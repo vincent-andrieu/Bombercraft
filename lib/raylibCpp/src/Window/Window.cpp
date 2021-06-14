@@ -87,6 +87,14 @@ void raylib::Window::setExitKey(int key)
 {
     SetExitKey(key);
 }
+
+void raylib::Window::setWindowIcon(const std::string &iconPath)
+{
+    Image img = LoadImage(iconPath.c_str());
+
+    SetWindowIcon(img);
+}
+
 void raylib::Window::openURL(const std::string &url) const
 {
     OpenURL(url.c_str());
