@@ -38,6 +38,7 @@
 #include "Components/MouseMoveEvent/MouseMoveEvent.hpp"
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Components/PlayerConfig/PlayerConfig.hpp"
+#include "Components/PlayerInventory/PlayerInventory.hpp"
 
 namespace Game
 {
@@ -47,6 +48,10 @@ namespace Game
         ~Core() = default;
 
         void loop();
+
+      private:
+        void loadMusic();
+        std::unordered_map<std::string, std::string> getMusicList() const;
 
       public:
         Engine::EntityPack globalEntities;

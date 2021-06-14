@@ -5,10 +5,27 @@
 ** OptionsMenuScene
 */
 
+#include <sstream>
 #include "OptionsMenuScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
+#include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 
 using namespace Game;
+
+static void handlerDefaultButton(Engine::Entity entity)
+{
+    static std::size_t counter = 1;
+
+    auto &render = CoreData::entityManager->getComponent<Component::Render2D>(entity);
+    raylib::Text &label = *static_cast<raylib::Text *>(render.get("label").get());
+
+    std::ostringstream os;
+    for (std::size_t i = 0; i < counter; i++) {
+        os << "Nope.";
+    }
+    label.setText(os.str());
+    counter = (counter == 6) ? 0 : counter + 1;
+}
 
 OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
@@ -46,9 +63,11 @@ void OptionsMenuScene::open()
         bigButton,
         "Skin Customization",
         [](const Engine::Entity) {
-            std::cout << "Skin Customization" << std::endl;
+            CoreData::sceneManager->pushLastScene();
+            CoreData::sceneManager->setScene<SkinChoiceScene>();
         },
         true);
+
     GUI::ButtonFactory::create(
         scene->localEntities,
         buttonPosition[1],
@@ -116,6 +135,8 @@ void OptionsMenuScene::open()
             CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         },
         true);
+    //        scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
+    //        CoreData::sceneManager->setScene<MainMenuScene>();
 }
 
 void Game::OptionsMenuScene::update()

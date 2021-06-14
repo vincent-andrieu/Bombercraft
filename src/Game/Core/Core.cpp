@@ -7,13 +7,16 @@
 
 #include "Core.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Components/StringChoice/StringChoice.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Game/Factories/Map/Component/Matrix2D.hpp"
+#include "Game/Factories/Sound/AudioFactory.hpp"
 
 using namespace Game;
 
@@ -30,8 +33,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
     CoreData::entityManager->registerComponent<Component::KeyBox>();
+    CoreData::entityManager->registerComponent<Component::StringChoice>();
     CoreData::entityManager->registerComponent<Component::PlayerConfig>();
-    // Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();
@@ -39,6 +42,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::TextInputConfig>();
     CoreData::entityManager->registerComponent<Component::Sound>();
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
+    CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(
@@ -58,6 +62,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SkinChoiceScene>();
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
@@ -93,6 +98,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // DEBUG - END
     SceneLoader::setScene<MainMenuScene>();
+    this->loadMusic();
 }
 
 void Core::loop()
@@ -103,4 +109,31 @@ void Core::loop()
         CoreData::_window->refresh();
         CoreData::sceneManager->updateScene();
     }
+}
+
+void Core::loadMusic()
+{
+    std::unordered_map<std::string, std::string> listMusic = this->getMusicList();
+
+    for (auto once : listMusic)
+        Game::AudioFactory::create(this->globalEntities, Game::AudioType::MUSIC, once.second, once.first);
+    listMusic.clear();
+}
+
+std::unordered_map<std::string, std::string> Core::getMusicList() const
+{
+    std::vector<std::string> listMusicPath = CoreData::settings->getTabString("MUSIC_FILE_LIST_PATH");
+    std::vector<std::string> listMusicName = CoreData::settings->getTabString("MUSIC_FILE_LIST_NAME");
+    std::unordered_map<std::string, std::string>::iterator it;
+    std::unordered_map<std::string, std::string> listMusic;
+
+    if (listMusicPath.size() != listMusicName.size())
+        throw std::invalid_argument("MUSIC_FILE_LIST_PATH and MUSIC_FILE_LIST_NAME must have the same size");
+    for (size_t i = 0; i < listMusicPath.size(); i++) {
+        it = listMusic.find(listMusicName[i]);
+        if (it != listMusic.end())
+            throw std::invalid_argument("MUSIC_FILE_LIST_NAME : all member must be different");
+        listMusic[listMusicName[i]] = listMusicPath[i];
+    }
+    return listMusic;
 }

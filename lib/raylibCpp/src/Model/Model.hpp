@@ -32,6 +32,8 @@ namespace raylib
         void setTexture(const std::string &texturePath);
         void setLoaderManager();
 
+        MyVector3 getRotation() const;
+
         [[nodiscard]] string getPath() const;
 
         static std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> _loaderManager;

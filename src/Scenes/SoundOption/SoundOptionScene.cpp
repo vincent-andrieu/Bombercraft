@@ -36,17 +36,15 @@ Game::SoundOptionScene::SoundOptionScene() : Engine::AbstractScene(*CoreData::sy
 
 void Game::SoundOptionScene::open()
 {
+    const raylib::MyVector2 window_size(CoreData::settings->getMyVector2("WIN_SIZE"));
     const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
-    ProportionUtilities pos(CoreData::settings->getMyVector2("WIN_SIZE"));
+    ProportionUtilities pos(window_size);
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
     /// Background
-    GUI::ImageFactory::create(this->localEntities,
-        raylib::MyVector2(0, 0),
-        raylib::MyVector2(1280, 720),
-        CoreData::settings->getString("OPTION_BACK"),
-        false);
+    GUI::ImageFactory::create(
+        this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     /// Quit button
     GUI::ButtonFactory::create(
         this->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {

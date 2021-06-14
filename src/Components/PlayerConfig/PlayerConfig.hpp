@@ -32,7 +32,9 @@ namespace Component
 
     class PlayerConfig : public Engine::Component<PlayerConfig> {
       public:
-        PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding);
+        PlayerConfig(const PlayerID playerId,
+            PlayerKeyBindings defaultKeyBinding,
+            const string &defaultSkinPath = Game::CoreData::settings->getString("STANDARD_SKIN_PATH"));
         virtual ~PlayerConfig() = default;
 
         PlayerConfig &operator=(const PlayerConfig &src);
@@ -40,6 +42,7 @@ namespace Component
         const PlayerID &getPlayerId() const;
         const PlayerKeyBindings &getPlayerKeyBindings() const;
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
+        const string &getSkinPath() const;
         void resetAllKeyBindings();
         void setKeyMoveUp(const raylib::KeyBoard &key);
         void setKeyMoveDown(const raylib::KeyBoard &key);
@@ -47,11 +50,13 @@ namespace Component
         void setKeyMoveRight(const raylib::KeyBoard &key);
         void setKeyPause(const raylib::KeyBoard &key);
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
+        void setSkinPath(const string &skinpath);
 
       private:
         PlayerID _id;
         PlayerKeyBindings _keyBindings;
         PlayerKeyBindings _defaultKeyBinding;
+        string _skinPath;
     };
 } // namespace Component
 
