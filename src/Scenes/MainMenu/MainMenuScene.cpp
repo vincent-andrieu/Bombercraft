@@ -46,6 +46,7 @@ void MainMenuScene::open()
         });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
+            CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(

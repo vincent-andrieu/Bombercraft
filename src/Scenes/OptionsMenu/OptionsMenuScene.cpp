@@ -56,6 +56,7 @@ void OptionsMenuScene::open()
         bigButton,
         "Music & Sounds",
         [](const Engine::Entity) {
+            CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<SoundOptionScene>();
             std::cout << "Music & Sounds" << std::endl;
         },
@@ -77,6 +78,7 @@ void OptionsMenuScene::open()
         bigButton,
         "Controls...",
         [](const Engine::Entity) {
+            CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<KeyBindingMenuScene>();
         },
         true);
@@ -111,7 +113,7 @@ void OptionsMenuScene::open()
         doneButton,
         "Done",
         [](const Engine::Entity) {
-            CoreData::sceneManager->setScene(CoreData::sceneManager->getLastScene());
+            CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         },
         true);
 }

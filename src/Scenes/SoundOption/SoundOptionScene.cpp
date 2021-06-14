@@ -50,7 +50,7 @@ void Game::SoundOptionScene::open()
     /// Quit button
     GUI::ButtonFactory::create(
         this->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<OptionsMenuScene>();
+            CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         });
     /// Slider
     GUI::SliderFactory::create(this->localEntities,

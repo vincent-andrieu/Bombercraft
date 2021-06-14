@@ -12,7 +12,8 @@ using namespace Game;
 using namespace raylib;
 
 static const Component::eventScript doneButtonHandler = [](UNUSED const Engine::Entity &entity) {
-    CoreData::sceneManager->setScene<OptionsMenuScene>();
+
+    CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
 };
 
 KeyBindingMenuScene::KeyBindingMenuScene(Engine::SystemManager &systemManager)

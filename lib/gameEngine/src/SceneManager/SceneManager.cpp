@@ -55,15 +55,21 @@ void SceneManager::updateScene()
     }
 }
 
-std::shared_ptr<AbstractScene> SceneManager::getLastScene()
+void SceneManager::pushLastScene()
 {
-    return _lastScene;
+    _lastScenes.push(_currentScene);
+}
+
+std::shared_ptr<AbstractScene> SceneManager::peekLastScene()
+{
+    std::shared_ptr<AbstractScene> my_last(_lastScenes.top());
+    _lastScenes.pop();
+    return my_last;
 }
 
 void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene)
 {
     if (std::find(_scenes.begin(), _scenes.end(), scene) == _scenes.end())
         return;
-    _lastScene = _currentScene;
     _nextScene = scene;
 }

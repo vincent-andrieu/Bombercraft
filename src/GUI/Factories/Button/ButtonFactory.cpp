@@ -96,8 +96,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
             my_render.setToDrawFirst("idle");
         }
     };
-    Component::eventScript my_clickHandler = [position, my_size, clickAction](const Engine::Entity entity) {
-        if (Game::CoreData::eventManager->MouseIsOverClicked(position, my_size)) {
+    Component::eventScript my_clickHandler = [my_position, my_size, clickAction](const Engine::Entity entity) {
+        if (Game::CoreData::eventManager->MouseIsOverClicked(my_position, my_size)) {
             clickAction(entity);
         }
     };
