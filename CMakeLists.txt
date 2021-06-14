@@ -63,6 +63,7 @@ set(SRCS
         src/Components/Sound/Sound.cpp
         src/Components/PlayerConfig/PlayerConfig.cpp
         src/Components/Option/OptionComponent.cpp
+        src/Components/PlayerInventory/PlayerInventory.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
