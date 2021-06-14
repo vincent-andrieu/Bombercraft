@@ -61,3 +61,8 @@ CoreData::~CoreData()
     CoreData::_window->close();
 }
 
+void CoreData::moveCamera(const raylib::MyVector3 &position, const raylib::MyVector3 &target)
+{
+    CoreData::camera->setPosition(position);
+    CoreData::camera->setTarget(target);
+}

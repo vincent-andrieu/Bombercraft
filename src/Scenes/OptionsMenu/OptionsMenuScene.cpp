@@ -5,9 +5,10 @@
 ** OptionsMenuScene
 */
 
+#include <sstream>
 #include "OptionsMenuScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
-#include <sstream>
+#include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 
 using namespace Game;
 
@@ -48,11 +49,11 @@ void OptionsMenuScene::open()
     GUI::ImageFactory::create(scene->localEntities,
         raylib::MyVector2(0, 0),
         CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("STANDARD_BACKGROUND"),
+        CoreData::settings->getString("DEF_BACKGROUND"),
         false);
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization", [](const Engine::Entity) {
-            std::cout << "Skin Customization" << std::endl;
+        scene->localEntities, buttonPosition[0], "skin", largeButton, "Skin Customization...", [](const Engine::Entity) {
+            CoreData::sceneManager->setScene<SkinChoiceScene>();
         });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "music", largeButton, "Music & Sounds", [](const Engine::Entity) {
@@ -81,7 +82,7 @@ void OptionsMenuScene::open()
         60);
     GUI::ButtonFactory::create(
         scene->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene(CoreData::sceneManager->getLastScene());
+            CoreData::sceneManager->setScene<MainMenuScene>();
         });
 }
 

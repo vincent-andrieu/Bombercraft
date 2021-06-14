@@ -151,3 +151,8 @@ void raylib::Model::myModelUnload(RModel &model)
 {
     UnloadModel(model);
 }
+
+raylib::MyVector3 raylib::Model::getRotation() const
+{
+    return _rotation;
+}

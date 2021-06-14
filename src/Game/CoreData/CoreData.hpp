@@ -23,6 +23,7 @@ namespace Game
         CoreData();
         ~CoreData();
 
+        static void moveCamera(const raylib::MyVector3 &position, const raylib::MyVector3 &target);
         static void quit();
 
       public:

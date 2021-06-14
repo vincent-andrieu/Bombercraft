@@ -61,6 +61,7 @@ set(SRCS
         src/Components/FocusEvent/ClickFocusEvent.cpp
         src/Components/TextInputConfig/TextInputConfig.cpp
         src/Components/Sound/Sound.cpp
+        src/Components/StringChoice/StringChoice.cpp
         src/Components/PlayerConfig/PlayerConfig.cpp
         src/Components/Option/OptionComponent.cpp
         src/Components/PlayerInventory/PlayerInventory.cpp
@@ -74,6 +75,7 @@ set(SRCS
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
+        src/Scenes/SkinChoice/SkinChoiceScene.cpp
         src/Scenes/OptionsMenu/OptionsMenuScene.cpp
         src/Scenes/SceneWithEvents/SceneWithEvents.cpp
         src/Scenes/SplashScreen/SplashScreenScene.cpp

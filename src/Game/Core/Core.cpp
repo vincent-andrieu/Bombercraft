@@ -7,11 +7,13 @@
 
 #include "Core.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Components/StringChoice/StringChoice.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Game/Factories/Map/Component/Matrix2D.hpp"
 
@@ -30,8 +32,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
     CoreData::entityManager->registerComponent<Component::KeyBox>();
+    CoreData::entityManager->registerComponent<Component::StringChoice>();
     CoreData::entityManager->registerComponent<Component::PlayerConfig>();
-    // Component::
     CoreData::entityManager->registerComponent<Engine::Velocity>();
     CoreData::entityManager->registerComponent<Engine::Timer>();
     CoreData::entityManager->registerComponent<Engine::Script>();
@@ -59,6 +61,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SkinChoiceScene>();
     CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
