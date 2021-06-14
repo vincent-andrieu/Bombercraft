@@ -76,8 +76,8 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
         if (Game::CoreData::eventManager->MouseIsOver(position, my_size)) {
-            my_render.unsetToDraw("idle");
             my_render.setToDrawFirst("hover");
+            my_render.unsetToDraw("idle");
         } else {
             my_render.unsetToDraw("hover");
             my_render.setToDrawFirst("idle");
