@@ -35,8 +35,9 @@ void MainMenuScene::open()
         Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"),
         true);
     // BUTTON
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
-        std::cout << "Play" << std::endl;
+    GUI::ButtonFactory::create(
+        scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<GameScene>();
     });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {

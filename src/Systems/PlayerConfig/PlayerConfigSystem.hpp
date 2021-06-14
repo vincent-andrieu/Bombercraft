@@ -17,9 +17,9 @@ namespace System
       public:
         PlayerConfigSystem();
 
-        Component::PlayerConfig &update(const uint playerId) const;
-        const std::vector<Component::PlayerConfig> update() const;
-        Component::PlayerConfig &update(const Component::PlayerConfig &playerConfig) const;
+        Component::PlayerConfig &getPlayerFromID(const Component::PlayerID &playerId) const;
+        const std::vector<Component::PlayerConfig> getPlayers() const;
+        Component::PlayerConfig &getNextPlayer(const Component::PlayerConfig &playerConfig) const;
     };
 } // namespace System
 
