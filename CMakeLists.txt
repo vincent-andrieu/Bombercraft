@@ -46,6 +46,7 @@ set(SRCS
         src/GUI/Factories/Image/ImageFactory.cpp
         src/GUI/Factories/Image/ImageSequenceFactory.cpp
         src/GUI/Factories/Slider/SliderFactory.cpp
+        src/GUI/Factories/Inventory/InventoryFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
@@ -78,6 +79,7 @@ set(SRCS
         src/Scenes/KeyBindingMenu/KeyBindingMenuScene.cpp
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
+        src/Scenes/GameScene/GameScene.cpp
         src/Scenes/SoundOption/SoundOptionScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
