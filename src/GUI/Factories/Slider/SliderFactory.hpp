@@ -33,7 +33,6 @@ namespace GUI
             const raylib::MyVector2 &position,
             sliderHandler clickHandler,
             const string &label = "",
-            const raylib::MyVector2 &labelOffset = raylib::MyVector2(0, 0),
             const raylib::MyVector2 &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE),
             sliderValue minValue = 0,
             sliderValue maxValue = 100,
@@ -47,7 +46,7 @@ namespace GUI
             const sliderValue &maxValue,
             const sliderValue &value,
             const float &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).a,
-            const float &selectorSize = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE).a);
+            const float &selectorSize = Game::CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE));
 
         static sliderValue _getValueFromRange(const float &position,
             const sliderValue &maxValue,
@@ -56,7 +55,9 @@ namespace GUI
         static const raylib::MyVector2 _getSliderMousePos(const raylib::MyVector2 &position,
             const float &mousePos = Game::CoreData::eventManager->getMousePos().a,
             const float &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).a,
-            const raylib::MyVector2 &selectorSize = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SELECTOR_SIZE));
+            const raylib::MyVector2 &selectorSize = raylib::MyVector2(
+                Game::CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE),
+                Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE).b));
     };
 } // namespace GUI
 
