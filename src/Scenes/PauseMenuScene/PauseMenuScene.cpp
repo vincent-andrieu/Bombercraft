@@ -22,7 +22,7 @@ void Game::PauseMenuScene::open()
     auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
     auto my_labelPosition(my_utility.getProportion(raylib::MyVector2(50, 20)));
-    GUI::LabelFactory();
+    //    GUI::LabelFactory();
     auto my_label(std::make_shared<raylib::Text>("Game Menu",
         my_labelPosition,
         CoreData::settings->getInt("STANDARD_FONT_SIZE"),
