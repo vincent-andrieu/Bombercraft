@@ -36,17 +36,17 @@ ButtonConfig ButtonFactory::getSizedButtonConfig(const raylib::MyVector2 &winPer
 
 ButtonConfig ButtonFactory::getSmallButtonConfig()
 {
-    return getSizedButtonConfig({10, 8});
+    return getSizedButtonConfig(raylib::MyVector2(13, 8));
 }
 
 ButtonConfig ButtonFactory::getMediumButtonConfig()
 {
-    return getSizedButtonConfig({24.5, 8});
+    return getSizedButtonConfig(raylib::MyVector2(24.5, 8));
 }
 
 ButtonConfig ButtonFactory::getLargeButtonConfig()
 {
-    return getSizedButtonConfig({50, 8});
+    return getSizedButtonConfig(raylib::MyVector2(50, 8));
 }
 
 void GUI::ButtonFactory::create(Engine::EntityPack &pack,

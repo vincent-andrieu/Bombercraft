@@ -33,12 +33,10 @@ void KeyBindingMenuScene::open()
     GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
 
     // Change player
-    GUI::ButtonConfig changePlayerButtonConfig = this->_buttonDefaultConfig;
-    changePlayerButtonConfig.size = MyVector2(170, 60);
     GUI::ButtonFactory::create(this->localEntities,
         this->_resizer(44, 10),
         "playerNumberTitle",
-        changePlayerButtonConfig,
+        this->_buttonDefaultConfig,
         "Player " + toString(this->_selectedPlayer->getPlayerId()),
         [this](const Engine::Entity &entity) {
             this->_selectedPlayer =
@@ -55,10 +53,9 @@ void KeyBindingMenuScene::open()
 
     this->_createKeysInput();
 
-    GUI::ButtonConfig bottomButtonsConfig = this->_buttonDefaultConfig;
-    bottomButtonsConfig.size = MyVector2(350, 60);
+    GUI::ButtonConfig bottomButtonsConfig = GUI::ButtonFactory::getMediumButtonConfig();
     GUI::ButtonFactory::create(this->localEntities,
-        this->_resizer(20, 90),
+        this->_resizer(50.5, 90),
         "resetKeysButton",
         bottomButtonsConfig,
         "Reset keys",
@@ -68,7 +65,7 @@ void KeyBindingMenuScene::open()
         });
 
     GUI::ButtonFactory::create(
-        this->localEntities, this->_resizer(60, 90), "doneButton", bottomButtonsConfig, "Done", doneButtonHandler);
+        this->localEntities, this->_resizer(25, 90), "doneButton", bottomButtonsConfig, "Done", doneButtonHandler);
 }
 
 void KeyBindingMenuScene::update()
@@ -81,12 +78,12 @@ void KeyBindingMenuScene::update()
 
 void KeyBindingMenuScene::_createKeysLabel()
 {
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 23), "Move up", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 33), "Move down", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 43), "Move left", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 53), "Move right", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 63), "Pause", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 73), "Place bomb", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 25.5), "Move up", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 35.5), "Move down", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 45.5), "Move left", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 55.5), "Move right", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 65.5), "Pause", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 75.5), "Place bomb", this->_defaultLabelConfig);
 }
 
 void KeyBindingMenuScene::_createResetKeys()
