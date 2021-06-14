@@ -152,8 +152,8 @@ const std::map<raylib::KeyBoard, string> KeyInputFactory::keyToStr = {
     {raylib::KeyBoard::IKEY_SPACE, "SPACE"},
     {raylib::KeyBoard::IKEY_UP, "KEY UP"},
     {raylib::KeyBoard::IKEY_DOWN, "KEY DOWN"},
-    {raylib::KeyBoard::IKEY_RIGHT, "KEY CLK_RIGHT"},
-    {raylib::KeyBoard::IKEY_LEFT, "KEY CLK_LEFT"},
+    {raylib::KeyBoard::IKEY_RIGHT, "KEY RIGHT"},
+    {raylib::KeyBoard::IKEY_LEFT, "KEY LEFT"},
     {raylib::KeyBoard::IKEY_BACKSPACE, "BACKSPACE"},
     {raylib::KeyBoard::IKEY_SPACE, "SPACE"},
     {raylib::KeyBoard::IKEY_ESCAPE, "ESCAPE"},
@@ -182,14 +182,14 @@ const std::map<raylib::KeyBoard, string> KeyInputFactory::keyToStr = {
     {raylib::KeyBoard::IKEY_F10, "F10"},
     {raylib::KeyBoard::IKEY_F11, "F11"},
     {raylib::KeyBoard::IKEY_F12, "F12"},
-    {raylib::KeyBoard::IKEY_L_SHIFT, "CLK_LEFT SHIFT"},
-    {raylib::KeyBoard::IKEY_L_CTRL, "CLK_LEFT CTRL"},
-    {raylib::KeyBoard::IKEY_L_ALT, "CLK_LEFT ALT"},
+    {raylib::KeyBoard::IKEY_L_SHIFT, "LEFT SHIFT"},
+    {raylib::KeyBoard::IKEY_L_CTRL, "LEFT CTRL"},
+    {raylib::KeyBoard::IKEY_L_ALT, "LEFT ALT"},
     {raylib::KeyBoard::IKEY_L_SUPER, "LEFT_SUPER"},
-    {raylib::KeyBoard::IKEY_R_SHIFT, "CLK_RIGHT SHIFT"},
-    {raylib::KeyBoard::IKEY_R_CTRL, "CLK_RIGHT CTRL"},
-    {raylib::KeyBoard::IKEY_R_ALT, "CLK_RIGHT ALT"},
-    {raylib::KeyBoard::IKEY_R_SUPER, "CLK_RIGHT SUPER"},
+    {raylib::KeyBoard::IKEY_R_SHIFT, "RIGHT SHIFT"},
+    {raylib::KeyBoard::IKEY_R_CTRL, "RIGHT CTRL"},
+    {raylib::KeyBoard::IKEY_R_ALT, "RIGHT ALT"},
+    {raylib::KeyBoard::IKEY_R_SUPER, "RIGHT SUPER"},
     {raylib::KeyBoard::IKEY_KP_0, "KP 0"},
     {raylib::KeyBoard::IKEY_KP_1, "KP 1"},
     {raylib::KeyBoard::IKEY_KP_2, "KP 2"},
@@ -263,10 +263,7 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 
 KeyInputConfig KeyInputFactory::getStandardConfig()
 {
-    const KeyInputConfig t = {raylib::MyVector2(152, 27),
-        raylib::RColor::RBLACK,
-        2,
-        raylib::RColor::RGRAY,
-        raylib::MyVector2(5, 5)};
+    const KeyInputConfig t = {
+        raylib::MyVector2(152, 27), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, raylib::MyVector2(5, 5)};
     return t;
 }
