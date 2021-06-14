@@ -46,6 +46,7 @@ namespace raylib
         void removeLimit() override;
 
         [[nodiscard]] raylib::MyVector2 getSize() const;
+        [[nodiscard]] size_t getFontSize() const;
 
       protected:
         string _text;

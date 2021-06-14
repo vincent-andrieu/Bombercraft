@@ -106,3 +106,8 @@ raylib::MyVector2 raylib::Text::getSize() const
 
     return raylib::MyVector2(my_size.x, my_size.y);
 }
+
+size_t raylib::Text::getFontSize() const
+{
+    return this->_size;
+}
