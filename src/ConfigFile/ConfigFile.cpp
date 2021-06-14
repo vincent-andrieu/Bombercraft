@@ -511,7 +511,6 @@ std::vector<std::string> ConfigFile::getTabString(const std::string &name) const
     input.pop_back();
     parse = this->getParseIn(",", input, true);
     for (auto once : parse) {
-        std::cout << once << std::endl;
         if (!std::regex_search(once, regexpIntern))
             throw ParserExceptions("invalide line: " + line);
         if (once.back() == '"') {

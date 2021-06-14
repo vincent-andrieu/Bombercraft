@@ -64,15 +64,15 @@ void MainMenuScene::open()
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
             std::cout << "Go to credit" << std::endl;
-        });
+    });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
             CoreData::sceneManager->setScene<OptionsMenuScene>();
-        });
+    });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
             CoreData::quit();
-        });
+    });
     raylib::MyVector2 bottomLeftPos(my_utility.getProportion({1, 95}));
     raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
     GUI::LabelFactory::create(scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
