@@ -140,42 +140,42 @@ void KeyBindingMenuScene::_createKeysInput()
     const auto &playerKeyBindings = this->_selectedPlayer->getPlayerKeyBindings();
 
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 23), "keyInputMoveUp", playerKeyBindings.moveUp},
+        {this->_resizer(40, 25), "keyInputMoveUp", playerKeyBindings.moveUp},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveUp(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 33), "keyInputMoveDown", playerKeyBindings.moveDown},
+        {this->_resizer(40, 35), "keyInputMoveDown", playerKeyBindings.moveDown},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveDown(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 43), "keyInputMoveLeft", playerKeyBindings.moveLeft},
+        {this->_resizer(40, 45), "keyInputMoveLeft", playerKeyBindings.moveLeft},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveLeft(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 53), "keyInputMoveRight", playerKeyBindings.moveRight},
+        {this->_resizer(40, 55), "keyInputMoveRight", playerKeyBindings.moveRight},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveRight(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 63), "keyInputPause", playerKeyBindings.pause},
+        {this->_resizer(40, 65), "keyInputPause", playerKeyBindings.pause},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyPause(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(42, 73), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
+        {this->_resizer(40, 75), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
