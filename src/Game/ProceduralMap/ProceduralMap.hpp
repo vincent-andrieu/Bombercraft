@@ -25,7 +25,7 @@ namespace GameModule
             void setMapModel(MapDisponibility model);
             unsigned int getSeed();
             void setSeed(unsigned int seed);
-            void setModelSettings(std::unordered_map<TileType, unsigned char> linkList);
+            void setModelSettings(std::unordered_map<TileType, int> linkList);
             std::pair<size_t, size_t> getSize() const;
 
         private:
@@ -42,7 +42,7 @@ namespace GameModule
             MapType _mapProcedural;
             MapDisponibility _mapModel;
             unsigned int _seed;
-            std::unordered_map<TileType, unsigned char> _mapProba;
+            std::unordered_map<TileType, int> _mapProba;
     };
 }
 

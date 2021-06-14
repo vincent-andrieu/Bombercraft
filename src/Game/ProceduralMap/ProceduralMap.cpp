@@ -59,7 +59,7 @@ void ProceduralMap::setSeed(unsigned int seed)
 }
 
 
-void ProceduralMap::setModelSettings(std::unordered_map<TileType, unsigned char> linkList)
+void ProceduralMap::setModelSettings(std::unordered_map<TileType, int> linkList)
 {
     this->_mapProba.clear();
     this->_mapProba = linkList;
