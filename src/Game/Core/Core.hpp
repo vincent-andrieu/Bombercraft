@@ -53,7 +53,7 @@ namespace Game
 
       private:
         void loadMusic();
-        std::unordered_map<std::string, std::string> getMusicList() const;
+        std::unordered_map<std::string, std::string> getAudioList(std::string const &varPathList, std::string const &varNameList) const;
 
       public:
         Engine::EntityPack globalEntities;

@@ -125,27 +125,30 @@ void Core::loop()
 
 void Core::loadMusic()
 {
-    std::unordered_map<std::string, std::string> listMusic = this->getMusicList();
+    std::unordered_map<std::string, std::string> listMusic = this->getAudioList("MUSIC_FILE_LIST_PATH", "MUSIC_FILE_LIST_NAME");
+    std::unordered_map<std::string, std::string> listSound = this->getAudioList("SOUND_FILE_LIST_PATH", "SOUND_FILE_LIST_NAME");
 
     for (auto once : listMusic)
         Game::AudioFactory::create(this->globalEntities, Game::AudioType::MUSIC, once.second, once.first);
-    listMusic.clear();
+    for (auto once : listSound)
+        Game::AudioFactory::create(this->globalEntities, Game::AudioType::SOUND, once.second, once.first);
 }
 
-std::unordered_map<std::string, std::string> Core::getMusicList() const
+std::unordered_map<std::string, std::string> Core::getAudioList(
+    std::string const &varPathList, std::string const &varNameList) const
 {
-    std::vector<std::string> listMusicPath = CoreData::settings->getTabString("MUSIC_FILE_LIST_PATH");
-    std::vector<std::string> listMusicName = CoreData::settings->getTabString("MUSIC_FILE_LIST_NAME");
+    std::vector<std::string> listAudioPath = CoreData::settings->getTabString(varPathList);
+    std::vector<std::string> listAudioName = CoreData::settings->getTabString(varNameList);
     std::unordered_map<std::string, std::string>::iterator it;
-    std::unordered_map<std::string, std::string> listMusic;
+    std::unordered_map<std::string, std::string> listAudio;
 
-    if (listMusicPath.size() != listMusicName.size())
-        throw std::invalid_argument("MUSIC_FILE_LIST_PATH and MUSIC_FILE_LIST_NAME must have the same size");
-    for (size_t i = 0; i < listMusicPath.size(); i++) {
-        it = listMusic.find(listMusicName[i]);
-        if (it != listMusic.end())
-            throw std::invalid_argument("MUSIC_FILE_LIST_NAME : all member must be different");
-        listMusic[listMusicName[i]] = listMusicPath[i];
+    if (listAudioPath.size() != listAudioName.size())
+        throw std::invalid_argument("Core::getAudioList List name and path must have the same size");
+    for (size_t i = 0; i < listAudioPath.size(); i++) {
+        it = listAudio.find(listAudioName[i]);
+        if (it != listAudio.end())
+            throw std::invalid_argument("Core::getAudioList : members must be different");
+        listAudio[listAudioName[i]] = listAudioPath[i];
     }
-    return listMusic;
+    return listAudio;
 }
