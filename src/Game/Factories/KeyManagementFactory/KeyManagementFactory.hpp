@@ -21,7 +21,8 @@ namespace Game
     class keyManagementFactory {
       public:
         virtual ~keyManagementFactory() = 0;
-        static void create(Engine::EntityPack &pack, std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers);
+        static void create(Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript>
+            &keyTriggers);
     };
 } // namespace Game
 

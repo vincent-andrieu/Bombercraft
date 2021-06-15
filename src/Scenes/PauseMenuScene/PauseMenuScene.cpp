@@ -26,6 +26,7 @@ void Game::PauseMenuScene::open()
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
     auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
+    //    GUI::ImageFactory::create();
 
     GUI::LabelFactory::createCentered(localEntities,
         my_utility.getProportion(raylib::MyVector2(50, 20)),
@@ -58,6 +59,9 @@ void Game::PauseMenuScene::open()
 
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, goGameScene));
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_E, [](Engine::Entity) {
+        std::cout << "hello la team" << std::endl;
+    }));
     Game::keyManagementFactory::create(localEntities, my_keyTriggers);
 }
 

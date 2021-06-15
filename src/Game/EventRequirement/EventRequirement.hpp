@@ -10,7 +10,7 @@
 
 #include "raylib.hpp"
 #ifdef _WIN32
-  typedef unsigned int uint;
+typedef unsigned int uint;
 #endif
 #include <vector>
 
@@ -39,10 +39,10 @@ namespace Game
         bool triggerMouseMove(raylib::Input &eventManager) const;
 
       private:
-        const uint _click;
-        const bool _mouseMoveEvent;
-        const std::vector<raylib::KeyBoard> _handledKeyReleased;
-        const std::vector<raylib::KeyBoard> _handledKeyPress;
+        const uint _click{0};
+        const bool _mouseMoveEvent{false};
+        const std::vector<raylib::KeyBoard> _handledKeyReleased{};
+        const std::vector<raylib::KeyBoard> _handledKeyPress{};
     };
 } // namespace Game
 
