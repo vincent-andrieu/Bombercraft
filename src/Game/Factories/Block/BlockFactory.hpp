@@ -38,7 +38,7 @@ namespace GUI
             static Engine::Entity create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &ressourcePackRoot = "", const std::string &name = "");
 
         private:
-            static std::shared_ptr<raylib::Model> getModel(const raylib::MyVector3 &pos, BlockType type);
+            static std::shared_ptr<raylib::Model> getModel(const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot);
             // FACTORY
             static void internalFactory(const Engine::Entity &entity, BlockType type, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
 
