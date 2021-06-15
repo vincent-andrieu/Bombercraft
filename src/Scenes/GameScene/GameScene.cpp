@@ -58,7 +58,7 @@ void GameScene::open()
             inventoryNames[i]);
     }
     /// Chrono
-    raylib::MyVector2 countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
+    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
     GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
