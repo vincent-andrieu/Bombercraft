@@ -23,7 +23,7 @@ namespace GUI
         public:
             MapFactory() = delete;
             ~MapFactory() = delete;
-            static void create(Engine::EntityPack &entityPack, const std::string &name = "", unsigned int seed = 0);
+            static void create(Engine::EntityPack &entityPack, const std::string &ressourcePackRoot = "", const std::string &name = "", unsigned int seed = 0);
         
         private:
             static GameModule::MapType getProceduralMap(unsigned int seed, std::pair<size_t, size_t> &sizeDest);

@@ -64,7 +64,7 @@ void GameScene::open()
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
         handlerGameTimeout);
     /// MAP
-    GUI::MapFactory::create(this->localEntities, "gameMap");
+    GUI::MapFactory::create(this->localEntities, "Asset/Texture/End/", "gameMap");
     /// Camera
     // Temporary, replace by : CoreData::setCamera..(position, target)
     CoreData::camera->setPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
