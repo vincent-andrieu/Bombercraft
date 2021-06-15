@@ -82,3 +82,9 @@ void PlayerConfig::setSkinPath(const string &skinpath)
 {
     this->_skinPath = skinpath;
 }
+
+std::vector<raylib::KeyBoard> PlayerConfig::getPlayerKeyList() const
+{
+    return std::vector<raylib::KeyBoard>(
+        {_keyBindings.moveUp, _keyBindings.moveDown, _keyBindings.moveLeft, _keyBindings.moveRight});
+}

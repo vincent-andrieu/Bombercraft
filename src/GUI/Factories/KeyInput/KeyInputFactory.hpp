@@ -31,8 +31,6 @@ namespace GUI
     struct KeyInputConfig {
         const raylib::MyVector2 size;
         const raylib::RColor color;
-        const std::size_t borderSize;
-        const raylib::RColor borderColor;
         const raylib::MyVector2 textPositionOffset;
     };
 

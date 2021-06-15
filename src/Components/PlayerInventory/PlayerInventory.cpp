@@ -9,9 +9,10 @@
 
 using namespace Component;
 
-Component::PlayerInventory::PlayerInventory(const PlayerID playerId, PlayerInventoryInfo defaultInfo)
+PlayerInventory::PlayerInventory(const PlayerID playerId, PlayerInventoryInfo defaultInfo, PlayerConfig &config)
     : _id(playerId), _info(defaultInfo), _defaultInfo(defaultInfo)
 {
+    this->_info.config = &config;
 }
 
 PlayerInventory &PlayerInventory::operator=(const PlayerInventory &src)
@@ -62,3 +63,4 @@ void PlayerInventory::setBlastRadius(const size_t &blastRadius)
 {
     this->_info.blastRadius = blastRadius;
 }
+

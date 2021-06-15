@@ -26,7 +26,7 @@ namespace Component
 
       private:
         eventScript _handler;
-        std::reference_wrapper<const Game::EventRequirement> _requirements;
+        std::shared_ptr<Game::EventRequirement> _requirements;
     };
 } // namespace Component
 

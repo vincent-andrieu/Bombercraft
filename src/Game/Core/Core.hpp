@@ -41,6 +41,7 @@
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/PlayerInventory/PlayerInventory.hpp"
+#include "Preloader/Preloader.hpp"
 
 namespace Game
 {
@@ -52,11 +53,21 @@ namespace Game
         void loop();
 
       private:
+        void registerComponents();
+        void createSystems();
+        void createScenes();
         void loadMusic();
-        std::unordered_map<std::string, std::string> getMusicList() const;
+        std::unordered_map<std::string, std::string> getAudioList(std::string const &varPathList, std::string const &varNameList) const;
+        bool isEndPreload();
+        void printDuringPreload();
+        void runPreload();
+        void runAfterPreload();
 
       public:
         Engine::EntityPack globalEntities;
+        bool _preloadStatus;
+        Preloader<Texture2D, std::string> _preloadTexture;
+        Preloader<RModel, std::tuple<std::string, std::string>> _preloadModel;
     };
 } // namespace Game
 

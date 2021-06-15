@@ -19,6 +19,7 @@ namespace raylib
         MyVector3(const MyVector3 &src);
 
         static Vector3 makeVector3(const MyVector3 vector);
+        MyVector3 &operator=(const MyVector3 &other);
 
       public:
         float a;

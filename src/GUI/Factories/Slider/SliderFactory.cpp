@@ -43,6 +43,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
         my_position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
         CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
+    // TODO (uncomment this line) raylib::Text::setFontSize(*displayLabel, size - 20);
     displayLabel->setPosition(
         my_position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
 
@@ -63,7 +64,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
 
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{
-            {"sliderSelector", selector}, {"sliderLabel", displayLabel}, {"sliderBackground", background}});
+            {"sliderBackground", background}, {"sliderSelector", selector}, {"sliderLabel", displayLabel}});
     CoreData::entityManager->addComponent<Component::ClickEvent>(entity, clickHandler, SliderFactory::_clickHandlerRequirements);
 }
 

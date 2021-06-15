@@ -6,22 +6,43 @@
 */
 
 #include "Core.hpp"
+
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/CreditScene/CreditScene.hpp"
+#include "Scenes/RessourcePackMenu/RessourcePackMenuScene.hpp"
+
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
+
 #include "Systems/Audio/AudioSystem.hpp"
-#include "Game/Factories/Map/Component/Matrix2D.hpp"
+#include "Systems/ModelList/ModelListSystem.hpp"
+
 #include "Game/Factories/Sound/AudioFactory.hpp"
 
 using namespace Game;
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
+const Texture2D &loadTexture(const std::string &toLoad)
+{
+    if (!raylib::Texture::_loaderManager)
+        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+    return raylib::Texture::_loaderManager->load(toLoad);
+}
+
+const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
+{
+    if (!raylib::Model::_loaderManager)
+        raylib::Model::_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+    return raylib::Model::_loaderManager->load(toLoad);
+}
+
+void Core::registerComponents()
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Matrix2D>();
@@ -44,10 +65,11 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Sound>();
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
-    /// COMPONENTS - CREATION
-    Engine::Entity options = this->globalEntities.createEntity("options");
-    CoreData::entityManager->addComponent<Component::OptionComponent>(
-        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"));
+    CoreData::entityManager->registerComponent<Component::ModelList>();
+}
+
+void Core::createSystems()
+{
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
@@ -60,22 +82,48 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
+    CoreData::systemManager->createSystem<System::ModelListSystem>();
+}
+
+void Core::createScenes()
+{
     /// SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<MainMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<SkinChoiceScene>();
-    CoreData::sceneManager->createScene<SplashScreenScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<OptionsMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<SplashScreenScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<OptionsMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<KeyBindingMenuScene>(*CoreData::systemManager);
-    CoreData::sceneManager->createScene<LoadingScreenScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<GameScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<LoadingScreenScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<PauseMenuScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<GameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<SoundOptionScene>();
-    CoreData::sceneManager->createScene<NewGameMenuScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<EndGameScene>((*CoreData::systemManager));
-    CoreData::sceneManager->createScene<CreditScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<NewGameMenuScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<EndGameScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);
+    CoreData::sceneManager->createScene<RessourcePackMenuScene>(*CoreData::systemManager);
+}
+
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
+_preloadTexture(loadTexture, {
+    "Asset/Interface/Button.png",
+    "Asset/Interface/HoverButton.png",
+    "Asset/Interface/Button.png",
+    "Asset/Interface/UnavailableButton.png",
+}),
+_preloadModel(loadModel, {
+    {}
+})
+{
+    this->registerComponents();
+    /// COMPONENTS - CREATION
+    Engine::Entity options = this->globalEntities.createEntity("options");
+    CoreData::entityManager->addComponent<Component::OptionComponent>(
+        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+    this->createSystems();
+    this->createScenes();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
-    auto entity = CoreData::entityManager->createEntity();
+    auto entity = this->globalEntities.createEntity("config1");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
         Component::PlayerID::ALPHA,
         Component::PlayerKeyBindings{
@@ -86,9 +134,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_END,
             raylib::KeyBoard::IKEY_R_SHIFT,
         });
-    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
 
-    entity = CoreData::entityManager->createEntity();
+    entity = this->globalEntities.createEntity("config2");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
         Component::PlayerID::BRAVO,
         Component::PlayerKeyBindings{
@@ -99,50 +146,89 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_W,
             raylib::KeyBoard::IKEY_L_ALT,
         });
-    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // MUSIC
-    this->loadMusic();
+    //this->loadMusic();
 }
 
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
-    // DEBUG - END
-    SceneLoader::setScene<MainMenuScene>();
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
-        CoreData::sceneManager->run();
+        if (!this->isEndPreload()) {
+            this->runPreload();
+            this->printDuringPreload();
+        } else {
+            CoreData::sceneManager->run();
+        }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
+        CoreData::systemManager->getSystem<System::AudioSystem>().update();
     }
 }
 
 void Core::loadMusic()
 {
-    std::unordered_map<std::string, std::string> listMusic = this->getMusicList();
+    std::unordered_map<std::string, std::string> listMusic = this->getAudioList("MUSIC_FILE_LIST_PATH", "MUSIC_FILE_LIST_NAME");
+    std::unordered_map<std::string, std::string> listSound = this->getAudioList("SOUND_FILE_LIST_PATH", "SOUND_FILE_LIST_NAME");
 
     for (auto once : listMusic)
         Game::AudioFactory::create(this->globalEntities, Game::AudioType::MUSIC, once.second, once.first);
-    listMusic.clear();
+    for (auto once : listSound)
+        Game::AudioFactory::create(this->globalEntities, Game::AudioType::SOUND, once.second, once.first);
 }
 
-std::unordered_map<std::string, std::string> Core::getMusicList() const
+std::unordered_map<std::string, std::string> Core::getAudioList(
+    std::string const &varPathList, std::string const &varNameList) const
 {
-    std::vector<std::string> listMusicPath = CoreData::settings->getTabString("MUSIC_FILE_LIST_PATH");
-    std::vector<std::string> listMusicName = CoreData::settings->getTabString("MUSIC_FILE_LIST_NAME");
+    std::vector<std::string> listAudioPath = CoreData::settings->getTabString(varPathList);
+    std::vector<std::string> listAudioName = CoreData::settings->getTabString(varNameList);
     std::unordered_map<std::string, std::string>::iterator it;
-    std::unordered_map<std::string, std::string> listMusic;
+    std::unordered_map<std::string, std::string> listAudio;
 
-    if (listMusicPath.size() != listMusicName.size())
-        throw std::invalid_argument("MUSIC_FILE_LIST_PATH and MUSIC_FILE_LIST_NAME must have the same size");
-    for (size_t i = 0; i < listMusicPath.size(); i++) {
-        it = listMusic.find(listMusicName[i]);
-        if (it != listMusic.end())
-            throw std::invalid_argument("MUSIC_FILE_LIST_NAME : all member must be different");
-        listMusic[listMusicName[i]] = listMusicPath[i];
+    if (listAudioPath.size() != listAudioName.size())
+        throw std::invalid_argument("Core::getAudioList List name and path must have the same size");
+    for (size_t i = 0; i < listAudioPath.size(); i++) {
+        it = listAudio.find(listAudioName[i]);
+        if (it != listAudio.end())
+            throw std::invalid_argument("Core::getAudioList : members must be different");
+        listAudio[listAudioName[i]] = listAudioPath[i];
     }
-    return listMusic;
+    return listAudio;
+}
+
+bool Core::isEndPreload()
+{
+    if (this->_preloadStatus)
+        return true;
+    if (this->_preloadModel.isFinish() && this->_preloadTexture.isFinish()) {
+        this->_preloadStatus = true;
+        this->loadMusic();
+        this->runAfterPreload();
+    }
+    return false;
+}
+
+void Core::runPreload()
+{
+    if (!this->_preloadModel.isFinish())
+        this->_preloadModel.nextLoad();
+    else if (!this->_preloadTexture.isFinish())
+        this->_preloadTexture.nextLoad();
+}
+
+void Core::runAfterPreload()
+{
+    SceneLoader::setScene<MainMenuScene>();
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+}
+
+void Core::printDuringPreload()
+{
+    size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
+
+    std::cout << "loading: " << value << "%" << std::endl;
 }

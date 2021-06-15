@@ -8,6 +8,7 @@
 #include "ButtonFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/CoreData/CoreData.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
 
 using namespace GUI;
 
@@ -72,16 +73,20 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(my_size, raylib::MyVector2(50, 50));
     const auto entity = pack.createEntity(name);
+
     auto my_label(std::make_shared<raylib::Text>(label,
         my_position,
         conf.fontSize,
         conf.fontColor,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
+
+    raylib::Text::setFontSize(*my_label, conf.size - 20);
     auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
     my_label->setPosition(my_labelPosition);
-    Component::render2dMapModels my_models({{"label", my_label},
+    Component::render2dMapModels my_models({
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
         {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
+        {"label", my_label},
         /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
         /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
 

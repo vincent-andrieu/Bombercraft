@@ -33,9 +33,10 @@ set(SRCS
         src/Game/Factories/Sound/AudioFactory.cpp
         src/Game/Factories/KeyManagementFactory/KeyManagementFactory.cpp
         ## TMP
-        src/Game/Factories/Map/Component/DataMatrix/DataMatrix.cpp
-        src/Game/Factories/Map/Component/Matrix2D.cpp
+        src/Components/Matrix2D/DataMatrix/DataMatrix.cpp
+        src/Components/Matrix2D/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
+        src/Game/Factories/Character/CharacterFactory.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
@@ -66,6 +67,7 @@ set(SRCS
         src/Components/PlayerConfig/PlayerConfig.cpp
         src/Components/Option/OptionComponent.cpp
         src/Components/PlayerInventory/PlayerInventory.cpp
+        src/Components/ModelList/ModelList.cpp
         # SYSTEMS
         src/Systems/Render2D/Render2DSystem.cpp
         src/Systems/Render3D/Render3DSystem.cpp
@@ -73,6 +75,7 @@ set(SRCS
         src/Systems/Audio/AudioSystem.cpp
         src/Systems/Physics/PhysicsSystem.cpp
         src/Systems/PlayerConfig/PlayerConfigSystem.cpp
+        src/Systems/ModelList/ModelListSystem.cpp
         # SCENES
         src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
@@ -88,6 +91,7 @@ set(SRCS
         src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
         src/Scenes/EndGame/EndGameScene.cpp
         src/Scenes/CreditScene/CreditScene.cpp
+        src/Scenes/RessourcePackMenu/RessourcePackMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

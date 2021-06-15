@@ -194,6 +194,7 @@ void DebugScene::update()
     auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
     auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
     auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+    auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
 
     float dt = 1.0f / 10.0f;
     physics.update(dt);
@@ -201,6 +202,7 @@ void DebugScene::update()
     render2D.update();
     hitbox.update();
     timer.update();
+    audio.update();
     this->eventDispatcher(this->_systemManager);
     // METHOD FOR GETTING VALUE OF PROMPT
     // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
