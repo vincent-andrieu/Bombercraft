@@ -47,7 +47,7 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     std::vector<std::string> subFilenames = {};
     int count = 0;
     int subCount = 0;
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
 
     if (DirectoryExists(texturePath.data())) {
         filenames = goInDirectoryAndGetFileNames(texturePath, &count);
@@ -194,10 +194,6 @@ void raylib::Animation::setPath(const string &path)
 
 void raylib::Animation::setTexture(const std::string &texturePath)
 {
-    char **filenames = nullptr;
-    int count = 0;
-    const char *workingDirectory = GetWorkingDirectory();
-
     if (texturePath.compare("") != 0) {
         this->_texturePath = texturePath;
         getNewTexture(texturePath);

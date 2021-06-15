@@ -11,7 +11,7 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
     : _path(path), _position(position), _color(color), _currentFrame(0), _textures({}),
       _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true)
 {
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
     std::vector<std::string> vectorOfFilenames = {};
@@ -36,7 +36,7 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
             }
         }
         ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory);
+        ChangeDirectory(workingDirectory.data());
     }
 }
 
@@ -85,7 +85,7 @@ void raylib::TextureSequence::setColor(const RColor color)
 
 void raylib::TextureSequence::setPath(const string &path)
 {
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
 
@@ -102,7 +102,7 @@ void raylib::TextureSequence::setPath(const string &path)
             _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
         }
         ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory);
+        ChangeDirectory(workingDirectory.data());
     }
 }
 
