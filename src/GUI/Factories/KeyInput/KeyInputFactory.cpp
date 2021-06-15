@@ -209,15 +209,24 @@ const std::map<raylib::KeyBoard, string> KeyInputFactory::keyToStr = {
     {raylib::KeyBoard::IKEY_KP_EQUAL, "KP EQUAL"},
 };
 
-static Component::eventScript focusHandler = [](const Engine::Entity entityChild) {
-    raylib::Rectangle *rectActual = dynamic_cast<raylib::Rectangle *>(
-        Game::CoreData::entityManager->getComponent<Component::Render2D>(entityChild).get("rectangle").get());
+static Component::eventScript focusHandler = [](const Engine::Entity keyEntity) {
+    raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
+        Game::CoreData::entityManager->getComponent<Component::Render2D>(keyEntity).get("rectangle").get());
 
-    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
-        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
-            focusEvent.changeFocus(false);
-        });
-        Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(entityChild).changeFocus(true);
+    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getRect())) {
+        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>(
+            [keyEntity](Component::ClickFocusEvent &focusEvent) {
+                focusEvent.changeFocus(false);
+
+                const Engine::Entity &entity = Game::CoreData::entityManager->getOwner<Component::ClickFocusEvent>(focusEvent);
+                if (entity != keyEntity && Game::CoreData::entityManager->hasComponent<Component::Render2D>(entity)) {
+                    raylib::Texture *rect = dynamic_cast<raylib::Texture *>(
+                        Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("rectangle").get());
+                    rect->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
+                }
+            });
+        Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(keyEntity).changeFocus(true);
+        rectActual->setPath(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"));
     }
 };
 
@@ -229,16 +238,15 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 {
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + keyInput.textPositionOffset;
-    raylib::MyVector2 inputPosition(dynConf.position.a + keyInput.borderSize, dynConf.position.b + keyInput.borderSize);
-    raylib::MyVector2 inputSize(keyInput.size.a - keyInput.borderSize * 2, keyInput.size.b - keyInput.borderSize * 2);
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
+            {"rectangle",
+                std::make_shared<raylib::Texture>(
+                    Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), keyInput.size, dynConf.position)},
             {"text",
                 std::make_shared<raylib::Text>(
                     keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
-            {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
-            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
         }));
 
     const Component::eventScript inputHandler = [keyInputHandler](const Engine::Entity &childEntity) {
@@ -263,7 +271,7 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 
 KeyInputConfig KeyInputFactory::getStandardConfig()
 {
-    const KeyInputConfig t = {
-        raylib::MyVector2(195, 40), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, raylib::MyVector2(5, 4)};
-    return t;
+    const KeyInputConfig config = {raylib::MyVector2(195, 40), raylib::RColor::RBLACK, raylib::MyVector2(5, 4)};
+
+    return config;
 }

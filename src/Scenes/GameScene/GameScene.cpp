@@ -9,8 +9,9 @@
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
-#include "../../Game/CoreData/CoreData.hpp"
+#include "Game/CoreData/CoreData.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
+#include "Components/Option/OptionComponent.hpp"
 
 using namespace Game;
 
@@ -58,17 +59,19 @@ void GameScene::open()
             inventoryNames[i]);
     }
     /// Chrono
-    raylib::MyVector2 countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
+    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
     GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
         handlerGameTimeout);
     /// MAP
-    GUI::MapFactory::create(this->localEntities, "gameMap");
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    const string &ressourcePackRoot =
+        CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
+    std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
+    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
-    // Temporary, replace by : CoreData::setCamera..(position, target)
-    CoreData::camera->setPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
-    CoreData::camera->setTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
+    CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
 
@@ -85,9 +88,11 @@ void GameScene::update()
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
     auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
     auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
 
     render3D.update();
     render2D.update();
     timer.update();
+    audio.update();
     this->eventDispatcher(this->_systemManager);
 }

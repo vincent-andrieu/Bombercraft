@@ -6,6 +6,8 @@
 */
 
 #include "OptionComponent.hpp"
-Component::OptionComponent::OptionComponent(float volume) : volume(volume)
+
+Component::OptionComponent::OptionComponent(float volume, const std::string &ressourcePack)
+    : volume(volume), ressourcePack(ressourcePack)
 {
 }

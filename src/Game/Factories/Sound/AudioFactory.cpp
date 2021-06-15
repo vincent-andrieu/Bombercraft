@@ -32,8 +32,13 @@ void AudioFactory::create(Engine::EntityPack &entityPack,
     } else {
         entity = entityPack.createEntity(name);
     }
-    CoreData::entityManager->addComponent<Component::Sound>(
+    if (isMusic) {
+        CoreData::entityManager->addComponent<Component::Sound>(
+        entity, std::make_shared<raylib::Music>(filePath, config.volume, config.pitch), isMusic);
+    } else {
+        CoreData::entityManager->addComponent<Component::Sound>(
         entity, std::make_shared<raylib::Sound>(filePath, config.volume, config.pitch), isMusic);
+    }
 }
 
 void AudioFactory::create(Engine::EntityPack &entityPack, AudioType type, std::string const &filePath, std::string const &name)

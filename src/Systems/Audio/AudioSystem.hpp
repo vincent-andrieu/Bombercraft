@@ -29,6 +29,7 @@ namespace System
 
         void stopAll();
         void stopMusic();
+        void update();
     };
 } // namespace System
 
