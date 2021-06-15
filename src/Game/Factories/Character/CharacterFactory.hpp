@@ -36,6 +36,7 @@ namespace Game
          * DELTA    : BOTTOM RIGHT
          */
         static raylib::MyVector3 getPlayerPosition(Component::PlayerID id, Component::Matrix2D &map);
+        static raylib::MyVector2 getInventoryPosition(Component::PlayerID id);
 
         static Engine::Entity createPlayer(Engine::Entity entity, Component::PlayerConfig &config);
     };

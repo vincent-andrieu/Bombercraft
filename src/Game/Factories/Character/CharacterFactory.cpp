@@ -11,15 +11,16 @@
 #include "Components/Hitbox/Hitbox.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
+#include "GUI/Factories/Inventory/InventoryFactory.hpp"
 
 using namespace Game;
 
 extern std::unique_ptr<Core> core;
 
 static const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME({{Component::ALPHA, "TL_ALPHA"},
-                                                                                     {Component::BRAVO, "TR_BRAVO"},
-                                                                                     {Component::DELTA, "BL_DELTA"},
-                                                                                     {Component::CHARLIE, "BR_CHARLIE"}});
+    {Component::BRAVO, "TR_BRAVO"},
+    {Component::DELTA, "BL_DELTA"},
+    {Component::CHARLIE, "BR_CHARLIE"}});
 
 static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
 {
@@ -40,16 +41,19 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
         auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
         audioSys.play("Death", core->globalEntities);
         /// Set Timer => remove entity
-        CoreData::entityManager->addComponent<Engine::Timer>(character, CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"), *CoreData::entityManager, *CoreData::sceneManager,
+        CoreData::entityManager->addComponent<Engine::Timer>(character,
+            CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"),
+            *CoreData::entityManager,
+            *CoreData::sceneManager,
             [id](Engine::EntityManager &, Engine::SceneManager &sm, const Engine::Entity) {
                 auto scene = sm.getCurrentScene();
                 auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
-                  return pair.first == id;
+                    return pair.first == id;
                 });
                 if (it_name != PLAYER_ID_TO_NAME.end()) {
                     scene->localEntities.removeEntity(it_name->second);
                 }
-        });
+            });
         render.select("death"); /// Play animation => Death
     } else if (type == EntityType::POWERUP) {
         /// Note : bonus are given by the power-up collision handlers
@@ -62,7 +66,6 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
 
 static void handlerKeyEvent(const Engine::Entity)
 {
-    // TODO
 }
 
 Engine::Entity Game::CharacterFactory::create(
@@ -84,13 +87,24 @@ Engine::Entity Game::CharacterFactory::create(
     }
     entity = pack.createEntity(it_name->second);
     characterPos = CharacterFactory::getPlayerPosition(id, map);
+    /// Inventory
+    const std::vector<std::string> texturesPath = CoreData::settings->getTabString("INVENTORY_TEXTURE");
+    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    raylib::MyVector2 inventoryPosition = CharacterFactory::getInventoryPosition(id);
+    GUI::InventoryFactory::create(entity,
+        inventoryPosition,
+        {windowSize.a / 15, windowSize.a / 15},
+        texturesPath,
+        GUI::LabelFactory::getStandardLabelConfig(20),
+        id,
+        pack,
+        config);
     /// Render3D
     const std::string &texturePath = config.getSkinPath();
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     std::cerr << "TEXTURE: " << texturePath << " Model: " << modelPath << std::endl;
     CoreData::entityManager->addComponent<Component::ModelList>(entity,
-        Component::ModelListMap({
-            {"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos)},
+        Component::ModelListMap({{"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos)},
             {"death",
                 std::make_shared<raylib::Animation>(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
@@ -106,12 +120,13 @@ Engine::Entity Game::CharacterFactory::create(
     modelList.setPosition(characterPos + CoreData::settings->getMyVector3("CHARACTER_POS_SHIFT"));
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
     /// Inventory
-    CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info);
+    CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
     raylib::MyVector3 blockSize = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     raylib::MyVector3 hitboxSize(blockSize.a, blockSize.b, blockSize.c * 2);
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
+    /// Specific
     if (isAI) {
         // TODO
     } else {
@@ -145,4 +160,17 @@ Engine::Entity CharacterFactory::createPlayer(Engine::Entity entity, Component::
 
     CoreData::entityManager->addComponent<Component::KeyEvent>(entity, handlerKeyEvent, requirements);
     return entity;
+}
+
+raylib::MyVector2 CharacterFactory::getInventoryPosition(Component::PlayerID id)
+{
+    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    switch (id) {
+        case Component::PlayerID::ALPHA: return raylib::MyVector2(0, 0);
+        case Component::PlayerID::BRAVO: return raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, 0);
+        case Component::PlayerID::DELTA: return raylib::MyVector2(0, windowSize.b - (windowSize.a / 15));
+        case Component::PlayerID::CHARLIE:
+            return raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, windowSize.b - (windowSize.a / 15));
+        default: throw std::invalid_argument("CharacterFactory::getPlayerPosition Unknown PlayerID.");
+    }
 }
