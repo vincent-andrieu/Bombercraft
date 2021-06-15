@@ -102,10 +102,12 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 
 void Core::loop()
 {
+    const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
     // DEBUG - END
     SceneLoader::setScene<MainMenuScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
     CoreData::_window->setExitKey();
+    CoreData::_window->setWindowIcon(iconPath);
     while (CoreData::_window->isOpen() && this->_loop == true) {
         CoreData::_window->clear();
         CoreData::sceneManager->run();
