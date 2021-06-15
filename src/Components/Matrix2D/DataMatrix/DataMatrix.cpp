@@ -57,3 +57,7 @@ const std::pair<Engine::Entity, GUI::BlockFactory::BlockType> &DataMatrix::getBo
         throw std::out_of_range("Invalide pos");
     return this->_matrix[pos.second][pos.first];
 }
+raylib::MyVector2 DataMatrix::getSize() const
+{
+    return raylib::MyVector2(_size.first, _size.second);
+}

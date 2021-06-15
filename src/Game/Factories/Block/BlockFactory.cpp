@@ -6,6 +6,7 @@
 */
 
 #include "BlockFactory.hpp"
+#include "EntityType.hpp"
 
 using namespace GUI;
 
@@ -82,12 +83,12 @@ void BlockFactory::internalFactory(
 
 void BlockFactory::softFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::SOFTBLOCK);
 }
 
 void BlockFactory::hardFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::HARDBLOCK);
 }
 
 void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -96,7 +97,7 @@ void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVec
 
     if (bombCountdown < 0)
         bombCountdown = 0;
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBombTimer);
 }
@@ -109,7 +110,7 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
         blastTime = 0;
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity, Game::EntityType::BLAST);
 }
 
 void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -119,22 +120,22 @@ void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::
 
 void BlockFactory::boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerBoomUp);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerBoomUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::fireUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerFireUp);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerFireUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::speedUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerSpeedUp);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerSpeedUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::wallPassBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerWallPass);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerWallPass, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::handlerBlastTimer(

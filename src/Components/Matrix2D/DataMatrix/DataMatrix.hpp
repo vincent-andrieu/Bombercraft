@@ -10,6 +10,7 @@
 
 #include "EntityPack/EntityPack.hpp"
 #include "Game/Factories/Block/BlockFactory.hpp"
+#include "raylib.hpp"
 
 class DataMatrix
 {
@@ -20,6 +21,8 @@ class DataMatrix
         Engine::Entity getEntity(std::pair<size_t, size_t> pos) const;
         GUI::BlockFactory::BlockType getCategory(std::pair<size_t, size_t> pos) const;
         const std::pair<Engine::Entity, GUI::BlockFactory::BlockType> &getBoth(std::pair<size_t, size_t> pos) const;
+
+        raylib::MyVector2 getSize() const;
 
     private:
         std::pair<size_t, size_t> _size;

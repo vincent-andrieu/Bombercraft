@@ -22,19 +22,16 @@ template <typename K, typename E> std::vector<K> unordered_mapToVector(const std
 void Game::KeyManagementFactory::create(
     Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript> &keyTriggers)
 {
-    static std::vector<Game::EventRequirement> my_requirements;
     const auto my_entity(pack.createAnonymousEntity());
     std::vector<raylib::KeyBoard> my_keys(unordered_mapToVector(keyTriggers));
+    Game::EventRequirement my_requirements(my_keys, std::vector<raylib::KeyBoard>());
 
-    my_requirements.emplace_back(my_keys, std::vector<raylib::KeyBoard>());
     auto my_eventHandler([keyTriggers](Engine::Entity entity) {
         for (const auto &keyTrigger : keyTriggers) {
-            std::cout << "hello" << std::endl;
-            std::cout << (uint) keyTrigger.first << std::endl;
             if (keyTrigger.first != raylib::KeyBoard::IKEY_NULL && Game::CoreData::eventManager->isKeyPressed(keyTrigger.first))
                 keyTrigger.second(entity);
         }
     });
 
-    Game::CoreData::entityManager->addComponent<Component::KeyEvent>(my_entity, my_eventHandler, my_requirements.back());
+    Game::CoreData::entityManager->addComponent<Component::KeyEvent>(my_entity, my_eventHandler, my_requirements);
 }
