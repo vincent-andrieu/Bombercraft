@@ -53,7 +53,7 @@ namespace GUI
 
         static void create(Engine::EntityPack &pack,
             raylib::MyVector2 position,
-            float width,
+            raylib::MyVector2 size,
             std::string const &label,
             LabelConfig const &config,
             const std::string &name = "");
@@ -66,13 +66,10 @@ namespace GUI
 
         static void createCentered(Engine::EntityPack &pack,
             raylib::MyVector2 position,
-            float width,
+            raylib::MyVector2 size,
             std::string const &label,
             LabelConfig const &config,
             const std::string &name = "");
-
-      protected:
-      private:
     };
 } // namespace GUI
 
