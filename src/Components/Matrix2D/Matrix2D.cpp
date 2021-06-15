@@ -29,3 +29,11 @@ raylib::MyVector3 Matrix2D::getPositionAbs(size_t posx, size_t posy)
 
     return raylib::MyVector3(posx / size.a, posy / size.b, 0 / size.c);
 }
+
+raylib::MyVector2 Matrix2D::getMapSize() const
+{
+    if (_data) {
+        throw std::runtime_error("Matrix2D::getMapSize, map uninitialised.");
+    }
+    return _data->getSize();
+}
