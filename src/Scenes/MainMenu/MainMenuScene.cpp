@@ -18,7 +18,6 @@ MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
 
 void MainMenuScene::open()
 {
-    auto scene = CoreData::sceneManager->getCurrentScene();
     const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
     const size_t fontSize = (size_t) Game::CoreData::settings->getInt("SUB_FONT_SIZE");
     const std::string bottomLeftText = Game::CoreData::settings->getString("HOME_BOTTOM_LEFT_TXT");
@@ -39,7 +38,7 @@ void MainMenuScene::open()
 
     // BACKGROUND
     raylib::MyVector2 logoSize(my_utility.getProportion({70, 15}));
-    GUI::ImageFactory::create(scene->localEntities,
+    GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
         Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE"),
         Game::CoreData::settings->getString("HOME_BACKGROUND"),
@@ -81,28 +80,27 @@ void MainMenuScene::open()
         });
 
     // GAME LOGO
-    GUI::ImageFactory::create(scene->localEntities,
+    GUI::ImageFactory::create(this->localEntities,
         my_utility.getProportion({50, 20}, logoSize, {50, 50}),
         logoSize,
         Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"),
         true);
 
     // BUTTON
-    GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
+    GUI::ButtonFactory::create(this->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<NewGameMenuScene>();
     });
+    GUI::ButtonFactory::create(this->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
+        CoreData::sceneManager->setScene<CreditScene>();
+    });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<CreditScene>();
-        });
-    GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
+        this->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(
-        scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
+        this->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
             CoreData::quit();
         });
 
@@ -111,14 +109,11 @@ void MainMenuScene::open()
     raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
     raylib::MyVector2 splashPos(my_utility.getProportion({70, 30}));
     GUI::LabelFactory::create(
-        scene->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
-    GUI::LabelFactory::create(scene->localEntities,
-        bottomRightPos,
-        bottomRightText,
-        GUI::LabelFactory::getStandardLabelConfig(fontSize),
-        "bottomright");
+        this->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
+    GUI::LabelFactory::create(
+        this->localEntities, bottomRightPos, bottomRightText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomright");
     // CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
-    GUI::LabelFactory::create(scene->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
+    GUI::LabelFactory::create(this->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
     Engine::Entity splashTxt = localEntities.getEntity("splash");
     CoreData::entityManager->addComponent<Engine::Timer>(splashTxt,
         0.07,
@@ -147,7 +142,7 @@ void MainMenuScene::open()
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::quit();
     }));
-    Game::KeyManagementFactory::create(scene->localEntities, my_keyTriggers);
+    Game::KeyManagementFactory::create(this->localEntities, my_keyTriggers);
 }
 
 void Game::MainMenuScene::update()
