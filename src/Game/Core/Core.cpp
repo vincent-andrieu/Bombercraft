@@ -21,7 +21,26 @@
 
 using namespace Game;
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
+const Texture2D &loadTexture(const std::string &toLoad)
+{
+    return raylib::Texture::_loaderManager->load(toLoad);
+}
+
+const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
+{
+    return raylib::Model::_loaderManager->load(toLoad);
+}
+
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
+_preloadTexture(loadTexture, {
+    "Asset/Interface/Button.png",
+    "Asset/Interface/HoverButton.png",
+    "Asset/Interface/Button.png",
+    "Asset/Interface/UnavailableButton.png",
+}),
+_preloadModel(loadModel, {
+    {}
+})
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Matrix2D>();
@@ -101,7 +120,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
         });
     CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // MUSIC
-    this->loadMusic();
+    //this->loadMusic();
 }
 
 void Core::loop()
@@ -114,7 +133,11 @@ void Core::loop()
     CoreData::window->setWindowIcon(iconPath);
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
-        CoreData::sceneManager->run();
+        if (!this->isEndPreload()) {
+            this->runPreload();
+        } else {
+            CoreData::sceneManager->run();
+        }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
     }
@@ -145,4 +168,23 @@ std::unordered_map<std::string, std::string> Core::getMusicList() const
         listMusic[listMusicName[i]] = listMusicPath[i];
     }
     return listMusic;
+}
+
+bool Core::isEndPreload()
+{
+    if (this->_preloadStatus)
+        return true;
+    if (this->_preloadModel.isFinish() && this->_preloadTexture.isFinish()) {
+        this->_preloadStatus = true;
+        this->loadMusic();
+    }
+    return false;
+}
+
+void Core::runPreload()
+{
+    if (!this->_preloadModel.isFinish())
+        this->_preloadModel.nextLoad();
+    else if (!this->_preloadTexture.isFinish())
+        this->_preloadTexture.nextLoad();
 }
