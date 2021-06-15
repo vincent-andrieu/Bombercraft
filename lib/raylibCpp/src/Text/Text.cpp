@@ -111,3 +111,8 @@ size_t raylib::Text::getFontSize() const
 {
     return this->_size;
 }
+
+raylib::MyVector2 raylib::Text::getPosition() const
+{
+    return this->_position;
+}

@@ -31,6 +31,7 @@ set(SRCS
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
         src/Game/Factories/Sound/AudioFactory.cpp
+        src/Game/Factories/KeyManagementFactory/KeyManagementFactory.cpp
         ## TMP
         src/Components/Matrix2D/DataMatrix/DataMatrix.cpp
         src/Components/Matrix2D/Matrix2D.cpp
@@ -84,6 +85,9 @@ set(SRCS
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         src/Scenes/GameScene/GameScene.cpp
         src/Scenes/SoundOption/SoundOptionScene.cpp
+        src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
+        src/Scenes/EndGame/EndGameScene.cpp
+        src/Scenes/CreditScene/CreditScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION
@@ -91,7 +95,7 @@ set(SRCS
         # UTILITIES
         src/Utilities/utilities.cpp
         src/Utilities/ProportionUtilities.hpp
-    )
+        )
 
 add_executable(${NAME} ${SRCS})
 

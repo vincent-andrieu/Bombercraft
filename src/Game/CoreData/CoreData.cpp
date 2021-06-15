@@ -16,17 +16,17 @@ std::shared_ptr<Engine::SceneManager> CoreData::sceneManager = nullptr;
 std::shared_ptr<raylib::Input> CoreData::eventManager = nullptr;
 std::unique_ptr<ConfigFile> CoreData::settings = nullptr;
 
-std::unique_ptr<raylib::Window> CoreData::_window = nullptr;
+std::unique_ptr<raylib::Window> CoreData::window = nullptr;
 bool CoreData::_loop = true;
 
 CoreData::CoreData()
 {
     CoreData::settings = std::make_unique<ConfigFile>(CONFIG_FILE);
-    CoreData::_window = std::make_unique<raylib::Window>(CoreData::settings->getMyVector2("WIN_SIZE"),
+    CoreData::window = std::make_unique<raylib::Window>(CoreData::settings->getMyVector2("WIN_SIZE"),
         CoreData::settings->getString("WIN_TITLE"),
         static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
 
-    CoreData::_window->open();
+    CoreData::window->open();
     if (CoreData::systemManager == nullptr)
         CoreData::systemManager = std::make_unique<Engine::SystemManager>();
     if (CoreData::entityManager == nullptr)
@@ -58,7 +58,7 @@ CoreData::~CoreData()
     raylib::Font::_loaderManager.reset();
     raylib::Model::_loaderManager.reset();
     raylib::Texture::_loaderManager.reset();
-    CoreData::_window->close();
+    CoreData::window->close();
 }
 
 void CoreData::moveCamera(const raylib::MyVector3 &position, const raylib::MyVector3 &target)

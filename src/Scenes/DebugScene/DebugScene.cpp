@@ -189,27 +189,22 @@ void DebugScene::open()
 
 void DebugScene::update()
 {
-    try {
-        auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
-        auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
-        auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
-        auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+    auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+    auto physics = this->_systemManager.getSystem<System::PhysicsSystem>();
+    auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto render3D = this->_systemManager.getSystem<System::Render3DSystem>();
+    auto hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
 
-        float dt = 1.0f / 10.0f;
-        physics.update(dt);
-        render3D.update();
-        render2D.update();
-        hitbox.update();
-        timer.update();
-        this->eventDispatcher(this->_systemManager);
-        // METHOD FOR GETTING VALUE OF PROMPT
-        // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
-        // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
-        // METHOD FOR GETTING VALUE OF KEYINPUT
-        // std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
-    }
+    float dt = 1.0f / 10.0f;
+    physics.update(dt);
+    render3D.update();
+    render2D.update();
+    hitbox.update();
+    timer.update();
+    this->eventDispatcher(this->_systemManager);
+    // METHOD FOR GETTING VALUE OF PROMPT
+    // std::cout << getPromptContent(this->localEntities, "input1") << std::endl;
+    // std::cout << getPromptContent(this->localEntities, "input2") << std::endl;
+    // METHOD FOR GETTING VALUE OF KEYINPUT
+    // std::cout << (int)getKeyInputContent(this->localEntities, "keyinput1") << std::endl;
 }

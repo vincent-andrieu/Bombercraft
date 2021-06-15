@@ -16,6 +16,7 @@
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 
@@ -30,7 +31,6 @@ const std::vector<string> SKINS{
     "Asset/Skin/Pure_Green.png",
     "Asset/Skin/Rebel_Black.png",
     "Asset/Skin/Revenge_Red.png",
-    "Asset/Skin/Simple_Steve.png",
 };
 
 static void previousHandler(Engine::Entity const)
@@ -66,7 +66,6 @@ static void rotateHandler(Engine::EntityManager &em, Engine::SceneManager &, con
 
 static void cancelHandler(UNUSED const Engine::Entity &entity)
 {
-
     Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
 }
 
@@ -84,7 +83,8 @@ void Game::SkinChoiceScene::open()
     const GUI::ButtonConfig &smallButtonConfig = GUI::ButtonFactory::getSmallButtonConfig();
     const GUI::ButtonConfig &mediumButtonConfig = GUI::ButtonFactory::getMediumButtonConfig();
 
-    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/skinchoice.png", true);
+    GUI::ImageFactory::create(
+        this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/SkinChoiceBackground.png", true);
     // Change player button
     this->_selectedPlayer =
         &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(Component::PlayerID::ALPHA);
@@ -133,6 +133,13 @@ void Game::SkinChoiceScene::open()
     CoreData::entityManager->addComponent<Component::StringChoice>(skin, std::vector<string>(SKINS));
     CoreData::entityManager->addComponent<Engine::Timer>(
         skin, 0.005f, *CoreData::entityManager, *CoreData::sceneManager, rotateHandler);
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void Game::SkinChoiceScene::update()

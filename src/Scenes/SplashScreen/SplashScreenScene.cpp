@@ -38,15 +38,10 @@ void SplashScreenScene::open()
 
 void SplashScreenScene::update()
 {
-    try {
-        auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+    auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
 
-        render2D.update();
-        timer.update();
-        this->eventDispatcher(this->_systemManager);
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
-    }
+    render2D.update();
+    timer.update();
+    this->eventDispatcher(this->_systemManager);
 }

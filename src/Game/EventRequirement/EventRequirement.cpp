@@ -7,8 +7,6 @@
 
 #include "EventRequirement.hpp"
 
-#include <utility>
-
 Game::EventRequirement::EventRequirement(bool mouseMove) : _click(0), _mouseMoveEvent(mouseMove)
 {
 }

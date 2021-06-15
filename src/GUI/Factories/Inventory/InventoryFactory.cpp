@@ -44,19 +44,6 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
     }
 }
 
-GUI::LabelConfig GUI::InventoryFactory::getStandardLabelConfig(const int fontSize)
-{
-    size_t finalFontSize = 0;
-
-    if (fontSize == -1) {
-        finalFontSize = Game::CoreData::settings->getInt("STANDARD_FONT_SIZE");
-    } else {
-        finalFontSize = fontSize;
-    }
-    GUI::LabelConfig myStandard{finalFontSize, raylib::RColor::RWHITE, Game::CoreData::settings->getString("STANDARD_FONT")};
-    return myStandard;
-}
-
 Component::PlayerInventoryInfo GUI::InventoryFactory::getDefaultPlayerInventory()
 {
     Component::PlayerInventoryInfo myDefault{1, 1, false, 1};

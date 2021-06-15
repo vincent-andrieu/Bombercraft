@@ -10,6 +10,7 @@
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
+#include "Scenes/CreditScene/CreditScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
@@ -70,6 +71,9 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<PauseMenuScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<GameScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SoundOptionScene>();
+    CoreData::sceneManager->createScene<NewGameMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<EndGameScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<CreditScene>((*CoreData::systemManager));
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
@@ -102,13 +106,16 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
 
 void Core::loop()
 {
+    const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
     // DEBUG - END
     SceneLoader::setScene<MainMenuScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
-    while (CoreData::_window->isOpen() && this->_loop == true) {
-        CoreData::_window->clear();
+    CoreData::window->setExitKey();
+    CoreData::window->setWindowIcon(iconPath);
+    while (CoreData::window->isOpen() && this->_loop == true) {
+        CoreData::window->clear();
         CoreData::sceneManager->run();
-        CoreData::_window->refresh();
+        CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
     }
 }

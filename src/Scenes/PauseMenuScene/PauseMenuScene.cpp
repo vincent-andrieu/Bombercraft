@@ -16,11 +16,17 @@ Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
+static void goGameScene(const Engine::Entity)
+{
+    Game::CoreData::sceneManager->setScene<Game::GameScene>();
+}
+
 void Game::PauseMenuScene::open()
 {
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
     auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
+    //    GUI::ImageFactory::create();
 
     GUI::LabelFactory::createCentered(localEntities,
         my_utility.getProportion(raylib::MyVector2(50, 20)),
@@ -32,16 +38,15 @@ void Game::PauseMenuScene::open()
         my_buttonNamePrefix + "continue",
         my_buttonConfig,
         "Back to Game",
-        [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<Game::GameScene>();
-        });
+        goGameScene);
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 60}, my_buttonConfig.size),
         my_buttonNamePrefix + "options",
         my_buttonConfig,
         "Options...",
         [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<Game::OptionsMenuScene>();
+            CoreData::sceneManager->pushLastScene();
+            CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 70}, my_buttonConfig.size),
@@ -51,17 +56,16 @@ void Game::PauseMenuScene::open()
         [](const Engine::Entity) {
             CoreData::sceneManager->setScene<Game::MainMenuScene>();
         });
+
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, goGameScene));
+    Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void Game::PauseMenuScene::update()
 {
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
 
-    try {
-        render2D.update();
-        this->eventDispatcher(this->_systemManager);
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
-    }
+    render2D.update();
+    this->eventDispatcher(this->_systemManager);
 }

@@ -29,6 +29,11 @@ namespace raylib
         virtual void setTitle(const string &title) = 0;
         virtual void setCamera(const std::shared_ptr<ICamera> &camera) = 0;
         virtual void setFPS(const int fps) = 0;
+        virtual void setExitKey(int key) = 0;
+        virtual void setWindowIcon(const std::string &iconPath) = 0;
+
+        virtual void openURL(const std::string &url) const = 0;
+        virtual void takeScreenshot(const std::string &fileName) const = 0;
 
         virtual std::shared_ptr<ICamera> getCamera() const = 0;
 

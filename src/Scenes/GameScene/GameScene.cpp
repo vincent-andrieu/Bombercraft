@@ -26,7 +26,8 @@ static const std::vector<std::string> inventoryNames = {
 static void handlerGameTimeout()
 {
     std::cout << "TIMEOUT - GAME OVER\n";
-    // CoreData::sceneManager->setScene<GameOverScene>();
+    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+    CoreData::sceneManager->setScene<EndGameScene>();
 }
 
 GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
@@ -46,18 +47,13 @@ void GameScene::open()
     size_t nbPlayer = 3;
     ProportionUtilities proportion(windowSize);
 
-    /// Background
-    //    auto background = this->localEntities.createEntity("GameBackground");
-    //    CoreData::entityManager->addComponent<Component::Render2D>(background,
-    //        Component::render2dMapModels({{"GameBackgroundRectangle",
-    //            std::make_shared<raylib::Rectangle>(raylib::MyVector2(0, 0), windowSize, raylib::RColor::RPURPLE)}}));
     /// Inventory
     for (size_t i = 0; i < nbPlayer; i++) {
         GUI::InventoryFactory::create(this->localEntities,
             inventoryPosition[i],
             {windowSize.a / 15, windowSize.a / 15},
             texturesPath,
-            GUI::InventoryFactory::getStandardLabelConfig(20),
+            GUI::LabelFactory::getStandardLabelConfig(20),
             ids[i],
             inventoryNames[i]);
     }
@@ -75,21 +71,23 @@ void GameScene::open()
     CoreData::camera->setTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
+
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->pushLastScene();
+        CoreData::sceneManager->setScene<PauseMenuScene>();
+    }));
+    Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void GameScene::update()
 {
-    try {
-        auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
-        auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+    auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
+    auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
 
-        render3D.update();
-        render2D.update();
-        timer.update();
-        this->eventDispatcher(this->_systemManager);
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
-    }
+    render3D.update();
+    render2D.update();
+    timer.update();
+    this->eventDispatcher(this->_systemManager);
 }

@@ -7,9 +7,7 @@
 
 #include "Const.hpp"
 
-const std::map<raylib::RColor, Color> raylib::_matchingColors =
-{
-    {raylib::RColor::RLIGHTGRAY, LIGHTGRAY},
+const std::map<raylib::RColor, Color> raylib::_matchingColors = {{raylib::RColor::RLIGHTGRAY, LIGHTGRAY},
     {raylib::RColor::RGRAY, GRAY},
     {raylib::RColor::RDARKGRAY, DARKGRAY},
     {raylib::RColor::RYELLOW, YELLOW},
@@ -33,5 +31,5 @@ const std::map<raylib::RColor, Color> raylib::_matchingColors =
     {raylib::RColor::RWHITE, WHITE},
     {raylib::RColor::RBLACK, BLACK},
     {raylib::RColor::RBLANK, BLANK},
-    {raylib::RColor::RMAGENTA, MAGENTA}
-};
+    {raylib::RColor::RMAGENTA, MAGENTA},
+    {raylib::RColor::RSHADOW, CLITERAL(Color){0, 0, 0, 200}}};
