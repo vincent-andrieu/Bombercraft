@@ -37,6 +37,7 @@ namespace raylib
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
         [[nodiscard]] MyVector2 getRect() const;
+        [[nodiscard]] MyVector2 getPosition() const;
 
         void setLoaderManager();
         std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> getLoaderManager() const;

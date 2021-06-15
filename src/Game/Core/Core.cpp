@@ -10,6 +10,7 @@
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
+#include "Scenes/CreditScene/CreditScene.hpp"
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
@@ -71,6 +72,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<GameScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SoundOptionScene>();
     CoreData::sceneManager->createScene<NewGameMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<CreditScene>((*CoreData::systemManager));
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
