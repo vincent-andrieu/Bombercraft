@@ -48,7 +48,7 @@ void OptionsMenuScene::open()
         buttonPosition[0],
         "skin",
         bigButton,
-        "Skin Customization",
+        "Skin Customization...",
         [](const Engine::Entity) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<SkinChoiceScene>();
@@ -60,11 +60,10 @@ void OptionsMenuScene::open()
         buttonPosition[1],
         "music",
         bigButton,
-        "Music & Sounds",
+        "Music & Sounds...",
         [](const Engine::Entity) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<SoundOptionScene>();
-            std::cout << "Music & Sounds" << std::endl;
         },
         true);
     GUI::ButtonFactory::create(
