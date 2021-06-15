@@ -41,7 +41,8 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Options...",
         [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<Game::OptionsMenuScene>();
+            CoreData::sceneManager->pushLastScene();
+            CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 70}, my_buttonConfig.size),

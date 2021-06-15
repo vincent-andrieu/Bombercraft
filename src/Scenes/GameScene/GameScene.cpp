@@ -75,6 +75,13 @@ void GameScene::open()
     CoreData::camera->setTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
+
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->pushLastScene();
+        CoreData::sceneManager->setScene<PauseMenuScene>();
+    }));
+    Game::keyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void GameScene::update()

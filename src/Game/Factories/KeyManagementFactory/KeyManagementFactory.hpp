@@ -9,6 +9,7 @@
 #define BOMBERMAN_KEYMANAGEMENTFACTORY_HPP
 
 #include <unordered_map>
+#include <vector>
 
 #include "GameEngine.hpp"
 #include "raylib.hpp"
@@ -20,7 +21,7 @@ namespace Game
     class keyManagementFactory {
       public:
         virtual ~keyManagementFactory() = 0;
-        static void create(Engine::EntityPack &pack, std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTrigger);
+        static void create(Engine::EntityPack &pack, std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers);
     };
 } // namespace Game
 

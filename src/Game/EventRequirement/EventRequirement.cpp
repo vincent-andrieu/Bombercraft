@@ -42,6 +42,8 @@ bool Game::EventRequirement::triggerKey(raylib::Input &eventManager) const
 {
     if (!_handledKeyReleased.empty()) {
         for (const auto &key : _handledKeyReleased) {
+            std::cout << "key" << std::endl;
+            std::cout << int(key) << std::endl;
             if (eventManager.isKeyReleased(key)) {
                 return true;
             }
@@ -49,6 +51,8 @@ bool Game::EventRequirement::triggerKey(raylib::Input &eventManager) const
     }
     if (!_handledKeyPress.empty()) {
         for (const auto &key : _handledKeyPress) {
+            std::cout << "key" << std::endl;
+            std::cout << int(key) << std::endl;
             if (eventManager.isKeyPressed(key)) {
                 return true;
             }

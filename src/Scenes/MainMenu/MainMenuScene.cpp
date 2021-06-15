@@ -106,7 +106,6 @@ void MainMenuScene::open()
         scene->localEntities, buttonPosition[3], "quit", mediumButton, "Quit Game", [](const Engine::Entity) {
             CoreData::quit();
         });
-
     // TEXT
     raylib::MyVector2 bottomLeftPos(my_utility.getProportion({1, 95}));
     raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
@@ -142,6 +141,13 @@ void MainMenuScene::open()
                 grow = true;
             }
         });
+    //    KEYS
+
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::quit();
+    }));
+    Game::keyManagementFactory::create(scene->localEntities, my_keyTriggers);
 }
 
 void Game::MainMenuScene::update()

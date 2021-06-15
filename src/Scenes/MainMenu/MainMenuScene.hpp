@@ -23,6 +23,8 @@
 
 #include "GUI/Factories/Image/ImageFactory.hpp"
 #include "GUI/Factories/Button/ButtonFactory.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
+
 #include "Utilities/ProportionUtilities.hpp"
 
 #include "Systems/Render2D/Render2DSystem.hpp"
