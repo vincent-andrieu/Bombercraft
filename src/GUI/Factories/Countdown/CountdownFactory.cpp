@@ -53,9 +53,9 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
     raylib::MyVector2 textPos(position.a + 5, position.b + 5);
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{
-            {"timeText",
-                std::make_shared<GUI::TimeText>(entity, "00:00", textPos, config.fontSize, config.textColor, config.pathFont)},
-            {"texture", std::make_shared<raylib::Texture>(config.pathTexture, config.size, position)}});
+            {"texture", std::make_shared<raylib::Texture>(config.pathTexture, config.size, position)},
+            {"timeText", std::make_shared<GUI::TimeText>(entity, "00:00", textPos, config.fontSize, config.textColor, config.pathFont)},
+            });
     CoreData::entityManager->addComponent<Component::Chrono>(entity, (double) countdown,
         [handler](Engine::EntityManager &em, Engine::SceneManager &, const Engine::Entity entity) {
             handler();

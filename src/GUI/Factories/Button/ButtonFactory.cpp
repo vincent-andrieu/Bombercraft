@@ -79,9 +79,10 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
     auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
     my_label->setPosition(my_labelPosition);
-    Component::render2dMapModels my_models({{"label", my_label},
+    Component::render2dMapModels my_models({
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
         {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
+        {"label", my_label},
         /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
         /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
 

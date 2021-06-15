@@ -80,15 +80,19 @@ void GUI::InventoryFactory::create(Engine::EntityPack &entityPack,
         boxPosition.a += boxSize.a;
         itemPosition.a += boxSize.a;
     }
-    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels{{"inventoryBlastRadius", powerUp[3]},
-            {"inventoryBomb", powerUp[0]},
-            {"inventorySpeed", powerUp[1]},
-            {"inventoryWallPass", powerUp[2]},
+    Component::render2dMapModels my_models({
             {"inventoryCase1", cases[0]},
             {"inventoryCase2", cases[1]},
             {"inventoryCase3", cases[2]},
-            {"inventoryCase4", cases[3]}});
+            {"inventoryCase4", cases[3]},
+            {"inventoryBlastRadius", powerUp[3]},
+            {"inventoryBomb", powerUp[0]},
+            {"inventorySpeed", powerUp[1]},
+            {"inventoryWallPass", powerUp[2]},
+            });
+
+    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
+
     for (size_t i = 0; i < 4; i++) {
         GUI::LabelFactory::create(entityPack, valuePosition, defaultLabelValue[i], labelconfig, valueNames[i] + toString(id));
         valuePosition.a += boxSize.a;

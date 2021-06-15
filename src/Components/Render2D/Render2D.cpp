@@ -26,15 +26,9 @@ Render2D::Render2D(render2dMapModels const &models)
 
 void Render2D::draw()
 {
-    #ifdef __linux__
         for (auto &index : _modelsToDrawIndex) {
             _models.at(index)->draw();
         }
-    #elif _WIN32
-        for (auto it = _modelsToDrawIndex.rbegin(); it != _modelsToDrawIndex.rend();  it++ ) {
-            _models.at(*it)->draw();
-        }
-    #endif
 }
 
 void Render2D::add(std::shared_ptr<raylib::IRenderable> model, const std::string &label)
@@ -85,22 +79,14 @@ void Render2D::setToDrawFirst(const string &label)
 {
     const auto &my_index(_modelIndex.at(label));
 
-    #ifdef __linux__
-        _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
-    #elif _WIN32
-        _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
-    #endif
+    _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
 }
 
 void Render2D::setToDrawLast(const string &label)
 {
     const auto &my_index(_modelIndex.at(label));
 
-    #ifdef __linux__
-        _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
-    #elif _WIN32
-        _modelsToDrawIndex.insert(_modelsToDrawIndex.begin(), my_index);
-    #endif
+    _modelsToDrawIndex.insert(_modelsToDrawIndex.end(), my_index);
 }
 
 void Render2D::unsetToDraw(const string &label)

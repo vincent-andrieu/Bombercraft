@@ -63,7 +63,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
 
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{
-            {"sliderSelector", selector}, {"sliderLabel", displayLabel}, {"sliderBackground", background}});
+            {"sliderBackground", background}, {"sliderSelector", selector}, {"sliderLabel", displayLabel}});
     CoreData::entityManager->addComponent<Component::ClickEvent>(entity, clickHandler, SliderFactory::_clickHandlerRequirements);
 }
 
