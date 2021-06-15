@@ -9,7 +9,7 @@
 
 using namespace GUI;
 
-void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name, unsigned int seed)
+void MapFactory::create(Engine::EntityPack &entityPack, const std::string &ressourcePackRoot, const std::string &name, unsigned int seed)
 {
     Engine::Entity tmpEntityId;
     GUI::BlockFactory::BlockType tmpBlockType = GUI::BlockFactory::BlockType::BLOCK_SOFT;
@@ -25,11 +25,11 @@ void MapFactory::create(Engine::EntityPack &entityPack, const std::string &name,
         for (size_t x = 0; x < map[y].size(); x++) {
             if (map[y][x] != GameModule::TileType::TILE_EMPTY) {
                 tmpBlockType = MapFactory::blockTypeSinceTile(map[y][x]);
-                tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType, "Asset/Texture/Nether/");
+                tmpEntityId = GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType, ressourcePackRoot);
                 matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
             }
             tmpEntityId = GUI::BlockFactory::create(
-                entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, "Asset/Texture/Nether/");
+                entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
             matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
         }
     }
