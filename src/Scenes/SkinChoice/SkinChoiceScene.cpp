@@ -31,7 +31,6 @@ const std::vector<string> SKINS{
     "Asset/Skin/Pure_Green.png",
     "Asset/Skin/Rebel_Black.png",
     "Asset/Skin/Revenge_Red.png",
-    "Asset/Skin/Simple_Steve.png",
 };
 
 static void previousHandler(Engine::Entity const)
