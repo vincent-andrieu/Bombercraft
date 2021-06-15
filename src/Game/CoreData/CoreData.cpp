@@ -19,12 +19,16 @@ std::unique_ptr<ConfigFile> CoreData::settings = nullptr;
 std::unique_ptr<raylib::Window> CoreData::window = nullptr;
 bool CoreData::_loop = true;
 
+static const raylib::MyVector2 minimalWinSize(600, 400);
+
 CoreData::CoreData()
 {
     CoreData::settings = std::make_unique<ConfigFile>(CONFIG_FILE);
-    CoreData::window = std::make_unique<raylib::Window>(CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("WIN_TITLE"),
-        static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
+    raylib::MyVector2 winSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    if (winSize.a < minimalWinSize.a || winSize.b < minimalWinSize.b)
+        throw ParserExceptions("Window size too small");
+    CoreData::window = std::make_unique<raylib::Window>(
+        winSize, CoreData::settings->getString("WIN_TITLE"), static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
 
     CoreData::window->open();
     if (CoreData::systemManager == nullptr)
