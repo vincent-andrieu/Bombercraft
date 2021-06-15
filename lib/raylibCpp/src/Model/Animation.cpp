@@ -6,28 +6,34 @@
 */
 
 #include "Animation.hpp"
+#include "Model.hpp"
 
 raylib::Animation::Animation(
     const std::string &texturePath, const string &dirpath, const MyVector3 position, const RColor color, bool isLooping)
     : _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}), _texturePath(texturePath),
       _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
 {
-    char **filenames = nullptr;
+    std::vector<std::string> filenames = {};
     int count = 0;
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
 
-    if (texturePath.compare("") != 0)
-        getNewTexture(texturePath);
+    if (!raylib::Model::_loaderManager)
+        raylib::Model::_loaderManager =
+            std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
+                raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     if (DirectoryExists(_path.data())) {
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
-            if (IsFileExtension(filenames[i], ".obj")) {
-                std::tuple<std::string, std::string> mdr = {filenames[i], this->_texturePath};
-                auto tmp = raylib::Model::_loaderManager->load(mdr);
+            if (IsFileExtension(filenames[i].data(), ".obj")) {
+                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath});
                 _models.push_back(tmp);
             }
         }
         LeaveDirectoryAndClearFileNames(workingDirectory);
+    }
+    if (_texturePath.compare("") != 0) {
+        getNewTexture(_texturePath);
+        setNewTexture();
     }
 }
 
@@ -37,8 +43,8 @@ raylib::Animation::~Animation()
 
 void raylib::Animation::getNewTexture(const std::string &texturePath)
 {
-    char **filenames = nullptr;
-    char **subFilenames = nullptr;
+    std::vector<std::string> filenames = {};
+    std::vector<std::string> subFilenames = {};
     int count = 0;
     int subCount = 0;
     const char *workingDirectory = GetWorkingDirectory();
@@ -46,31 +52,42 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     if (DirectoryExists(texturePath.data())) {
         filenames = goInDirectoryAndGetFileNames(texturePath, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
-            if (strcmp(filenames[i], "..") == 0 || strcmp(filenames[i], ".") == 0)
+            if (strcmp(filenames[i].data(), "..") == 0 || strcmp(filenames[i].data(), ".") == 0)
                 continue;
-            if (DirectoryExists(filenames[i])) {
+            if (DirectoryExists(filenames[i].data())) {
                 _textures.push_back({});
                 subFilenames = goInDirectoryAndGetFileNames(filenames[i], &subCount);
                 for (size_t j = 0; j < (size_t) subCount; j++) {
-                    if (!DirectoryExists(subFilenames[i]))
+                    if (!DirectoryExists(subFilenames[i].data()))
                         _textures[_textures.size() - 1].push_back(raylib::Texture::_loaderManager->load(subFilenames[j]));
                 }
                 LeaveDirectoryAndClearFileNames(texturePath);
-            } else if (FileExists(filenames[i]))
+            } else if (FileExists(filenames[i].data()))
                 _textures.push_back({raylib::Texture::_loaderManager->load(filenames[i])});
         }
         LeaveDirectoryAndClearFileNames(workingDirectory);
-    } else if (FileExists(texturePath.data()))
+    } else if (FileExists(texturePath.data())) {
         _textures.push_back({raylib::Texture::_loaderManager->load(texturePath.data())});
+    }
 }
 
-char **raylib::Animation::goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count)
+std::vector<std::string> raylib::Animation::goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count)
 {
     char **filenames = nullptr;
+    std::vector<std::string> vectorOfFilenames = {};
+    int reelCount = 0;
 
     filenames = GetDirectoryFiles(directoryPath.data(), count);
     ChangeDirectory(directoryPath.data());
-    return filenames;
+    for (size_t i = 0; i < (size_t) *count; i++) {
+        if (IsFileExtension(filenames[i], ".obj")) {
+            vectorOfFilenames.push_back(filenames[i]);
+            reelCount += 1;
+        }
+    }
+    std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
+    *count = reelCount;
+    return vectorOfFilenames;
 }
 
 void raylib::Animation::LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath)
@@ -87,7 +104,9 @@ void raylib::Animation::setNewTexture()
         if (_textures[i % _textures.size()].size() == 0)
             continue;
         for (size_t j = 0; j < _models[i].materialCount; j++) {
-            SetMaterialTexture(&_models[i].materials[j], MAP_DIFFUSE, _textures[i % _textures.size()][j % _textures[i].size()]);
+            SetMaterialTexture(&_models[i].materials[j],
+                MAP_DIFFUSE,
+                _textures[i % _textures.size()][j % _textures[i % _textures.size()].size()]);
         }
     }
 }
@@ -96,7 +115,7 @@ void raylib::Animation::draw()
 {
     Vector3 rayPos = {_position.a, _position.b, _position.c};
     std::chrono::milliseconds timeElapsed(0);
-    std::chrono::milliseconds waitTime(100);
+    std::chrono::milliseconds waitTime(70);
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 
     timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - _start.time_since_epoch());
@@ -166,6 +185,10 @@ void raylib::Animation::setPath(const string &path)
     for (size_t i = 0; i < this->_models.size(); i++) {
         this->_models[i].transform =
             MatrixRotateXYZ(MyVector3::makeVector3(MyVector3(DEG2RAD * pitch, DEG2RAD * yam, DEG2RAD * roll)));
+    }
+    if (_texturePath.compare("") != 0) {
+        getNewTexture(_texturePath);
+        setNewTexture();
     }
 }
 

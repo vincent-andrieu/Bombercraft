@@ -44,7 +44,6 @@ namespace raylib
 
         static std::shared_ptr<raylib::LoaderManager<Texture2D, std::string>> _loaderManager;
 
-      private:
         static Texture2D myTextureLoad(const std::string &str);
         static void myTextureUnload(Texture2D &texture);
 
