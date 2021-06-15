@@ -38,7 +38,8 @@ Game::SoundOptionScene::SoundOptionScene() : Engine::AbstractScene(*CoreData::sy
 void Game::SoundOptionScene::open()
 {
     const raylib::MyVector2 window_size(CoreData::settings->getMyVector2("WIN_SIZE"));
-    const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getStandardButtonConfig(raylib::MyVector2(600, 55));
+    const ProportionUtilities resizer(window_size);
+    const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getMediumButtonConfig();
     ProportionUtilities pos(window_size);
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
@@ -48,12 +49,18 @@ void Game::SoundOptionScene::open()
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     /// Quit button
     GUI::ButtonFactory::create(
-        this->localEntities, raylib::MyVector2(310, 660), "done", doneButton, "Done", [](const Engine::Entity) {
+        this->localEntities,
+        resizer(50, 90),
+        "done",
+        doneButton,
+        "Done",
+        [](const Engine::Entity) {
             CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
-        });
+        },
+        true);
     /// Slider
     GUI::SliderFactory::create(this->localEntities,
-        raylib::MyVector2(100, 50),
+        resizer(25, 20),
         handler_slider,
         "Master Volume: ",
         GUI::ButtonFactory::getMediumButtonConfig().size,
