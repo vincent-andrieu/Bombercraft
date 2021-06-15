@@ -15,7 +15,7 @@ template <typename toLoadType, typename paramType>
 class Preloader
 {
     public:
-        Preloader(std::function<const toLoadType &(const paramType &)> toRun, std::vector<paramType> listToLoad) : _toRun(toRun), _listToLoad(listToLoad)
+        Preloader(std::function<const toLoadType &(const paramType &)> toRun, std::vector<paramType> listToLoad) : _toRun(toRun), _listToLoad(listToLoad), _startSize(listToLoad.size())
         {
         }
 
@@ -30,7 +30,9 @@ class Preloader
 
         size_t getPourcentOfRun() const
         {
-            return 100 - ((size_t) ((this->_listToLoad.size() / this->_startSize) * 100));
+            if (!this->_startSize)
+                return 100;
+            return ((float) (this->_startSize - this->_listToLoad.size()) / this->_startSize) * 100;
         }
 
         void nextLoad()

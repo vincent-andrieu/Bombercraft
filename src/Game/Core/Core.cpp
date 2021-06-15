@@ -201,4 +201,7 @@ void Core::runAfterPreload()
 
 void Core::printDuringPreload()
 {
+    size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
+
+    std::cout << "loading: " << value << "%" << std::endl;
 }
