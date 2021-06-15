@@ -21,6 +21,6 @@ namespace Component
 
         virtual ~KeyEvent() = default;
     };
-} // namespace Component
+} // namespace Matrix2D
 
 #endif // KEYEVENT_HPP
