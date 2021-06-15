@@ -97,6 +97,6 @@ void GameScene::update()
         this->eventDispatcher(this->_systemManager);
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
+        exit(84); // TODO TEMPORARY
     }
 }
