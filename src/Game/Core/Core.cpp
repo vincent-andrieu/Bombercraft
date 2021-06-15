@@ -17,7 +17,7 @@
 #include "Components/Option/OptionComponent.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
-#include "Game/Factories/Map/Component/Matrix2D.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
 #include "Game/Factories/Sound/AudioFactory.hpp"
 
 using namespace Game;

@@ -9,7 +9,7 @@
 #define MAPFACTORY_HPP
 
 #include "GameEngine.hpp"
-#include "Component/Matrix2D.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
 #include "EntityPack/EntityPack.hpp"
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"

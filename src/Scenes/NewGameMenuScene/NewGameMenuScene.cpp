@@ -25,6 +25,8 @@ void Game::NewGameMenuScene::init()
     GUI::ButtonConfig my_smallButtonConfig(GUI::ButtonFactory::getSmallButtonConfig());
     GUI::ButtonConfig my_mediumButtonConfig(GUI::ButtonFactory::getMediumButtonConfig());
 
+    GUI::ImageFactory::create(
+        localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion(67, 85),
         my_button_prefix + "cancel",

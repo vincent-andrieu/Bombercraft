@@ -101,7 +101,6 @@ namespace Engine
         if (_currentScene == nullptr) {
             this->setCurrentScene(_scenes[index]);
         } else {
-            //            _lastScene = _currentScene;
             _nextScene = _scenes[index];
         }
     }

@@ -40,6 +40,13 @@ namespace raylib
         void setFont(const string &font) override;
         void setColor(RColor color) override;
         void setFontSize(size_t size) override;
+
+        /**
+         * @brief Set text size fit to vector2
+         * @param text The text to be adapted
+         * @param size The size at which the text should correspond
+         */
+        static void setFontSize(raylib::Text &text, const raylib::MyVector2 &size);
         void setLimit(MyVector4 limit) override;
 
         void removeFont() override;
