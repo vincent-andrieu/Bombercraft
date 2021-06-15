@@ -147,7 +147,7 @@ void MainMenuScene::open()
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::quit();
     }));
-    Game::keyManagementFactory::create(scene->localEntities, my_keyTriggers);
+    Game::KeyManagementFactory::create(scene->localEntities, my_keyTriggers);
 }
 
 void Game::MainMenuScene::update()

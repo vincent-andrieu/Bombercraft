@@ -18,11 +18,11 @@
 
 namespace Game
 {
-    class keyManagementFactory {
+    class KeyManagementFactory {
       public:
-        virtual ~keyManagementFactory() = 0;
-        static void create(Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript>
-            &keyTriggers);
+        virtual ~KeyManagementFactory() = 0;
+        static void create(
+            Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript> &keyTriggers);
     };
 } // namespace Game
 
