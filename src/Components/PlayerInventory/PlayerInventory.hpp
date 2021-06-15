@@ -19,11 +19,12 @@ namespace Component
         size_t speed;
         bool wallPass;
         size_t blastRadius;
+        PlayerConfig *config;
     };
 
     class PlayerInventory : public Engine::Component<PlayerInventory> {
       public:
-        PlayerInventory(const PlayerID playerId, PlayerInventoryInfo defaultInfo);
+        PlayerInventory(const PlayerID playerId, PlayerInventoryInfo defaultInfo, PlayerConfig &config);
         virtual ~PlayerInventory() = default;
 
         PlayerInventory &operator=(const PlayerInventory &src);

@@ -12,8 +12,8 @@
 #include <string>
 #include "GameEngine.hpp"
 #include "GUI/Factories/Label/LabelFactory.hpp"
-#include "GUI/Factories/Label/LabelFactory.hpp"
 #include "Components/PlayerInventory/PlayerInventory.hpp"
+#include "Components/PlayerConfig/PlayerConfig.hpp"
 
 namespace GUI
 {
@@ -23,13 +23,14 @@ namespace GUI
       public:
         virtual ~InventoryFactory() = 0;
 
-        static void create(Engine::EntityPack &entityPack,
-            const MyVector2 &position,
-            const MyVector2 &boxSze,
+        static void create(Engine::Entity entity,
+            const raylib::MyVector2 &position,
+            const raylib::MyVector2 &boxSize,
             std::vector<std::string> const &texturesPath,
-            GUI::LabelConfig const &labelconfig,
+            const GUI::LabelConfig &labelconfig,
             Component::PlayerID id,
-            std::string const &name = "");
+            Engine::EntityPack &pack,
+            Component::PlayerConfig &config);
 
         static Component::PlayerInventoryInfo getDefaultPlayerInventory();
     };
