@@ -7,23 +7,17 @@
 
 #include "Animation.hpp"
 
-raylib::Animation::Animation(const std::string &texturePath, const string &dirpath, const MyVector3 position, const RColor color)
+raylib::Animation::Animation(
+    const std::string &texturePath, const string &dirpath, const MyVector3 position, const RColor color, bool isLooping)
+    : _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}), _texturePath(texturePath),
+      _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
 {
     char **filenames = nullptr;
     int count = 0;
     const char *workingDirectory = GetWorkingDirectory();
 
-    this->_position = position;
-    this->_rotation = {0.0f, 0.0f, 0.0f};
-    this->_scale = 1.0f;
-    this->_color = color;
-    this->_textures = {};
-    this->_texturePath = texturePath;
     if (texturePath.compare("") != 0)
         getNewTexture(texturePath);
-    this->_path = dirpath;
-    this->_currentFrame = 0;
-    this->_start = std::chrono::system_clock::now();
     if (DirectoryExists(_path.data())) {
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
@@ -107,7 +101,12 @@ void raylib::Animation::draw()
 
     timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - _start.time_since_epoch());
     if (timeElapsed >= waitTime) {
-        _currentFrame = (_currentFrame + 1) % _models.size();
+        _currentFrame += 1;
+        if (_currentFrame == _models.size() && _isLooping) {
+            _currentFrame = _currentFrame % _models.size();
+        } else if (_currentFrame == _models.size() && !_isLooping) {
+            _currentFrame -= 1;
+        }
         _start = std::chrono::system_clock::now();
     }
     if (_models.size() > 0) {

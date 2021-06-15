@@ -27,6 +27,7 @@
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Scenes/LoadingScreen/LoadingScreenScene.hpp"
+#include "Scenes/EndGame/EndGameScene.hpp"
 
 #include "Game/SceneLoader/SceneLoader.hpp"
 

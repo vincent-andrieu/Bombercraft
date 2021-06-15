@@ -86,6 +86,7 @@ set(SRCS
         src/Scenes/GameScene/GameScene.cpp
         src/Scenes/SoundOption/SoundOptionScene.cpp
         src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
+        src/Scenes/EndGame/EndGameScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

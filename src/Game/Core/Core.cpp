@@ -71,6 +71,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<GameScene>((*CoreData::systemManager));
     CoreData::sceneManager->createScene<SoundOptionScene>();
     CoreData::sceneManager->createScene<NewGameMenuScene>((*CoreData::systemManager));
+    CoreData::sceneManager->createScene<EndGameScene>((*CoreData::systemManager));
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = CoreData::entityManager->createEntity();
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
@@ -107,12 +108,12 @@ void Core::loop()
     // DEBUG - END
     SceneLoader::setScene<MainMenuScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
-    CoreData::_window->setExitKey();
-    CoreData::_window->setWindowIcon(iconPath);
-    while (CoreData::_window->isOpen() && this->_loop == true) {
-        CoreData::_window->clear();
+    CoreData::window->setExitKey();
+    CoreData::window->setWindowIcon(iconPath);
+    while (CoreData::window->isOpen() && this->_loop == true) {
+        CoreData::window->clear();
         CoreData::sceneManager->run();
-        CoreData::_window->refresh();
+        CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
     }
 }
