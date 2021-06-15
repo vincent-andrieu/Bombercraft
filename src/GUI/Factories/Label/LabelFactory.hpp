@@ -51,8 +51,11 @@ namespace GUI
             LabelConfig const &config,
             const std::string &name = "");
 
-        static void createCentered(
-            Engine::EntityPack &pack, raylib::MyVector2 position, std::string const &label, LabelConfig const &config);
+        static void createCentered(Engine::EntityPack &pack,
+            raylib::MyVector2 position,
+            std::string const &label,
+            LabelConfig const &config,
+            const std::string &name = "");
 
       protected:
       private:

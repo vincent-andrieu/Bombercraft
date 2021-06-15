@@ -79,12 +79,17 @@ void LabelFactory::create(
 }
 
 void LabelFactory::createCentered(
-    Engine::EntityPack &pack, raylib::MyVector2 position, string const &label, LabelConfig const &config)
+    Engine::EntityPack &pack, raylib::MyVector2 position, string const &label, LabelConfig const &config, const std::string &name)
 {
+    Engine::Entity entity;
     auto my_text(std::make_shared<raylib::Text>(label, config.fontPath, position, config.fontSize, config.fontColor));
-    Engine::Entity entity = pack.createAnonymousEntity();
     const auto my_position(position - ProportionUtilities::getProportionWin(my_text->getSize(), raylib::MyVector2(50, 50)));
 
+    if (name.empty()) {
+        entity = pack.createAnonymousEntity();
+    } else {
+        entity = pack.createEntity(name);
+    }
     my_text->setPosition(my_position);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
 }

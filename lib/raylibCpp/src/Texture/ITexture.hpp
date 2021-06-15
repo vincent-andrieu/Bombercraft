@@ -31,6 +31,7 @@ namespace raylib
         virtual Texture2D getTexture() const = 0;
         virtual string getPath() const = 0;
         virtual MyVector2 getRect() const = 0;
+        virtual MyVector2 getPosition() const = 0;
     };
 }; // namespace raylib
 
