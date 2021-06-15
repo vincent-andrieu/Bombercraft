@@ -19,8 +19,6 @@ class ConfigFile : public IConfigFile {
     ConfigFile(const std::vector<std::string> &tab);
     ~ConfigFile();
 
-    void createDefault(const std::string &filename) const;
-
     void loadFile(const std::string &filename) override;
 
     [[nodiscard]] int getInt(const std::string &name) const override;
@@ -51,7 +49,6 @@ class ConfigFile : public IConfigFile {
     [[nodiscard]] static std::vector<std::string> getParseIn(const std::string &sym, std::string line, bool activate = false);
 
     std::vector<std::string> _fileContent;
-    static const std::vector<std::string> _defaultContent;
 };
 
 #endif /* !CONFIGFILE_HPP_ */

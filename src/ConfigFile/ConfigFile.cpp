@@ -12,81 +12,9 @@ static const std::string errmsg_notPair("Incorrect line format for PAIR: ");
 static const std::string errmsg_notVariable("No variable with name: ");
 static const std::string errmsg_notTab("Incorrect line format for Tab: ");
 static const std::string errmsg_notTabTab("Incorrect value for TABTAB");
-const std::vector<std::string> ConfigFile::_defaultContent = {"##",
-    "## BOMBERMAN",
-    "##",
-    "",
-    "## MAP",
-    "",
-    "\"BONUS_POURCENT\": 5",
-    "\"EMPTY_POURCENT\": 30",
-    "\"SOFT__POURCENT\": 65",
-    "",
-    "\"MAP_CONFIG\": [",
-    "    [1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1],",
-    "    [1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 1],",
-    "    [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],",
-    "    [3, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 3],",
-    "    [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],",
-    "    [3, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 3],",
-    "    [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],",
-    "    [3, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 3],",
-    "    [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],",
-    "    [1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 1],",
-    "    [1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1],",
-    "]",
-    "",
-    "## CORE",
-    "",
-    "\"WIN_SIZE\": {",
-    "    \"a\": 800",
-    "    \"b\": 600",
-    "}",
-    "\"WIN_TITLE\": \"BomberBlock\"",
-    "\"WIN_BACK\": 22              #RColor::RBLACK",
-    "\"CAM_POSITION\": {",
-    "    \"a\": 300",
-    "    \"b\": 0",
-    "    \"c\": 100",
-    "}",
-    "\"CAM_TARGET\": {",
-    "    \"a\": 0",
-    "    \"b\": 0",
-    "    \"c\": 0",
-    "}",
-    "\"CAM_UP\": {",
-    "    \"a\": 0",
-    "    \"b\": 1",
-    "    \"c\": 0",
-    "}",
-    "",
-    "## EXEMPLE",
-    "",
-    "\"VECTOR_TWO\": {",
-    "    \"a\": 3",
-    "    \"b\": 4",
-    "}",
-    "",
-    "\"VECTOR_THREE\": {",
-    "    \"a\": 3",
-    "    \"b\": 434",
-    "    \"c\": 5",
-    "}",
-    "",
-    "\"VECTOR_FOUR\": {",
-    "    \"a\": 3",
-    "    \"b\": 4345",
-    "    \"c\": 5",
-    "    \"d\": 6",
-    "}"};
 
 ConfigFile::ConfigFile(const std::string &filename)
 {
-    std::filesystem::path filepath(filename);
-
-    if (std::filesystem::exists(filepath) == false) {
-        this->createDefault(filename);
-    }
     this->loadFile(filename);
 }
 
@@ -121,16 +49,6 @@ std::string ConfigFile::getLineByName(const std::string &name) const
             return (*it);
     }
     return std::string("");
-}
-
-void ConfigFile::createDefault(const std::string &filename) const
-{
-    std::ofstream configFile(filename);
-
-    for (const auto &line : _defaultContent) {
-        configFile << line << std::endl;
-    }
-    configFile.close();
 }
 
 void ConfigFile::loadFile(const std::string &filename)

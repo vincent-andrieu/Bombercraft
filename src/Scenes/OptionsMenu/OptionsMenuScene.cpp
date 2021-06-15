@@ -29,6 +29,7 @@ void OptionsMenuScene::open()
         my_utility.getProportion(75, 30),
         my_utility.getProportion(25, 40),
         my_utility.getProportion(75, 40),
+        my_utility.getProportion(25, 50),
         my_utility.getProportion(50, 90),
     });
 
@@ -112,6 +113,17 @@ void OptionsMenuScene::open()
     GUI::ButtonFactory::create(
         scene->localEntities,
         buttonPosition[6],
+        "Rate",
+        bigButton,
+        "Rate Us",
+        [](const Engine::Entity) {
+            const std::string rateURL = Game::CoreData::settings->getString("RATE_URL");
+            CoreData::_window->openURL(rateURL);
+        },
+        true);
+    GUI::ButtonFactory::create(
+        scene->localEntities,
+        buttonPosition[7],
         "done",
         doneButton,
         "Done",
