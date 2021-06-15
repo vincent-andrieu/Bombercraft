@@ -39,6 +39,9 @@ namespace Game
 
       protected:
         static bool _loop;
+
+      private:
+        static void initWindow();
     };
 } // namespace Game
 
