@@ -63,6 +63,23 @@ void MainMenuScene::open()
             }
         });
 
+    // GAME TITLE
+    CoreData::entityManager->addComponent<Engine::Timer>(background,
+        0.01,
+        *CoreData::entityManager,
+        *CoreData::sceneManager,
+        [](Engine::EntityManager &, Engine::SceneManager &, const Engine::Entity entity) {
+            const raylib::MyVector2 backgroundSize = Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE");
+            raylib::Texture *pictureBg = static_cast<raylib::Texture *>(
+                Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
+            raylib::MyVector2 rect = pictureBg->getRect();
+            if (rect.a > backgroundSize.a) {
+                pictureBg->setRect(raylib::MyVector2(0, rect.b));
+            } else {
+                pictureBg->setRect(raylib::MyVector2((float) (rect.a + 0.8), rect.b));
+            }
+        });
+
     // GAME LOGO
     GUI::ImageFactory::create(scene->localEntities,
         my_utility.getProportion({50, 20}, logoSize, {50, 50}),
@@ -72,7 +89,8 @@ void MainMenuScene::open()
 
     // BUTTON
     GUI::ButtonFactory::create(scene->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
-        CoreData::sceneManager->setScene<GameScene>();
+        CoreData::sceneManager->pushLastScene();
+        CoreData::sceneManager->setScene<NewGameMenuScene>();
     });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
@@ -123,6 +141,13 @@ void MainMenuScene::open()
                 grow = true;
             }
         });
+
+    //    KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::quit();
+    }));
+    Game::keyManagementFactory::create(scene->localEntities, my_keyTriggers);
 }
 
 void Game::MainMenuScene::update()

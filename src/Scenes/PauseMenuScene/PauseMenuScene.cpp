@@ -16,6 +16,11 @@ Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
+static void goGameScene(const Engine::Entity)
+{
+    Game::CoreData::sceneManager->setScene<Game::GameScene>();
+}
+
 void Game::PauseMenuScene::open()
 {
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
@@ -32,16 +37,15 @@ void Game::PauseMenuScene::open()
         my_buttonNamePrefix + "continue",
         my_buttonConfig,
         "Back to Game",
-        [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<Game::GameScene>();
-        });
+        goGameScene);
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 60}, my_buttonConfig.size),
         my_buttonNamePrefix + "options",
         my_buttonConfig,
         "Options...",
         [](const Engine::Entity) {
-            CoreData::sceneManager->setScene<Game::OptionsMenuScene>();
+            CoreData::sceneManager->pushLastScene();
+            CoreData::sceneManager->setScene<OptionsMenuScene>();
         });
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion({50, 70}, my_buttonConfig.size),
@@ -51,6 +55,10 @@ void Game::PauseMenuScene::open()
         [](const Engine::Entity) {
             CoreData::sceneManager->setScene<Game::MainMenuScene>();
         });
+
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, goGameScene));
+    Game::keyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void Game::PauseMenuScene::update()
@@ -62,6 +70,6 @@ void Game::PauseMenuScene::update()
         this->eventDispatcher(this->_systemManager);
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
+        exit(84); // TODO TEMPORARY
     }
 }
