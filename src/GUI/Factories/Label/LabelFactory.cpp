@@ -78,11 +78,52 @@ void LabelFactory::create(
             std::make_shared<raylib::Text>(toString(label), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
+void LabelFactory::create(Engine::EntityPack &pack,
+    const raylib::MyVector2 position,
+    const float width,
+    string const &label,
+    LabelConfig const &config,
+    const std::string &name)
+{
+    Engine::Entity entity;
+    float my_fontSize = width * 0.4187;
+
+    if (name.empty()) {
+        entity = pack.createAnonymousEntity();
+    } else {
+        entity = pack.createEntity(name);
+    }
+    auto my_text(std::make_shared<raylib::Text>(label, config.fontPath, position, my_fontSize, config.fontColor));
+
+    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
+}
+
 void LabelFactory::createCentered(
     Engine::EntityPack &pack, raylib::MyVector2 position, string const &label, LabelConfig const &config, const std::string &name)
 {
     Engine::Entity entity;
     auto my_text(std::make_shared<raylib::Text>(label, config.fontPath, position, config.fontSize, config.fontColor));
+    const auto my_position(position - ProportionUtilities::getProportionWin(my_text->getSize(), raylib::MyVector2(50, 50)));
+
+    if (name.empty()) {
+        entity = pack.createAnonymousEntity();
+    } else {
+        entity = pack.createEntity(name);
+    }
+    my_text->setPosition(my_position);
+    Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
+}
+
+void LabelFactory::createCentered(Engine::EntityPack &pack,
+    raylib::MyVector2 position,
+    const float width,
+    string const &label,
+    LabelConfig const &config,
+    const std::string &name)
+{
+    Engine::Entity entity;
+    const float my_fontSize(width * 0.4187);
+    auto my_text(std::make_shared<raylib::Text>(label, config.fontPath, position, my_fontSize, config.fontColor));
     const auto my_position(position - ProportionUtilities::getProportionWin(my_text->getSize(), raylib::MyVector2(50, 50)));
 
     if (name.empty()) {

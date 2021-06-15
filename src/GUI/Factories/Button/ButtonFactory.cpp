@@ -8,6 +8,7 @@
 #include "ButtonFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/CoreData/CoreData.hpp"
+#include "GUI/Factories/Label/LabelFactory.hpp"
 
 using namespace GUI;
 
@@ -72,13 +73,26 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(my_size, raylib::MyVector2(50, 50));
     const auto entity = pack.createEntity(name);
+
+    float my_fontSize(conf.fontSize);
     auto my_label(std::make_shared<raylib::Text>(label,
         my_position,
-        conf.fontSize,
+        my_fontSize,
         conf.fontColor,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
+    while (my_label->getSize().a < conf.size.a || my_label->getSize().b < conf.size.b) {
+        my_fontSize++;
+        my_label->setFontSize(my_fontSize);
+    }
+    while (my_label->getSize().a > conf.size.a - 20 || my_label->getSize().b > conf.size.b - 20) {
+        my_fontSize--;
+        my_label->setFontSize(my_fontSize);
+    }
+    // still while loops, not calculation, because it would not always be true
+
     auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
     my_label->setPosition(my_labelPosition);
+
     Component::render2dMapModels my_models({{"label", my_label},
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
         {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
