@@ -56,7 +56,9 @@ namespace Game
         void loadMusic();
         std::unordered_map<std::string, std::string> getMusicList() const;
         bool isEndPreload();
+        void printDuringPreload();
         void runPreload();
+        void runAfterPreload();
 
       public:
         Engine::EntityPack globalEntities;

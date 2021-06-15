@@ -130,15 +130,14 @@ _preloadModel(loadModel, {
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
-    // DEBUG - END
-    SceneLoader::setScene<MainMenuScene>();
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
         if (!this->isEndPreload()) {
             this->runPreload();
+            this->printDuringPreload();
         } else {
             CoreData::sceneManager->run();
         }
@@ -181,6 +180,7 @@ bool Core::isEndPreload()
     if (this->_preloadModel.isFinish() && this->_preloadTexture.isFinish()) {
         this->_preloadStatus = true;
         this->loadMusic();
+        this->runAfterPreload();
     }
     return false;
 }
@@ -191,4 +191,14 @@ void Core::runPreload()
         this->_preloadModel.nextLoad();
     else if (!this->_preloadTexture.isFinish())
         this->_preloadTexture.nextLoad();
+}
+
+void Core::runAfterPreload()
+{
+    SceneLoader::setScene<MainMenuScene>();
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+}
+
+void Core::printDuringPreload()
+{
 }
