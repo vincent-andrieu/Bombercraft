@@ -59,10 +59,7 @@ void Game::PauseMenuScene::open()
 
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, goGameScene));
-    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_E, [](Engine::Entity) {
-        std::cout << "hello la team" << std::endl;
-    }));
-    Game::keyManagementFactory::create(localEntities, my_keyTriggers);
+    Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void Game::PauseMenuScene::update()

@@ -77,7 +77,7 @@ void GameScene::open()
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>();
     }));
-    Game::keyManagementFactory::create(localEntities, my_keyTriggers);
+    Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
 void GameScene::update()

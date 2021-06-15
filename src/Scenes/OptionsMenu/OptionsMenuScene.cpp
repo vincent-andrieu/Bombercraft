@@ -10,6 +10,7 @@
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Utilities/ProportionUtilities.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 
@@ -33,18 +34,17 @@ void OptionsMenuScene::open()
         my_utility.getProportion(50, 90),
     });
 
-    auto scene = CoreData::sceneManager->getCurrentScene();
     const GUI::ButtonConfig bigButton = GUI::ButtonFactory::getBigButtonConfig();
     const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getMediumButtonConfig();
 
     // BACKGROUND
-    GUI::ImageFactory::create(scene->localEntities,
+    GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
         CoreData::settings->getMyVector2("WIN_SIZE"),
         CoreData::settings->getString("STANDARD_BACKGROUND"),
         false);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[0],
         "skin",
         bigButton,
@@ -56,7 +56,7 @@ void OptionsMenuScene::open()
         true);
 
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[1],
         "music",
         bigButton,
@@ -68,7 +68,7 @@ void OptionsMenuScene::open()
         },
         true);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[2],
         "video settings",
         bigButton,
@@ -78,7 +78,7 @@ void OptionsMenuScene::open()
         },
         true);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[3],
         "controls",
         bigButton,
@@ -89,7 +89,7 @@ void OptionsMenuScene::open()
         },
         true);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[4],
         "ressourcepack",
         bigButton,
@@ -111,7 +111,7 @@ void OptionsMenuScene::open()
         60,
         true);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[6],
         "Rate",
         bigButton,
@@ -122,7 +122,7 @@ void OptionsMenuScene::open()
         },
         true);
     GUI::ButtonFactory::create(
-        scene->localEntities,
+        this->localEntities,
         buttonPosition[7],
         "done",
         doneButton,
@@ -131,6 +131,13 @@ void OptionsMenuScene::open()
             CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         },
         true);
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void Game::OptionsMenuScene::update()

@@ -26,6 +26,7 @@
 #include "Scenes/PauseMenuScene/PauseMenuScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Scenes/CreditScene/CreditScene.hpp"
 #include "Scenes/LoadingScreen/LoadingScreenScene.hpp"
 #include "Scenes/EndGame/EndGameScene.hpp"
 

@@ -7,12 +7,12 @@
 
 #include "KeyBindingMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 using namespace raylib;
 
 static const Component::eventScript doneButtonHandler = [](UNUSED const Engine::Entity &entity) {
-
     CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
 };
 
@@ -68,6 +68,11 @@ void KeyBindingMenuScene::open()
 
     GUI::ButtonFactory::create(
         this->localEntities, this->_resizer(25, 90), "doneButton", bottomButtonsConfig, "Done", doneButtonHandler);
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, doneButtonHandler));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void KeyBindingMenuScene::update()

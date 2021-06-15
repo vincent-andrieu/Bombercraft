@@ -19,7 +19,7 @@ template <typename K, typename E> std::vector<K> unordered_mapToVector(const std
     return my_vector;
 }
 
-void Game::keyManagementFactory::create(
+void Game::KeyManagementFactory::create(
     Engine::EntityPack &pack, const std::unordered_map<raylib::KeyBoard, Component::eventScript> &keyTriggers)
 {
     static std::vector<Game::EventRequirement> my_requirements;

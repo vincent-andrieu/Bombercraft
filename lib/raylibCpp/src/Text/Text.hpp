@@ -47,6 +47,7 @@ namespace raylib
 
         [[nodiscard]] raylib::MyVector2 getSize() const;
         [[nodiscard]] size_t getFontSize() const;
+        [[nodiscard]] MyVector2 getPosition() const;
 
       protected:
         string _text;

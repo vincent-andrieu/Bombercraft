@@ -126,3 +126,8 @@ void raylib::Texture::myTextureUnload(Texture2D &texture)
 {
     UnloadTexture(texture);
 }
+
+raylib::MyVector2 raylib::Texture::getPosition() const
+{
+    return this->_position;
+}
