@@ -9,8 +9,9 @@
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
-#include "../../Game/CoreData/CoreData.hpp"
+#include "Game/CoreData/CoreData.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
+#include "Components/Option/OptionComponent.hpp"
 
 using namespace Game;
 
@@ -64,7 +65,11 @@ void GameScene::open()
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
         handlerGameTimeout);
     /// MAP
-    GUI::MapFactory::create(this->localEntities, "Asset/Texture/End/", "gameMap");
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    const string &ressourcePackRoot =
+        CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
+    std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
+    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
     // Temporary, replace by : CoreData::setCamera..(position, target)
     CoreData::camera->setPosition(CoreData::settings->getMyVector3("CAM_POSITION"));

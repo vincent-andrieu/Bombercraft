@@ -48,7 +48,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(
-        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"));
+        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
@@ -61,7 +61,6 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
-    CoreData::systemManager->createSystem<System::RessourcePackSystem>();
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);

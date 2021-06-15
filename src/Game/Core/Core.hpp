@@ -19,7 +19,6 @@
 #include "Systems/Event/EventSystem.hpp"
 #include "Systems/Physics/PhysicsSystem.hpp"
 #include "Systems/PlayerConfig/PlayerConfigSystem.hpp"
-#include "Systems/RessourcePack/RessourcePackSystem.hpp"
 
 #include "Scenes/KeyBindingMenu/KeyBindingMenuScene.hpp"
 #include "Scenes/DebugScene/DebugScene.hpp"

@@ -9,9 +9,12 @@
 #include "RessourcePackMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
+#include "Components/Option/OptionComponent.hpp"
 
 using namespace Game;
 using namespace raylib;
+
+extern std::unique_ptr<Game::Core> core;
 
 static const Component::eventScript doneButtonHandler = [](const Engine::Entity &) {
     CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
@@ -23,14 +26,14 @@ RessourcePackMenuScene::RessourcePackMenuScene(Engine::SystemManager &systemMana
 }
 
 static const std::array<string, 8> ressourcePackPaths({
-    "Asset/Texture/Desert",
-    "Asset/Texture/End",
-    "Asset/Texture/Mountains",
-    "Asset/Texture/MushroomFields",
-    "Asset/Texture/Nether",
-    "Asset/Texture/Ocean",
-    "Asset/Texture/Plains",
-    "Asset/Texture/SnowyToundra",
+    "Asset/Texture/Desert/",
+    "Asset/Texture/End/",
+    "Asset/Texture/Mountains/",
+    "Asset/Texture/MushroomFields/",
+    "Asset/Texture/Nether/",
+    "Asset/Texture/Ocean/",
+    "Asset/Texture/Plains/",
+    "Asset/Texture/SnowyToundra/",
 });
 
 void RessourcePackMenuScene::open()
@@ -38,6 +41,7 @@ void RessourcePackMenuScene::open()
     const MyVector2 &window_size = CoreData::settings->getMyVector2("WIN_SIZE");
     const ProportionUtilities resizer(window_size);
     GUI::ButtonConfig menuButtons = GUI::ButtonFactory::getMediumButtonConfig();
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
 
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
@@ -50,8 +54,8 @@ void RessourcePackMenuScene::open()
         "desertButton",
         menuButtons,
         "Desert",
-        [](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[0]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[0];
         },
         true);
     GUI::ButtonFactory::create(
@@ -60,8 +64,8 @@ void RessourcePackMenuScene::open()
         "endButton",
         menuButtons,
         "End",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[1]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[1];
         },
         true);
     GUI::ButtonFactory::create(
@@ -70,8 +74,8 @@ void RessourcePackMenuScene::open()
         "mountains",
         menuButtons,
         "Mountains",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[2]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[2];
         },
         true);
     GUI::ButtonFactory::create(
@@ -80,8 +84,8 @@ void RessourcePackMenuScene::open()
         "mushroom",
         menuButtons,
         "Mushroom",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[3]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[3];
         },
         true);
     GUI::ButtonFactory::create(
@@ -90,8 +94,8 @@ void RessourcePackMenuScene::open()
         "nether",
         menuButtons,
         "Nether",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[4]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[4];
         },
         true);
     GUI::ButtonFactory::create(
@@ -100,8 +104,8 @@ void RessourcePackMenuScene::open()
         "ocean",
         menuButtons,
         "Ocean",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[5]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[5];
         },
         true);
     GUI::ButtonFactory::create(
@@ -110,8 +114,8 @@ void RessourcePackMenuScene::open()
         "plains",
         menuButtons,
         "Plains",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[6]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[6];
         },
         true);
     GUI::ButtonFactory::create(
@@ -120,8 +124,8 @@ void RessourcePackMenuScene::open()
         "snowyToundra",
         menuButtons,
         "Snowy",
-        [this](const Engine::Entity &) {
-            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[7]);
+        [optionEntity](const Engine::Entity &) {
+            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[7];
         },
         true);
 
