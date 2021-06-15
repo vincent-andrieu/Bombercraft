@@ -99,3 +99,8 @@ void raylib::Window::openURL(const std::string &url) const
 {
     OpenURL(url.c_str());
 }
+
+void raylib::Window::takeScreenshot(const std::string &fileName) const
+{
+    TakeScreenshot(fileName.data());
+}

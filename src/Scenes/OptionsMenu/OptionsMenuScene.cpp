@@ -118,7 +118,7 @@ void OptionsMenuScene::open()
         "Rate Us",
         [](const Engine::Entity) {
             const std::string rateURL = Game::CoreData::settings->getString("RATE_URL");
-            CoreData::_window->openURL(rateURL);
+            CoreData::window->openURL(rateURL);
         },
         true);
     GUI::ButtonFactory::create(

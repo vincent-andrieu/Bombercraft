@@ -38,10 +38,10 @@ namespace Game
         std::thread thread([&lock, &loaded, &loadingScene]() {
             lock.lock();
             loadingScene->open();
-            while (CoreData::_window->isOpen() && !loaded) {
-                CoreData::_window->clear();
+            while (CoreData::window->isOpen() && !loaded) {
+                CoreData::window->clear();
                 CoreData::sceneManager->run(loadingScene);
-                CoreData::_window->refresh();
+                CoreData::window->refresh();
             }
             loadingScene->close();
             lock.unlock();

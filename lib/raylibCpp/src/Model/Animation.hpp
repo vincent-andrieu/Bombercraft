@@ -18,7 +18,11 @@ namespace raylib
 {
     class Animation : public IModel {
       public:
-        Animation(const std::string &texturePath, const std::string &dirpath, const MyVector3 position, const RColor color);
+        Animation(const std::string &texturePath,
+            const std::string &dirpath,
+            const MyVector3 position,
+            const RColor color,
+            bool isLooping = false);
         ~Animation();
 
         void draw();
@@ -49,6 +53,7 @@ namespace raylib
         size_t _currentFrame;
         std::chrono::system_clock::time_point _start;
         std::string _texturePath;
+        bool _isLooping;
     };
 }; // namespace raylib
 

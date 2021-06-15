@@ -26,7 +26,8 @@ static const std::vector<std::string> inventoryNames = {
 static void handlerGameTimeout()
 {
     std::cout << "TIMEOUT - GAME OVER\n";
-    // CoreData::sceneManager->setScene<GameOverScene>();
+    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+    CoreData::sceneManager->setScene<EndGameScene>();
 }
 
 GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
@@ -46,11 +47,6 @@ void GameScene::open()
     size_t nbPlayer = 3;
     ProportionUtilities proportion(windowSize);
 
-    /// Background
-    //    auto background = this->localEntities.createEntity("GameBackground");
-    //    CoreData::entityManager->addComponent<Component::Render2D>(background,
-    //        Component::render2dMapModels({{"GameBackgroundRectangle",
-    //            std::make_shared<raylib::Rectangle>(raylib::MyVector2(0, 0), windowSize, raylib::RColor::RPURPLE)}}));
     /// Inventory
     for (size_t i = 0; i < nbPlayer; i++) {
         GUI::InventoryFactory::create(this->localEntities,
