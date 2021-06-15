@@ -23,11 +23,15 @@ using namespace Game;
 
 const Texture2D &loadTexture(const std::string &toLoad)
 {
+    if (!raylib::Texture::_loaderManager)
+        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
     return raylib::Texture::_loaderManager->load(toLoad);
 }
 
 const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
 {
+    if (!raylib::Model::_loaderManager)
+        raylib::Model::_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     return raylib::Model::_loaderManager->load(toLoad);
 }
 

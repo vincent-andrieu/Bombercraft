@@ -38,7 +38,6 @@ namespace raylib
 
         static std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> _loaderManager;
 
-      private:
         static RModel myModelLoad(const std::tuple<std::string, std::string> &str);
         static void myModelUnload(RModel &model);
 
