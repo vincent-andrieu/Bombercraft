@@ -5,6 +5,7 @@
  * RessourcePackMenuScene.cpp - Created: 15/06/2021
  */
 
+#include <array>
 #include "RessourcePackMenuScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
@@ -20,6 +21,17 @@ RessourcePackMenuScene::RessourcePackMenuScene(Engine::SystemManager &systemMana
     : AbstractScene(systemManager, *Game::CoreData::entityManager)
 {
 }
+
+static const std::array<string, 8> ressourcePackPaths({
+    "Asset/Texture/Desert",
+    "Asset/Texture/End",
+    "Asset/Texture/Mountains",
+    "Asset/Texture/MushroomFields",
+    "Asset/Texture/Nether",
+    "Asset/Texture/Ocean",
+    "Asset/Texture/Plains",
+    "Asset/Texture/SnowyToundra",
+});
 
 void RessourcePackMenuScene::open()
 {
@@ -38,8 +50,8 @@ void RessourcePackMenuScene::open()
         "desertButton",
         menuButtons,
         "Desert",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Desert" << std::endl;
+        [](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[0]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -48,8 +60,8 @@ void RessourcePackMenuScene::open()
         "endButton",
         menuButtons,
         "End",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "End" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[1]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -58,8 +70,8 @@ void RessourcePackMenuScene::open()
         "mountains",
         menuButtons,
         "Mountains",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Mountains" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[2]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -68,8 +80,8 @@ void RessourcePackMenuScene::open()
         "mushroom",
         menuButtons,
         "Mushroom",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Mushroom" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[3]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -78,8 +90,8 @@ void RessourcePackMenuScene::open()
         "nether",
         menuButtons,
         "Nether",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Nether" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[4]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -88,8 +100,8 @@ void RessourcePackMenuScene::open()
         "ocean",
         menuButtons,
         "Ocean",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Ocean" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[5]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -98,8 +110,8 @@ void RessourcePackMenuScene::open()
         "plains",
         menuButtons,
         "Plains",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Plains" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[6]);
         },
         true);
     GUI::ButtonFactory::create(
@@ -108,8 +120,8 @@ void RessourcePackMenuScene::open()
         "snowyToundra",
         menuButtons,
         "Snowy",
-        [this](UNUSED const Engine::Entity &entity) {
-            std::cout << "Snowy" << std::endl;
+        [this](const Engine::Entity &) {
+            CoreData::systemManager->getSystem<System::RessourcePackSystem>().set(ressourcePackPaths[7]);
         },
         true);
 

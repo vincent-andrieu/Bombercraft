@@ -61,6 +61,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
+    CoreData::systemManager->createSystem<System::RessourcePackSystem>();
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
