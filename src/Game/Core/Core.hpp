@@ -42,6 +42,8 @@
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/PlayerInventory/PlayerInventory.hpp"
 
+#define EXIT_ERROR 84
+
 namespace Game
 {
     class Core : public CoreData {
