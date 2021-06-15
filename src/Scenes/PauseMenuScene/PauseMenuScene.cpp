@@ -66,11 +66,6 @@ void Game::PauseMenuScene::update()
 {
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
 
-    try {
-        render2D.update();
-        this->eventDispatcher(this->_systemManager);
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TODO TEMPORARY
-    }
+    render2D.update();
+    this->eventDispatcher(this->_systemManager);
 }

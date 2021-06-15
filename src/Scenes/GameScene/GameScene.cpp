@@ -86,17 +86,12 @@ void GameScene::open()
 
 void GameScene::update()
 {
-    try {
-        auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
-        auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
-        auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+    auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
+    auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
 
-        render3D.update();
-        render2D.update();
-        timer.update();
-        this->eventDispatcher(this->_systemManager);
-    } catch (std::invalid_argument const &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84); // TODO TEMPORARY
-    }
+    render3D.update();
+    render2D.update();
+    timer.update();
+    this->eventDispatcher(this->_systemManager);
 }
