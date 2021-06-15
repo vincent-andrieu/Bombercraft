@@ -22,8 +22,12 @@ static void timer_handler(
     }
 }
 
-void GUI::ImageSequenceFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector2 &position,
-    const raylib::MyVector2 &size, const std::string &directoryPath, const std::string &name, const double frameRate)
+void GUI::ImageSequenceFactory::create(Engine::EntityPack &entityPack,
+    const raylib::MyVector2 &position,
+    const raylib::MyVector2 &size,
+    const std::string &directoryPath,
+    const std::string &name,
+    const double frameRate)
 {
     Engine::Entity entity;
 
