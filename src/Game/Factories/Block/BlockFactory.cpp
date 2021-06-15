@@ -24,8 +24,7 @@ std::unordered_map<BlockFactory::BlockType,
         {BlockType::BLOCK_BONUS_WALLPASS, BlockFactory::wallPassBonusFactory},
 };
 
-Engine::Entity BlockFactory::create(
-    Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &name)
+Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &ressourcePackRoot, const std::string &name)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = BlockFactory::getModel(position, type);
