@@ -10,6 +10,7 @@
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Utilities/ProportionUtilities.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 
@@ -131,6 +132,13 @@ void OptionsMenuScene::open()
             CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         },
         true);
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(scene->localEntities, keyTriggers);
 }
 
 void Game::OptionsMenuScene::update()

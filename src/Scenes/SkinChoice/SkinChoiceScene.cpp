@@ -16,6 +16,7 @@
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 
@@ -133,6 +134,13 @@ void Game::SkinChoiceScene::open()
     CoreData::entityManager->addComponent<Component::StringChoice>(skin, std::vector<string>(SKINS));
     CoreData::entityManager->addComponent<Engine::Timer>(
         skin, 0.005f, *CoreData::entityManager, *CoreData::sceneManager, rotateHandler);
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void Game::SkinChoiceScene::update()

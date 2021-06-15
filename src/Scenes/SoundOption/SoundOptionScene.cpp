@@ -14,6 +14,7 @@
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Core/Core.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
 using namespace Game;
 
@@ -59,6 +60,13 @@ void Game::SoundOptionScene::open()
         0,
         100,
         static_cast<GUI::sliderValue>(options.volume * 100));
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void Game::SoundOptionScene::update()
