@@ -33,14 +33,13 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50));
 
-    const auto &background =
-        std::make_shared<raylib::Rectangle>(my_position, size, CONF_GET_COLOR(SLIDER_CONFIG_BACKGROUND_COLOR));
-    auto selector = std::make_shared<raylib::Rectangle>(
-        MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
-            my_position.b),
+    const auto &background = std::make_shared<raylib::Texture>(
+        Game::CoreData::settings->getString(SLIDER_CONFIG_BACKGROUND_TEXTURE), size, my_position);
+    const auto &selector = std::make_shared<raylib::Texture>(Game::CoreData::settings->getString(SLIDER_CONFIG_SELECTOR_TEXTURE),
         selectorSize,
-        CONF_GET_COLOR(SLIDER_CONFIG_SELECTOR_COLOR));
-    auto displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
+        MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
+            my_position.b));
+    const auto &displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
         my_position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
         CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
