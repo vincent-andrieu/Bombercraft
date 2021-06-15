@@ -18,7 +18,7 @@ Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
 
 static void goGameScene(const Engine::Entity)
 {
-    Game::CoreData::sceneManager->setScene<Game::GameScene>();
+    Game::CoreData::sceneManager->setScene<Game::GameScene>(true, false);
 }
 
 void Game::PauseMenuScene::open()
@@ -55,6 +55,7 @@ void Game::PauseMenuScene::open()
         "Save and quit to title",
         [](const Engine::Entity) {
             CoreData::sceneManager->setScene<Game::MainMenuScene>();
+            // TODO close game scene
         });
 
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;

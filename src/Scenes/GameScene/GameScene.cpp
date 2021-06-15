@@ -75,7 +75,7 @@ void GameScene::open()
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::sceneManager->pushLastScene();
-        CoreData::sceneManager->setScene<PauseMenuScene>();
+        CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
