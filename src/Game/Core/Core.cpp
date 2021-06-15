@@ -117,6 +117,7 @@ void Core::loop()
         CoreData::sceneManager->run();
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
+        CoreData::systemManager->getSystem<System::AudioSystem>().update();
     }
 }
 
