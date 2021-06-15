@@ -85,7 +85,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<RessourcePackMenuScene>(*CoreData::systemManager);
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
-    auto entity = CoreData::entityManager->createEntity();
+    auto entity = this->globalEntities.createEntity("config1");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
         Component::PlayerID::ALPHA,
         Component::PlayerKeyBindings{
@@ -96,9 +96,8 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_END,
             raylib::KeyBoard::IKEY_R_SHIFT,
         });
-    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
 
-    entity = CoreData::entityManager->createEntity();
+    entity = this->globalEntities.createEntity("config2");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
         Component::PlayerID::BRAVO,
         Component::PlayerKeyBindings{
@@ -109,7 +108,6 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_W,
             raylib::KeyBoard::IKEY_L_ALT,
         });
-    CoreData::systemManager->getSystem<System::PlayerConfigSystem>().addEntity(entity);
     // MUSIC
     this->loadMusic();
 }
