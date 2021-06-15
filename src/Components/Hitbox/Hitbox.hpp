@@ -33,7 +33,7 @@ namespace Component
 
         std::shared_ptr<ObjectBox> objectBox;
         Game::EntityType entityType;
-        raylib::MyVector3 prevMovement;
+        raylib::MyVector3 prevPosition;
 
       private:
         hitboxHandler _handler;
