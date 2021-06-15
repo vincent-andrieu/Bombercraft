@@ -32,21 +32,25 @@ namespace Engine
         void setScene(const std::shared_ptr<AbstractScene> &scene, bool close = true, bool open = true);
 
         void pushLastScene();
+        void popLastScene();
         std::shared_ptr<AbstractScene> peekLastScene();
         std::shared_ptr<AbstractScene> getCurrentScene();
         void updateScene();
 
         template <typename T> std::shared_ptr<AbstractScene> getScene();
 
+        void closeLastUnclosedScene();
+
       private:
         void setCurrentScene(std::shared_ptr<AbstractScene> scene);
 
       private:
         std::shared_ptr<AbstractScene> _currentScene{nullptr};
-        std::vector<std::shared_ptr<AbstractScene>> _scenes;
-        std::vector<std::reference_wrapper<const std::type_info>> _types;
         std::shared_ptr<AbstractScene> _nextScene{nullptr};
+        std::vector<std::reference_wrapper<const std::type_info>> _types;
+        std::vector<std::shared_ptr<AbstractScene>> _scenes;
         std::stack<std::shared_ptr<AbstractScene>> _lastScenes;
+        std::stack<std::shared_ptr<AbstractScene>> _unclosedScenes;
         bool _toClose{true};
         bool _toOpen{true};
     };

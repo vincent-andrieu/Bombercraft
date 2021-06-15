@@ -32,13 +32,19 @@ std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
 
 void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
 {
-    if (_currentScene != nullptr && _toClose) {
-        _currentScene->close();
+    if (_currentScene) {
+        if (_toClose) {
+            _currentScene->close();
+        } else {
+            _unclosedScenes.push(scene);
+        }
     }
     _currentScene = std::move(scene);
     if (_currentScene && _toOpen) {
         _currentScene->open();
     }
+    _toClose = true;
+    _toOpen = true;
 }
 
 void SceneManager::updateScene()
@@ -61,6 +67,11 @@ std::shared_ptr<AbstractScene> SceneManager::peekLastScene()
     return my_last;
 }
 
+void SceneManager::popLastScene()
+{
+    _lastScenes.pop();
+}
+
 void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene, const bool close, const bool open)
 {
     if (std::find(_scenes.begin(), _scenes.end(), scene) == _scenes.end())
@@ -72,4 +83,18 @@ void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene, const b
     } else {
         _nextScene = scene;
     }
+}
+
+void SceneManager::closeLastUnclosedScene()
+{
+    std::shared_ptr<AbstractScene> my_scene(nullptr);
+
+    if (_unclosedScenes.empty())
+        return;
+    my_scene = _unclosedScenes.top();
+    if (!my_scene)
+        return;
+    std::cout << "closing" << std::endl;
+    _unclosedScenes.pop();
+    my_scene->close();
 }

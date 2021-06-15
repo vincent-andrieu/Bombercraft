@@ -42,6 +42,7 @@ void Game::NewGameMenuScene::init()
         my_mediumButtonConfig,
         "Create New Game",
         [](const Engine::Entity) {
+            CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });
 }

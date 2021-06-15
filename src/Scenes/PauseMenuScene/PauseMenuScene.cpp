@@ -60,8 +60,8 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Save and quit to title",
         [](const Engine::Entity) {
+            CoreData::sceneManager->closeLastUnclosedScene();
             CoreData::sceneManager->setScene<Game::MainMenuScene>();
-            // TODO close game scene
         });
 
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;

@@ -76,15 +76,15 @@ void GUI::InventoryFactory::create(Engine::Entity entity,
         itemPosition.a += boxSize.a;
     }
     Component::render2dMapModels my_models({
-            {"inventoryCase1", cases[0]},
-            {"inventoryCase2", cases[1]},
-            {"inventoryCase3", cases[2]},
-            {"inventoryCase4", cases[3]},
-            {"inventoryBlastRadius", powerUp[3]},
-            {"inventoryBomb", powerUp[0]},
-            {"inventorySpeed", powerUp[1]},
-            {"inventoryWallPass", powerUp[2]},
-            });
+        {"inventoryCase1", cases[0]},
+        {"inventoryCase2", cases[1]},
+        {"inventoryCase3", cases[2]},
+        {"inventoryCase4", cases[3]},
+        {"inventoryBlastRadius", powerUp[3]},
+        {"inventoryBomb", powerUp[0]},
+        {"inventorySpeed", powerUp[1]},
+        {"inventoryWallPass", powerUp[2]},
+    });
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
 
