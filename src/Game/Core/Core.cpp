@@ -15,9 +15,11 @@
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
-#include "Components/Matrix2D/Matrix2D.hpp"
+#include "Systems/ModelList/ModelListSystem.hpp"
+
 #include "Game/Factories/Sound/AudioFactory.hpp"
 
 using namespace Game;
@@ -45,6 +47,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::Sound>();
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
+    CoreData::entityManager->registerComponent<Component::ModelList>();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(
@@ -61,6 +64,7 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::HitboxSystem>();
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
+    CoreData::systemManager->createSystem<System::ModelListSystem>();
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
