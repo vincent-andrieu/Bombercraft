@@ -9,6 +9,7 @@
 #include "OptionsMenuScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
+#include "Scenes/RessourcePackMenu/RessourcePackMenuScene.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/KeyManagementFactory/KeyManagementFactory.hpp"
 
@@ -49,7 +50,7 @@ void OptionsMenuScene::open()
         "skin",
         bigButton,
         "Skin Customization...",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<SkinChoiceScene>();
         },
@@ -61,7 +62,7 @@ void OptionsMenuScene::open()
         "music",
         bigButton,
         "Music & Sounds...",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<SoundOptionScene>();
         },
@@ -72,7 +73,7 @@ void OptionsMenuScene::open()
         "video settings",
         bigButton,
         "Video Settings",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             std::cout << "Video settings" << std::endl;
         },
         true);
@@ -82,7 +83,7 @@ void OptionsMenuScene::open()
         "controls",
         bigButton,
         "Controls...",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             CoreData::sceneManager->pushLastScene();
             CoreData::sceneManager->setScene<KeyBindingMenuScene>();
         },
@@ -92,9 +93,10 @@ void OptionsMenuScene::open()
         buttonPosition[4],
         "ressourcepack",
         bigButton,
-        "Ressource Pack",
-        [](const Engine::Entity) {
-            std::cout << "Ressource Pack" << std::endl;
+        "Ressource Pack...",
+        [](const Engine::Entity &) {
+            CoreData::sceneManager->pushLastScene();
+            CoreData::sceneManager->setScene<RessourcePackMenuScene>();
         },
         true);
     GUI::SliderFactory::create(
@@ -115,7 +117,7 @@ void OptionsMenuScene::open()
         "Rate",
         bigButton,
         "Rate Us",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             const std::string rateURL = Game::CoreData::settings->getString("RATE_URL");
             CoreData::window->openURL(rateURL);
         },
@@ -126,7 +128,7 @@ void OptionsMenuScene::open()
         "done",
         doneButton,
         "Done",
-        [](const Engine::Entity) {
+        [](const Engine::Entity &) {
             CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
         },
         true);

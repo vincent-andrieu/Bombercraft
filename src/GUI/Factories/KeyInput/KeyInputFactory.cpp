@@ -210,10 +210,10 @@ const std::map<raylib::KeyBoard, string> KeyInputFactory::keyToStr = {
 };
 
 static Component::eventScript focusHandler = [](const Engine::Entity entityChild) {
-    raylib::Rectangle *rectActual = dynamic_cast<raylib::Rectangle *>(
+    const raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(entityChild).get("rectangle").get());
 
-    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
+    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getRect())) {
         Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
             focusEvent.changeFocus(false);
         });
@@ -237,8 +237,14 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
             {"text",
                 std::make_shared<raylib::Text>(
                     keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
-            {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
-            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
+            {"rectangle",
+                std::make_shared<raylib::Texture>(
+                    Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), inputSize, inputPosition)},
+            {"border",
+                std::make_shared<raylib::Texture>(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
+                    keyInput.size,
+                    dynConf.position,
+                    keyInput.borderColor)},
         }));
 
     const Component::eventScript inputHandler = [keyInputHandler](const Engine::Entity &childEntity) {

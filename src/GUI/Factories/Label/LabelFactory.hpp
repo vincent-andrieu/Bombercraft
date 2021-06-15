@@ -27,7 +27,7 @@ namespace GUI
       public:
         ~LabelFactory() = delete;
 
-        static LabelConfig getStandardLabelConfig(std::size_t fontSize);
+        static LabelConfig getStandardLabelConfig(std::size_t fontSize = Game::CoreData::settings->getInt("STANDARD_FONT_SIZE"));
 
         // TODO: add name on entity (modifiate the size of the box)
         static void create(Engine::EntityPack &pack,
@@ -53,7 +53,7 @@ namespace GUI
 
         static void create(Engine::EntityPack &pack,
             raylib::MyVector2 position,
-            float width,
+            raylib::MyVector2 size,
             std::string const &label,
             LabelConfig const &config,
             const std::string &name = "");
@@ -66,13 +66,10 @@ namespace GUI
 
         static void createCentered(Engine::EntityPack &pack,
             raylib::MyVector2 position,
-            float width,
+            raylib::MyVector2 size,
             std::string const &label,
             LabelConfig const &config,
             const std::string &name = "");
-
-      protected:
-      private:
     };
 } // namespace GUI
 

@@ -88,6 +88,7 @@ set(SRCS
         src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
         src/Scenes/EndGame/EndGameScene.cpp
         src/Scenes/CreditScene/CreditScene.cpp
+        src/Scenes/RessourcePackMenu/RessourcePackMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

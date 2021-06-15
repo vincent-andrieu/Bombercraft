@@ -79,6 +79,24 @@ void raylib::Text::setFontSize(const size_t size)
     this->_size = size;
 }
 
+void raylib::Text::setFontSize(raylib::Text &text, const raylib::MyVector2 &size)
+{
+    std::size_t my_fontSize(0);
+    raylib::MyVector2 my_textSize;
+
+    do {
+        my_fontSize++;
+        text.setFontSize(my_fontSize);
+        my_textSize = text.getSize();
+    } while (my_textSize.a < size.a || my_textSize.b < size.b);
+    do {
+        my_fontSize--;
+        text.setFontSize(my_fontSize);
+        my_textSize = text.getSize();
+    } while (my_textSize.a > size.a || my_textSize.b > size.b);
+    // while loops, not calculation, because it would not always be true and would not take both axis into account
+}
+
 void raylib::Text::setLimit(const MyVector4 limit)
 {
     this->_limit.x = limit.a;

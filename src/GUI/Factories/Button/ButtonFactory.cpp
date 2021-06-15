@@ -74,22 +74,13 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
         my_position = my_position - ProportionUtilities::getProportionWin(my_size, raylib::MyVector2(50, 50));
     const auto entity = pack.createEntity(name);
 
-    float my_fontSize(conf.fontSize);
     auto my_label(std::make_shared<raylib::Text>(label,
         my_position,
-        my_fontSize,
+        conf.fontSize,
         conf.fontColor,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
-    while (my_label->getSize().a < conf.size.a || my_label->getSize().b < conf.size.b) {
-        my_fontSize++;
-        my_label->setFontSize(my_fontSize);
-    }
-    while (my_label->getSize().a > conf.size.a - 20 || my_label->getSize().b > conf.size.b - 20) {
-        my_fontSize--;
-        my_label->setFontSize(my_fontSize);
-    }
-    // still while loops, not calculation, because it would not always be true
 
+    raylib::Text::setFontSize(*my_label, conf.size - 20);
     auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
     my_label->setPosition(my_labelPosition);
 
