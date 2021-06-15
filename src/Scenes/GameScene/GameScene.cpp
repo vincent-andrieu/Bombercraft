@@ -71,9 +71,7 @@ void GameScene::open()
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
-    // Temporary, replace by : CoreData::setCamera..(position, target)
-    CoreData::camera->setPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
-    CoreData::camera->setTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
+    CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
 
