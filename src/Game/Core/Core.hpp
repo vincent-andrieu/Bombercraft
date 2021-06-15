@@ -53,6 +53,9 @@ namespace Game
         void loop();
 
       private:
+        void registerComponents();
+        void createSystems();
+        void createScenes();
         void loadMusic();
         std::unordered_map<std::string, std::string> getAudioList(std::string const &varPathList, std::string const &varNameList) const;
         bool isEndPreload();
