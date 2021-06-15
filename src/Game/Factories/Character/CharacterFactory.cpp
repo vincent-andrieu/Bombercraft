@@ -128,7 +128,7 @@ Engine::Entity Game::CharacterFactory::create(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Specific
     if (isAI) {
-        // TODO
+        return CharacterFactory::createAI(entity);
     } else {
         return CharacterFactory::createPlayer(entity, config);
     }
@@ -173,4 +173,9 @@ raylib::MyVector2 CharacterFactory::getInventoryPosition(Component::PlayerID id)
             return raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, windowSize.b - (windowSize.a / 15));
         default: throw std::invalid_argument("CharacterFactory::getPlayerPosition Unknown PlayerID.");
     }
+}
+
+Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
+{
+    return entity;
 }
