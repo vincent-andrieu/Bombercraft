@@ -88,9 +88,11 @@ void GameScene::update()
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
     auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
     auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
+    auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
 
     render3D.update();
     render2D.update();
     timer.update();
+    audio.update();
     this->eventDispatcher(this->_systemManager);
 }

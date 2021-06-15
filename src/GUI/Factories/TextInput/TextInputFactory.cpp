@@ -130,10 +130,10 @@ void TextInputFactory::create(
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
-            {"text",
-                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)},
             {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, textInput.color)},
             {"border", std::make_shared<raylib::Rectangle>(dynConf.position, textInput.size, textInput.borderColor)},
+            {"text",
+                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)}
         }));
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequirement);
