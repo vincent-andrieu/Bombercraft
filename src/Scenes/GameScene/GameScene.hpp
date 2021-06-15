@@ -14,7 +14,6 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
-#include "GUI/Factories/Inventory/InventoryFactory.hpp"
 
 namespace Game
 {
