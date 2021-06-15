@@ -35,6 +35,7 @@ namespace raylib
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
         [[nodiscard]]  MyVector2 getRect() const;
+        [[nodiscard]] MyVector2 getPosition() const;
 
       private:
         MyVector2 _position;

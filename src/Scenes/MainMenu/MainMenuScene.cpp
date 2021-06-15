@@ -94,7 +94,7 @@ void MainMenuScene::open()
     });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
-            std::cout << "Go to credit" << std::endl;
+            CoreData::sceneManager->setScene<CreditScene>();
         });
     GUI::ButtonFactory::create(
         scene->localEntities, buttonPosition[2], "options", mediumButton, "Options...", [](const Engine::Entity) {

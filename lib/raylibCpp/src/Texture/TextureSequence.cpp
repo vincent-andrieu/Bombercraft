@@ -133,3 +133,8 @@ raylib::MyVector2 raylib::TextureSequence::getRect() const
 {
     return MyVector2(this->_size.x, this->_size.y);
 }
+
+raylib::MyVector2 raylib::TextureSequence::getPosition() const
+{
+    return _position;
+}
