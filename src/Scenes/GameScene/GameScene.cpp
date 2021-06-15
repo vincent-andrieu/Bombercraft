@@ -23,7 +23,6 @@ extern std::unique_ptr<Game::Core> core;
 
 static void handlerGameTimeout()
 {
-    std::cout << "TIMEOUT - GAME OVER\n";
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -62,8 +61,9 @@ void GameScene::open()
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
-      CoreData::sceneManager->pushLastScene();
-      CoreData::sceneManager->setScene<PauseMenuScene>();
+        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        CoreData::sceneManager->pushLastScene();
+        CoreData::sceneManager->setScene<PauseMenuScene>();
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }

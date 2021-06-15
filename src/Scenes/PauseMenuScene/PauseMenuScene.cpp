@@ -23,11 +23,17 @@ static void goGameScene(const Engine::Entity)
 
 void Game::PauseMenuScene::open()
 {
+    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
     auto my_buttonConfig(GUI::ButtonFactory::getLargeButtonConfig());
     const std::string my_buttonNamePrefix("button_");
-    //    GUI::ImageFactory::create();
 
+    GUI::ImageFactory::create(
+        this->localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("GAME_SCREENSHOT"), false);
+    auto background = this->localEntities.createEntity("PauseBackground");
+    CoreData::entityManager->addComponent<Component::Render2D>(background,
+        Component::render2dMapModels({{"PauseBackgroundRectangle",
+            std::make_shared<raylib::Rectangle>(raylib::MyVector2(0, 0), windowSize, raylib::RColor::RSHADOW)}}));
     GUI::LabelFactory::createCentered(localEntities,
         my_utility.getProportion(raylib::MyVector2(50, 20)),
         "Game Menu",
