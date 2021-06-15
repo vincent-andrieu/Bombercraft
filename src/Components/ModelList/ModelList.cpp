@@ -9,7 +9,7 @@
 
 using namespace Component;
 
-Component::ModelList::ModelList(const std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> &models)
+Component::ModelList::ModelList(const std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> &models, std::string const &firstModel)
 {
     if (models.empty()) {
         throw std::invalid_argument("ModelList::ModelList Empty model list.");
@@ -18,7 +18,7 @@ Component::ModelList::ModelList(const std::unordered_map<std::string, std::share
         _models.push_back(pair.second);
         _modelNames[pair.first] = _models.size() - 1;
     }
-    _selected = _models.front();
+    this->select(firstModel);
 }
 
 void Component::ModelList::select(const std::string &label)
@@ -55,4 +55,13 @@ void ModelList::setTexture(const std::string &path)
     for (auto &model : _models) {
         model->setTexture(path);
     }
+}
+const raylib::MyVector3 &ModelList::getPosition() const
+{
+    return _selected->getPosition();
+}
+
+void ModelList::setScale(const float scale)
+{
+    return _selected->setScale(scale);
 }

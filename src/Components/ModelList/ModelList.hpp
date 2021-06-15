@@ -20,20 +20,23 @@ namespace Component
 
     class ModelList : public Engine::Component<ModelList> {
       public:
-            ModelList(std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> const &models);
-            virtual ~ModelList() = default;
+        ModelList(std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> const &models, std::string const &firstModel);
+        virtual ~ModelList() = default;
 
-            void select(std::string const &label);
-            void draw();
-            void setPosition(const raylib::MyVector3 position);
-            void setRotation(const raylib::MyVector3 rotation);
-            void setTexture(std::string const &path);
+        void select(std::string const &label);
+        void draw();
+        void setPosition(const raylib::MyVector3 position);
+        void setRotation(const raylib::MyVector3 rotation);
+        void setTexture(std::string const &path);
+
+        const raylib::MyVector3 &getPosition() const;
+        void setScale(const float scale);
 
       private:
-            std::vector<std::shared_ptr<raylib::IModel>> _models;
-            std::unordered_map<std::string, std::size_t> _modelNames;
-            std::shared_ptr<raylib::IModel> _selected;
+        std::vector<std::shared_ptr<raylib::IModel>> _models;
+        std::unordered_map<std::string, std::size_t> _modelNames;
+        std::shared_ptr<raylib::IModel> _selected;
     };
-}
+} // namespace Component
 
 #endif // MODELLIST_HPP
