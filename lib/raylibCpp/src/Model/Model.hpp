@@ -17,7 +17,9 @@ namespace raylib
 {
     class Model : public IModel {
       public:
-        Model(const std::string &texturePath, const string &filepath, const MyVector3 position = MyVector3(0, 0, 0),
+        Model(const std::string &texturePath,
+            const string &filepath,
+            const MyVector3 position = MyVector3(0, 0, 0),
             const RColor color = RColor::RWHITE);
         ~Model();
 
@@ -38,7 +40,6 @@ namespace raylib
 
         static std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> _loaderManager;
 
-      private:
         static RModel myModelLoad(const std::tuple<std::string, std::string> &str);
         static void myModelUnload(RModel &model);
 

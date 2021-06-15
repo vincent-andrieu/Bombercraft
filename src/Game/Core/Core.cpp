@@ -28,7 +28,21 @@
 
 using namespace Game;
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
+const Texture2D &loadTexture(const std::string &toLoad)
+{
+    if (!raylib::Texture::_loaderManager)
+        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+    return raylib::Texture::_loaderManager->load(toLoad);
+}
+
+const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
+{
+    if (!raylib::Model::_loaderManager)
+        raylib::Model::_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+    return raylib::Model::_loaderManager->load(toLoad);
+}
+
+void Core::registerComponents()
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Matrix2D>();
@@ -52,10 +66,10 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
-    /// COMPONENTS - CREATION
-    Engine::Entity options = this->globalEntities.createEntity("options");
-    CoreData::entityManager->addComponent<Component::OptionComponent>(
-        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+}
+
+void Core::createSystems()
+{
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
@@ -69,6 +83,10 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
     CoreData::systemManager->createSystem<System::ModelListSystem>();
+}
+
+void Core::createScenes()
+{
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
@@ -84,6 +102,26 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
     CoreData::sceneManager->createScene<EndGameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<RessourcePackMenuScene>(*CoreData::systemManager);
+}
+
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
+_preloadTexture(loadTexture, {
+    "Asset/Interface/Button.png",
+    "Asset/Interface/HoverButton.png",
+    "Asset/Interface/Button.png",
+    "Asset/Interface/UnavailableButton.png",
+}),
+_preloadModel(loadModel, {
+    {}
+})
+{
+    this->registerComponents();
+    /// COMPONENTS - CREATION
+    Engine::Entity options = this->globalEntities.createEntity("options");
+    CoreData::entityManager->addComponent<Component::OptionComponent>(
+        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+    this->createSystems();
+    this->createScenes();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = this->globalEntities.createEntity("config1");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
@@ -109,20 +147,23 @@ Core::Core() : CoreData(), globalEntities(*CoreData::entityManager)
             raylib::KeyBoard::IKEY_L_ALT,
         });
     // MUSIC
-    this->loadMusic();
+    //this->loadMusic();
 }
 
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
-    // DEBUG - END
-    SceneLoader::setScene<MainMenuScene>();
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
-        CoreData::sceneManager->run();
+        if (!this->isEndPreload()) {
+            this->runPreload();
+            this->printDuringPreload();
+        } else {
+            CoreData::sceneManager->run();
+        }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
         CoreData::systemManager->getSystem<System::AudioSystem>().update();
@@ -157,4 +198,37 @@ std::unordered_map<std::string, std::string> Core::getAudioList(
         listAudio[listAudioName[i]] = listAudioPath[i];
     }
     return listAudio;
+}
+
+bool Core::isEndPreload()
+{
+    if (this->_preloadStatus)
+        return true;
+    if (this->_preloadModel.isFinish() && this->_preloadTexture.isFinish()) {
+        this->_preloadStatus = true;
+        this->loadMusic();
+        this->runAfterPreload();
+    }
+    return false;
+}
+
+void Core::runPreload()
+{
+    if (!this->_preloadModel.isFinish())
+        this->_preloadModel.nextLoad();
+    else if (!this->_preloadTexture.isFinish())
+        this->_preloadTexture.nextLoad();
+}
+
+void Core::runAfterPreload()
+{
+    SceneLoader::setScene<MainMenuScene>();
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
+}
+
+void Core::printDuringPreload()
+{
+    size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
+
+    std::cout << "loading: " << value << "%" << std::endl;
 }
