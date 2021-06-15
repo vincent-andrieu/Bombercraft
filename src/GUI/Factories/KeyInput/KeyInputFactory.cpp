@@ -234,17 +234,10 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
-            {"text",
-                std::make_shared<raylib::Text>(
-                    keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
-            {"rectangle",
-                std::make_shared<raylib::Texture>(
-                    Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), inputSize, inputPosition)},
-            {"border",
-                std::make_shared<raylib::Texture>(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
-                    keyInput.size,
-                    dynConf.position,
-                    keyInput.borderColor)},
+            {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, keyInput.color)},
+            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, keyInput.size, keyInput.borderColor)},
+            {"text", std::make_shared<raylib::Text>(
+                        keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)}
         }));
 
     const Component::eventScript inputHandler = [keyInputHandler](const Engine::Entity &childEntity) {
