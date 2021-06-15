@@ -31,7 +31,6 @@ namespace GUI
             Component::PlayerID id,
             std::string const &name = "");
 
-        static GUI::LabelConfig getStandardLabelConfig(const int fontSize = -1);
         static Component::PlayerInventoryInfo getDefaultPlayerInventory();
     };
 } // namespace GUI

@@ -57,7 +57,7 @@ void GameScene::open()
             inventoryPosition[i],
             {windowSize.a / 15, windowSize.a / 15},
             texturesPath,
-            GUI::InventoryFactory::getStandardLabelConfig(20),
+            GUI::LabelFactory::getStandardLabelConfig(20),
             ids[i],
             inventoryNames[i]);
     }

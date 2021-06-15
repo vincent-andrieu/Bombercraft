@@ -66,7 +66,6 @@ static void rotateHandler(Engine::EntityManager &em, Engine::SceneManager &, con
 
 static void cancelHandler(UNUSED const Engine::Entity &entity)
 {
-
     Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
 }
 
@@ -84,7 +83,8 @@ void Game::SkinChoiceScene::open()
     const GUI::ButtonConfig &smallButtonConfig = GUI::ButtonFactory::getSmallButtonConfig();
     const GUI::ButtonConfig &mediumButtonConfig = GUI::ButtonFactory::getMediumButtonConfig();
 
-    GUI::ImageFactory::create(this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/skinchoice.png", true);
+    GUI::ImageFactory::create(
+        this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/SkinChoiceBackground.png", true);
     // Change player button
     this->_selectedPlayer =
         &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(Component::PlayerID::ALPHA);
