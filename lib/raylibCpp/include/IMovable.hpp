@@ -8,6 +8,8 @@
 #ifndef IMOVABLE_HPP
 #define IMOVABLE_HPP
 
+#include "include.hpp"
+
 namespace raylib
 {
     class MyVector2;
