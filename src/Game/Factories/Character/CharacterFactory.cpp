@@ -107,8 +107,10 @@ static void handlerKeyEvent(const Engine::Entity character)
         } else {
             render.select("idle");
         }
-        // TODO : Drop bomb
-        // render.select("setBomb");
+        if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
+            // TODO DROP BOMB
+            render.select("setBomb");
+        }
     }
 }
 

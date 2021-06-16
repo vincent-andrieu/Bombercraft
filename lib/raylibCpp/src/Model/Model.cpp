@@ -166,3 +166,7 @@ raylib::MyVector3 raylib::Model::getRotation() const
 {
     return _rotation;
 }
+
+void raylib::Model::restartAnimation()
+{
+}
