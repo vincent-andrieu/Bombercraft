@@ -58,10 +58,19 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
         render.select("death"); /// Play animation => Death
     } else if (type == EntityType::POWERUP) {
         /// Note : bonus are given by the power-up collision handlers
-    } else if (type == EntityType::SOFTBLOCK && info.wallPass == false) {
-        render.setPosition(hitbox.prevPosition);
-    } else {
-        render.setPosition(hitbox.prevPosition);
+    } else if (!(type == EntityType::SOFTBLOCK && info.wallPass == true)) {
+        Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
+        raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
+        raylib::MyVector3 playerPosition = render.getPosition();
+        raylib::MyVector3 delta = playerPosition - otherPosition;
+        if ((delta.a > 0 && velocity.x < 0) || (delta.a < 0 && velocity.x > 0)) {
+            velocity.x = 0;
+            render.resetPosition(true, false);
+        }
+        if ((delta.c > 0 && velocity.y < 0) || (delta.c < 0 && velocity.y > 0)) {
+            velocity.y = 0;
+            render.resetPosition(false, true);
+        }
     }
 }
 
@@ -139,14 +148,12 @@ Engine::Entity Game::CharacterFactory::create(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_SET_BOMB"), characterPos, raylib::RColor::RWHITE)}}),
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    modelList.setRotation(CoreData::settings->getMyVector3("CHARACTER_ROTATE_SHIFT"));
-    modelList.setPosition(characterPos + CoreData::settings->getMyVector3("CHARACTER_POS_SHIFT"));
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
     /// Inventory
     CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
     raylib::MyVector3 blockSize = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    raylib::MyVector3 hitboxSize(blockSize.a, blockSize.b, blockSize.c * 2);
+    const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Velocity
