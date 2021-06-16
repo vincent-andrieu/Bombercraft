@@ -34,8 +34,9 @@ bool AIComponent::putBomb()
     return this->_AI->getIAAction() == GameModule::BombermanAction::ACTION_TRIGGER_BOMBE;
 }
 
-void AIComponent::setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos)
+void AIComponent::setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy)
 {
+    this->_AI->setEnemyPos(enemy);
     this->_AI->setIAEnv(AIComponent::translateMatrix(map));
     this->_AI->setIAPos(pos);
 }

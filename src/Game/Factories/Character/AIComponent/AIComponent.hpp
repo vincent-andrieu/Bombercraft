@@ -21,7 +21,7 @@ namespace Component
 
             std::pair<size_t, size_t> getVelocity();
             bool putBomb();
-            void setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos);
+            void setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy);
 
         private:
             static GameModule::MapType translateMatrix(const std::shared_ptr<DataMatrix> &map);

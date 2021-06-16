@@ -192,10 +192,20 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     auto relativPos = Component::Matrix2D::getPositionRelativ(pos.getPosition());
+    std::vector<std::string> entityList = {
+        PLAYER_ID_TO_NAME.at(Component::ALPHA),
+        PLAYER_ID_TO_NAME.at(Component::BRAVO),
+        PLAYER_ID_TO_NAME.at(Component::CHARLIE),
+        PLAYER_ID_TO_NAME.at(Component::DELTA)
+    };
+    std::vector<std::pair<size_t, size_t>> posList;
 
-    (void) sceneManager;
+    for (size_t i = 0; i < entityList.size(); i++) {
+        if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i]))
+            posList.push_back(Component::Matrix2D::getPositionRelativ(CoreData::entityManager->getComponent<Component::ModelList>(sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i])).getPosition()));
+    }
     (void) entityManager;
-    ai.setEnv(map.getData(), relativPos);
+    ai.setEnv(map.getData(), relativPos, posList);
     ai.getVelocity(); // TODO SET VELOCITY
     if (ai.putBomb()) {
         // TODO PUT BOMB

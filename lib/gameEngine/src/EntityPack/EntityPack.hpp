@@ -28,6 +28,7 @@ namespace Engine
         void removeEntity(const std::string &key);
 
         Entity getEntity(const std::string &key);
+        bool entityIsSet(const std::string &key);
 
       private:
         std::unordered_map<std::string, Entity> _entities;

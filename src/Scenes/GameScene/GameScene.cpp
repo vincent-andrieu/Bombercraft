@@ -56,7 +56,7 @@ void GameScene::open()
     /// CHARACTERS
     auto &config = CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1"));
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
-    CharacterFactory::create(this->localEntities, config, map, false);
+    CharacterFactory::create(this->localEntities, config, map, true);
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {

@@ -64,3 +64,10 @@ void Engine::EntityPack::removeEntity(const std::string &key)
     _entityManager.removeEntity(_entities[key]);
     _entities.erase(key);
 }
+
+bool Engine::EntityPack::entityIsSet(const std::string &key)
+{
+    if (_entities.find(key) == _entities.end())
+        return false;
+    return true;
+}
