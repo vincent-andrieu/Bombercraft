@@ -118,7 +118,7 @@ void OptionsMenuScene::open()
         bigButton.size,
         0,
         200,
-        options.fov,
+        (int) options.fov,
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
