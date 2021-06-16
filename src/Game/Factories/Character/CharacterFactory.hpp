@@ -40,6 +40,7 @@ namespace Game
 
         static Engine::Entity createPlayer(Engine::Entity entity, Component::PlayerConfig &config);
         static Engine::Entity createAI(Engine::Entity entity);
+        static void handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
     };
 } // namespace Game
 

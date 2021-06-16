@@ -178,6 +178,18 @@ raylib::MyVector2 CharacterFactory::getInventoryPosition(Component::PlayerID id)
 
 Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
 {
+    float refreshTime = CoreData::settings->getFloat("AI_REFRESH_TIME");
+
     CoreData::entityManager->addComponent<Component::AIComponent>(entity);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, refreshTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, CharacterFactory::handlerAITimer);
     return entity;
+}
+
+void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+{
+    auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+
+    (void) sceneManager;
+    (void) entityManager;
+    (void) ai;
 }
