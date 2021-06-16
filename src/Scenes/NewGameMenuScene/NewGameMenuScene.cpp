@@ -138,7 +138,7 @@ void Game::NewGameMenuScene::init()
         0,
         100,
         (int) options.IARandomProb,
-        false); // TODO apply it in IA constructor
+        false); // TODO apply it gameScene
 }
 
 void Game::NewGameMenuScene::open()
