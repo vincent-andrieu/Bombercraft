@@ -87,29 +87,35 @@ static bool isBombPlacable(float posX, float posY)
     return false;
 }
 
+static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const float rotation)
+{
+    auto my_position(position);
+
+    if (rotation == 0)
+        my_position.b++;
+    if (rotation == 90)
+        my_position.a--;
+    if (rotation == 180)
+        my_position.b--;
+    if (rotation == 270)
+        my_position.a++;
+    return my_position;
+}
+
 static void placeBomb(Component::ModelList &render)
 {
-    const auto optionEntity(core->globalEntities.getEntity("options"));
-    auto &options(Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity));
-    const auto &playerRotation(render.getRotation().b);
-    auto bombIndexOnMap(Component::Matrix2D::getMapIndex(render.getPosition()));
-
-    if (playerRotation == 0)
-        bombIndexOnMap.b++;
-    if (playerRotation == 90)
-        bombIndexOnMap.a--;
-    if (playerRotation == 180)
-        bombIndexOnMap.b--;
-    if (playerRotation == 270)
-        bombIndexOnMap.a++;
-
+    const auto &options(
+        Game::CoreData::entityManager->getComponent<Component::OptionComponent>(core->globalEntities.getEntity("options")));
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(render.getPosition()), render.getRotation().b));
     const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
-    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b))
+
+    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
         GUI::BlockFactory::create(Core::sceneManager->getCurrentScene()->localEntities,
             bombPosition,
             GUI::BlockFactory::BlockType::BLOCK_BOMB,
             options.ressourcePack);
-    render.select("setBomb");
+        render.select("setBomb");
+    }
 }
 
 static void handlerKeyEvent(const Engine::Entity character)
