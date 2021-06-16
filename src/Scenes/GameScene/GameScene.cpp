@@ -34,6 +34,12 @@ GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(syste
 {
 }
 
+void GameScene::applyOptions(Component::OptionComponent &)
+{
+    // TODO set IA options
+    // TODO set number of players
+}
+
 void GameScene::open()
 {
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
