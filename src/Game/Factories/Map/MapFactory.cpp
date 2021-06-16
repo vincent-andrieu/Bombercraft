@@ -29,10 +29,11 @@ void MapFactory::create(
                 tmpEntityId =
                     GUI::BlockFactory::create(entityPack, {x * size.a, 0 * size.b, y * size.c}, tmpBlockType, ressourcePackRoot);
                 matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
+            } else {
+                matrix.getData()->save({x, y}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
             }
             tmpEntityId = GUI::BlockFactory::create(
                 entityPack, {x * size.a, -1 * size.b, y * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
-            matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
         }
     }
 }
