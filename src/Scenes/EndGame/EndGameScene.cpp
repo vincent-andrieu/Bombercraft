@@ -15,12 +15,18 @@
 
 using namespace Game;
 
+extern std::unique_ptr<Game::Core> core;
+
 EndGameScene::EndGameScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
 {
 }
 
 static void goToGameScene(const Engine::Entity)
 {
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+    Game::CoreData::camera->setFovy(options.fov);
     Game::CoreData::sceneManager->setScene<Game::GameScene>();
 }
 
@@ -74,6 +80,7 @@ void EndGameScene::open()
         GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
 
     // MODEL
+    CoreData::camera->setUp(CoreData::settings->getMyVector3("MENU_CAM_UP"));
     for (size_t i = 0; i < nbPlayers; i++) {
         Engine::Entity player = this->localEntities.createEntity("PlayerEndGame" + toString(i + 1));
         playerConfig = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(ids[i]);

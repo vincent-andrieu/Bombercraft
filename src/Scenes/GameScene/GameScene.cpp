@@ -23,6 +23,7 @@ extern std::unique_ptr<Game::Core> core;
 
 static void handlerGameTimeout()
 {
+    Game::CoreData::camera->setFovy(CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -61,6 +62,7 @@ void GameScene::open()
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        Game::CoreData::camera->setFovy(CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
