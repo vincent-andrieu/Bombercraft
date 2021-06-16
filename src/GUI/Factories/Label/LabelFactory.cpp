@@ -75,7 +75,8 @@ void LabelFactory::create(
     }
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({{"text",
-            std::make_shared<raylib::Text>(toString(label), config.fontPath, position, config.fontSize, config.fontColor)}}));
+            std::make_shared<raylib::Text>(
+                toString(static_cast<std::size_t>(label * 10)), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
 void LabelFactory::create(Engine::EntityPack &pack,
