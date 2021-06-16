@@ -7,6 +7,9 @@
 
 #include "BlockFactory.hpp"
 #include "EntityType.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
+#include "Components/PlayerInventory/PlayerInventory.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 
 using namespace GUI;
 
@@ -105,12 +108,15 @@ void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVec
 void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
     int blastTime = Game::CoreData::settings->getInt("BLAST_DURATION");
+    raylib::MyVector3 blastHitbox = size - (size * raylib::MyVector3(0.5, 0.5, 0.5));
+    raylib::MyVector3 newPos = pos + ((size - blastHitbox) / raylib::MyVector3(2, 2, 2));
 
     if (blastTime < 0)
         blastTime = 0;
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerKillEntity, Game::EntityType::BLAST);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, newPos, blastHitbox, BlockFactory::handlerKillEntity, Game::EntityType::BLAST);
+    Game::CoreData::entityManager->addComponent<Engine::Velocity>(entity);
 }
 
 void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -139,11 +145,11 @@ void BlockFactory::wallPassBonusFactory(const Engine::Entity &entity, const rayl
 }
 
 void BlockFactory::handlerBlastTimer(
-    Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+    UNUSED Engine::EntityManager &entityManager, UNUSED Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
+    auto scene = Game::Core::sceneManager->getCurrentScene();
     // TODO remove blast
-    (void) sceneManager;
-    entityManager.removeEntity(entity);
+    scene->localEntities.removeEntity(entity);
 }
 
 void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -155,46 +161,127 @@ void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engi
 
 void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    (void) fromEntity;
+    auto scene = Game::Core::sceneManager->getCurrentScene();
+    auto &hitboxTo = Game::CoreData::entityManager->getComponent<Component::Hitbox>(toEntity);
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+
+    if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
+        //TODO REMOVE SOFT BLOCK ON MATRIX
+        std::cout << "should remove block" << std::endl;
+        scene->localEntities.removeEntity(toEntity);
+    }
+    if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
+        std::cout << "Should kill user" << std::endl;
+        scene->localEntities.removeEntity(toEntity);
+    }
     // TODO kill entity if player
-    Game::CoreData::entityManager->removeEntity(toEntity);
 }
 
 void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    inventory.setBomb(info.bomb + 1);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    inventory.setBlastRadius(info.blastRadius + 1);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    if (info.speed < 1) {
+        inventory.setSpeed(info.speed + 0.1);
+    }
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    inventory.setWallPass(true);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerBombTimer(
     Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
+    auto scene = Game::Core::sceneManager->getCurrentScene();
     Engine::Position &pos = entityManager.getComponent<Engine::Position>(entity);
 
     BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities);
-    Game::CoreData::entityManager->removeEntity(entity);
+    scene->localEntities.removeEntity(entity);
 }
 
 void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack)
 {
-    // TODO ADD ALL mecanique
+    //TODO USE RADIUS
+    size_t blockRadius = 3;
+    Engine::Entity entityMap = entityPack.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+    const raylib::MyVector3 &blockSize = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+    //TODO SPLIT INTO METHODS
+
+    raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
+    std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
+
     GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+    for (size_t i = 1; i < blockRadius; i++) {
+        blockTmp = matrix.getData({vector2.a + i, vector2.b});
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
+            break;
+        GUI::BlockFactory::create(entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+            break;
+    }
+    for (size_t i = 1; i < blockRadius; i++) {
+        blockTmp = matrix.getData({vector2.a - i, vector2.b});
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
+            break;
+        GUI::BlockFactory::create(entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+            break;
+    }
+    for (size_t i = 1; i < blockRadius; i++) {
+        blockTmp = matrix.getData({vector2.a, vector2.b + i});
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
+            break;
+        GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+            break;
+    }
+    for (size_t i = 1; i < blockRadius; i++) {
+        blockTmp = matrix.getData({vector2.a, vector2.b - i});
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
+            break;
+        GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+            break;
+    }
 }

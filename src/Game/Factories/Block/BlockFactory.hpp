@@ -20,6 +20,7 @@ namespace GUI
         public:
             enum class BlockType
             {
+                BLOCK_AIR,
                 BLOCK_HARD,
                 BLOCK_SOFT,
                 BLOCK_BOMB,

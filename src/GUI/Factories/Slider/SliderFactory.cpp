@@ -39,13 +39,14 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
         selectorSize,
         MyVector2(SliderFactory::_getRangeValue(my_position.a, minValue, maxValue, defaultValue, size.a, selectorSize.a),
             my_position.b));
-    const auto &displayLabel = std::make_shared<raylib::Text>(label + toString(defaultValue),
+    const auto &displayLabel = std::make_shared<raylib::Text>(label + toString(maxValue),
         my_position,
         CoreData::settings->getInt(SLIDER_CONFIG_LABEL_SIZE),
         CONF_GET_COLOR(SLIDER_CONFIG_LABEL_COLOR));
-    raylib::Text::setFontSize(*displayLabel, size - 20);
+    raylib::Text::setFontSize(*displayLabel, (size.a < 20 && size.b < 20) ? size : size - 20);
     displayLabel->setPosition(
         my_position + ProportionUtilities::getProportionWin(size, MyVector2(50, 50), displayLabel->getSize(), MyVector2(50, 50)));
+    displayLabel->setText(label + toString(defaultValue));
 
     Component::eventScript clickHandler =
         [selector, displayLabel, label, my_position, size, selectorSize, minValue, maxValue, defaultValue, sliderHandler](

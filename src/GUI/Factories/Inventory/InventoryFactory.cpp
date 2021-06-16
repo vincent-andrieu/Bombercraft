@@ -35,7 +35,7 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
 
         playerInventoryInfo = playerInventory.getPlayerInventoryInfo();
         (*dynamic_cast<raylib::IText *>(bombValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.bomb));
-        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.speed));
+        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get())).setText(toString(static_cast<std::size_t>(playerInventoryInfo.speed * 10)));
         (*dynamic_cast<raylib::IText *>(wallPassValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.wallPass));
         (*dynamic_cast<raylib::IText *>(blastRadiusValueRender2d.get("text").get()))
             .setText(toString(playerInventoryInfo.blastRadius));

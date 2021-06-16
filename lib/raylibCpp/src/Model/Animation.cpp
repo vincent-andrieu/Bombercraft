@@ -8,9 +8,13 @@
 #include "Animation.hpp"
 #include "Model.hpp"
 
-raylib::Animation::Animation(
-    const std::string &texturePath, const string &dirpath, const MyVector3 position, const RColor color, bool isLooping)
-    : _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}), _texturePath(texturePath),
+raylib::Animation::Animation(const std::string &texturePath,
+    const std::string &dirpath,
+    const MyVector3 position,
+    const RColor color,
+    bool isLooping,
+    std::size_t speed)
+    : _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}), _texturePath(texturePath),
       _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
 {
     std::vector<std::string> filenames = {};
@@ -114,7 +118,7 @@ void raylib::Animation::draw()
 {
     Vector3 rayPos = {_position.a, _position.b, _position.c};
     std::chrono::milliseconds timeElapsed(0);
-    std::chrono::milliseconds waitTime(70);
+    std::chrono::milliseconds waitTime(_speed);
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 
     timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() - _start.time_since_epoch());
@@ -130,6 +134,11 @@ void raylib::Animation::draw()
     if (_models.size() > 0) {
         DrawModel(_models[_currentFrame], rayPos, _scale, _matchingColors.at(_color));
     }
+}
+
+void raylib::Animation::restartAnimation()
+{
+    _currentFrame = 0;
 }
 
 void raylib::Animation::setPosition(const MyVector3 position)

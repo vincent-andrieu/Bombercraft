@@ -22,10 +22,13 @@ namespace raylib
             const std::string &dirpath,
             const MyVector3 position,
             const RColor color = raylib::RColor::RWHITE,
-            bool isLooping = false);
+            bool isLooping = false,
+            std::size_t speed = 50);
         ~Animation();
 
         void draw();
+
+        void restartAnimation();
 
         void setPosition(const MyVector3 position);
         const MyVector3 &getPosition() const;
@@ -43,6 +46,7 @@ namespace raylib
         void LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath);
         void setNewTexture();
 
+        std::size_t _speed;
         MyVector3 _position;
         MyVector3 _rotation;
         float _scale;

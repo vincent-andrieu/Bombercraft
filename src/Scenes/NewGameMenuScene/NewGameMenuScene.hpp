@@ -8,6 +8,7 @@
 #define BOMBERMAN_NEWGAMEMENUSCENE_HPP
 
 #include "GameEngine.hpp"
+#include <Components/Option/OptionComponent.hpp>
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 
 namespace Game
@@ -17,6 +18,7 @@ namespace Game
         NewGameMenuScene(Engine::SystemManager &systemManager);
         ~NewGameMenuScene() = default;
 
+        void setStandardOptions(Component::OptionComponent &options);
         void init();
         void open() override;
 

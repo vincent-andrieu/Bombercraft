@@ -10,7 +10,7 @@
 using namespace GameModule;
 
 IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
-: IA::IACore<TileType, BombermanAction>(pos, env), _range(0), _defaultValue(-1), _randomMove(0), _randomBombe(7)
+    : IA::IACore<TileType, BombermanAction>(pos, env), _range(0), _defaultValue(-1), _randomMove(0), _randomBomb(7)
 {
     // seed
     if (Game::CoreData::settings->isSetInFile("IA_SEED"))
@@ -33,30 +33,38 @@ IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<
     else
         std::cerr << "Default %: " << this->_randomMove << std::endl;
     // random bombe
-    if (Game::CoreData::settings->isSetInFile("IA_BOMBE_PROB"))
-        this->_randomBombe = Game::CoreData::settings->getInt("IA_BOMBE_PROB");
+    if (Game::CoreData::settings->isSetInFile("IA_BOMB_PROB"))
+        this->_randomBomb = Game::CoreData::settings->getInt("IA_BOMB_PROB");
     else
-        std::cerr << "Default bombe prob: 1/" << this->_randomBombe << std::endl;
-    if (this->_randomBombe <= 0)
-        throw IAExceptions("\"IA_BOMBE_PROB\" must be > 0");
+        std::cerr << "Default bombe prob: 1/" << this->_randomBomb << std::endl;
+    if (this->_randomBomb <= 0)
+        throw IAExceptions("\"IA_BOMB_PROB\" must be > 0");
     // SETINGS
     this->IASettings();
 }
 
-IABomberman::~IABomberman()
-{
-}
-
 void IABomberman::IASettings()
 {
-    this->setIAAction(BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
-        return this->actionPutBomber(pos, env);
-    });
-    this->setIAMovement([this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list) {
-        return this->movementPrediction(pos, env, list);
-    });
+    this->setIAAction(
+        BombermanAction::ACTION_TRIGGER_BOMBE, [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos) {
+            return this->actionPutBomber(pos, env);
+        });
+    this->setIAMovement(
+        [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list) {
+            return this->movementPrediction(pos, env, list);
+        });
     this->setRunnableTile(TileType::TILE_BONUS);
     this->setRunnableTile(TileType::TILE_EMPTY);
+}
+
+void IABomberman::setRandomMove(const size_t randomness)
+{
+    this->_randomMove = randomness;
+}
+
+void IABomberman::setRandomBomb(const size_t randomness)
+{
+    this->_randomBomb = randomness;
 }
 
 void IABomberman::setRange(size_t range)
@@ -79,7 +87,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
     std::srand(this->_seed);
-    if (std::rand() % this->_randomBombe)
+    if (std::rand() % this->_randomBomb)
         return false;
     editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
     if (this->findSecurePlace(pos, env, list))
@@ -88,7 +96,8 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     return true;
 }
 
-void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
+void IABomberman::movementPrediction(
+    std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
 {
     size_t x = pos.first;
     size_t y = pos.second;
@@ -103,7 +112,8 @@ void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<
     }
 }
 
-bool IABomberman::findSecurePlace(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
+bool IABomberman::findSecurePlace(
+    std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, std::queue<IA::Movement> &list)
 {
     bool stat = false;
     std::vector<std::vector<int>> cost_array = this->getCostArray(pos, env);
@@ -137,7 +147,8 @@ bool IABomberman::isSecurePlace(TileType type) const
     return true;
 }
 
-std::vector<std::vector<int>> IABomberman::getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
+std::vector<std::vector<int>> IABomberman::getCostArray(
+    const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
 {
     bool stat = true;
     int to_find = 0;
@@ -174,7 +185,8 @@ std::vector<std::vector<int>> IABomberman::getCostArray(const std::pair<size_t, 
     return cpy;
 }
 
-std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const
+std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(
+    const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const
 {
     int best_value = -1;
     std::pair<size_t, size_t> best = {-1, -1};
@@ -182,7 +194,8 @@ std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(const std::vector<std
     stat = false;
     for (size_t y = 0; y < tab.size(); y++) {
         for (size_t x = 0; x < tab[y].size(); x++) {
-            if (tab[y][x] != this->_defaultValue && this->isSecurePlace(env[y][x]) && (best_value > tab[y][x] || best_value == -1)) {
+            if (tab[y][x] != this->_defaultValue && this->isSecurePlace(env[y][x])
+                && (best_value > tab[y][x] || best_value == -1)) {
                 stat = true;
                 best = {x, y};
                 best_value = tab[y][x];
@@ -192,7 +205,8 @@ std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(const std::vector<std
     return best;
 }
 
-void IABomberman::loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const
+void IABomberman::loadPath(
+    const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const
 {
     IA::Movement toPush;
     size_t x = end.first;
@@ -221,7 +235,8 @@ void IABomberman::loadPath(const std::vector<std::vector<int>> &tab, std::pair<s
     list.push(toPush);
 }
 
-std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const
+std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
+    std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const
 {
     int move = 1;
     size_t x = pos.first;
@@ -229,7 +244,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     int tmp;
 
     for (size_t i = 0; i < range; i++) {
-        tmp = (int)(x + (i * move));
+        tmp = (int) (x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -242,7 +257,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = (int)(y + (i * move));
+        tmp = (int) (y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -256,7 +271,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
     }
     move = -1;
     for (size_t i = 0; i < range; i++) {
-        tmp = (int)(x + (i * move));
+        tmp = (int) (x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
@@ -269,7 +284,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(std::ve
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = (int)(y + (i * move));
+        tmp = (int) (y + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
@@ -289,7 +304,7 @@ IA::Movement IABomberman::getIAMovement()
     IA::Movement tmp = IACore::getIAMovement();
 
     if (this->isSecurePlace(this->_env[this->_prevPos.first][this->_prevPos.second])
-    && !this->isSecurePlace(this->_env[this->_pos.first][this->_pos.second])) {
+        && !this->isSecurePlace(this->_env[this->_pos.first][this->_pos.second])) {
         this->clearQueue(this->_MovementQueue);
         this->_pos = this->_prevPos;
         std::cout << "On a encore eu de la chance" << std::endl;
@@ -298,7 +313,8 @@ IA::Movement IABomberman::getIAMovement()
     return tmp;
 }
 
-void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
+void IABomberman::randomMove(
+    const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
     size_t x = pos.first;
     size_t y = pos.second;
@@ -322,7 +338,8 @@ void IABomberman::randomMove(const std::pair<size_t, size_t> &pos, const std::ve
     list.push(toPush);
 }
 
-void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
+void IABomberman::offensiveMove(
+    const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
     std::queue<IA::Movement> path;
     std::pair<int, int> tmp = {this->_defaultValue, this->_defaultValue};
@@ -333,7 +350,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
     cost = this->getCostArray(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
         if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
-            tmp.first = (int)i;
+            tmp.first = (int) i;
             tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
         }
     }
@@ -350,7 +367,7 @@ bool IABomberman::isRandomMove() const
     if (!randomProba)
         return false;
     std::srand(this->_seed);
-    if ((size_t)(std::rand() % 100) <= randomProba)
+    if ((size_t) (std::rand() % 100) <= randomProba)
         return true;
     return false;
 }

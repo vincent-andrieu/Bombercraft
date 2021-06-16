@@ -54,10 +54,16 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
     CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels{
             {"texture", std::make_shared<raylib::Texture>(config.pathTexture, config.size, position)},
-            {"timeText", std::make_shared<GUI::TimeText>(entity, "00:00", textPos, config.fontSize, config.textColor, config.pathFont)},
-            });
-    CoreData::entityManager->addComponent<Component::Chrono>(entity, (double) countdown,
-        [handler](Engine::EntityManager &em, Engine::SceneManager &, const Engine::Entity entity) {
+            {"timeText",
+                std::make_shared<GUI::TimeText>(entity,
+                    "00:00",
+                    textPos + Game::CoreData::settings->getMyVector2("TIMER_TEXT_SHIFT"),
+                    config.fontSize,
+                    config.textColor,
+                    config.pathFont)},
+        });
+    CoreData::entityManager->addComponent<Component::Chrono>(
+        entity, (double) countdown, [handler](Engine::EntityManager &em, Engine::SceneManager &, const Engine::Entity entity) {
             handler();
             em.removeComponent<Engine::Timer>(entity);
         });
@@ -79,7 +85,7 @@ const TimerConfig CountdownFactory::getStandardConfig()
 {
     const TimerConfig t = {Game::CoreData::settings->getString("TIMER_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_FONT"),
-        static_cast<std::size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
+        static_cast<std::size_t>(Game::CoreData::settings->getInt("TIMER_FONT_SIZE")),
         CONF_GET_COLOR("TIMER_COLOR"),
         Game::CoreData::settings->getMyVector2("TIMER_SIZE")};
     return t;
