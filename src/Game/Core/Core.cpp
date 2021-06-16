@@ -130,30 +130,8 @@ Core::Core()
         (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
-    // DEBUG - START - Remove when players with PlayerConfig Component will be added
-    auto entity = this->globalEntities.createEntity("config1");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        Component::PlayerID::ALPHA,
-        Component::PlayerKeyBindings{
-            raylib::KeyBoard::IKEY_UP,
-            raylib::KeyBoard::IKEY_DOWN,
-            raylib::KeyBoard::IKEY_LEFT,
-            raylib::KeyBoard::IKEY_RIGHT,
-            raylib::KeyBoard::IKEY_END,
-            raylib::KeyBoard::IKEY_R_SHIFT,
-        });
-
-    entity = this->globalEntities.createEntity("config2");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        Component::PlayerID::BRAVO,
-        Component::PlayerKeyBindings{
-            raylib::KeyBoard::IKEY_Z,
-            raylib::KeyBoard::IKEY_S,
-            raylib::KeyBoard::IKEY_Q,
-            raylib::KeyBoard::IKEY_D,
-            raylib::KeyBoard::IKEY_W,
-            raylib::KeyBoard::IKEY_L_ALT,
-        });
+    /// CHARACTERS
+    this->createCharacterConfig();
     // MUSIC
     // this->loadMusic();
 }
@@ -240,4 +218,52 @@ void Core::printDuringPreload()
     size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
 
     std::cout << "loading: " << value << "%" << std::endl;
+}
+
+void Core::createCharacterConfig()
+{
+    auto entity = this->globalEntities.createEntity("config1");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::ALPHA,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_UP,
+            raylib::KeyBoard::IKEY_DOWN,
+            raylib::KeyBoard::IKEY_LEFT,
+            raylib::KeyBoard::IKEY_RIGHT,
+            raylib::KeyBoard::IKEY_END,
+            raylib::KeyBoard::IKEY_R_SHIFT,
+        });
+    entity = this->globalEntities.createEntity("config2");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::BRAVO,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_Z,
+            raylib::KeyBoard::IKEY_S,
+            raylib::KeyBoard::IKEY_Q,
+            raylib::KeyBoard::IKEY_D,
+            raylib::KeyBoard::IKEY_W,
+            raylib::KeyBoard::IKEY_L_ALT,
+        });
+    entity = this->globalEntities.createEntity("config3");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::DELTA,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_O,
+            raylib::KeyBoard::IKEY_K,
+            raylib::KeyBoard::IKEY_L,
+            raylib::KeyBoard::IKEY_M,
+            raylib::KeyBoard::IKEY_I,
+            raylib::KeyBoard::IKEY_P,
+        });
+    entity = this->globalEntities.createEntity("config4");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::CHARLIE,
+        Component::PlayerKeyBindings{
+            raylib::KeyBoard::IKEY_EIGHT,
+            raylib::KeyBoard::IKEY_FOUR,
+            raylib::KeyBoard::IKEY_FIVE,
+            raylib::KeyBoard::IKEY_SIX,
+            raylib::KeyBoard::IKEY_SEVEN,
+            raylib::KeyBoard::IKEY_NINE,
+        });
 }

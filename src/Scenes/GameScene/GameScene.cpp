@@ -70,10 +70,8 @@ void GameScene::open()
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// CHARACTERS
-    auto &config = CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1"));
-    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
-    Engine::Entity player = CharacterFactory::create(this->localEntities, config, map, false);
-    GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player);
+    this->createCharacters();
+    GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player); /// DEBUG
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
@@ -85,6 +83,21 @@ void GameScene::open()
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }
 
+void GameScene::createCharacters()
+{
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
+
+    Component::PlayerConfig *config[4] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
+    for (size_t i = 0; i < 4; i++) {
+        CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
+    }
+}
+
 uint GameScene::getNbrPlayers()
 {
     uint counter = 0;
@@ -92,7 +105,6 @@ uint GameScene::getNbrPlayers()
     for (const auto &player : Game::PLAYER_ID_TO_NAME)
         if (CoreData::sceneManager->getCurrentScene()->localEntities.entityIsSet(player.second))
             counter++;
-
     return counter;
 }
 
