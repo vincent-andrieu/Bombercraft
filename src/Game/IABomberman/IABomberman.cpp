@@ -84,14 +84,19 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
 
+    std::cout << "YEP" << std::endl;
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
-    std::srand(this->_seed);
-    if (std::rand() % this->_randomBomb)
+    //std::srand(this->_seed);
+    int tmp = std::rand() % this->_randomBomb;
+    std::cout << "RANDOM: " << tmp << " prob: " << this->_randomBomb << std::endl;
+    if (tmp)
         return false;
+    std::cout << "PUT?" << std::endl;
     editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
     if (this->findSecurePlace(pos, env, list))
         return false;
+    std::cout << "KA BOOM" << std::endl;
     this->_MovementQueue = list;
     return true;
 }
@@ -218,13 +223,13 @@ void IABomberman::loadPath(
     int goal = tab[y][x] - 1;
     std::pair<size_t, size_t> next;
 
-    std::cout << "LOAD PATH -> X: " << end.first << " Y: " << end.second << std::endl;
+    /*std::cout << "LOAD PATH -> X: " << end.first << " Y: " << end.second << std::endl;
     for (size_t y = 0; y < tab.size(); y++) {
         for (size_t x = 0; x < tab[y].size(); x++) {
             std::cout << tab[y][x] << "|";
         }
         std::cout << std::endl;
-    }
+    }*/
     if (!tab[y][x])
         return;
     if (x != 0 && tab[y][x - 1] == goal) {
@@ -386,7 +391,7 @@ bool IABomberman::isRandomMove() const
 
     if (!randomProba)
         return false;
-    std::srand(this->_seed);
+    //std::srand(this->_seed);
     if ((size_t) (std::rand() % 100) <= randomProba)
         return true;
     return false;
