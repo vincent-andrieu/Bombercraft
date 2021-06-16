@@ -31,6 +31,7 @@ namespace Component
         void setTexture(std::string const &path);
 
         const raylib::MyVector3 &getPosition() const;
+        const raylib::MyVector3 &getRotation() const;
         void setScale(const float scale);
 
       private:

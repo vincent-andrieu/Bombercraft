@@ -75,6 +75,43 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     }
 }
 
+static bool isBombPlacable(float posX, float posY)
+{
+    auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
+        CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
+    auto my_data(map.getData(std::make_pair(posX, posY)));
+
+    if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
+        return true;
+    }
+    return false;
+}
+
+static void placeBomb(Component::ModelList &render)
+{
+    const auto optionEntity(core->globalEntities.getEntity("options"));
+    auto &options(Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity));
+    const auto &playerRotation(render.getRotation().b);
+    auto bombIndexOnMap(Component::Matrix2D::getMapIndex(render.getPosition()));
+
+    if (playerRotation == 0)
+        bombIndexOnMap.b++;
+    if (playerRotation == 90)
+        bombIndexOnMap.a--;
+    if (playerRotation == 180)
+        bombIndexOnMap.b--;
+    if (playerRotation == 270)
+        bombIndexOnMap.a++;
+
+    const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
+    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b))
+        GUI::BlockFactory::create(Core::sceneManager->getCurrentScene()->localEntities,
+            bombPosition,
+            GUI::BlockFactory::BlockType::BLOCK_BOMB,
+            options.ressourcePack);
+    render.select("setBomb");
+}
+
 static void handlerKeyEvent(const Engine::Entity character)
 {
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
@@ -109,10 +146,7 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            // TODO DROP BOMB
-            const auto &scene = Core::sceneManager->getCurrentScene();
-            //BlockFactory::create(scene->localEntities, );
-            render.select("setBomb");
+            placeBomb(render);
         }
     }
 }

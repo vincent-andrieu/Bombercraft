@@ -14,8 +14,8 @@ raylib::Animation::Animation(const std::string &texturePath,
     const RColor color,
     bool isLooping,
     std::size_t speed)
-    : _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}), _texturePath(texturePath),
-      _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
+    : _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}),
+      _texturePath(texturePath), _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
 {
     std::vector<std::string> filenames = {};
     int count = 0;
@@ -149,6 +149,11 @@ void raylib::Animation::setPosition(const MyVector3 position)
 const raylib::MyVector3 &raylib::Animation::getPosition() const
 {
     return this->_position;
+}
+
+const raylib::MyVector3 &raylib::Animation::getRotation() const
+{
+    return this->_rotation;
 }
 
 void raylib::Animation::setRotation(const MyVector3 rotation)

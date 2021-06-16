@@ -26,18 +26,17 @@ namespace raylib
 
         void draw();
 
-       void restartAnimation();
+        void restartAnimation();
 
         void setPosition(const MyVector3 position);
         const MyVector3 &getPosition() const;
+        const MyVector3 &getRotation() const;
         void setRotation(const MyVector3 rotation);
         void setScale(const float scale);
         void setColor(const RColor color);
         void setPath(const string &path);
         void setTexture(const std::string &texturePath);
         void setLoaderManager();
-
-        MyVector3 getRotation() const;
 
         [[nodiscard]] string getPath() const;
 
