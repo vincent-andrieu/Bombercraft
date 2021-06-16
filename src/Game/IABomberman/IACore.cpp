@@ -23,9 +23,25 @@ IACore<TileType, Action>::~IACore()
     this->_isRunnable.clear();
 }
 
+#include <iostream>
+
 template <typename TileType, typename Action>
 void IACore<TileType, Action>::setIAEnv(std::vector<std::vector<TileType>> env)
 {
+    for (size_t y = 0; y < env.size(); y++) {
+        for (size_t x = 0; x < env[y].size(); x++) {
+            switch (env[y][x])
+            {
+                case TileType::TILE_BONUS: std::cout << "?"; break;
+                case TileType::TILE_DEFAULT: std::cout << "!"; break;
+                case TileType::TILE_EMPTY: std::cout << "."; break;
+                case TileType::TILE_EXPLOSION: std::cout << "O"; break;
+                case TileType::TILE_HARD: std::cout << "x"; break;
+                case TileType::TILE_SOFT: std::cout << "#"; break;
+            }
+        }
+        std::cout << std::endl;
+    }
     this->_env = env;
 }
 
@@ -38,6 +54,7 @@ std::vector<std::vector<TileType>> IACore<TileType, Action>::getIAEnv() const
 template <typename TileType, typename Action>
 void IACore<TileType, Action>::setIAPos(std::pair<size_t, size_t> pos)
 {
+    std::cout << "x: " << pos.first << " y: " << pos.second << std::endl;
     this->_pos = pos;
 }
 

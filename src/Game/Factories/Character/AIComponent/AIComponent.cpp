@@ -20,6 +20,15 @@ std::pair<size_t, size_t> AIComponent::getVelocity()
     move = this->_AI->getIAMovement();
     switch (move)
     {
+        case IA::Movement::IA_MOVE_UP: std::cout << "IA_MOVE_UP" << std::endl;break;
+        case IA::Movement::IA_MOVE_DOWN: std::cout << "IA_MOVE_DOW" << std::endl;break;
+        case IA::Movement::IA_MOVE_LEFT: std::cout << "IA_MOVE_LEFT" << std::endl;break;
+        case IA::Movement::IA_MOVE_NONE: std::cout << "IA_MOVE_NON" << std::endl;break;
+        case IA::Movement::IA_MOVE_RIGHT: std::cout << "IA_MOVE_RIGH" << std::endl;break;
+        default: std::cout << "IA_MOVE_RIGH" << std::endl;break;
+    }
+    switch (move)
+    {
         case IA::Movement::IA_MOVE_UP: return {0, -1};break;
         case IA::Movement::IA_MOVE_DOWN: return {0, 1};break;
         case IA::Movement::IA_MOVE_LEFT: return {-1, 0};break;
@@ -48,9 +57,9 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     std::vector<GameModule::TileType> tmp;
     GameModule::TileType type;
 
-    for (size_t y = 0; y < size.b; y++) {
+    for (size_t y = 1; y < size.b - 1; y++) {
         tmp.clear();
-        for (size_t x = 0; x < size.a; x++) {
+        for (size_t x = 1; x < size.a - 1; x++) {
             switch (map->getCategory({x, y}))
             {
                 case GUI::BlockFactory::BlockType::BLOCK_BLAST: type = GameModule::TileType::TILE_EXPLOSION; break;
