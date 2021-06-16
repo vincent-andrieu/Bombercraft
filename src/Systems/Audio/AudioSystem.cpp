@@ -18,12 +18,10 @@ AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
 
 void AudioSystem::play(std::string const &entityName, Engine::EntityPack &scenePack)
 {
-    std::lock_guard<std::mutex> lock_guard(this->_mutex);
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
 
-    if (scene == nullptr) {
+    if (scene == nullptr)
         return;
-    }
     try {
         Engine::Entity soundEntity = scenePack.getEntity(entityName);
 
@@ -81,7 +79,7 @@ void AudioSystem::setVolume(float volume)
 
 void AudioSystem::update()
 {
-    // std::lock_guard<std::mutex> lock_guard(this->_mutex);
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
 
     for (Engine::Entity entity : this->getManagedEntities()) {
         auto soundComponent = _entityManager.getComponent<Component::Sound>(entity);
