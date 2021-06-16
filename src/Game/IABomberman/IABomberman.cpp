@@ -66,8 +66,8 @@ void IABomberman::setRange(size_t range)
 
 void IABomberman::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
 {
-    if (enemy.size() != 3)
-        throw IAExceptions("Invalide list size", true);
+    if (enemy.size() > 3)
+        throw IAExceptions("Invalide list size: " + std::to_string(enemy.size()), true);
     IACore::setEnemyPos(enemy);
 }
 
@@ -124,6 +124,15 @@ void IABomberman::clearQueue(std::queue<IA::Movement> &list)
 
 bool IABomberman::isRunnable(TileType type) const
 {
+    /*switch (type)
+    {
+        case TileType::TILE_BONUS: std::cout << "TILE_BONUS" << std::endl; break;
+        case TileType::TILE_DEFAULT: std::cout << "TILE_DEFAULT" << std::endl; break;
+        case TileType::TILE_EMPTY: std::cout << "TILE_EMPTY" << std::endl; break;
+        case TileType::TILE_EXPLOSION: std::cout << "TILE_EXPLOSION" << std::endl; break;
+        case TileType::TILE_HARD: std::cout << "TILE_HARD" << std::endl; break;
+        case TileType::TILE_SOFT: std::cout << "TILE_SOFT" << std::endl; break;
+    }*/
     for (auto it : this->_isRunnable)
         if (it == type)
             return true;
@@ -144,6 +153,7 @@ std::vector<std::vector<int>> IABomberman::getCostArray(const std::pair<size_t, 
     std::vector<std::vector<int>> cpy;
     std::vector<int> cpy_tmp;
 
+    //std::cout << "X: " << pos.first << " Y: " << pos.second << std::endl;
     for (size_t y = 0; y < env.size(); y++) {
         cpy_tmp.clear();
         for (size_t x = 0; x < env[y].size(); x++) {
@@ -200,6 +210,13 @@ void IABomberman::loadPath(const std::vector<std::vector<int>> &tab, std::pair<s
     int goal = tab[y][x] - 1;
     std::pair<size_t, size_t> next;
 
+    /*std::cout << "X: " << end.first << " Y: " << end.second << std::endl;
+    for (size_t y = 0; y < tab.size(); y++) {
+        for (size_t x = 0; x < tab[y].size(); x++) {
+            std::cout << tab[y][x];
+        }
+        std::cout << std::endl;
+    }*/
     if (!tab[y][x])
         return;
     if (x != 0 && tab[y][x - 1] == goal) {
@@ -328,7 +345,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
     std::pair<int, int> tmp = {this->_defaultValue, this->_defaultValue};
     std::vector<std::vector<int>> cost;
 
-    if (this->_enemyPos.size() != 3)
+    if (this->_enemyPos.size() > 3)
         throw IAExceptions("Invalide enemy list", true);
     cost = this->getCostArray(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
@@ -337,6 +354,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
             tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
         }
     }
+    //std::cout << "CELUI LA" << std::endl;
     this->loadPath(cost, this->_enemyPos[tmp.first], path);
     this->clearQueue(list);
     list.push(path.front());
