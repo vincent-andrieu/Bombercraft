@@ -354,11 +354,18 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
             tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
         }
     }
-    //std::cout << "CELUI LA" << std::endl;
-    this->loadPath(cost, this->_enemyPos[tmp.first], path);
-    this->clearQueue(list);
-    list.push(path.front());
-    this->clearQueue(path);
+    if (!this->_enemyPos.size()) {
+        this->clearQueue(list);
+        list.push(IA::Movement::IA_MOVE_NONE);
+    } else {
+        this->loadPath(cost, this->_enemyPos[tmp.first], path);
+        this->clearQueue(list);
+        if (path.size())
+            list.push(path.front());
+        else
+            list.push(IA::Movement::IA_MOVE_NONE);
+        this->clearQueue(path);
+    }
 }
 
 bool IABomberman::isRandomMove() const
