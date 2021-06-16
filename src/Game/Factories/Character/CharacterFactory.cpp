@@ -242,7 +242,7 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    auto relativPos = Component::Matrix2D::getPositionRelativ(pos.getPosition());
+    auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
     std::vector<std::string> entityList = {
         PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
@@ -254,12 +254,14 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     for (size_t i = 0; i < entityList.size(); i++) {
         if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
             entityPlayer = sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i]);
-            if (entityPlayer != entity)
-                posList.push_back(Component::Matrix2D::getPositionRelativ(CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition()));
+            if (entityPlayer != entity) {
+                auto tmp = Component::Matrix2D::getMapIndex(CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
+                posList.push_back({tmp.a, tmp.b});
+            }
         }
     }
     (void) entityManager;
-    ai.setEnv(map.getData(), relativPos, posList);
+    ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
     std::pair<size_t, size_t> velocityIA = ai.getVelocity();
     velocity.x = velocityIA.first;
     velocity.y = velocityIA.second;

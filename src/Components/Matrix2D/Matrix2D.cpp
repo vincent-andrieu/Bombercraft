@@ -44,10 +44,3 @@ raylib::MyVector2 Matrix2D::getMapSize() const
     }
     return _data->getSize();
 }
-
-std::pair<size_t, size_t> Matrix2D::getPositionRelativ(raylib::MyVector3 pos)
-{
-    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-
-    return {pos.a / size.a, pos.b / size.b};
-}
