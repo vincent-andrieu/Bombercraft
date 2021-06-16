@@ -9,7 +9,8 @@
 
 using namespace Component;
 
-Component::ModelList::ModelList(const std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> &models, std::string const &firstModel)
+Component::ModelList::ModelList(
+    const std::unordered_map<std::string, std::shared_ptr<raylib::IModel>> &models, std::string const &firstModel)
 {
     if (models.empty()) {
         throw std::invalid_argument("ModelList::ModelList Empty model list.");
@@ -29,6 +30,7 @@ void Component::ModelList::select(const std::string &label)
         throw std::invalid_argument("ModelList::select Unknown model label.");
     }
     this->_selected = _models[it->second];
+    this->_selected->restartAnimation();
 }
 
 void Component::ModelList::draw()
@@ -39,6 +41,7 @@ void Component::ModelList::draw()
 void Component::ModelList::setPosition(const raylib::MyVector3 position)
 {
     for (auto &model : _models) {
+        this->_prevPosition = model->getPosition();
         model->setPosition(position);
     }
 }
@@ -63,5 +66,20 @@ const raylib::MyVector3 &ModelList::getPosition() const
 
 void ModelList::setScale(const float scale)
 {
-    return _selected->setScale(scale);
+    for (auto &model : _models) {
+        model->setScale(scale);
+    }
+}
+
+void ModelList::resetPosition(bool x, bool z)
+{
+    raylib::MyVector3 pos = this->getPosition();
+
+    if (x) {
+        pos.a = _prevPosition.a;
+    }
+    if (z) {
+        pos.c = _prevPosition.c;
+    }
+    this->setPosition(pos);
 }

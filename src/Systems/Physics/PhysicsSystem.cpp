@@ -24,8 +24,8 @@ void System::PhysicsSystem::update(float dt)
         render.setPosition(position);
         if (this->_entityManager.hasComponent<Component::Hitbox>(entity)) {
             Component::Hitbox &hitboxComponent = this->_entityManager.getComponent<Component::Hitbox>(entity);
-            const raylib::MyVector3 &oldPosition = hitboxComponent.objectBox->getBoxOrigin();
-            hitboxComponent.objectBox->setOrigin(raylib::MyVector3({position.a, oldPosition.b, position.c}));
+            hitboxComponent.objectBox->setOrigin(
+                raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("HITBOX_SHIFT"));
         }
     }
 }

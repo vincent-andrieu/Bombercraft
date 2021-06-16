@@ -14,6 +14,7 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
+#include "Components/Option/OptionComponent.hpp"
 
 namespace Game
 {
@@ -22,6 +23,7 @@ namespace Game
         GameScene(Engine::SystemManager &systemManager);
         ~GameScene() = default;
 
+        void applyOptions(Component::OptionComponent &options);
         void open();
 
         void update();

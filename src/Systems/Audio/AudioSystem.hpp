@@ -24,7 +24,8 @@ namespace System
         AudioSystem();
         virtual ~AudioSystem() = default;
 
-        void play(std::string const &entityName, Engine::EntityPack &entityPack);
+        void play(const string &entityName, Engine::EntityPack &entityPack);
+        void play(const string &entityName);
 
         void setVolume(float volume);
 
