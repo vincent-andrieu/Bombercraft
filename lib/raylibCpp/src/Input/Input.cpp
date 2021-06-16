@@ -24,7 +24,11 @@ bool Input::isKeyPressed(KeyBoard key) const
 
 bool Input::isKeyReleased(KeyBoard key) const
 {
-    return !this->isKeyPressed(key);
+    auto keyLine = this->_keyList.find(key);
+
+    if (keyLine == this->_keyList.end())
+        throw std::invalid_argument("isKeyPressed: key not found.");
+    return IsKeyReleased(keyLine->second);
 }
 
 MyVector2 Input::getMousePos() const
