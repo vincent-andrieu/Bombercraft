@@ -8,6 +8,7 @@
 #ifndef MYVECTOR3_HPP
 #define MYVECTOR3_HPP
 
+#include <fstream>
 #include "raylib.h"
 
 namespace raylib
@@ -31,6 +32,7 @@ namespace raylib
     MyVector3 operator*(MyVector3 const &first, MyVector3 const &second);
     MyVector3 operator/(MyVector3 const &first, MyVector3 const &second);
     bool operator==(MyVector3 const &first, MyVector3 const &second);
+    std::ostream &operator<<(std::ostream &stream, MyVector3 const &vector);
 }; // namespace raylib
 
 #endif

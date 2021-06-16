@@ -27,11 +27,11 @@ void MapFactory::create(
             if (map[y][x] != GameModule::TileType::TILE_EMPTY) {
                 tmpBlockType = MapFactory::blockTypeSinceTile(map[y][x]);
                 tmpEntityId =
-                    GUI::BlockFactory::create(entityPack, {x * size.a, y * size.b, 0 * size.c}, tmpBlockType, ressourcePackRoot);
+                    GUI::BlockFactory::create(entityPack, {x * size.a, 0 * size.b, y * size.c}, tmpBlockType, ressourcePackRoot);
                 matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
             }
             tmpEntityId = GUI::BlockFactory::create(
-                entityPack, {x * size.a, y * size.b, -1 * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
+                entityPack, {x * size.a, -1 * size.b, y * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
             matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
         }
     }
