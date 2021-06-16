@@ -76,6 +76,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
 
 static void handlerKeyEvent(const Engine::Entity character)
 {
+    Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
@@ -97,6 +98,13 @@ static void handlerKeyEvent(const Engine::Entity character)
             || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
             velocity.x = 0;
         }
+        if (velocity.x || velocity.y) {
+            render.select("walk");
+        } else {
+            render.select("idle");
+        }
+        // TODO : Drop bomb
+        // render.select("setBomb");
     }
 }
 
@@ -142,7 +150,7 @@ Engine::Entity Game::CharacterFactory::create(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
             {"walk",
                 std::make_shared<raylib::Animation>(
-                    texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE)},
+                    texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE, true)},
             {"setBomb",
                 std::make_shared<raylib::Animation>(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_SET_BOMB"), characterPos, raylib::RColor::RWHITE)}}),
@@ -152,7 +160,6 @@ Engine::Entity Game::CharacterFactory::create(
     /// Inventory
     CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
-    raylib::MyVector3 blockSize = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);

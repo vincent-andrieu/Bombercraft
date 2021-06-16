@@ -65,7 +65,9 @@ const raylib::MyVector3 &ModelList::getPosition() const
 
 void ModelList::setScale(const float scale)
 {
-    return _selected->setScale(scale);
+    for (auto &model : _models) {
+        model->setScale(scale);
+    }
 }
 
 void ModelList::resetPosition(bool x, bool z)
