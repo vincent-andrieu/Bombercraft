@@ -21,19 +21,19 @@ class ConfigFile : public IConfigFile {
 
     void loadFile(const std::string &filename) override;
 
+    // Getters
     [[nodiscard]] int getInt(const std::string &name) const override;
     [[nodiscard]] float getFloat(const std::string &name) const override;
     [[nodiscard]] std::string getString(const std::string &name) const override;
     [[nodiscard]] std::pair<int, int> getPair(const std::string &name) const override;
-
     [[nodiscard]] std::vector<int> getTabInt(const std::string &name) const override;
+
     [[nodiscard]] std::vector<std::string> getTabString(const std::string &name) const override;
     [[nodiscard]] std::vector<std::vector<int>> getTabTabInt(const std::string &name) const override;
-
     [[nodiscard]] raylib::MyVector2 getMyVector2(const std::string &name) const override;
+
     [[nodiscard]] raylib::MyVector3 getMyVector3(const std::string &name) const override;
     [[nodiscard]] raylib::MyVector4 getMyVector4(const std::string &name) const override;
-
     [[nodiscard]] bool isSetInFile(const std::string &name) const override;
 
   private:
