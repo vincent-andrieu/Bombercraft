@@ -71,9 +71,9 @@ MyVector4 raylib::operator/(MyVector4 const &first, MyVector4 const &second)
     if (second.b)
         two = first.b / second.b;
     if (second.c)
-        two = first.c / second.c;
+        three = first.c / second.c;
     if (second.d)
-        two = first.d / second.d;
+        four = first.d / second.d;
     return MyVector4(one, two, three, four);
 }
 

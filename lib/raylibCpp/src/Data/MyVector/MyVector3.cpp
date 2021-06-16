@@ -74,7 +74,7 @@ MyVector3 raylib::operator/(MyVector3 const &first, MyVector3 const &second)
     if (second.b)
         two = first.b / second.b;
     if (second.c)
-        two = first.c / second.c;
+        three = first.c / second.c;
     return MyVector3(one, two, three);
 }
 
