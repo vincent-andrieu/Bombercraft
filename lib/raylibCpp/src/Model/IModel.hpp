@@ -23,6 +23,8 @@ namespace raylib
 
         virtual void draw() = 0;
 
+        virtual void restartAnimation() = 0;
+
         virtual void setPosition(const MyVector3 position) = 0;
         virtual const MyVector3 &getPosition() const = 0;
         virtual void setRotation(const MyVector3 rotation) = 0;

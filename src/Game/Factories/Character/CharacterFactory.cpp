@@ -13,6 +13,7 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
 #include "AIComponent/AIComponent.hpp"
+#include "Game/Factories/Block/BlockFactory.hpp"
 
 using namespace Game;
 
@@ -59,15 +60,62 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
         render.select("death"); /// Play animation => Death
     } else if (type == EntityType::POWERUP) {
         /// Note : bonus are given by the power-up collision handlers
-    } else if (type == EntityType::SOFTBLOCK && info.wallPass == false) {
-        render.setPosition(hitbox.prevPosition);
-    } else {
-        render.setPosition(hitbox.prevPosition);
+    } else if (!(type == EntityType::SOFTBLOCK && info.wallPass == true)) {
+        Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
+        raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
+        raylib::MyVector3 playerPosition = render.getPosition();
+        raylib::MyVector3 delta = playerPosition - otherPosition;
+        if ((delta.a > 0 && velocity.x < 0) || (delta.a < 0 && velocity.x > 0)) {
+            velocity.x = 0;
+            render.resetPosition(true, false);
+        }
+        if ((delta.c > 0 && velocity.y < 0) || (delta.c < 0 && velocity.y > 0)) {
+            velocity.y = 0;
+            render.resetPosition(false, true);
+        }
     }
 }
 
-static void handlerKeyEvent(const Engine::Entity)
+static void handlerKeyEvent(const Engine::Entity character)
 {
+    Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
+    const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+
+    if (info.config != nullptr) {
+        const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+        if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
+            velocity.y = -info.speed;
+            render.setRotation({0, 180, 0}); // TOP
+        } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
+            render.setRotation({0, 0, 0}); // DOWN
+            velocity.y = info.speed;
+        } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
+            velocity.y = 0;
+        }
+        if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
+            velocity.x = -info.speed;
+            render.setRotation({0, 90, 0}); // LEFT
+        } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
+            velocity.x = info.speed;
+            render.setRotation({0, 270, 0}); // RIGHT
+        } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
+            || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
+            velocity.x = 0;
+        }
+        if (velocity.x || velocity.y) {
+            render.select("walk");
+        } else {
+            render.select("idle");
+        }
+        if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
+            // TODO DROP BOMB
+            const auto &scene = Core::sceneManager->getCurrentScene();
+            //BlockFactory::create(scene->localEntities, );
+            render.select("setBomb");
+        }
+    }
 }
 
 Engine::Entity Game::CharacterFactory::create(
@@ -112,20 +160,17 @@ Engine::Entity Game::CharacterFactory::create(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
             {"walk",
                 std::make_shared<raylib::Animation>(
-                    texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE)},
+                    texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE, true)},
             {"setBomb",
                 std::make_shared<raylib::Animation>(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_SET_BOMB"), characterPos, raylib::RColor::RWHITE)}}),
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    modelList.setRotation(CoreData::settings->getMyVector3("CHARACTER_ROTATE_SHIFT"));
-    modelList.setPosition(characterPos + CoreData::settings->getMyVector3("CHARACTER_POS_SHIFT"));
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
     /// Inventory
     CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
-    raylib::MyVector3 blockSize = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    raylib::MyVector3 hitboxSize(blockSize.a, blockSize.b, blockSize.c * 2);
+    const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Velocity
@@ -161,7 +206,8 @@ raylib::MyVector3 Game::CharacterFactory::getPlayerPosition(Component::PlayerID 
 
 Engine::Entity CharacterFactory::createPlayer(Engine::Entity entity, Component::PlayerConfig &config)
 {
-    EventRequirement requirements(config.getPlayerKeyList(), {});
+    const Component::PlayerKeyBindings &keys = config.getPlayerKeyBindings();
+    EventRequirement requirements(config.getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
 
     CoreData::entityManager->addComponent<Component::KeyEvent>(entity, handlerKeyEvent, requirements);
     return entity;

@@ -12,8 +12,6 @@
 #include "raylib.hpp"
 #include <memory>
 #include "EntityType.hpp"
-#include "../../../lib/raylibCpp/src/Data/MyVector/MyVector3.hpp"
-#include "../../../include/EntityType.hpp"
 
 using ObjectBox = raylib::ObjectBox;
 
@@ -28,15 +26,17 @@ namespace Component
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
+        void debugRender();
+
         // bool save(Engine::SaveManager &saver) const override;
         // bool load(Engine::SaveManager &saver) override;
 
         std::shared_ptr<ObjectBox> objectBox;
         Game::EntityType entityType;
-        raylib::MyVector3 prevPosition;
 
       private:
         hitboxHandler _handler;
+        raylib::Cuboid _debugRender;
     };
 } // namespace Component
 

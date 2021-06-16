@@ -27,12 +27,14 @@ namespace Component
         void draw();
         void setPosition(const raylib::MyVector3 position);
         void setRotation(const raylib::MyVector3 rotation);
+        void resetPosition(bool x, bool z);
         void setTexture(std::string const &path);
 
         const raylib::MyVector3 &getPosition() const;
         void setScale(const float scale);
 
       private:
+        raylib::MyVector3 _prevPosition;
         std::vector<std::shared_ptr<raylib::IModel>> _models;
         std::unordered_map<std::string, std::size_t> _modelNames;
         std::shared_ptr<raylib::IModel> _selected;

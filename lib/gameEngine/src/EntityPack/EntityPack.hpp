@@ -26,6 +26,7 @@ namespace Engine
         Entity createAnonymousEntity();
 
         void removeEntity(const std::string &key);
+        void removeEntity(const Engine::Entity entity);
 
         Entity getEntity(const std::string &key);
         bool entityIsSet(const std::string &key);
