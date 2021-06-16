@@ -137,15 +137,6 @@ void IABomberman::clearQueue(std::queue<IA::Movement> &list)
 
 bool IABomberman::isRunnable(TileType type) const
 {
-    /*switch (type)
-    {
-        case TileType::TILE_BONUS: std::cout << "TILE_BONUS" << std::endl; break;
-        case TileType::TILE_DEFAULT: std::cout << "TILE_DEFAULT" << std::endl; break;
-        case TileType::TILE_EMPTY: std::cout << "TILE_EMPTY" << std::endl; break;
-        case TileType::TILE_EXPLOSION: std::cout << "TILE_EXPLOSION" << std::endl; break;
-        case TileType::TILE_HARD: std::cout << "TILE_HARD" << std::endl; break;
-        case TileType::TILE_SOFT: std::cout << "TILE_SOFT" << std::endl; break;
-    }*/
     for (auto it : this->_isRunnable)
         if (it == type)
             return true;
@@ -175,7 +166,7 @@ std::vector<std::vector<int>> IABomberman::getCostArray(
         }
         cpy.push_back(cpy_tmp);
     }
-    cpy[pos.first][pos.second] = 0;
+    cpy[pos.second][pos.first] = 0;
     while (stat) {
         stat = false;
         for (size_t y = 0; y < cpy.size(); y++) {
@@ -230,7 +221,7 @@ void IABomberman::loadPath(
     std::cout << "LOAD PATH -> X: " << end.first << " Y: " << end.second << std::endl;
     for (size_t y = 0; y < tab.size(); y++) {
         for (size_t x = 0; x < tab[y].size(); x++) {
-            std::cout << tab[y][x];
+            std::cout << tab[y][x] << "|";
         }
         std::cout << std::endl;
     }
@@ -415,7 +406,7 @@ std::vector<std::vector<int>> IABomberman::findEnemy(const std::pair<size_t, siz
         }
         cpy.push_back(cpy_tmp);
     }
-    cpy[pos.first][pos.second] = 0;
+    cpy[pos.second][pos.first] = 0;
     while (stat) {
         stat = false;
         for (size_t y = 0; y < cpy.size(); y++) {
