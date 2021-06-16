@@ -20,12 +20,12 @@
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "GUI/Factories/Label/LabelFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 #include "GameEngine.hpp"
 
 namespace GUI
 {
     struct TextInputConfig {
-        const raylib::MyVector2 size;
         const raylib::RColor color;
         const std::size_t borderSize;
         const raylib::RColor borderColor;
@@ -35,6 +35,7 @@ namespace GUI
 
     struct TextInputDynConf {
         const raylib::MyVector2 position;
+        const raylib::MyVector2 size;
         const std::string name;
         const std::string placeholder;
     };
@@ -43,10 +44,13 @@ namespace GUI
       public:
         ~TextInputFactory() = delete;
 
-        static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput,
+        static TextInputConfig getStandardConfig();
+
+        static void create(Engine::EntityPack &pack,
+            TextInputDynConf const &dynConf,
+            TextInputConfig const &textInput,
             LabelConfig const &label);
         static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label);
-        static TextInputConfig getStandardConfig();
 
       protected:
       private:

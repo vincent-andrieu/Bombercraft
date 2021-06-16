@@ -41,7 +41,8 @@ static const Game::EventRequirement inputHandlerRequirement(
         raylib::KeyBoard::IKEY_Z,
         raylib::KeyBoard::IKEY_BACKSPACE,
         raylib::KeyBoard::IKEY_SPACE,
-    }, {});
+    },
+    {});
 
 static const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_A, std::string("a")},
@@ -82,6 +83,12 @@ static const std::map<raylib::KeyBoard, std::string> _letterMap = {
     {raylib::KeyBoard::IKEY_NINE, std::string("9")},
     {raylib::KeyBoard::IKEY_SPACE, std::string(" ")},
 };
+
+TextInputConfig TextInputFactory::getStandardConfig()
+{
+    const TextInputConfig t = {raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, 16, raylib::MyVector2(5, 5)};
+    return t;
+}
 
 static Component::eventScript inputHandler = [](const Engine::Entity &childEntity) {
     const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
@@ -126,15 +133,14 @@ void TextInputFactory::create(
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + textInput.textPositionOffset;
     raylib::MyVector2 inputPosition(dynConf.position.a + textInput.borderSize, dynConf.position.b + textInput.borderSize);
-    raylib::MyVector2 inputSize(textInput.size.a - textInput.borderSize * 2, textInput.size.b - textInput.borderSize * 2);
+    raylib::MyVector2 inputSize(dynConf.size.a - textInput.borderSize * 2, dynConf.size.b - textInput.borderSize * 2);
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({
-            {"rectangle", std::make_shared<raylib::Rectangle>(inputPosition, inputSize, textInput.color)},
-            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, textInput.size, textInput.borderColor)},
+        Component::render2dMapModels({{"rectangle",
+                                          std::make_shared<raylib::Rectangle>(inputPosition, inputSize, textInput.color)},
+            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, dynConf.size, textInput.borderColor)},
             {"text",
-                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)}
-        }));
+                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)}}));
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequirement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
@@ -145,13 +151,4 @@ void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &
     TextInputConfig const &textInput = TextInputFactory::getStandardConfig();
 
     TextInputFactory::create(pack, dynConf, textInput, label);
-}
-
-TextInputConfig TextInputFactory::getStandardConfig()
-{
-    const TextInputConfig t = {raylib::MyVector2(152, 27),
-        raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY,
-        16, raylib::MyVector2(5, 5)
-    };
-    return t;
 }
