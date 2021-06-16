@@ -94,10 +94,13 @@ void IABomberman::movementPrediction(std::pair<size_t, size_t> pos, std::vector<
     size_t y = pos.second;
 
     if (this->isRandomMove()) {
+        std::cout << "random move" << std::endl;
         this->randomMove(pos, env, list);
     } else if (this->isSecurePlace(env[y][x])) {
+        std::cout << "offensive move" << std::endl;
         this->offensiveMove(pos, env, list);
     } else {
+        std::cout << "findsecureplace move" << std::endl;
         if (!this->findSecurePlace(pos, env, list))
             std::cerr << "RIP mon ruf" << std::endl;
     }
@@ -347,7 +350,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
 
     if (this->_enemyPos.size() > 3)
         throw IAExceptions("Invalide enemy list", true);
-    cost = this->getCostArray(pos, env);
+    cost = this->findEnemy(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
         if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
             tmp.first = (int)i;
@@ -360,6 +363,7 @@ void IABomberman::offensiveMove(const std::pair<size_t, size_t> &pos, const std:
     } else {
         this->loadPath(cost, this->_enemyPos[tmp.first], path);
         this->clearQueue(list);
+        std::cout << "Parh size: " << path.size() << std::endl;
         if (path.size())
             list.push(path.front());
         else
@@ -378,4 +382,41 @@ bool IABomberman::isRandomMove() const
     if ((size_t)(std::rand() % 100) <= randomProba)
         return true;
     return false;
+}
+
+std::vector<std::vector<int>> IABomberman::findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
+{
+    bool stat = true;
+    int to_find = 0;
+    std::vector<std::vector<int>> cpy;
+    std::vector<int> cpy_tmp;
+
+    for (size_t y = 0; y < env.size(); y++) {
+        cpy_tmp.clear();
+        for (size_t x = 0; x < env[y].size(); x++) {
+            cpy_tmp.push_back(this->_defaultValue);
+        }
+        cpy.push_back(cpy_tmp);
+    }
+    cpy[pos.first][pos.second] = 0;
+    while (stat) {
+        stat = false;
+        for (size_t y = 0; y < cpy.size(); y++) {
+            for (size_t x = 0; x < cpy[y].size(); x++) {
+                if (cpy[y][x] == to_find) {
+                    stat = true;
+                    if (x + 1 < cpy[y].size() && cpy[y][x + 1] == this->_defaultValue && env[y][x + 1] != TileType::TILE_HARD)
+                        cpy[y][x + 1] = to_find + 1;
+                    if (y + 1 < cpy.size() && cpy[y + 1][x] == this->_defaultValue && env[y + 1][x] != TileType::TILE_HARD)
+                        cpy[y + 1][x] = to_find + 1;
+                    if (x != 0 && cpy[y][x - 1] == this->_defaultValue && env[y][x - 1] != TileType::TILE_HARD)
+                        cpy[y][x - 1] = to_find + 1;
+                    if (y != 0 && cpy[y - 1][x] == this->_defaultValue && env[y - 1][x] != TileType::TILE_HARD)
+                        cpy[y - 1][x] = to_find + 1;
+                }
+            }
+        }
+        to_find++;
+    }
+    return cpy;
 }

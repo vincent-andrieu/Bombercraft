@@ -52,6 +52,7 @@ namespace GameModule
             void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
             std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
             std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
+            std::vector<std::vector<int>> findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         
         private:
             size_t _range;
