@@ -227,13 +227,13 @@ void IABomberman::loadPath(
     int goal = tab[y][x] - 1;
     std::pair<size_t, size_t> next;
 
-    /*std::cout << "X: " << end.first << " Y: " << end.second << std::endl;
+    std::cout << "LOAD PATH -> X: " << end.first << " Y: " << end.second << std::endl;
     for (size_t y = 0; y < tab.size(); y++) {
         for (size_t x = 0; x < tab[y].size(); x++) {
             std::cout << tab[y][x];
         }
         std::cout << std::endl;
-    }*/
+    }
     if (!tab[y][x])
         return;
     if (x != 0 && tab[y][x - 1] == goal) {
