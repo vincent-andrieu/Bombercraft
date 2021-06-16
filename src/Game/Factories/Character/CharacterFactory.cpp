@@ -65,8 +65,30 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     }
 }
 
-static void handlerKeyEvent(const Engine::Entity)
+static void handlerKeyEvent(const Engine::Entity character)
 {
+    const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+
+    if (info.config != nullptr) {
+        const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+        if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
+            velocity.y = -info.speed;
+        } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
+            velocity.y = info.speed;
+        } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
+            velocity.y = 0;
+        }
+        if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
+            velocity.x = -info.speed;
+        } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
+            velocity.x = info.speed;
+        } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
+            || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
+            velocity.x = 0;
+        }
+    }
 }
 
 Engine::Entity Game::CharacterFactory::create(
@@ -160,7 +182,8 @@ raylib::MyVector3 Game::CharacterFactory::getPlayerPosition(Component::PlayerID 
 
 Engine::Entity CharacterFactory::createPlayer(Engine::Entity entity, Component::PlayerConfig &config)
 {
-    EventRequirement requirements(config.getPlayerKeyList(), {});
+    const Component::PlayerKeyBindings &keys = config.getPlayerKeyBindings();
+    EventRequirement requirements(config.getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
 
     CoreData::entityManager->addComponent<Component::KeyEvent>(entity, handlerKeyEvent, requirements);
     return entity;
