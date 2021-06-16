@@ -20,6 +20,7 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
@@ -75,6 +76,7 @@ _preloadModel(loadModel, {
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
+    CoreData::entityManager->registerComponent<Component::AIComponent>();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(

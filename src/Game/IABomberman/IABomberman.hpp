@@ -24,7 +24,7 @@ namespace GameModule
     class IABomberman : public IA::IACore<TileType, BombermanAction>
     {
         public:
-            IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
+            IABomberman(std::pair<size_t, size_t> pos = {0, 0}, std::vector<std::vector<TileType>> env = {{}});
             ~IABomberman();
             void setRange(size_t range);
             IA::Movement getIAMovement();

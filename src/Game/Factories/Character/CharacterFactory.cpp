@@ -12,6 +12,7 @@
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
+#include "AIComponent/AIComponent.hpp"
 
 using namespace Game;
 
@@ -35,9 +36,9 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     if (type == EntityType::BLAST) {
         if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
             CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
-        } /* else if (CoreData::entityManager->hasComponent< AI Component >(character)) { // TODO
-             CoreData::entityManager->removeComponent< AI Component >(character);
-         }*/
+        } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) { // TODO
+            CoreData::entityManager->removeComponent<Component::AIComponent>(character);
+         }
         auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
         audioSys.play("Death", core->globalEntities);
         /// Set Timer => remove entity

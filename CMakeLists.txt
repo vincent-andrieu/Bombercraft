@@ -37,6 +37,7 @@ set(SRCS
         src/Components/Matrix2D/Matrix2D.cpp
         src/Game/Factories/Map/MapFactory.cpp
         src/Game/Factories/Character/CharacterFactory.cpp
+        src/Game/Factories/Character/AIComponent/AIComponent.cpp
         # GUI/FACTORIES
         src/GUI/Factories/Button/ButtonFactory.cpp
         src/GUI/Factories/Label/LabelFactory.cpp
