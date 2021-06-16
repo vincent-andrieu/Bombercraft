@@ -36,7 +36,7 @@ void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
         if (_toClose) {
             _currentScene->close();
         } else {
-            _unclosedScenes.push(scene);
+            _unclosedScenes.push(_currentScene);
         }
     }
     _currentScene = std::move(scene);
