@@ -34,8 +34,16 @@ GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(syste
 {
 }
 
+void GameScene::applyOptions(Component::OptionComponent &)
+{
+    // TODO set IA options
+    // TODO set number of players
+}
+
 void GameScene::open()
 {
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
 
@@ -43,13 +51,11 @@ void GameScene::open()
     const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
     GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
-        CoreData::settings->getInt("STANDARD_COUNTDOWN"),
+        options.gameTimerDuration,
         handlerGameTimeout);
     /// OPTIONS
-    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
     /// MAP
-    const string &ressourcePackRoot =
-        CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
+    const string &ressourcePackRoot = options.ressourcePack;
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     GUI::BlockFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), GUI::BlockFactory::BlockType::BLOCK_BOMB, ressourcePackRoot);

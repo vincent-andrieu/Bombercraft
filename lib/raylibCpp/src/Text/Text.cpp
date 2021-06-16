@@ -84,6 +84,8 @@ void raylib::Text::setFontSize(raylib::Text &text, const raylib::MyVector2 &size
     std::size_t my_fontSize(0);
     raylib::MyVector2 my_textSize;
 
+    if (size.a <= 0 || size.b <= 0)
+        return;
     do {
         my_fontSize++;
         text.setFontSize(my_fontSize);
