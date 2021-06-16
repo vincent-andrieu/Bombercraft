@@ -155,12 +155,20 @@ Core::Core()
     // this->loadMusic();
 }
 
+void Core::_audioSystemUpdate()
+{
+    while (CoreData::window->isOpen() && this->_loop == true) {
+        CoreData::systemManager->getSystem<System::AudioSystem>().update();
+    }
+}
+
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
+    std::thread audioThread(&Core::_audioSystemUpdate, this);
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
         if (!this->isEndPreload()) {
@@ -171,8 +179,9 @@ void Core::loop()
         }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
-        CoreData::systemManager->getSystem<System::AudioSystem>().update();
     }
+    if (audioThread.joinable())
+        audioThread.join();
 }
 
 void Core::loadMusic()

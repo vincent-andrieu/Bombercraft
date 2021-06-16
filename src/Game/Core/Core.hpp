@@ -59,11 +59,13 @@ namespace Game
         void createSystems();
         void createScenes();
         void loadMusic();
-        std::unordered_map<std::string, std::string> getAudioList(std::string const &varPathList, std::string const &varNameList) const;
+        std::unordered_map<std::string, std::string> getAudioList(
+            std::string const &varPathList, std::string const &varNameList) const;
         bool isEndPreload();
         void printDuringPreload();
         void runPreload();
         void runAfterPreload();
+        void _audioSystemUpdate();
 
       public:
         Engine::EntityPack globalEntities;

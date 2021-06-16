@@ -8,6 +8,7 @@
 #ifndef AUDIOSYSTEM_HPP
 #define AUDIOSYSTEM_HPP
 
+#include <mutex>
 #include "GameEngine.hpp"
 
 namespace System
@@ -30,6 +31,9 @@ namespace System
         void stopAll();
         void stopMusic();
         void update();
+
+      private:
+        std::mutex _mutex;
     };
 } // namespace System
 

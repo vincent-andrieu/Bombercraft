@@ -16,9 +16,11 @@ AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
     this->setRequirements<Component::Sound>();
 }
 
-void AudioSystem::play(std::string const& entityName, Engine::EntityPack &scenePack)
+void AudioSystem::play(std::string const &entityName, Engine::EntityPack &scenePack)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
+
     if (scene == nullptr) {
         return;
     }
@@ -35,13 +37,15 @@ void AudioSystem::play(std::string const& entityName, Engine::EntityPack &sceneP
             }
             sound.audio->play();
         }
-    } catch (UNUSED std::invalid_argument const& e) {
+    } catch (UNUSED std::invalid_argument const &e) {
         std::cerr << "Warning: AudioSystem::update entity " << entityName << " not found." << std::endl;
     }
 }
 
 void AudioSystem::stopAll()
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (Engine::Entity entity : this->getManagedEntities()) {
         auto soundComponent = _entityManager.getComponent<Component::Sound>(entity);
 
@@ -53,6 +57,8 @@ void AudioSystem::stopAll()
 
 void AudioSystem::stopMusic()
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (Engine::Entity entity : this->getManagedEntities()) {
         auto musicComponent = _entityManager.getComponent<Component::Sound>(entity);
 
@@ -64,6 +70,8 @@ void AudioSystem::stopMusic()
 
 void AudioSystem::setVolume(float volume)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (Engine::Entity entity : this->getManagedEntities()) {
         auto component = _entityManager.getComponent<Component::Sound>(entity);
 
@@ -73,6 +81,8 @@ void AudioSystem::setVolume(float volume)
 
 void AudioSystem::update()
 {
+    // std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (Engine::Entity entity : this->getManagedEntities()) {
         auto soundComponent = _entityManager.getComponent<Component::Sound>(entity);
 
