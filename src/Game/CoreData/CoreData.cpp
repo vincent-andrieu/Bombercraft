@@ -24,7 +24,7 @@ static const raylib::MyVector2 maximalWinSize(5000, 2500);
 
 void CoreData::initWindow()
 {
-    raylib::MyVector2 winSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    const raylib::MyVector2 winSize(CoreData::settings->getMyVector2("WIN_SIZE"));
 
     if (winSize.a < minimalWinSize.a || winSize.b < minimalWinSize.b || winSize.a > maximalWinSize.a
         || winSize.b > maximalWinSize.b)
