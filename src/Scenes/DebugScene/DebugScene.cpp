@@ -82,8 +82,8 @@ void DebugScene::open()
     // GUI::TextInputConfig TextInputConfig = {
     //     raylib::MyVector2(152, 27), raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, 16, raylib::MyVector2(5, 5)};
     GUI::LabelConfig labelTextInput = {16, raylib::RColor::RWHITE, "./Asset/Font/MinecraftRegular.ttf"};
-    GUI::TextInputDynConf input1 = {raylib::MyVector2(300, 75), "input1", "player name"};
-    GUI::TextInputDynConf input2 = {raylib::MyVector2(500, 75), "input2", "save name"};
+    //    GUI::TextInputDynConf input1 = {raylib::MyVector2(300, 75), raylib::MyVector2(300, 75), "input1", "player name"};
+    //    GUI::TextInputDynConf input2 = {raylib::MyVector2(500, 75), raylib::MyVector2(500, 75), "input2", "save name"};
     GUI::KeyInputDynConf keyInput1 = {raylib::MyVector2(300, 175), "keyinput1"};
 
     /// ENTITIES - CREATION
