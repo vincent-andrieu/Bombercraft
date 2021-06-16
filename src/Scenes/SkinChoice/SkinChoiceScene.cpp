@@ -128,7 +128,7 @@ void Game::SkinChoiceScene::open()
             this->_selectedPlayer->setSkinPath(choice.get());
         });
     // Skin
-    CoreData::camera->setUp(CoreData::settings->getMyVector3("CHARACTER_CHOICE_CAM_UP"));
+    CoreData::camera->setUp(CoreData::settings->getMyVector3("MENU_CAM_UP"));
     Engine::Entity skin = this->localEntities.createEntity("skin");
     CoreData::entityManager->addComponent<Component::Render3D>(
         skin, std::make_shared<raylib::Model>(this->_selectedPlayer->getSkinPath(), modelPath, raylib::MyVector3(0, -4, 0)));

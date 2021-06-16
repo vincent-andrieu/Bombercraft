@@ -74,6 +74,7 @@ void EndGameScene::open()
         GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
 
     // MODEL
+    CoreData::camera->setUp(CoreData::settings->getMyVector3("MENU_CAM_UP"));
     for (size_t i = 0; i < nbPlayers; i++) {
         Engine::Entity player = this->localEntities.createEntity("PlayerEndGame" + toString(i + 1));
         playerConfig = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(ids[i]);
