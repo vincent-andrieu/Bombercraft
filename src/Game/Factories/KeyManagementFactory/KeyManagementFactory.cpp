@@ -28,8 +28,6 @@ void Game::KeyManagementFactory::create(
 
     auto my_eventHandler([keyTriggers](Engine::Entity entity) {
         for (const auto &keyTrigger : keyTriggers) {
-            std::cout << "hello" << std::endl;
-            std::cout << (uint) keyTrigger.first << std::endl;
             if (keyTrigger.first != raylib::KeyBoard::IKEY_NULL && Game::CoreData::eventManager->isKeyPressed(keyTrigger.first))
                 keyTrigger.second(entity);
         }

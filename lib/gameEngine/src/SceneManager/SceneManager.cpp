@@ -94,7 +94,6 @@ void SceneManager::closeLastUnclosedScene()
     my_scene = _unclosedScenes.top();
     if (!my_scene)
         return;
-    std::cout << "closing" << std::endl;
     _unclosedScenes.pop();
     my_scene->close();
 }
