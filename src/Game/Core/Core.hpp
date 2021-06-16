@@ -43,6 +43,8 @@
 #include "Components/PlayerInventory/PlayerInventory.hpp"
 #include "Preloader/Preloader.hpp"
 
+#define EXIT_ERROR 84
+
 namespace Game
 {
     class Core : public CoreData {

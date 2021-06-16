@@ -7,15 +7,9 @@
 
 #include "SceneManager.hpp"
 
+#include <utility>
+
 using namespace Engine;
-
-SceneManager::SceneManager() : _currentScene(nullptr), _nextScene(nullptr)
-{
-}
-
-SceneManager::~SceneManager()
-{
-}
 
 void SceneManager::run()
 {
@@ -24,7 +18,7 @@ void SceneManager::run()
     }
 }
 
-void SceneManager::run(std::shared_ptr<AbstractScene> scene)
+void SceneManager::run(const std::shared_ptr<AbstractScene> &scene)
 {
     if (scene != nullptr) {
         scene->update();
@@ -38,13 +32,19 @@ std::shared_ptr<AbstractScene> SceneManager::getCurrentScene()
 
 void SceneManager::setCurrentScene(std::shared_ptr<AbstractScene> scene)
 {
-    if (_currentScene != nullptr) {
-        _currentScene->close();
-    }
-    _currentScene = scene;
     if (_currentScene) {
+        if (_toClose) {
+            _currentScene->close();
+        } else {
+            _unclosedScenes.push(_currentScene);
+        }
+    }
+    _currentScene = std::move(scene);
+    if (_currentScene && _toOpen) {
         _currentScene->open();
     }
+    _toClose = true;
+    _toOpen = true;
 }
 
 void SceneManager::updateScene()
@@ -67,9 +67,33 @@ std::shared_ptr<AbstractScene> SceneManager::peekLastScene()
     return my_last;
 }
 
-void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene)
+void SceneManager::popLastScene()
+{
+    _lastScenes.pop();
+}
+
+void SceneManager::setScene(const std::shared_ptr<AbstractScene> &scene, const bool close, const bool open)
 {
     if (std::find(_scenes.begin(), _scenes.end(), scene) == _scenes.end())
         return;
-    _nextScene = scene;
+    _toClose = close;
+    _toOpen = open;
+    if (_currentScene == nullptr) {
+        this->setCurrentScene(scene);
+    } else {
+        _nextScene = scene;
+    }
+}
+
+void SceneManager::closeLastUnclosedScene()
+{
+    std::shared_ptr<AbstractScene> my_scene(nullptr);
+
+    if (_unclosedScenes.empty())
+        return;
+    my_scene = _unclosedScenes.top();
+    if (!my_scene)
+        return;
+    _unclosedScenes.pop();
+    my_scene->close();
 }

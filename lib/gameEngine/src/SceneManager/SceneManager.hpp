@@ -18,35 +18,41 @@ namespace Engine
 {
     class SceneManager {
       public:
-        SceneManager();
-        ~SceneManager();
+        SceneManager() = default;
+        ~SceneManager() = default;
 
         void run();
-        void run(std::shared_ptr<AbstractScene> scene);
+        static void run(const std::shared_ptr<AbstractScene> &scene);
 
         template <typename T, typename... Args> void createScene(Args &&...sceneType);
 
         template <typename T> void remove();
 
-        template <typename T> void setScene();
-        void setScene(const std::shared_ptr<AbstractScene> &scene);
+        template <typename T> void setScene(bool close = true, bool open = true);
+        void setScene(const std::shared_ptr<AbstractScene> &scene, bool close = true, bool open = true);
 
         void pushLastScene();
+        void popLastScene();
         std::shared_ptr<AbstractScene> peekLastScene();
         std::shared_ptr<AbstractScene> getCurrentScene();
         void updateScene();
 
         template <typename T> std::shared_ptr<AbstractScene> getScene();
 
+        void closeLastUnclosedScene();
+
       private:
         void setCurrentScene(std::shared_ptr<AbstractScene> scene);
 
       private:
-        std::shared_ptr<AbstractScene> _currentScene;
-        std::vector<std::shared_ptr<AbstractScene>> _scenes;
+        std::shared_ptr<AbstractScene> _currentScene{nullptr};
+        std::shared_ptr<AbstractScene> _nextScene{nullptr};
         std::vector<std::reference_wrapper<const std::type_info>> _types;
-        std::shared_ptr<AbstractScene> _nextScene;
+        std::vector<std::shared_ptr<AbstractScene>> _scenes;
         std::stack<std::shared_ptr<AbstractScene>> _lastScenes;
+        std::stack<std::shared_ptr<AbstractScene>> _unclosedScenes;
+        bool _toClose{true};
+        bool _toOpen{true};
     };
 
     template <typename T, typename... Args> void SceneManager::createScene(Args &&...args)
@@ -86,17 +92,19 @@ namespace Engine
         _scenes.pop_back();
     }
 
-    template <typename T> void SceneManager::setScene()
+    template <typename T> void SceneManager::setScene(const bool close, const bool open)
     {
+        // TODO lksjdfklj
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
         auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sceneType) {
             return sceneType.get() == type;
         });
-
         if (type_it == _types.end()) {
             throw std::exception();
         }
+        _toClose = close;
+        _toOpen = open;
         index = std::distance(_types.begin(), type_it);
         if (_currentScene == nullptr) {
             this->setCurrentScene(_scenes[index]);

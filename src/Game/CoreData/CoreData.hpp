@@ -13,8 +13,10 @@
 
 #include "ConfigFile/ConfigFile.hpp"
 
-#define CONFIG_FILE "bomberman.config"
-#define UNUSED      [[maybe_unused]]
+#ifndef CONFIG_FILE
+    #define CONFIG_FILE "bombercraft.config"
+#endif
+#define UNUSED [[maybe_unused]]
 
 namespace Game
 {
@@ -37,6 +39,9 @@ namespace Game
 
       protected:
         static bool _loop;
+
+      private:
+        static void initWindow();
     };
 } // namespace Game
 
