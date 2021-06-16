@@ -188,9 +188,16 @@ Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
 
 void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
+    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+    auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+    auto relativPos = Component::Matrix2D::getPositionRelativ(pos.getPosition());
 
     (void) sceneManager;
     (void) entityManager;
-    (void) ai;
+    ai.setEnv(map.getData(), relativPos);
+    ai.getVelocity(); // TODO SET VELOCITY
+    if (ai.putBomb()) {
+        // TODO PUT BOMB
+    }
 }

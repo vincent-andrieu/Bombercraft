@@ -6,6 +6,7 @@
 */
 
 #include "Game/IABomberman/IABomberman.hpp"
+#include "Components/Matrix2D/DataMatrix/DataMatrix.hpp"
 
 #ifndef AICOMPONENT_HPP
 #define AICOMPONENT_HPP
@@ -17,6 +18,13 @@ namespace Component
         public:
             AIComponent();
             virtual ~AIComponent() = default;
+
+            std::pair<size_t, size_t> getVelocity();
+            bool putBomb();
+            void setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos);
+
+        private:
+            static GameModule::MapType translateMatrix(const std::shared_ptr<DataMatrix> &map);
 
         private:
             std::shared_ptr<GameModule::IABomberman> _AI;
