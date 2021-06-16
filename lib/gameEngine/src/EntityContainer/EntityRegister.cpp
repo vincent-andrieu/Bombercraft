@@ -43,6 +43,9 @@ Entity EntityRegister::create()
 
 void EntityRegister::remove(Entity entity)
 {
+    if (std::find(_freeEntities.begin(), _freeEntities.end(), entity) != _freeEntities.end()) {
+        throw std::invalid_argument("EntityRegister::remove Entity already removed.");
+    }
     _freeEntities.push_back(entity);
 }
 
