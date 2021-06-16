@@ -43,16 +43,7 @@ const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
     return raylib::Model::_loaderManager->load(toLoad);
 }
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
-_preloadTexture(loadTexture, {
-    "Asset/Interface/Button.png",
-    "Asset/Interface/HoverButton.png",
-    "Asset/Interface/Button.png",
-    "Asset/Interface/UnavailableButton.png",
-}),
-_preloadModel(loadModel, {
-    {}
-})
+void Core::registerComponents()
 {
     /// COMPONENTS - DEFINITION
     CoreData::entityManager->registerComponent<Component::Matrix2D>();
@@ -77,10 +68,10 @@ _preloadModel(loadModel, {
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
     CoreData::entityManager->registerComponent<Component::AIComponent>();
-    /// COMPONENTS - CREATION
-    Engine::Entity options = this->globalEntities.createEntity("options");
-    CoreData::entityManager->addComponent<Component::OptionComponent>(
-        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+}
+
+void Core::createSystems()
+{
     /// SYSTEMS - CREATION
     CoreData::systemManager->createSystem<System::Render3DSystem>();
     CoreData::systemManager->createSystem<System::Render2DSystem>();
@@ -94,6 +85,10 @@ _preloadModel(loadModel, {
     CoreData::systemManager->createSystem<System::AudioSystem>();
     CoreData::systemManager->createSystem<System::PlayerConfigSystem>();
     CoreData::systemManager->createSystem<System::ModelListSystem>();
+}
+
+void Core::createScenes()
+{
     /// SCENES - CREATION
     CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
@@ -109,6 +104,26 @@ _preloadModel(loadModel, {
     CoreData::sceneManager->createScene<EndGameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<RessourcePackMenuScene>(*CoreData::systemManager);
+}
+
+Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
+_preloadTexture(loadTexture, {
+    "Asset/Interface/Button.png",
+    "Asset/Interface/HoverButton.png",
+    "Asset/Interface/Button.png",
+    "Asset/Interface/UnavailableButton.png",
+}),
+_preloadModel(loadModel, {
+    {}
+})
+{
+    this->registerComponents();
+    /// COMPONENTS - CREATION
+    Engine::Entity options = this->globalEntities.createEntity("options");
+    CoreData::entityManager->addComponent<Component::OptionComponent>(
+        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+    this->createSystems();
+    this->createScenes();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
     auto entity = this->globalEntities.createEntity("config1");
     CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,

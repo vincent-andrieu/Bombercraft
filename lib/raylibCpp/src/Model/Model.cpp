@@ -7,7 +7,8 @@
 
 #include "Model.hpp"
 
-std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> raylib::Model::_loaderManager = nullptr;
+std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> raylib::Model::_loaderManager =
+    nullptr;
 
 raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
 {
@@ -16,7 +17,7 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
 
     char **filenames = nullptr;
     int count = 0;
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
 
     this->_position = position;
     this->_rotation = {0.0f, 0.0f, 0.0f};
@@ -33,7 +34,7 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
                     _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
-            ChangeDirectory(workingDirectory);
+            ChangeDirectory(workingDirectory.data());
         } else if (FileExists(texturePath.data())) {
             _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
@@ -103,7 +104,7 @@ void raylib::Model::setTexture(const std::string &texturePath)
 {
     char **filenames = nullptr;
     int count = 0;
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
 
     _textures.clear();
     _texturePath = texturePath;
@@ -115,7 +116,7 @@ void raylib::Model::setTexture(const std::string &texturePath)
                 _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
             }
             ClearDirectoryFiles();
-            ChangeDirectory(workingDirectory);
+            ChangeDirectory(workingDirectory.data());
         } else if (FileExists(texturePath.data())) {
             _textures.push_back(raylib::Texture::_loaderManager->load(texturePath.data()));
         }
@@ -135,10 +136,12 @@ string raylib::Model::getPath() const
 void raylib::Model::setLoaderManager()
 {
     if (!this->_loaderManager) {
-        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
+            raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     } else {
         this->_loaderManager.reset();
-        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+        this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
+            raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     }
 }
 

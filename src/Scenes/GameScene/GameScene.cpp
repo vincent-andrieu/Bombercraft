@@ -23,7 +23,6 @@ extern std::unique_ptr<Game::Core> core;
 
 static void handlerGameTimeout()
 {
-    std::cout << "TIMEOUT - GAME OVER\n";
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -43,10 +42,9 @@ void GameScene::open()
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
         handlerGameTimeout);
-    /// MAP
-    GUI::MapFactory::create(this->localEntities, "gameMap");
     /// OPTIONS
     const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    /// MAP
     const string &ressourcePackRoot =
         CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
@@ -62,8 +60,9 @@ void GameScene::open()
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
-      CoreData::sceneManager->pushLastScene();
-      CoreData::sceneManager->setScene<PauseMenuScene>();
+        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        CoreData::sceneManager->pushLastScene();
+        CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 }

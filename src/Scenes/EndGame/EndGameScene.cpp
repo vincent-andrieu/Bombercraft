@@ -34,7 +34,17 @@ void EndGameScene::open()
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities myUtility(CoreData::settings->getMyVector2("WIN_SIZE"));
     auto myButtonConfig(GUI::ButtonFactory::getMediumButtonConfig());
+    std::string animDefeat = "Asset/Animation/Anim_Defeat_20";
+    std::string animVictory = "Asset/Animation/Anim_Victory_32";
+    std::shared_ptr<raylib::Animation> raylibAnimation = nullptr;
+    raylib::MyVector3 rotation = {0, -90, 0};
+    size_t nbPlayers = 2;
+    Component::PlayerConfig *playerConfig = nullptr;
+    const std::vector<Component::PlayerID> ids = {
+        Component::PlayerID::ALPHA, Component::PlayerID::BRAVO, Component::PlayerID::CHARLIE, Component::PlayerID::DELTA};
+    const std::vector<std::vector<float>> playerZPosition = {{0}, {7, -7}, {10, 0, -10}, {11, 4, -4, -11}};
 
+    CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
     // BACKGROUND
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("GAME_SCREENSHOT"), false);
@@ -64,15 +74,25 @@ void EndGameScene::open()
         GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
 
     // MODEL
+    for (size_t i = 0; i < nbPlayers; i++) {
+        Engine::Entity player = this->localEntities.createEntity("PlayerEndGame" + toString(i + 1));
+        playerConfig = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(ids[i]);
+        raylibAnimation = std::make_shared<raylib::Animation>(
+            playerConfig->getSkinPath(), animDefeat, raylib::MyVector3(0, -4, playerZPosition[nbPlayers - 1][i]));
+        raylibAnimation->setRotation(rotation);
+        CoreData::entityManager->addComponent<Component::Render3D>(player, raylibAnimation);
+    }
 }
 
 void EndGameScene::update()
 {
     try {
         auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
+        auto &render3D = this->_systemManager.getSystem<System::Render3DSystem>();
         auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
 
         render2D.update();
+        render3D.update();
         timer.update();
         this->eventDispatcher(this->_systemManager);
     } catch (std::invalid_argument const &e) {

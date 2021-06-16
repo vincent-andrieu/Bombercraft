@@ -19,13 +19,25 @@ std::unique_ptr<ConfigFile> CoreData::settings = nullptr;
 std::unique_ptr<raylib::Window> CoreData::window = nullptr;
 bool CoreData::_loop = true;
 
+static const raylib::MyVector2 minimalWinSize(600, 400);
+static const raylib::MyVector2 maximalWinSize(5000, 2500);
+
+void CoreData::initWindow()
+{
+    raylib::MyVector2 winSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+
+    if (winSize.a < minimalWinSize.a || winSize.b < minimalWinSize.b || winSize.a > maximalWinSize.a
+        || winSize.b > maximalWinSize.b)
+        throw ParserExceptions("Window size too extreme");
+    CoreData::window = std::make_unique<raylib::Window>(
+        winSize, CoreData::settings->getString("WIN_TITLE"), static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
+}
+
 CoreData::CoreData()
 {
     CoreData::settings = std::make_unique<ConfigFile>(CONFIG_FILE);
-    CoreData::window = std::make_unique<raylib::Window>(CoreData::settings->getMyVector2("WIN_SIZE"),
-        CoreData::settings->getString("WIN_TITLE"),
-        static_cast<raylib::RColor>(CoreData::settings->getInt("WIN_BACK")));
 
+    CoreData::initWindow();
     CoreData::window->open();
     if (CoreData::systemManager == nullptr)
         CoreData::systemManager = std::make_unique<Engine::SystemManager>();

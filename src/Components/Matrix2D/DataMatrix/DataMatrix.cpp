@@ -59,5 +59,5 @@ const std::pair<Engine::Entity, GUI::BlockFactory::BlockType> &DataMatrix::getBo
 }
 raylib::MyVector2 DataMatrix::getSize() const
 {
-    return raylib::MyVector2(_size.first, _size.second);
+    return raylib::MyVector2((float) _size.first, (float)_size.second);
 }

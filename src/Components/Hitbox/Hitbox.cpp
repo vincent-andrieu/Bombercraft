@@ -9,8 +9,8 @@
 
 using namespace Component;
 
-Hitbox::Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType type)
-    : objectBox(std::make_shared<ObjectBox>(origin, size)), entityType(type), prevPosition(0, 0, 0), _handler(handler)
+Hitbox::Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType typeEntity)
+    : objectBox(std::make_shared<ObjectBox>(origin, size)), entityType(typeEntity), prevPosition(0, 0, 0), _handler(handler)
 {
 }
 

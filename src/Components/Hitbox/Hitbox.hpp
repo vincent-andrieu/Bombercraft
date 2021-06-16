@@ -23,7 +23,7 @@ namespace Component
 
     class Hitbox : public Engine::Component<Hitbox> {
       public:
-        Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType type);
+        Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType typeEntity);
         virtual ~Hitbox() = default;
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);

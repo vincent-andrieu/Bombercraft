@@ -11,11 +11,15 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
     : _path(path), _position(position), _color(color), _currentFrame(0), _textures({}),
       _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true)
 {
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
     std::vector<std::string> vectorOfFilenames = {};
 
+    if (!raylib::Texture::_loaderManager) {
+        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(
+            raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+    }
     if (!DirectoryExists(path.data())) {
         this->_frameNumber = 0;
     } else {
@@ -28,12 +32,11 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
         std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
         for (size_t i = 0; i < (size_t) count; i++) {
             if (!DirectoryExists(vectorOfFilenames[i].data())) {
-                _textures.push_back(LoadTexture(vectorOfFilenames[i].data()));
-//                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
+                _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i].data()));
             }
         }
         ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory);
+        ChangeDirectory(workingDirectory.data());
     }
 }
 
@@ -45,7 +48,8 @@ void raylib::TextureSequence::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
     Rectangle ogRect = {0, 0, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
-    Rectangle position = {this->_position.a, this->_position.b, (float)_textures[_currentFrame].width, (float)_textures[_currentFrame].height};
+    Rectangle position = {
+        this->_position.a, this->_position.b, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
 
     if (_scaleMode) {
         if (_size.width == -1)
@@ -81,7 +85,7 @@ void raylib::TextureSequence::setColor(const RColor color)
 
 void raylib::TextureSequence::setPath(const string &path)
 {
-    const char *workingDirectory = GetWorkingDirectory();
+    std::string workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
 
@@ -98,7 +102,7 @@ void raylib::TextureSequence::setPath(const string &path)
             _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
         }
         ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory);
+        ChangeDirectory(workingDirectory.data());
     }
 }
 

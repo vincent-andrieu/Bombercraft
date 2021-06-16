@@ -21,7 +21,7 @@ namespace raylib
         Animation(const std::string &texturePath,
             const std::string &dirpath,
             const MyVector3 position,
-            const RColor color,
+            const RColor color = raylib::RColor::RWHITE,
             bool isLooping = false);
         ~Animation();
 
@@ -39,7 +39,7 @@ namespace raylib
 
       private:
         void getNewTexture(const std::string &texturePath);
-        char **goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count);
+        std::vector<std::string> goInDirectoryAndGetFileNames(const std::string &directoryPath, int *count);
         void LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath);
         void setNewTexture();
 
