@@ -191,6 +191,7 @@ Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
 
 void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
+    Engine::Entity entityPlayer;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
@@ -204,13 +205,17 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     std::vector<std::pair<size_t, size_t>> posList;
 
     for (size_t i = 0; i < entityList.size(); i++) {
-        if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i]))
-            posList.push_back(Component::Matrix2D::getPositionRelativ(CoreData::entityManager->getComponent<Component::ModelList>(sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i])).getPosition()));
+        if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
+            entityPlayer = sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i]);
+            if (entityPlayer != entity)
+                posList.push_back(Component::Matrix2D::getPositionRelativ(CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition()));
+        }
     }
     (void) entityManager;
     ai.setEnv(map.getData(), relativPos, posList);
     ai.getVelocity(); // TODO SET VELOCITY
     if (ai.putBomb()) {
+        std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB
     }
 }

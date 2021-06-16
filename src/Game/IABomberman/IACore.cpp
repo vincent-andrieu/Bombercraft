@@ -160,6 +160,7 @@ template <typename TileType, typename Action>
 void IACore<TileType, Action>::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
 {
     enemy.push_back({0, 10});
+    std::cout << "enemylis size: " << enemy.size() << std::endl;
     this->_enemyPos = enemy;
 }
 
