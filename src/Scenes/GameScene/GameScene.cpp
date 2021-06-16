@@ -52,6 +52,7 @@ void GameScene::open()
         CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
+    GUI::BlockFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), GUI::BlockFactory::BlockType::BLOCK_BOMB, ressourcePackRoot);
     /// Camera
     CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));

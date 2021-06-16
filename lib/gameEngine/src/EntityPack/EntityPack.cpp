@@ -74,5 +74,4 @@ void Engine::EntityPack::removeEntity(const Engine::Entity entity)
     }
     _entityManager.removeEntity(entity);
     _anonymousEntities.erase(it);
-    std::cout << "New suppr method" << std::endl;
 }
