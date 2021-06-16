@@ -12,6 +12,7 @@
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
+#include "Game/Factories/Block/BlockFactory.hpp"
 
 using namespace Game;
 
@@ -109,6 +110,8 @@ static void handlerKeyEvent(const Engine::Entity character)
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
             // TODO DROP BOMB
+            const auto &scene = Core::sceneManager->getCurrentScene();
+            //BlockFactory::create(scene->localEntities, );
             render.select("setBomb");
         }
     }
