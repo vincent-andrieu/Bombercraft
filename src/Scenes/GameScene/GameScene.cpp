@@ -42,10 +42,9 @@ void GameScene::open()
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         CoreData::settings->getInt("STANDARD_COUNTDOWN"),
         handlerGameTimeout);
-    /// MAP
-    GUI::MapFactory::create(this->localEntities, "gameMap");
     /// OPTIONS
     const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    /// MAP
     const string &ressourcePackRoot =
         CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
