@@ -8,6 +8,7 @@
 #ifndef CHARACTERFACTORY_HPP
 #define CHARACTERFACTORY_HPP
 
+#include <array>
 #include "GameEngine.hpp"
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"

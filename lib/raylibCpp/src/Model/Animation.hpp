@@ -33,6 +33,7 @@ namespace raylib
         void setPosition(const MyVector3 position);
         const MyVector3 &getPosition() const;
         void setRotation(const MyVector3 rotation);
+        const MyVector3 &getRotation() const;
         void setScale(const float scale);
         void setColor(const RColor color);
         void setPath(const std::string &path);
