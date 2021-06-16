@@ -15,12 +15,18 @@
 
 using namespace Game;
 
+extern std::unique_ptr<Game::Core> core;
+
 EndGameScene::EndGameScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
 {
 }
 
 static void goToGameScene(const Engine::Entity)
 {
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+    Game::CoreData::camera->setFovy(options.fov);
     Game::CoreData::sceneManager->setScene<Game::GameScene>();
 }
 

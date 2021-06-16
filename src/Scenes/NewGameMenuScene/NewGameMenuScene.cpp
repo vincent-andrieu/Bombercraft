@@ -13,6 +13,8 @@
 
 static const string my_button_prefix("button_");
 
+extern std::unique_ptr<Game::Core> core;
+
 Game::NewGameMenuScene::NewGameMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
 {
@@ -42,6 +44,10 @@ void Game::NewGameMenuScene::init()
         my_mediumButtonConfig,
         "Create New Game",
         [](const Engine::Entity) {
+            Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+            auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+            Game::CoreData::camera->setFovy(options.fov);
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });

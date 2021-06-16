@@ -19,20 +19,22 @@
 
 #include "Systems/Render2D/Render2DSystem.hpp"
 
+#include "Components/Option/OptionComponent.hpp"
+
 namespace Game
 {
     class OptionsMenuScene : public Engine::AbstractScene, public SceneWithEvents {
-        public:
-            OptionsMenuScene(Engine::SystemManager &systemManager);
-            ~OptionsMenuScene() = default;
+      public:
+        OptionsMenuScene(Engine::SystemManager &systemManager);
+        ~OptionsMenuScene() = default;
 
-            virtual void open();
+        virtual void open();
 
-            void update();
+        void update();
 
-        protected:
-        private:
+      protected:
+      private:
     };
-}
+} // namespace Game
 
 #endif /* !OPTIONSMENU_HPP_ */
