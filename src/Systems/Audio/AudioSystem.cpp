@@ -19,12 +19,12 @@ AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
     this->setRequirements<Component::Sound>();
 }
 
-void AudioSystem::play(const string &entityName)
+void AudioSystem::play(const std::string &entityName)
 {
     this->play(entityName, core->globalEntities);
 }
 
-void AudioSystem::play(const string &entityName, Engine::EntityPack &scenePack)
+void AudioSystem::play(const std::string &entityName, Engine::EntityPack &scenePack)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
 
