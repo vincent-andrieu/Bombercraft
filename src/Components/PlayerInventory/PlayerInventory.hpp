@@ -16,7 +16,7 @@ namespace Component
 {
     struct PlayerInventoryInfo {
         size_t bomb;
-        size_t speed;
+        double speed;
         bool wallPass;
         size_t blastRadius;
         PlayerConfig *config;
@@ -34,7 +34,7 @@ namespace Component
         const PlayerInventoryInfo &getDefaultPlayerInventoryInfo() const;
         void resetAllInfo();
         void setBomb(const size_t &bomb);
-        void setSpeed(const size_t &speed);
+        void setSpeed(double speed);
         void setWallPass(const bool &wallPass);
         void setBlastRadius(const size_t &blastRadius);
 

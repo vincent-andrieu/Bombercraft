@@ -49,7 +49,7 @@ void PlayerInventory::setBomb(const size_t &bomb)
     this->_info.bomb = bomb;
 }
 
-void PlayerInventory::setSpeed(const size_t &speed)
+void PlayerInventory::setSpeed(double speed)
 {
     this->_info.speed = speed;
 }
