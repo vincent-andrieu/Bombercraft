@@ -11,7 +11,9 @@
 #include <vector>
 #include <bitset>
 #include <cstddef>
+#include <algorithm>
 #include <numeric>
+#include <stdexcept>
 #include "env.hpp"
 #include "entity.hpp"
 #include "SaveManager/SaveManager.hpp"
