@@ -32,7 +32,7 @@ class Preloader
         {
             if (!this->_startSize)
                 return 100;
-            return ((float) (this->_startSize - this->_listToLoad.size()) / this->_startSize) * 100;
+            return (size_t)(((float) (this->_startSize - this->_listToLoad.size()) / this->_startSize) * 100);
         }
 
         void nextLoad()
