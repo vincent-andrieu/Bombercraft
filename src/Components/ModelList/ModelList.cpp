@@ -30,6 +30,7 @@ void Component::ModelList::select(const std::string &label)
         throw std::invalid_argument("ModelList::select Unknown model label.");
     }
     this->_selected = _models[it->second];
+    this->_selected->restartAnimation();
 }
 
 void Component::ModelList::draw()

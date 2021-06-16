@@ -136,6 +136,11 @@ void raylib::Animation::draw()
     }
 }
 
+void raylib::Animation::restartAnimation()
+{
+    _currentFrame = 0;
+}
+
 void raylib::Animation::setPosition(const MyVector3 position)
 {
     this->_position = position;

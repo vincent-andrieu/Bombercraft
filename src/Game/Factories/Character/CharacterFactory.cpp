@@ -85,15 +85,19 @@ static void handlerKeyEvent(const Engine::Entity character)
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
             velocity.y = -info.speed;
+            render.setRotation({0, 180, 0}); // TOP
         } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
+            render.setRotation({0, 0, 0}); // DOWN
             velocity.y = info.speed;
         } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
             velocity.y = 0;
         }
         if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
             velocity.x = -info.speed;
+            render.setRotation({0, 90, 0}); // LEFT
         } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
             velocity.x = info.speed;
+            render.setRotation({0, 270, 0}); // RIGHT
         } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
             || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
             velocity.x = 0;
@@ -103,8 +107,10 @@ static void handlerKeyEvent(const Engine::Entity character)
         } else {
             render.select("idle");
         }
-        // TODO : Drop bomb
-        // render.select("setBomb");
+        if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
+            // TODO DROP BOMB
+            render.select("setBomb");
+        }
     }
 }
 
