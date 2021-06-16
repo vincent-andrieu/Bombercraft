@@ -10,17 +10,21 @@
 std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> raylib::Model::_loaderManager =
     nullptr;
 
-raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
+raylib::Model::Model(const std::string &texturePath,
+    const string &filepath,
+    const MyVector3 &position,
+    const RColor color,
+    const MyVector3 &rotation)
 {
-    if (!this->_loaderManager)
-        this->setLoaderManager();
-
     char **filenames = nullptr;
     int count = 0;
     std::string workingDirectory = GetWorkingDirectory();
+    std::vector<std::string> vectorOfFilenames = {};
 
+    if (!this->_loaderManager)
+        this->setLoaderManager();
     this->_position = position;
-    this->_rotation = {0.0f, 0.0f, 0.0f};
+    this->_rotation = rotation;
     this->_scale = 1.0f;
     this->_color = color;
     this->_textures = {};
@@ -29,9 +33,12 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
         if (DirectoryExists(texturePath.data())) {
             filenames = GetDirectoryFiles(_texturePath.data(), &count);
             ChangeDirectory(_texturePath.data());
+            for (size_t i = 0; i < (size_t) count; i++)
+                vectorOfFilenames.push_back(filenames[i]);
+            std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
             for (size_t i = 0; i < (size_t) count; i++) {
-                if (!DirectoryExists(filenames[i]))
-                    _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
+                if (!DirectoryExists(vectorOfFilenames[i].data()))
+                    _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory.data());

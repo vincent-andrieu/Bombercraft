@@ -15,6 +15,8 @@
 
 using namespace Game;
 
+extern std::unique_ptr<Game::Core> core;
+
 OptionsMenuScene::OptionsMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
 {
@@ -37,6 +39,9 @@ void OptionsMenuScene::open()
 
     const GUI::ButtonConfig bigButton = GUI::ButtonFactory::getBigButtonConfig();
     const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getMediumButtonConfig();
+
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
     // BACKGROUND
     GUI::ImageFactory::create(this->localEntities,
@@ -104,12 +109,16 @@ void OptionsMenuScene::open()
         buttonPosition[5],
         [](const Engine::Entity entity, GUI::sliderValue &value) {
             std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
+            Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+            auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+            options.fov = value;
         },
         "FOV: ",
         bigButton.size,
         0,
         200,
-        60,
+        (int) options.fov,
         true);
     GUI::ButtonFactory::create(
         this->localEntities,

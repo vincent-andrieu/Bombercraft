@@ -13,6 +13,8 @@
 #include "Game/CoreData/CoreData.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
+#include "Systems/PhysicsSystem/PhysicsSystem.hpp"
+#include "Systems/Hitbox/HitboxSystem.hpp"
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "Components/Option/OptionComponent.hpp"
@@ -23,6 +25,7 @@ extern std::unique_ptr<Game::Core> core;
 
 static void handlerGameTimeout()
 {
+    Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -61,6 +64,7 @@ void GameScene::open()
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
@@ -74,11 +78,16 @@ void GameScene::update()
     auto &modelList = this->_systemManager.getSystem<System::ModelListSystem>();
     auto &timer = this->_systemManager.getSystem<Engine::TimerSystem>();
     auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
+    auto &physic = this->_systemManager.getSystem<System::PhysicsSystem>();
+    auto &hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+    float dt = 1.0f / 10.0f;
 
     render3D.update();
     modelList.update();
     render2D.update();
     timer.update();
     audio.update();
+    hitbox.update();
+    physic.update(dt);
     this->eventDispatcher(this->_systemManager);
 }

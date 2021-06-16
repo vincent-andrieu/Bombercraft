@@ -8,7 +8,6 @@
 #ifndef PHYSICSYSTEM_HPP
 #define PHYSICSYSTEM_HPP
 
-#include "Game/Core/Core.hpp"
 #include "EntityManager/EntityManager.hpp"
 #include "IMovable.hpp"
 

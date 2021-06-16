@@ -10,6 +10,7 @@
 
 #include "AbstractScene/AbstractScene.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 namespace Game
 {

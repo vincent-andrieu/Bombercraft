@@ -32,14 +32,17 @@ using namespace Game;
 const Texture2D &loadTexture(const std::string &toLoad)
 {
     if (!raylib::Texture::_loaderManager)
-        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
+        raylib::Texture::_loaderManager = std::make_shared<raylib::LoaderManager<Texture2D, std::string>>(
+            raylib::Texture::myTextureLoad, raylib::Texture::myTextureUnload);
     return raylib::Texture::_loaderManager->load(toLoad);
 }
 
 const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
 {
     if (!raylib::Model::_loaderManager)
-        raylib::Model::_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+        raylib::Model::_loaderManager =
+            std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
+                raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     return raylib::Model::_loaderManager->load(toLoad);
 }
 
@@ -106,22 +109,24 @@ void Core::createScenes()
     CoreData::sceneManager->createScene<RessourcePackMenuScene>(*CoreData::systemManager);
 }
 
-Core::Core() : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
-_preloadTexture(loadTexture, {
-    "Asset/Interface/Button.png",
-    "Asset/Interface/HoverButton.png",
-    "Asset/Interface/Button.png",
-    "Asset/Interface/UnavailableButton.png",
-}),
-_preloadModel(loadModel, {
-    {}
-})
+Core::Core()
+    : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
+      _preloadTexture(loadTexture,
+          {
+              "Asset/Interface/Button.png",
+              "Asset/Interface/HoverButton.png",
+              "Asset/Interface/Button.png",
+              "Asset/Interface/UnavailableButton.png",
+          }),
+      _preloadModel(loadModel, {{}})
 {
     this->registerComponents();
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
-    CoreData::entityManager->addComponent<Component::OptionComponent>(
-        options, CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getString("STANDARD_RESSOURCE_PACK"));
+    CoreData::entityManager->addComponent<Component::OptionComponent>(options,
+        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"),
+        CoreData::settings->getString("STANDARD_RESSOURCE_PACK"),
+        (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added
@@ -149,7 +154,7 @@ _preloadModel(loadModel, {
             raylib::KeyBoard::IKEY_L_ALT,
         });
     // MUSIC
-    //this->loadMusic();
+    // this->loadMusic();
 }
 
 void Core::loop()

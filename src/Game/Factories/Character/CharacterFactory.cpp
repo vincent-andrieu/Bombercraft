@@ -27,6 +27,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
 {
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
+    Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     const Component::PlayerID &id = inventory.getPlayerId();
@@ -76,7 +77,7 @@ Engine::Entity Game::CharacterFactory::create(
     raylib::MyVector3 characterPos;
     Component::PlayerID id = config.getPlayerId();
     Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
-        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_SPEED"),
+        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
         (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
         (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")};
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
@@ -127,6 +128,8 @@ Engine::Entity Game::CharacterFactory::create(
     raylib::MyVector3 hitboxSize(blockSize.a, blockSize.b, blockSize.c * 2);
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
+    /// Velocity
+    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0, 0);
     /// Specific
     if (isAI) {
         return CharacterFactory::createAI(entity);

@@ -14,11 +14,12 @@ namespace Component
 {
     class OptionComponent : public Engine::Component<OptionComponent> {
       public:
-        explicit OptionComponent(float volume, const std::string &ressourcePack);
+        explicit OptionComponent(float volume, const std::string &ressourcePack, size_t fov);
         virtual ~OptionComponent() = default;
 
         float volume;
         std::string ressourcePack;
+        size_t fov;
     };
 } // namespace Component
 
