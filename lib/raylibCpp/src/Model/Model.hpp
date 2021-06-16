@@ -19,8 +19,9 @@ namespace raylib
       public:
         Model(const std::string &texturePath,
             const string &filepath,
-            const MyVector3 position = MyVector3(0, 0, 0),
-            const RColor color = RColor::RWHITE);
+            const MyVector3 &position = MyVector3(0, 0, 0),
+            const RColor color = RColor::RWHITE,
+            const MyVector3 &rotation = MyVector3(0, 0, 0));
         ~Model();
 
         void draw();

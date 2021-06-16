@@ -10,7 +10,11 @@
 std::shared_ptr<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>> raylib::Model::_loaderManager =
     nullptr;
 
-raylib::Model::Model(const std::string &texturePath, const string &filepath, const MyVector3 position, const RColor color)
+raylib::Model::Model(const std::string &texturePath,
+    const string &filepath,
+    const MyVector3 &position,
+    const RColor color,
+    const MyVector3 &rotation)
 {
     if (!this->_loaderManager)
         this->setLoaderManager();
@@ -20,7 +24,7 @@ raylib::Model::Model(const std::string &texturePath, const string &filepath, con
     std::string workingDirectory = GetWorkingDirectory();
 
     this->_position = position;
-    this->_rotation = {0.0f, 0.0f, 0.0f};
+    this->_rotation = rotation;
     this->_scale = 1.0f;
     this->_color = color;
     this->_textures = {};
