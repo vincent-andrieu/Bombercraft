@@ -8,12 +8,20 @@
 #include "AudioSystem.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "Components/Sound/Sound.hpp"
+#include "Game/Core/Core.hpp"
+
+extern std::unique_ptr<Game::Core> core;
 
 using namespace System;
 
 AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
 {
     this->setRequirements<Component::Sound>();
+}
+
+void AudioSystem::play(const std::string &entityName)
+{
+    this->play(entityName, core->globalEntities);
 }
 
 void AudioSystem::play(std::string const& entityName, Engine::EntityPack &scenePack)

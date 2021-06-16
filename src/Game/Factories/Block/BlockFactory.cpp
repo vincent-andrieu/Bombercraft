@@ -9,6 +9,7 @@
 #include "EntityType.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "Components/PlayerInventory/PlayerInventory.hpp"
+#include "Systems/Audio/AudioSystem.hpp"
 
 using namespace GUI;
 
@@ -184,6 +185,9 @@ void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine:
     auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     inventory.setBomb(info.bomb + 1);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -194,6 +198,9 @@ void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine:
     auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     inventory.setBlastRadius(info.blastRadius + 1);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -206,6 +213,8 @@ void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine
     if (info.speed < 1) {
         inventory.setSpeed(info.speed + 0.1);
     }
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -215,6 +224,9 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
 
     auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
     inventory.setWallPass(true);
+
+    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerBombTimer(
