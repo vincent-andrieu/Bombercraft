@@ -15,6 +15,7 @@
 #include <vector>
 #include <unordered_map>
 #include <bitset>
+#include <mutex>
 
 namespace Engine
 {
@@ -30,7 +31,7 @@ namespace Engine
 
         void remove(Entity entity);
         virtual bool tryRemove(Entity entity) override;
-        Entity getOwner(const T &component);
+        Entity getOwner(const T &component) const;
 
         // void save(Engine::SaveManager &saver) const override;
         // void load(Engine::SaveManager &saver) override;
@@ -42,6 +43,7 @@ namespace Engine
         std::vector<Entity> _componentOwners;
         std::unordered_map<Entity, Index> _ownersIndex;
         std::vector<Signature> &_entitySignatures;
+        std::mutex _mutex;
 
         // void saveEntities(Engine::SaveManager &saver) const;
         // void saveEntity(Engine::SaveManager &saver, Entity owner) const;
@@ -53,7 +55,7 @@ namespace Engine
         // void loadEntity(Engine::SaveManager &saver, Entity owner);
         // void loadEntitySignature(Engine::SaveManager &saver, Entity owner);
         //        void loadEntityComponentIndex(Engine::SaveManager &saver, Entity owner) ;
-        //void loadEntityComponents(Engine::SaveManager &saver, Entity owner);
+        // void loadEntityComponents(Engine::SaveManager &saver, Entity owner);
     };
 
     template <typename T>
@@ -63,6 +65,8 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::allocate(std::size_t size)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         //        _components.reserve(size);
         _componentOwners.reserve(size);
         _ownersIndex.reserve(size);
@@ -75,6 +79,7 @@ namespace Engine
 
     template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args &&...args)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
         auto index = static_cast<Index>(_components.size());
 
         _components.emplace_back(std::forward<Args>(args)...);
@@ -85,6 +90,8 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::remove(Entity entity)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         _entitySignatures[entity][T::type] = false;
         auto index = _ownersIndex[entity];
         // update _components
@@ -107,7 +114,7 @@ namespace Engine
         return false;
     }
 
-    template <typename T> Entity ComponentTypeRegister<T>::getOwner(const T &component)
+    template <typename T> Entity ComponentTypeRegister<T>::getOwner(const T &component) const
     {
         auto begin = _components.data();
         auto index = static_cast<std::size_t>(&component - begin);

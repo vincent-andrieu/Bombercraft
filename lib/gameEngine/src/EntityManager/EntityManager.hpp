@@ -11,6 +11,7 @@
 #include <array>
 #include <algorithm>
 #include <memory>
+#include <mutex>
 #include "entity.hpp"
 #include "IComponentTypeRegister.hpp"
 #include "EntityContainer/EntityRegister.hpp"
@@ -34,15 +35,13 @@ namespace Engine
         Entity createEntity();
         void removeEntity(Entity entity);
 
-        template <typename T> bool hasComponent(Entity entity);
+        SystemManager &getSystemManager() const;
 
-        SystemManager &getSystemManager();
+        template <typename T> bool hasComponent(Entity entity) const;
+        template <typename... Ts> bool hasComponents(Entity entity) const;
 
-        template <typename... Ts> bool hasComponents(Entity entity);
-
-        template <typename T> T &getComponent(Entity entity);
-
-        template <typename... Ts> std::tuple<Ts &...> getComponents(Entity entity);
+        template <typename T> T &getComponent(Entity entity) const;
+        template <typename... Ts> std::tuple<Ts &...> getComponents(Entity entity) const;
 
         template <typename T, typename... Args> void addComponent(Entity entity, Args &&...args);
 
@@ -53,20 +52,17 @@ namespace Engine
         void save(const std::string &saveName);
         void load(const std::string &saveName);
 
-        template <typename T, class Function>
-        void foreachComponent(Function fn);
+        template <typename T, class Function> void foreachComponent(Function fn) const;
 
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
-        //SaveManager _saver{"Engine_Save"};
+        std::mutex _mutex;
+        // SaveManager _saver{"Engine_Save"};
 
         template <typename T> void checkComponentType() const;
-
         template <typename... Ts> void checkComponentTypes() const;
-
-        template <typename T> ComponentTypeRegister<T> *getComponentContainer();
 
         template <typename T> ComponentTypeRegister<T> *getComponentContainer() const;
     };
@@ -78,17 +74,19 @@ namespace Engine
 {
     template <typename T> void EntityManager::registerComponent()
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         this->template checkComponentType<T>();
         _componentRegisters[T::type] = std::make_shared<ComponentTypeRegister<T>>(_entities.getEntitySignatures());
     }
 
-    template <typename T> bool EntityManager::hasComponent(Entity entity)
+    template <typename T> bool EntityManager::hasComponent(Entity entity) const
     {
         this->checkComponentType<T>();
         return _entities.getSignature(entity)[T::type];
     }
 
-    template <typename... Ts> bool EntityManager::hasComponents(Entity entity)
+    template <typename... Ts> bool EntityManager::hasComponents(Entity entity) const
     {
         (this->checkComponentTypes<Ts>(), ...);
         auto requirements = Signature();
@@ -96,13 +94,13 @@ namespace Engine
         return (requirements & _entities.getSignature(entity)) == requirements;
     }
 
-    template <typename T> T &EntityManager::getComponent(Entity entity)
+    template <typename T> T &EntityManager::getComponent(Entity entity) const
     {
         this->checkComponentType<T>();
         return this->getComponentContainer<T>()->get(entity);
     }
 
-    template <typename... Ts> std::tuple<Ts &...> EntityManager::getComponents(Entity entity)
+    template <typename... Ts> std::tuple<Ts &...> EntityManager::getComponents(Entity entity) const
     {
         this->checkComponentTypes<Ts...>();
         return std::tie(this->getComponentContainer<Ts>()->get(entity)...);
@@ -110,6 +108,8 @@ namespace Engine
 
     template <typename T, typename... Args> void EntityManager::addComponent(Entity entity, Args &&...args)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         this->checkComponentType<T>();
         if (_componentRegisters[T::type] == nullptr) {
             throw std::invalid_argument("Invalid component type (not registered?)");
@@ -122,6 +122,8 @@ namespace Engine
 
     template <typename T> void EntityManager::removeComponent(Entity entity)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         this->checkComponentType<T>();
         this->getComponentContainer<T>()->remove(entity);
         // Send message to systems
@@ -145,18 +147,12 @@ namespace Engine
         (this->template checkComponentType<Ts>(), ...);
     }
 
-    template <typename T> ComponentTypeRegister<T> *EntityManager::getComponentContainer()
-    {
-        return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
-    }
-
     template <typename T> ComponentTypeRegister<T> *EntityManager::getComponentContainer() const
     {
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
 
-    template <typename T, class Function>
-    void EntityManager::foreachComponent(Function fn)
+    template <typename T, class Function> void EntityManager::foreachComponent(Function fn) const
     {
         this->checkComponentType<T>();
         std::vector<T> &components = this->getComponentContainer<T>()->getComponents();

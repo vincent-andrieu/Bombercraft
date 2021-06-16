@@ -158,7 +158,8 @@ Core::Core()
 void Core::_audioSystemUpdate()
 {
     while (CoreData::window->isOpen() && this->_loop == true) {
-        CoreData::systemManager->getSystem<System::AudioSystem>().update();
+        if (this->_preloadStatus)
+            CoreData::systemManager->getSystem<System::AudioSystem>().update();
     }
 }
 

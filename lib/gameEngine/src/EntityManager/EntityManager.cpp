@@ -36,6 +36,8 @@ Entity EntityManager::createEntity()
 
 void EntityManager::removeEntity(Entity entity)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     // Hey Entity Register, remove "entity" from your register
     _entities.remove(entity);
     // Hey systems! Remove "entity" from your managed entity lists
@@ -48,7 +50,7 @@ void EntityManager::removeEntity(Entity entity)
     }
 }
 
-SystemManager &EntityManager::getSystemManager()
+SystemManager &EntityManager::getSystemManager() const
 {
     return _systemManager;
 }
