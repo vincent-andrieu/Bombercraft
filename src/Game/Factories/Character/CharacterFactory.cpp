@@ -193,6 +193,7 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
 {
     Engine::Entity entityPlayer;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
+    auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     auto relativPos = Component::Matrix2D::getPositionRelativ(pos.getPosition());
@@ -213,7 +214,9 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     }
     (void) entityManager;
     ai.setEnv(map.getData(), relativPos, posList);
-    ai.getVelocity(); // TODO SET VELOCITY
+    std::pair<size_t, size_t> velocityIA = ai.getVelocity();
+    velocity.x = velocityIA.first;
+    velocity.y = velocityIA.second;
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB

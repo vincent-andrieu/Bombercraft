@@ -57,9 +57,9 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     std::vector<GameModule::TileType> tmp;
     GameModule::TileType type;
 
-    for (size_t y = 1; y < size.b - 1; y++) {
+    for (size_t y = 0; y < size.b; y++) {
         tmp.clear();
-        for (size_t x = 1; x < size.a - 1; x++) {
+        for (size_t x = 0; x < size.a; x++) {
             switch (map->getCategory({x, y}))
             {
                 case GUI::BlockFactory::BlockType::BLOCK_BLAST: type = GameModule::TileType::TILE_EXPLOSION; break;
