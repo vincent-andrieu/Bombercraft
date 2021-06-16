@@ -124,7 +124,7 @@ Core::Core()
     CoreData::entityManager->addComponent<Component::OptionComponent>(options,
         CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"),
         CoreData::settings->getString("STANDARD_RESSOURCE_PACK"),
-        CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+        (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
     // DEBUG - START - Remove when players with PlayerConfig Component will be added

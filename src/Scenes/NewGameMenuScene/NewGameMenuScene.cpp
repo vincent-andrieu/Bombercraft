@@ -47,7 +47,7 @@ void Game::NewGameMenuScene::init()
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
-            Game::CoreData::camera->setFovy(options.fov);
+            Game::CoreData::camera->setFovy((float) options.fov);
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });

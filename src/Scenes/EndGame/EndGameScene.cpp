@@ -26,7 +26,7 @@ static void goToGameScene(const Engine::Entity)
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
-    Game::CoreData::camera->setFovy(options.fov);
+    Game::CoreData::camera->setFovy((float) options.fov);
     Game::CoreData::sceneManager->setScene<Game::GameScene>();
 }
 
