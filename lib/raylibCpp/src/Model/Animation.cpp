@@ -52,8 +52,6 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     if (DirectoryExists(texturePath.data())) {
         filenames = goInDirectoryAndGetFileNames(texturePath, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
-            if (strcmp(filenames[i].data(), "..") == 0 || strcmp(filenames[i].data(), ".") == 0)
-                continue;
             if (DirectoryExists(filenames[i].data())) {
                 _textures.push_back({});
                 subFilenames = goInDirectoryAndGetFileNames(filenames[i], &subCount);
@@ -62,8 +60,9 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
                         _textures[_textures.size() - 1].push_back(raylib::Texture::_loaderManager->load(subFilenames[j]));
                 }
                 LeaveDirectoryAndClearFileNames(texturePath);
-            } else if (FileExists(filenames[i].data()))
+            } else if (FileExists(filenames[i].data())) {
                 _textures.push_back({raylib::Texture::_loaderManager->load(filenames[i])});
+            }
         }
         LeaveDirectoryAndClearFileNames(workingDirectory);
     } else if (FileExists(texturePath.data())) {
@@ -80,7 +79,7 @@ std::vector<std::string> raylib::Animation::goInDirectoryAndGetFileNames(const s
     filenames = GetDirectoryFiles(directoryPath.data(), count);
     ChangeDirectory(directoryPath.data());
     for (size_t i = 0; i < (size_t) *count; i++) {
-        if (IsFileExtension(filenames[i], ".obj")) {
+        if (!IsFileExtension(filenames[i], ".mtl") && strcmp(filenames[i], "..") != 0 && strcmp(filenames[i], ".") != 0) {
             vectorOfFilenames.push_back(filenames[i]);
             reelCount += 1;
         }

@@ -147,11 +147,11 @@ raylib::MyVector3 Game::CharacterFactory::getPlayerPosition(Component::PlayerID 
     raylib::MyVector2 mapSize = map.getMapSize();
 
     switch (id) {
-        case Component::PlayerID::ALPHA: return Component::Matrix2D::getPositionAbs(0, 0);
-        case Component::PlayerID::BRAVO: return Component::Matrix2D::getPositionAbs((size_t)(mapSize.a - 1), 0);
-        case Component::PlayerID::DELTA: return Component::Matrix2D::getPositionAbs(0, (size_t)(mapSize.b - 1));
+        case Component::PlayerID::ALPHA: return Component::Matrix2D::getPositionAbs(1, 1);
+        case Component::PlayerID::BRAVO: return Component::Matrix2D::getPositionAbs((size_t) (mapSize.a - 2), 1);
+        case Component::PlayerID::DELTA: return Component::Matrix2D::getPositionAbs(1, (size_t) (mapSize.b - 2));
         case Component::PlayerID::CHARLIE:
-            return Component::Matrix2D::getPositionAbs((size_t)(mapSize.a - 1), (size_t)(mapSize.b - 1));
+            return Component::Matrix2D::getPositionAbs((size_t) (mapSize.a - 2), (size_t) (mapSize.b - 2));
         default: throw std::invalid_argument("CharacterFactory::getPlayerPosition Unknown PlayerID.");
     }
 }

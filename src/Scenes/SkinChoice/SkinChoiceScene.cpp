@@ -20,8 +20,8 @@
 
 using namespace Game;
 
-const std::vector<string> SKINS{
-    "Asset/Skin/Basic_Test.png",
+/*const std::vector<string> SKINS{
+    "Asset/Skin/Simple_Steve.png",
     "Asset/Skin/Bloody_White.png",
     "Asset/Skin/Deep_Blue.png",
     "Asset/Skin/Cyber_White.png",
@@ -31,7 +31,7 @@ const std::vector<string> SKINS{
     "Asset/Skin/Pure_Green.png",
     "Asset/Skin/Rebel_Black.png",
     "Asset/Skin/Revenge_Red.png",
-};
+};*/
 
 static void previousHandler(Engine::Entity const)
 {
@@ -82,6 +82,7 @@ void Game::SkinChoiceScene::open()
     const string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     const GUI::ButtonConfig &smallButtonConfig = GUI::ButtonFactory::getSmallButtonConfig();
     const GUI::ButtonConfig &mediumButtonConfig = GUI::ButtonFactory::getMediumButtonConfig();
+    const std::vector<string> SKINS = CoreData::settings->getTabString("CHARACTER_SKINS");
 
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), window_size, "Asset/Background/SkinChoiceBackground.png", true);
