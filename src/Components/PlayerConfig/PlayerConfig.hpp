@@ -34,7 +34,8 @@ namespace Component
       public:
         PlayerConfig(const PlayerID playerId,
             PlayerKeyBindings defaultKeyBinding,
-            const string &defaultSkinPath = Game::CoreData::settings->getString("STANDARD_SKIN_PATH"));
+            const string &defaultSkinPath = Game::CoreData::settings->getString("STANDARD_SKIN_PATH"),
+            const size_t &xp = 0);
         virtual ~PlayerConfig() = default;
 
         PlayerConfig &operator=(const PlayerConfig &src);
@@ -44,6 +45,8 @@ namespace Component
         [[nodiscard]] std::vector<raylib::KeyBoard> getPlayerKeyList() const;
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         const string &getSkinPath() const;
+        const size_t &getXP() const;
+
         void resetAllKeyBindings();
         void setKeyMoveUp(const raylib::KeyBoard &key);
         void setKeyMoveDown(const raylib::KeyBoard &key);
@@ -52,12 +55,14 @@ namespace Component
         void setKeyPause(const raylib::KeyBoard &key);
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
         void setSkinPath(const string &skinpath);
+        void setXP(const size_t &xp);
 
       private:
         PlayerID _id;
         PlayerKeyBindings _keyBindings;
         PlayerKeyBindings _defaultKeyBinding;
         string _skinPath;
+        size_t _xp;
     };
 } // namespace Component
 

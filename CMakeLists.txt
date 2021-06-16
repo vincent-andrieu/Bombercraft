@@ -49,6 +49,7 @@ set(SRCS
         src/GUI/Factories/Image/ImageSequenceFactory.cpp
         src/GUI/Factories/Slider/SliderFactory.cpp
         src/GUI/Factories/Inventory/InventoryFactory.cpp
+        src/GUI/Factories/XPBar/XPBarFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp
