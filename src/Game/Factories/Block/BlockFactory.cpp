@@ -8,6 +8,7 @@
 #include "BlockFactory.hpp"
 #include "EntityType.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
+#include "Components/PlayerInventory/PlayerInventory.hpp"
 
 using namespace GUI;
 
@@ -177,26 +178,43 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
 
 void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    inventory.setBomb(info.bomb + 1);
 }
 
 void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    inventory.setBlastRadius(info.blastRadius + 1);
 }
 
 void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    if (info.speed < 1) {
+        inventory.setSpeed(info.speed + 0.1);
+    }
 }
 
 void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    Game::CoreData::entityManager->removeEntity(fromEntity);
-    (void) toEntity; // TODO give bonus to this entity if player
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    scene->localEntities.removeEntity(fromEntity);
+
+    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
+    inventory.setWallPass(true);
 }
 
 void BlockFactory::handlerBombTimer(
