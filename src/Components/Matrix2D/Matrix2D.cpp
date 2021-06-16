@@ -27,7 +27,7 @@ raylib::MyVector3 Matrix2D::getPositionAbs(size_t posx, size_t posy)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
 
-    return raylib::MyVector3(posx / size.a, posy / size.b, 0 / size.c);
+    return raylib::MyVector3(posx * size.a, 0 * size.b, posy * size.c);
 }
 
 raylib::MyVector2 Matrix2D::getMapSize() const
