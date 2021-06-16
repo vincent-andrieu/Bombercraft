@@ -36,7 +36,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     if (type == EntityType::BLAST) {
         if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
             CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
-        } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) { // TODO
+        } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
             CoreData::entityManager->removeComponent<Component::AIComponent>(character);
          }
         auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
@@ -178,5 +178,6 @@ raylib::MyVector2 CharacterFactory::getInventoryPosition(Component::PlayerID id)
 
 Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
 {
+    CoreData::entityManager->addComponent<Component::AIComponent>(entity);
     return entity;
 }
