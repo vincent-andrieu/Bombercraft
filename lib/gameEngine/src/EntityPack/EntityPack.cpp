@@ -65,6 +65,13 @@ void Engine::EntityPack::removeEntity(const std::string &key)
     _entities.erase(key);
 }
 
+bool Engine::EntityPack::entityIsSet(const std::string &key)
+{
+    if (_entities.find(key) == _entities.end())
+        return false;
+    return true;
+}
+
 void Engine::EntityPack::removeEntity(const Engine::Entity entity)
 {
     auto it = std::find(_anonymousEntities.begin(), _anonymousEntities.end(), entity);

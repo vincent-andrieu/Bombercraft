@@ -18,6 +18,7 @@ namespace GameModule
         TILE_DEFAULT,
         TILE_EMPTY,
         TILE_BONUS,
+        TILE_BOMB,
         TILE_SOFT,
         TILE_HARD,
     };

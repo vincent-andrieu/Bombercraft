@@ -23,7 +23,7 @@ namespace GameModule
 
     class IABomberman : public IA::IACore<TileType, BombermanAction> {
       public:
-        IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env);
+        IABomberman(std::pair<size_t, size_t> pos = {0, 0}, std::vector<std::vector<TileType>> env = {});
         ~IABomberman() = default;
 
         void setRandomMove(size_t randomness);
@@ -53,22 +53,21 @@ namespace GameModule
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
         bool isRandomMove() const;
 
+
         // TOOLS
         bool isRunnable(TileType type) const;
         bool isSecurePlace(TileType type) const;
         void clearQueue(std::queue<IA::Movement> &list);
-        void loadPath(
-            const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
-        std::vector<std::vector<int>> getCostArray(
-            const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
-        std::pair<size_t, size_t> getCostLessSafeMove(
-            const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
-
-      private:
-        size_t _range;
-        int _defaultValue;
-        size_t _randomMove;
-        size_t _randomBomb;
+        void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
+        std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
+        std::vector<std::vector<int>> findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        
+        private:
+            size_t _range;
+            int _defaultValue;
+            size_t _randomMove;
+            size_t _randomBomb;
     };
 } // namespace GameModule
 

@@ -20,6 +20,7 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
@@ -70,6 +71,7 @@ void Core::registerComponents()
     CoreData::entityManager->registerComponent<Component::OptionComponent>();
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
+    CoreData::entityManager->registerComponent<Component::AIComponent>();
 }
 
 void Core::createSystems()
@@ -228,7 +230,8 @@ void Core::runPreload()
 
 void Core::runAfterPreload()
 {
-    SceneLoader::setScene<MainMenuScene>();
+    SceneLoader::setScene<GameScene>();
+    CoreData::systemManager->getSystem<System::AudioSystem>().setVolume(0);
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
 }
 

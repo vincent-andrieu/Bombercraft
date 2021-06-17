@@ -12,6 +12,7 @@
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
+#include "AIComponent/AIComponent.hpp"
 #include "Game/Factories/Bomb/BombFactory.hpp"
 
 using namespace Game;
@@ -37,9 +38,9 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     if (type == EntityType::BLAST) {
         if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
             CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
-        } /* else if (CoreData::entityManager->hasComponent< AI Component >(character)) { // TODO
-             CoreData::entityManager->removeComponent< AI Component >(character);
-         }*/
+        } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
+            CoreData::entityManager->removeComponent<Component::AIComponent>(character);
+         }
         auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
         audioSys.play("Death", core->globalEntities);
         /// Set Timer => remove entity
@@ -215,7 +216,7 @@ Engine::Entity Game::CharacterFactory::create(
     CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0, 0);
     /// Specific
     if (isAI) {
-        // TODO
+        return CharacterFactory::createAI(entity);
     } else {
         return CharacterFactory::createPlayer(entity, config);
     }
@@ -261,5 +262,52 @@ raylib::MyVector2 CharacterFactory::getInventoryPosition(Component::PlayerID id)
         case Component::PlayerID::CHARLIE:
             return raylib::MyVector2(windowSize.a - (windowSize.a / 15) * 4, windowSize.b - (windowSize.a / 15));
         default: throw std::invalid_argument("CharacterFactory::getPlayerPosition Unknown PlayerID.");
+    }
+}
+
+Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
+{
+    float refreshTime = CoreData::settings->getFloat("AI_REFRESH_TIME");
+
+    CoreData::entityManager->addComponent<Component::AIComponent>(entity);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, refreshTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, CharacterFactory::handlerAITimer);
+    return entity;
+}
+
+void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+{
+    Engine::Entity entityPlayer;
+    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
+    auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
+    auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+    auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+    auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
+    std::vector<std::string> entityList = {
+        PLAYER_ID_TO_NAME.at(Component::ALPHA),
+        PLAYER_ID_TO_NAME.at(Component::BRAVO),
+        PLAYER_ID_TO_NAME.at(Component::CHARLIE),
+        PLAYER_ID_TO_NAME.at(Component::DELTA)
+    };
+    std::vector<std::pair<size_t, size_t>> posList;
+
+    for (size_t i = 0; i < entityList.size(); i++) {
+        if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
+            entityPlayer = sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i]);
+            if (entityPlayer != entity) {
+                auto tmp = Component::Matrix2D::getMapIndex(CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
+                posList.push_back({tmp.a, tmp.b});
+            }
+        }
+    }
+    (void) entityManager;
+    ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
+    std::pair<double, double> velocityIA = ai.getVelocity();
+    velocity.x = velocityIA.first;
+    velocity.y = velocityIA.second;
+
+    std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
+    if (ai.putBomb()) {
+        std::cout << "PUT BOMB" << std::endl;
+        // TODO PUT BOMB
     }
 }
