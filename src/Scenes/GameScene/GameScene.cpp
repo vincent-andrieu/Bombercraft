@@ -57,7 +57,6 @@ void GameScene::open()
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
-    std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
     CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
