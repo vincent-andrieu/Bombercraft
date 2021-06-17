@@ -22,9 +22,13 @@ namespace GUI
       public:
         virtual ~ImageSequenceFactory() = 0;
 
-        static void create(Engine::EntityPack &entityPack, const MyVector2 &position, const MyVector2 &size,
-            std::string const &directoryPath, std::string const &name = "",
-            const double frameRate = DEFAULT_IMAGE_SEQUENCE_FRAME_RATE);
+        static void create(Engine::EntityPack &entityPack,
+            const MyVector2 &position,
+            const MyVector2 &size,
+            std::string const &directoryPath,
+            std::string const &name = "",
+            const double frameRate = DEFAULT_IMAGE_SEQUENCE_FRAME_RATE,
+            bool loop = true);
     };
 } // namespace GUI
 

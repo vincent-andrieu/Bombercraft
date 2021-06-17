@@ -7,11 +7,11 @@
 
 #include "TextureSequence.hpp"
 
-raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 size, const MyVector2 position, const RColor color)
+raylib::TextureSequence::TextureSequence(
+    const string &path, const MyVector2 size, const MyVector2 position, const RColor color, bool loop)
     : _path(path), _position(position), _color(color), _currentFrame(0), _textures({}),
-      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true)
+      _size({this->_position.a, this->_position.b, size.a, size.b}), _scaleMode(true), _loop(loop)
 {
-    std::string workingDirectory = GetWorkingDirectory();
     char **filenames = nullptr;
     int count = 0;
     std::vector<std::string> vectorOfFilenames = {};
@@ -25,9 +25,8 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
     } else {
         filenames = GetDirectoryFiles(_path.data(), &count);
         this->_frameNumber = count;
-        ChangeDirectory(_path.data());
         for (size_t i = 0; i < (size_t) count; i++) {
-            vectorOfFilenames.push_back(filenames[i]);
+            vectorOfFilenames.push_back(_path + "/" + filenames[i]);
         }
         std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
         for (size_t i = 0; i < (size_t) count; i++) {
@@ -36,7 +35,6 @@ raylib::TextureSequence::TextureSequence(const string &path, const MyVector2 siz
             }
         }
         ClearDirectoryFiles();
-        ChangeDirectory(workingDirectory.data());
     }
 }
 
@@ -44,8 +42,27 @@ raylib::TextureSequence::~TextureSequence()
 {
 }
 
+const std::vector<std::string> raylib::TextureSequence::getFilePathList(const string &path)
+{
+    std::vector<std::string> pathList;
+    char **filenames = nullptr;
+    int count = 0;
+
+    if (DirectoryExists(path.data())) {
+        filenames = GetDirectoryFiles(path.data(), &count);
+        for (size_t i = 0; i < (size_t) count; i++) {
+            pathList.push_back(path + "/" + filenames[i]);
+        }
+        ClearDirectoryFiles();
+    }
+    return pathList;
+}
+
 void raylib::TextureSequence::draw()
 {
+    if (_textures.empty()) {
+        return;
+    }
     Vector2 rayPos = {this->_position.a, this->_position.b};
     Rectangle ogRect = {0, 0, (float) _textures[_currentFrame].width, (float) _textures[_currentFrame].height};
     Rectangle position = {
@@ -66,9 +83,13 @@ void raylib::TextureSequence::draw()
 
 void raylib::TextureSequence::update()
 {
-    _currentFrame += 1;
-    if (_frameNumber != 0)
-        _currentFrame = _currentFrame % _frameNumber;
+    if (_loop) {
+        _currentFrame += 1;
+        if (_frameNumber)
+            _currentFrame = _currentFrame % _frameNumber;
+    } else if (_currentFrame < (_frameNumber - 3)) {
+        _currentFrame++;
+    }
 }
 
 void raylib::TextureSequence::setPosition(const MyVector2 position)

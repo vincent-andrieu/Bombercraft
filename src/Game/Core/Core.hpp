@@ -30,8 +30,6 @@
 #include "Scenes/LoadingScreen/LoadingScreenScene.hpp"
 #include "Scenes/EndGame/EndGameScene.hpp"
 
-#include "Game/SceneLoader/SceneLoader.hpp"
-
 #include "Components/KeyBox.hpp"
 #include "Components/ClickEvent/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"

@@ -206,13 +206,6 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
         scene->localEntities.removeEntity(toEntity);
         scene->localEntities.removeEntity(fromEntity);
         entity = GUI::BlockFactory::create(scene->localEntities, position, bonusType, texturePath);
-        switch (bonusType) {
-            case BlockType::BLOCK_BONUS_BOOMUP: GUI::BlockFactory::boomUpBonusFactory(entity, position, size); break;
-            case BlockType::BLOCK_BONUS_FIREUP: GUI::BlockFactory::fireUpBonusFactory(entity, position, size); break;
-            case BlockType::BLOCK_BONUS_SPEEDUP: GUI::BlockFactory::speedUpBonusFactory(entity, position, size); break;
-            case BlockType::BLOCK_BONUS_WALLPASS: GUI::BlockFactory::wallPassBonusFactory(entity, position, size); break;
-            default: typeInStr = "DEFAULT"; break;
-        }
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
