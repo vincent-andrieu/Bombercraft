@@ -25,7 +25,6 @@ namespace Game
         GameScene(Engine::SystemManager &systemManager);
         ~GameScene() = default;
 
-        void applyOptions(Component::OptionComponent &options);
         void open();
         static uint getNbrPlayers();
 

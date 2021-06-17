@@ -126,8 +126,6 @@ Core::Core()
     this->createScenes();
     /// CHARACTERS
     this->createCharacterConfig();
-    // MUSIC
-    // this->loadMusic();
 }
 
 void Core::loop()
@@ -149,6 +147,8 @@ void Core::loop()
             CoreData::sceneManager->updateScene();
         }
     } else {
+        this->loadMusic();
+        CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
         CoreData::sceneManager->setScene<MainMenuScene>();
     }
     while (CoreData::window->isOpen() && this->_loop == true) {
