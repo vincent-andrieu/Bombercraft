@@ -9,6 +9,7 @@
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
+#include "Game/Factories/Bomb/BombFactory.hpp"
 #include "Game/Factories/Character/CharacterFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
@@ -58,7 +59,6 @@ void GameScene::open()
     const string &ressourcePackRoot = options.ressourcePack;
     std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
-    GUI::BlockFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), GUI::BlockFactory::BlockType::BLOCK_BOMB, ressourcePackRoot);
     /// Camera
     CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
@@ -66,7 +66,8 @@ void GameScene::open()
     /// CHARACTERS
     auto &config = CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1"));
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
-    CharacterFactory::create(this->localEntities, config, map, false);
+    Engine::Entity player = CharacterFactory::create(this->localEntities, config, map, false);
+    GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player);
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {

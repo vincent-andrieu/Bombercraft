@@ -12,7 +12,7 @@
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
-#include "Game/Factories/Block/BlockFactory.hpp"
+//#include "Game/Factories/BlockBlockFactory.hpp"
 
 using namespace Game;
 
@@ -102,6 +102,11 @@ static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const floa
     return my_position;
 }
 
+// TODO instead of render:
+//  pass player position
+//  pass player direction
+//  pass player hitbox
+
 static void placeBomb(Component::ModelList &render)
 {
     const auto &options(
@@ -110,11 +115,11 @@ static void placeBomb(Component::ModelList &render)
     const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
 
     if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
-        GUI::BlockFactory::create(Core::sceneManager->getCurrentScene()->localEntities,
-            bombPosition,
-            GUI::BlockFactory::BlockType::BLOCK_BOMB,
-            options.ressourcePack);
-        render.select("setBomb");
+        //        GUI::BlockFactory::create(Core::sceneManager->getCurrentScene()->localEntities,
+        //            bombPosition,
+        //            GUI::BlockFactory::BlockType::BLOCK_BOMB,
+        //            options.ressourcePack);
+        GUI::render.select("setBomb");
     }
 }
 
