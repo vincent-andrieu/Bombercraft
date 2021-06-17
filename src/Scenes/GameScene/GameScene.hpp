@@ -18,7 +18,7 @@
 
 namespace Game
 {
-    const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME;
+    extern const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME;
 
     class GameScene : public Engine::AbstractScene, public SceneWithEvents {
       public:
