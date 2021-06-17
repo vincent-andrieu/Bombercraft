@@ -94,7 +94,6 @@ Movement IACore<TileType, Action>::getIAMovement()
 {
     Movement tmp;
 
-    std::cout << "TMP X: " << this->_MovementQueue.size() << std::endl;
     if (!this->_MovementQueue.size()) {
         if (!this->_MovementFunc)
             throw IAExceptions("Moving function not initialized", false);
@@ -105,7 +104,6 @@ Movement IACore<TileType, Action>::getIAMovement()
         return Movement::IA_MOVE_NONE;
     tmp = this->_MovementQueue.front();
     this->_MovementQueue.pop();
-    //this->applyIAMovement(tmp);
     return tmp;
 }
 

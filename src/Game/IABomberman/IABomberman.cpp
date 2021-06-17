@@ -86,19 +86,14 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
 
-    std::cout << "YEP" << std::endl;
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
-    //std::srand(this->_seed);
     int tmp = std::rand() % this->_randomBomb;
-    std::cout << "RANDOM: " << tmp << " prob: " << this->_randomBomb << std::endl;
     if (tmp)
         return false;
-    std::cout << "PUT?" << std::endl;
     editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
     if (!this->findSecurePlace(pos, editedEnv, list))
         return false;
-    std::cout << "KA BOOM" << std::endl;
     this->_MovementQueue = list;
     return true;
 }
@@ -129,19 +124,10 @@ bool IABomberman::findSecurePlace(
     std::vector<std::vector<int>> cost_array = this->getCostArray(pos, env);
     std::pair<size_t, size_t> secure_place = this->getCostLessSafeMove(cost_array, env, stat);
 
-    /*std::cout << (stat ? "true" : "false") << std::endl;
-    std::cout << "SELECTED: X: " << secure_place.first << " Y: " << secure_place.second << std::endl;
-    for (size_t y = 0; y < cost_array.size(); y++) {
-        for (size_t x = 0; x < cost_array[y].size(); x++) {
-            std::cout << cost_array[y][x] << "|";
-        }
-        std::cout << std::endl;
-    }*/
     if (!stat)
         return false;
     this->clearQueue(list);
     loadPath(cost_array, secure_place, list);
-    std::cout << "je suis NULL: " << list.size() << std::endl;
     return true;
 }
 
@@ -174,7 +160,6 @@ std::vector<std::vector<int>> IABomberman::getCostArray(
     std::vector<std::vector<int>> cpy;
     std::vector<int> cpy_tmp;
 
-    //std::cout << "X: " << pos.first << " Y: " << pos.second << std::endl;
     for (size_t y = 0; y < env.size(); y++) {
         cpy_tmp.clear();
         for (size_t x = 0; x < env[y].size(); x++) {
@@ -222,7 +207,6 @@ std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(
             }
         }
     }
-    std::cout << (stat ? "true" : "false") << std::endl;
     return best;
 }
 
@@ -235,13 +219,6 @@ void IABomberman::loadPath(
     int goal = tab[y][x] - 1;
     std::pair<size_t, size_t> next;
 
-    /*std::cout << "LOAD PATH -> X: " << end.first << " Y: " << end.second << std::endl;
-    for (size_t y = 0; y < tab.size(); y++) {
-        for (size_t x = 0; x < tab[y].size(); x++) {
-            std::cout << tab[y][x] << "|";
-        }
-        std::cout << std::endl;
-    }*/
     if (!tab[y][x])
         return;
     if (x != 0 && tab[y][x - 1] == goal) {
@@ -271,7 +248,6 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     size_t y = pos.second;
     int tmp;
 
-    std::cout << "POS BOMB: X: " << pos.first << " Y: " << pos.second << std::endl;
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
@@ -301,21 +277,6 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
                 env[tmp][x] = TileType::TILE_EXPLOSION;
         }
     }
-    /*for (size_t y = 0; y < env.size(); y++) {
-        for (size_t x = 0; x < env[y].size(); x++) {
-            switch (env[y][x])
-            {
-                case TileType::TILE_BONUS: std::cout << "?"; break;
-                case TileType::TILE_DEFAULT: std::cout << "!"; break;
-                case TileType::TILE_EMPTY: std::cout << "."; break;
-                case TileType::TILE_EXPLOSION: std::cout << "O"; break;
-                case TileType::TILE_HARD: std::cout << "x"; break;
-                case TileType::TILE_SOFT: std::cout << "#"; break;
-                case TileType::TILE_BOMB: std::cout << "1"; break;
-            }
-        }
-        std::cout << std::endl;
-    }*/
     return env;
 }
 
@@ -380,7 +341,6 @@ void IABomberman::offensiveMove(
     } else {
         this->loadPath(cost, this->_enemyPos[tmp.first], path);
         this->clearQueue(list);
-        std::cout << "Parh size: " << path.size() << std::endl;
         if (path.size())
             list.push(path.front());
         else
@@ -395,7 +355,6 @@ bool IABomberman::isRandomMove() const
 
     if (!randomProba)
         return false;
-    //std::srand(this->_seed);
     if ((size_t) (std::rand() % 100) <= randomProba)
         return true;
     return false;
