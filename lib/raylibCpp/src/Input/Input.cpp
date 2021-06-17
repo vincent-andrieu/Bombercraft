@@ -62,6 +62,11 @@ bool Input::isMouseMoved()
     return !(mouse_pos == previous_mouse_pos);
 }
 
+float Input::getMouseWheel() const
+{
+    return GetMouseWheelMove();
+}
+
 bool Input::MouseIsOver(MyVector2 pos, MyVector2 size) const
 {
     MyVector2 mouse_pos = this->getMousePos();
