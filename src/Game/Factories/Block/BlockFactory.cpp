@@ -28,10 +28,14 @@ std::unordered_map<BlockFactory::BlockType,
         {BlockType::BLOCK_BONUS_WALLPASS, BlockFactory::wallPassBonusFactory},
 };
 
-Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, BlockType type, const std::string &ressourcePackRoot, const std::string &name)
+Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
+    const raylib::MyVector3 position,
+    BlockType type,
+    const std::string &ressourcePackRoot,
+    const std::string &name)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    std::shared_ptr<raylib::Model> model = BlockFactory::getModel(position, type, ressourcePackRoot);
+    std::shared_ptr<raylib::IModel> model = BlockFactory::getModel(position, type, ressourcePackRoot);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
@@ -40,9 +44,11 @@ Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack, const raylib
     return entity;
 }
 
-std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot)
+std::shared_ptr<raylib::IModel> BlockFactory::getModel(
+    const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot)
 {
     std::string modelPath = Game::CoreData::settings->getString("BLOCK_MODEL");
+    std::string animPath = Game::CoreData::settings->getString("BLOCK_BLAST_ANIM");
     std::string texturePath;
     std::string typeInStr;
 
@@ -66,6 +72,9 @@ std::shared_ptr<raylib::Model> BlockFactory::getModel(const raylib::MyVector3 &p
         case BlockType::BLOCK_BONUS_SOFT: texturePath = ressourcePackRoot + texturePath; break;
         default:; break;
     }
+    if (type == BlockType::BLOCK_BLAST) {
+        return std::make_shared<raylib::Animation>(texturePath, animPath, pos, raylib::RColor::RWHITE, true);
+    }
     return std::make_shared<raylib::Model>(texturePath, modelPath, pos, raylib::RColor::RWHITE);
 }
 
@@ -86,12 +95,14 @@ void BlockFactory::internalFactory(
 
 void BlockFactory::softFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::SOFTBLOCK);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::SOFTBLOCK);
 }
 
 void BlockFactory::hardFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::HARDBLOCK);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::HARDBLOCK);
 }
 
 void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -100,7 +111,8 @@ void BlockFactory::bombFactory(const Engine::Entity &entity, const raylib::MyVec
 
     if (bombCountdown < 0)
         bombCountdown = 0;
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::BOMB);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBombTimer);
 }
@@ -115,7 +127,8 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
         blastTime = 0;
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, blastTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BlockFactory::handlerBlastTimer);
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, newPos, blastHitbox, BlockFactory::handlerKillEntity, Game::EntityType::BLAST);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, newPos, blastHitbox, BlockFactory::handlerKillEntity, Game::EntityType::BLAST);
     Game::CoreData::entityManager->addComponent<Engine::Velocity>(entity);
 }
 
@@ -126,22 +139,26 @@ void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::
 
 void BlockFactory::boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerBoomUp, Game::EntityType::POWERUP);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerBoomUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::fireUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerFireUp, Game::EntityType::POWERUP);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerFireUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::speedUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerSpeedUp, Game::EntityType::POWERUP);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerSpeedUp, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::wallPassBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, pos, size, BlockFactory::handlerWallPass, Game::EntityType::POWERUP);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerWallPass, Game::EntityType::POWERUP);
 }
 
 void BlockFactory::handlerBlastTimer(
@@ -166,7 +183,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
-        //TODO REMOVE SOFT BLOCK ON MATRIX
+        // TODO REMOVE SOFT BLOCK ON MATRIX
         std::cout << "should remove block" << std::endl;
         scene->localEntities.removeEntity(toEntity);
     }
@@ -241,12 +258,12 @@ void BlockFactory::handlerBombTimer(
 
 void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack)
 {
-    //TODO USE RADIUS
+    // TODO USE RADIUS
     size_t blockRadius = 3;
     Engine::Entity entityMap = entityPack.getEntity("gameMap");
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
     const raylib::MyVector3 &blockSize = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    //TODO SPLIT INTO METHODS
+    // TODO SPLIT INTO METHODS
 
     raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
     std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
