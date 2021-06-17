@@ -262,9 +262,11 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     }
     (void) entityManager;
     ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
-    std::pair<size_t, size_t> velocityIA = ai.getVelocity();
+    std::pair<double, double> velocityIA = ai.getVelocity();
     velocity.x = velocityIA.first;
     velocity.y = velocityIA.second;
+
+    std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB

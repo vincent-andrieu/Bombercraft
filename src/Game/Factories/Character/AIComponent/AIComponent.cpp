@@ -13,7 +13,7 @@ AIComponent::AIComponent() : _AI(std::make_shared<GameModule::IABomberman>())
 {
 }
 
-std::pair<size_t, size_t> AIComponent::getVelocity()
+std::pair<double, double> AIComponent::getVelocity()
 {
     IA::Movement move;
 
