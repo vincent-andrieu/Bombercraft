@@ -19,6 +19,7 @@
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "Components/Option/OptionComponent.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 using namespace Game;
 
@@ -40,12 +41,6 @@ static void handlerGameTimeout()
 
 GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(systemManager, *Game::CoreData::entityManager)
 {
-}
-
-void GameScene::applyOptions(Component::OptionComponent &)
-{
-    // TODO set IA options
-    // TODO set number of players
 }
 
 void GameScene::open()
@@ -88,6 +83,8 @@ void GameScene::createCharacters()
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
+    Engine::Entity entity;
+    Component::AIComponent AI;
 
     Component::PlayerConfig *config[4] = {
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
@@ -95,7 +92,11 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
     for (size_t i = 0; i < 4; i++) {
-        CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
+        entity = CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
+        if (i >= options.nbPlayers) {
+            AI = Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+            AI.setRandomness(options.IARandomProb);
+        }
     }
 }
 
