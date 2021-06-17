@@ -27,6 +27,9 @@ namespace Game
         void open();
 
         void update();
+      
+      private:
+        static size_t getNbPlayer();
     };
 } // namespace Game
 

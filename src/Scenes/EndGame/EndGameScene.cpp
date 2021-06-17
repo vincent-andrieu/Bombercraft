@@ -44,7 +44,7 @@ void EndGameScene::open()
     std::string animVictory = "Asset/Animation/Anim_Victory_32";
     std::shared_ptr<raylib::Animation> raylibAnimation = nullptr;
     raylib::MyVector3 rotation = {0, -90, 0};
-    size_t nbPlayers = 2;
+    size_t nbPlayers = EndGameScene::getNbPlayer();
     Component::PlayerConfig *playerConfig = nullptr;
     const std::vector<Component::PlayerID> ids = {
         Component::PlayerID::ALPHA, Component::PlayerID::BRAVO, Component::PlayerID::CHARLIE, Component::PlayerID::DELTA};
@@ -116,4 +116,12 @@ void EndGameScene::update()
         std::cerr << e.what() << std::endl;
         exit(84); // TEMPORARY
     }
+}
+
+size_t EndGameScene::getNbPlayer()
+{
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+    return options.nbPlayers;
 }
