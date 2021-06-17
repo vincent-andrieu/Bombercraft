@@ -29,7 +29,7 @@ void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)
 
 void AbstractSystem::onEntityRemoved(Entity entity)
 {
-    if (_entityToManagedEntity.find(entity) != std::end(_entityToManagedEntity)) {
+    if (_entityToManagedEntity.find(entity) != _entityToManagedEntity.end()) {
         this->removeEntity(entity);
     }
 }

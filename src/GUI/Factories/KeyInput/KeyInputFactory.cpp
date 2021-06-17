@@ -236,6 +236,9 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
     KeyInputConfig const &keyInput,
     const KeyInputEventScript keyInputHandler)
 {
+    if (dynConf.name.empty()) {
+        throw std::invalid_argument("KeyInputFactory::create empty entity name");
+    }
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + keyInput.textPositionOffset;
 

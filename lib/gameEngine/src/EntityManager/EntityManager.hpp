@@ -114,6 +114,10 @@ namespace Engine
         if (_componentRegisters[T::type] == nullptr) {
             throw std::invalid_argument("Invalid component type (not registered?)");
         }
+        if (this->hasComponent<T>(entity)) {
+            std::cerr << "EntityManager::addComponent : Entity " << (uint)entity << " => Component N " << T::type << std::endl;
+            throw std::invalid_argument("EntityManager::addComponent, Same component added several time on an entity.");
+        }
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
         // Send message to system
         const Signature &signature = _entities.getSignature(entity);
@@ -123,6 +127,9 @@ namespace Engine
     template <typename T> void EntityManager::removeComponent(Entity entity)
     {
         this->checkComponentType<T>();
+        if (this->hasComponent<T>(entity) == false) {
+            throw std::invalid_argument("EntityManager::removeComponent, the entity don't have T component.");
+        }
         this->getComponentContainer<T>()->remove(entity);
         // Send message to systems
         const auto &signature = _entities.getSignature(entity);

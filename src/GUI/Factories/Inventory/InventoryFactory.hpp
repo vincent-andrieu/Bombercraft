@@ -23,13 +23,12 @@ namespace GUI
       public:
         virtual ~InventoryFactory() = 0;
 
-        static void create(Engine::Entity entity,
+        static Engine::Entity create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
             const raylib::MyVector2 &boxSize,
             std::vector<std::string> const &texturesPath,
             const GUI::LabelConfig &labelconfig,
             Component::PlayerID id,
-            Engine::EntityPack &pack,
             Component::PlayerConfig &config);
 
         static Component::PlayerInventoryInfo getDefaultPlayerInventory();
