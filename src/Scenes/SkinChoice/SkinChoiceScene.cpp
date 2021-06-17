@@ -20,19 +20,6 @@
 
 using namespace Game;
 
-/*const std::vector<string> SKINS{
-    "Asset/Skin/Simple_Steve.png",
-    "Asset/Skin/Bloody_White.png",
-    "Asset/Skin/Deep_Blue.png",
-    "Asset/Skin/Cyber_White.png",
-    "Asset/Skin/Happy_White.png",
-    "Asset/Skin/Lava_Orange.png",
-    "Asset/Skin/Prince_Gold.png",
-    "Asset/Skin/Pure_Green.png",
-    "Asset/Skin/Rebel_Black.png",
-    "Asset/Skin/Revenge_Red.png",
-};*/
-
 static void previousHandler(Engine::Entity const)
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
