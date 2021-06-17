@@ -102,20 +102,16 @@ static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const floa
     return my_position;
 }
 
-// TODO instead of render:
-//  pass player position
-//  pass player direction
-//  pass player hitbox
-
-static void placeBomb(Engine::Entity character, Component::ModelList &render)
+static bool placeBomb(Engine::Entity character, const raylib::MyVector3 characterPosition, const float characterOrientation)
 {
-    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(render.getPosition()), render.getRotation().b));
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
 
     if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
         GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
-        render.select("setBomb");
+        return true;
     }
+    return false;
 }
 
 static void handlerKeyEvent(const Engine::Entity character)
@@ -124,6 +120,7 @@ static void handlerKeyEvent(const Engine::Entity character)
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
@@ -152,7 +149,9 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            placeBomb(character, render);
+            if (placeBomb(
+                    character, hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2, render.getRotation().b))
+                render.select("setBomb");
         }
     }
 }

@@ -78,6 +78,20 @@ MyVector3 raylib::operator/(MyVector3 const &first, MyVector3 const &second)
     return MyVector3(one, two, three);
 }
 
+MyVector3 raylib::operator/(MyVector3 const &first, const float second)
+{
+    float one = 0;
+    float two = 0;
+    float three = 0;
+
+    if (second != 0) {
+        one = first.a / second;
+        two = first.b / second;
+        three = first.c / second;
+    }
+    return MyVector3(one, two, three);
+}
+
 bool raylib::operator==(MyVector3 const &first, MyVector3 const &second)
 {
     const bool a = first.a == second.a;
