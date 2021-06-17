@@ -25,7 +25,8 @@ RessourcePackMenuScene::RessourcePackMenuScene(Engine::SystemManager &systemMana
 {
 }
 
-static const std::array<string, 8> ressourcePackPaths({
+static const uint nbrRessourcePacks = 8;
+static const std::array<string, nbrRessourcePacks> ressourcePackPaths({
     "Asset/Texture/Desert/",
     "Asset/Texture/End/",
     "Asset/Texture/Mountains/",
@@ -35,6 +36,28 @@ static const std::array<string, 8> ressourcePackPaths({
     "Asset/Texture/Plains/",
     "Asset/Texture/SnowyToundra/",
 });
+
+static const std::array<raylib::MyVector2, nbrRessourcePacks> ressourcePackPositions({
+    raylib::MyVector2(25, 20),
+    raylib::MyVector2(75, 20),
+    raylib::MyVector2(25, 30),
+    raylib::MyVector2(75, 30),
+    raylib::MyVector2(25, 40),
+    raylib::MyVector2(75, 40),
+    raylib::MyVector2(25, 50),
+    raylib::MyVector2(75, 50),
+});
+
+static void setRessourcePack(const Engine::Entity &optionEntity,
+    const Engine::Entity &selectedEntity,
+    const ProportionUtilities &resizer,
+    const uint index)
+{
+    CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[index];
+    static_cast<raylib::Texture *>(CoreData::entityManager->getComponent<Component::Render2D>(selectedEntity).get("image").get())
+        ->setPosition(resizer(ressourcePackPositions[index])
+            + raylib::MyVector2(150, -1 * (GUI::ButtonFactory::getMediumButtonConfig().size.b / 2 + 10)));
+}
 
 void RessourcePackMenuScene::open()
 {
@@ -47,85 +70,92 @@ void RessourcePackMenuScene::open()
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     GUI::LabelFactory::createCentered(
         this->localEntities, resizer(50, 4), "Ressource pack", GUI::LabelFactory::getStandardLabelConfig());
+    Engine::Entity selectedEntity = GUI::ImageFactory::create(this->localEntities,
+        resizer(ressourcePackPositions[this->_getSelectedRessourcePackIndex(optionEntity)])
+            + raylib::MyVector2(150, -1 * (menuButtons.size.b / 2 + 10)),
+        raylib::MyVector2(menuButtons.size.b + 60, menuButtons.size.b + 10),
+        "Asset/Interface/check.png",
+        true,
+        "selected");
 
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(25, 20),
+        resizer(ressourcePackPositions[0]),
         "desertButton",
         menuButtons,
         "Desert",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[0];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 0);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(75, 20),
+        resizer(ressourcePackPositions[1]),
         "endButton",
         menuButtons,
         "End",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[1];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 1);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(25, 30),
+        resizer(ressourcePackPositions[2]),
         "mountains",
         menuButtons,
         "Mountains",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[2];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 2);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(75, 30),
+        resizer(ressourcePackPositions[3]),
         "mushroom",
         menuButtons,
         "Mushroom",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[3];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 3);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(25, 40),
+        resizer(ressourcePackPositions[4]),
         "nether",
         menuButtons,
         "Nether",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[4];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 4);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(75, 40),
+        resizer(ressourcePackPositions[5]),
         "ocean",
         menuButtons,
         "Ocean",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[5];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 5);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(25, 50),
+        resizer(ressourcePackPositions[6]),
         "plains",
         menuButtons,
         "Plains",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[6];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 6);
         },
         true);
     GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(75, 50),
+        resizer(ressourcePackPositions[7]),
         "snowyToundra",
         menuButtons,
         "Snowy",
-        [optionEntity](const Engine::Entity &) {
-            CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[7];
+        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
+            setRessourcePack(optionEntity, selectedEntity, resizer, 7);
         },
         true);
 
@@ -143,4 +173,16 @@ void RessourcePackMenuScene::update()
 
     render2DSystem.update();
     this->eventDispatcher(this->_systemManager);
+}
+
+uint RessourcePackMenuScene::_getSelectedRessourcePackIndex(const Engine::Entity &optionEntity)
+{
+    const string &selectedRessourcePack =
+        CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack;
+
+    for (uint i = 0; i < nbrRessourcePacks; i++)
+        if (ressourcePackPaths[i] == selectedRessourcePack)
+            return i;
+
+    return 0;
 }
