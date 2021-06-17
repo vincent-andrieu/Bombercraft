@@ -23,8 +23,10 @@ namespace Game
         ~RessourcePackMenuScene() = default;
 
         void open() override;
-
         void update() override;
+
+      private:
+        static uint _getSelectedRessourcePackIndex(const Engine::Entity &optionEntity);
     };
 } // namespace Game
 
