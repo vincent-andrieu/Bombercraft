@@ -18,6 +18,8 @@
 
 namespace Game
 {
+    const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME;
+
     class GameScene : public Engine::AbstractScene, public SceneWithEvents {
       public:
         GameScene(Engine::SystemManager &systemManager);
@@ -25,6 +27,7 @@ namespace Game
 
         void applyOptions(Component::OptionComponent &options);
         void open();
+        static uint getNbrPlayers();
 
         void update();
     };

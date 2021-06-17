@@ -24,6 +24,13 @@ using namespace Game;
 
 extern std::unique_ptr<Game::Core> core;
 
+const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME({
+    {Component::ALPHA, "TL_ALPHA"},
+    {Component::BRAVO, "TR_BRAVO"},
+    {Component::DELTA, "BL_DELTA"},
+    {Component::CHARLIE, "BR_CHARLIE"},
+});
+
 static void handlerGameTimeout()
 {
     Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
@@ -76,6 +83,17 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
+}
+
+uint GameScene::getNbrPlayers()
+{
+    uint counter = 0;
+
+    for (const auto &player : Game::PLAYER_ID_TO_NAME)
+        if (CoreData::sceneManager->getCurrentScene()->localEntities.entityIsSet(player.second))
+            counter++;
+
+    return counter;
 }
 
 void GameScene::update()
