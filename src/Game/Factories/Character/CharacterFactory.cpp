@@ -12,7 +12,7 @@
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
-//#include "Game/Factories/BlockBlockFactory.hpp"
+#include "Game/Factories/Bomb/BombFactory.hpp"
 
 using namespace Game;
 
@@ -107,19 +107,14 @@ static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const floa
 //  pass player direction
 //  pass player hitbox
 
-static void placeBomb(Component::ModelList &render)
+static void placeBomb(Engine::Entity character, Component::ModelList &render)
 {
-    const auto &options(
-        Game::CoreData::entityManager->getComponent<Component::OptionComponent>(core->globalEntities.getEntity("options")));
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(render.getPosition()), render.getRotation().b));
     const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
 
     if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
-        //        GUI::BlockFactory::create(Core::sceneManager->getCurrentScene()->localEntities,
-        //            bombPosition,
-        //            GUI::BlockFactory::BlockType::BLOCK_BOMB,
-        //            options.ressourcePack);
-        GUI::render.select("setBomb");
+        GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        render.select("setBomb");
     }
 }
 
@@ -157,7 +152,7 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            placeBomb(render);
+            placeBomb(character, render);
         }
     }
 }
