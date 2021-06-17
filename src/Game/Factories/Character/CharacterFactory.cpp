@@ -45,7 +45,7 @@ static void handlerHitboxCharacterDeath(
                 return pair.first == id;
             });
             if (it_name != PLAYER_ID_TO_NAME.end()) {
-                scene->localEntities.removeEntity(it_name->second);
+                scene->localEntities.removeEntity(it_name->second); // REMOVE PLAYER
 
                 // End game detection
                 if (GameScene::getNbrPlayers() <= 1) {
@@ -73,6 +73,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     if (type == EntityType::BLAST) {
         handlerHitboxCharacterDeath(character, id, render);
     } else if (type == EntityType::POWERUP) {
+        Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
     } else if (!(type == EntityType::SOFTBLOCK && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);

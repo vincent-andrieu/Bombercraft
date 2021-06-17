@@ -30,8 +30,6 @@
 #include "Scenes/LoadingScreen/LoadingScreenScene.hpp"
 #include "Scenes/EndGame/EndGameScene.hpp"
 
-#include "Game/SceneLoader/SceneLoader.hpp"
-
 #include "Components/KeyBox.hpp"
 #include "Components/ClickEvent/ClickEvent.hpp"
 #include "Components/KeyEvent.hpp"
@@ -70,13 +68,13 @@ namespace Game
         void runPreload();
         void runAfterPreload();
 
-        Clock _clock;
-
       public:
         Engine::EntityPack globalEntities;
         bool _preloadStatus;
         Preloader<Texture2D, std::string> _preloadTexture;
         Preloader<RModel, std::tuple<std::string, std::string>> _preloadModel;
+
+        Clock _clock;
     };
 } // namespace Game
 

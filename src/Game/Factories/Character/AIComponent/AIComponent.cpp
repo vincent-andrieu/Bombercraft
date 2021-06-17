@@ -43,7 +43,8 @@ bool AIComponent::putBomb()
     return this->_AI->getIAAction() == GameModule::BombermanAction::ACTION_TRIGGER_BOMBE;
 }
 
-void AIComponent::setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy)
+void AIComponent::setEnv(
+    const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy)
 {
     this->_AI->setIAEnv(AIComponent::translateMatrix(map));
     this->_AI->setEnemyPos(enemy);
@@ -60,8 +61,7 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     for (size_t y = 0; y < size.b; y++) {
         tmp.clear();
         for (size_t x = 0; x < size.a; x++) {
-            switch (map->getCategory({x, y}))
-            {
+            switch (map->getCategory({x, y})) {
                 case GUI::BlockFactory::BlockType::BLOCK_BLAST: Tiletype = GameModule::TileType::TILE_EXPLOSION; break;
                 case GUI::BlockFactory::BlockType::BLOCK_BOMB: Tiletype = GameModule::TileType::TILE_BOMB; break;
                 case GUI::BlockFactory::BlockType::BLOCK_HARD: Tiletype = GameModule::TileType::TILE_HARD; break;
@@ -80,4 +80,10 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
 raylib::MyVector3 AIComponent::getOrientation() const
 {
     return this->_AI->getOrientation();
+}
+
+void AIComponent::setRandomness(size_t randomness)
+{
+    _AI->setRandomBomb(randomness);
+    _AI->setRandomMove(randomness);
 }

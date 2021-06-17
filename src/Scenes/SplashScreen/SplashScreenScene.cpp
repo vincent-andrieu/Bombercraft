@@ -18,7 +18,7 @@ using namespace Game;
 static const EventRequirement keyHandlerRequirements({raylib::KeyBoard::IKEY_SPACE}, {});
 
 static Component::eventScript keyHandler = [](const Engine::Entity) {
-    SceneLoader::setScene<MainMenuScene>();
+    CoreData::sceneManager->setScene<MainMenuScene>();
 };
 
 SplashScreenScene::SplashScreenScene(Engine::SystemManager &systemManager)
@@ -30,10 +30,25 @@ void SplashScreenScene::open()
 {
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
 
-    GUI::ImageSequenceFactory::create(
-        this->localEntities, {0, 0}, {windowSize.a, windowSize.b}, "Asset/SplashScreen", "splashScreen", 0.05f);
+    GUI::ImageSequenceFactory::create(this->localEntities,
+        {0, 0},
+        {windowSize.a, windowSize.b},
+        "Asset/SplashScreen",
+        "splashScreen",
+        0.05f,
+        false);
     this->_entityManager.addComponent<Component::KeyEvent>(
         this->localEntities.getEntity("splashScreen"), keyHandler, keyHandlerRequirements);
+    Engine::Entity entity = this->localEntities.createEntity("Text");
+    this->_entityManager.addComponent<Component::Render2D>(entity,
+        Component::render2dMapModels({
+            {"text",
+                std::make_shared<raylib::Text>("Press SPACE to start",
+                    "Asset/Font/Code-Bold.ttf",
+                    ProportionUtilities::getProportionWin(windowSize, {50, 90}, {50, 10}),
+                    40,
+                    raylib::RColor::RBLACK)},
+        }));
 }
 
 void SplashScreenScene::update()

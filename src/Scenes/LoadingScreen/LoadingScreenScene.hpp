@@ -25,7 +25,8 @@ namespace Game
 
             virtual void open();
 
-            void update();
+            void update(std::size_t value);
+            void update() {};
 
         protected:
         private:

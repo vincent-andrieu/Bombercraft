@@ -27,7 +27,8 @@ void GUI::ImageSequenceFactory::create(Engine::EntityPack &entityPack,
     const raylib::MyVector2 &size,
     const std::string &directoryPath,
     const std::string &name,
-    const double frameRate)
+    const double frameRate,
+    bool loop)
 {
     Engine::Entity entity;
 
@@ -37,8 +38,8 @@ void GUI::ImageSequenceFactory::create(Engine::EntityPack &entityPack,
         entity = entityPack.createEntity(name);
     }
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels{
-            {"imageSequence", std::make_shared<raylib::TextureSequence>(directoryPath, size, position)}});
+        Component::render2dMapModels{{"imageSequence",
+            std::make_shared<raylib::TextureSequence>(directoryPath, size, position, raylib::RColor::RWHITE, loop)}});
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, frameRate, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
 }
