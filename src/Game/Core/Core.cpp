@@ -139,8 +139,6 @@ Core::Core()
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
-    double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
-    double frames(0);
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
@@ -151,14 +149,6 @@ void Core::loop()
             this->printDuringPreload();
         } else {
             CoreData::sceneManager->run();
-            /*_clock.setElapsedTime();
-            frames = _clock.getElapsedTimeDouble() * calculationPerSecond;
-            if (frames != 0) {
-                _clock.resetStartingPoint();
-                while (frames-- > 0) {
-                    CoreData::sceneManager->run();
-                }
-            }*/
         }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();

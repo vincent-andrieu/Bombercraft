@@ -89,7 +89,8 @@ void GameScene::createCharacters()
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
 
-    Component::PlayerConfig *config[4] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+    Component::PlayerConfig *config[4] = {
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
@@ -120,12 +121,22 @@ void GameScene::update()
 
     float dt = 1.0f / 10.0f;
 
-    render3D.update();
-    render2D.update();
-    modelList.update();
-    timer.update();
+    double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
+    double frames(0);
+
+    core->_clock.setElapsedTime();
+    frames = core->_clock.getElapsedTimeDouble() * calculationPerSecond;
+    if (frames != 0) {
+        core->_clock.resetStartingPoint();
+        while (frames-- > 0) {
+            render3D.update();
+            render2D.update();
+            modelList.update();
+            hitbox.update();
+            physic.update(dt);
+            this->eventDispatcher(this->_systemManager);
+        }
+    }
     audio.update();
-    hitbox.update();
-    physic.update(dt);
-    this->eventDispatcher(this->_systemManager);
+    timer.update();
 }
