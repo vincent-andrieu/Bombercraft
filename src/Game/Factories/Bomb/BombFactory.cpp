@@ -17,7 +17,7 @@ bool BombFactory::isBombPlacable(float posX, float posY)
 {
     auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
         Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
-    auto my_data(map.getData(std::make_pair(posX, posY)));
+    auto my_data(map.getData(std::make_pair(static_cast<size_t>(posX), static_cast<size_t>(posY))));
 
     if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
         return true;
@@ -48,7 +48,8 @@ bool BombFactory::placeBomb(Engine::Entity character)
     auto characterPosition(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
-    Component::PlayerInventory &playerInventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    Component::PlayerInventory &playerInventory =
+        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
     if (inventoryInfo.bomb && isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
