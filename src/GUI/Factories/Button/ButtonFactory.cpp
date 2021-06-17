@@ -70,9 +70,14 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
 {
     const auto &my_size(conf.size);
     auto my_position((position));
+    Engine::Entity entity;
     if (centered)
         my_position = my_position - ProportionUtilities::getProportionWin(my_size, raylib::MyVector2(50, 50));
-    const auto entity = pack.createEntity(name);
+    if (name.empty()) {
+        throw std::invalid_argument("ButtonFactory::create empty entity name");
+    } else {
+        entity = pack.createEntity(name);
+    }
 
     auto my_label(std::make_shared<raylib::Text>(label,
         my_position,

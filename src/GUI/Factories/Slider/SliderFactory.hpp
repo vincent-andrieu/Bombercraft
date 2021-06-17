@@ -49,6 +49,7 @@ namespace GUI
             const float &selectorSize = Game::CoreData::settings->getInt(SLIDER_CONFIG_SELECTOR_SIZE));
 
         static sliderValue _getValueFromRange(const float &position,
+            const sliderValue &minValue,
             const sliderValue &maxValue,
             const raylib::MyVector2 &size = Game::CoreData::settings->getMyVector2(SLIDER_CONFIG_SIZE));
 

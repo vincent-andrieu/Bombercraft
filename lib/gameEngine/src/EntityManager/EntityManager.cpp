@@ -11,6 +11,7 @@ using namespace Engine;
 
 EntityManager::EntityManager(SystemManager &sysManager) : _systemManager(sysManager)
 {
+    this->allocate(NB_ENTITY);
     //    load("last_save");
 }
 

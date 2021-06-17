@@ -12,7 +12,7 @@ using namespace GUI;
 void MapFactory::create(
     Engine::EntityPack &entityPack, const std::string &ressourcePackRoot, const std::string &name, unsigned int seed)
 {
-    Engine::Entity tmpEntityId;
+    Engine::Entity tmpEntityId = 0;
     GUI::BlockFactory::BlockType tmpBlockType = GUI::BlockFactory::BlockType::BLOCK_SOFT;
     std::pair<size_t, size_t> sizeDest;
     GameModule::MapType map = MapFactory::getProceduralMap(seed, sizeDest);

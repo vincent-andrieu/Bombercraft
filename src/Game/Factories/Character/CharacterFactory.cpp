@@ -18,11 +18,7 @@
 using namespace Game;
 
 extern std::unique_ptr<Core> core;
-
-static const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME({{Component::ALPHA, "TL_ALPHA"},
-    {Component::BRAVO, "TR_BRAVO"},
-    {Component::DELTA, "BL_DELTA"},
-    {Component::CHARLIE, "BR_CHARLIE"}});
+extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
 static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
 {
@@ -55,6 +51,13 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
                 });
                 if (it_name != PLAYER_ID_TO_NAME.end()) {
                     scene->localEntities.removeEntity(it_name->second);
+
+                    // End game detection
+                    if (GameScene::getNbrPlayers() <= 1) {
+                        Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getInt("STANDARD_CAMERA_FOV")));
+                        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+                        CoreData::sceneManager->setScene<EndGameScene>();
+                    }
                 }
             });
         render.select("death"); /// Play animation => Death
@@ -86,19 +89,19 @@ static void handlerKeyEvent(const Engine::Entity character)
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
-            velocity.y = -info.speed;
+            velocity.y = (float) -info.speed;
             render.setRotation({0, 180, 0}); // TOP
         } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
             render.setRotation({0, 0, 0}); // DOWN
-            velocity.y = info.speed;
+            velocity.y = (float) info.speed;
         } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
             velocity.y = 0;
         }
         if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
-            velocity.x = -info.speed;
+            velocity.x = (float) -info.speed;
             render.setRotation({0, 90, 0}); // LEFT
         } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
-            velocity.x = info.speed;
+            velocity.x = (float) info.speed;
             render.setRotation({0, 270, 0}); // RIGHT
         } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
             || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
@@ -164,21 +167,17 @@ Engine::Entity Game::CharacterFactory::create(
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
-    /// Inventory
-    CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
     const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Velocity
-    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0, 0);
+    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0.0f, 0.0f);
     /// Specific
     if (isAI) {
         return CharacterFactory::createAI(entity);
-    } else {
-        return CharacterFactory::createPlayer(entity, config);
     }
-    return entity;
+    return CharacterFactory::createPlayer(entity, config);
 }
 
 /**
@@ -255,15 +254,15 @@ void CharacterFactory::handlerAITimer(
             if (entityPlayer != entity) {
                 auto tmp = Component::Matrix2D::getMapIndex(
                     CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
-                posList.push_back({tmp.a, tmp.b});
+                posList.push_back({(size_t) tmp.a, (size_t) tmp.b});
             }
         }
     }
     (void) entityManager;
-    ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
+    ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
-    velocity.x = velocityIA.first;
-    velocity.y = velocityIA.second;
+    velocity.x = (float) velocityIA.first;
+    velocity.y = (float) velocityIA.second;
 
     std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
     if (ai.putBomb()) {
