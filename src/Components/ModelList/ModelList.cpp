@@ -64,6 +64,11 @@ const raylib::MyVector3 &ModelList::getPosition() const
     return _selected->getPosition();
 }
 
+const raylib::MyVector3 &ModelList::getRotation() const
+{
+    return _selected->getRotation();
+}
+
 void ModelList::setScale(const float scale)
 {
     for (auto &model : _models) {

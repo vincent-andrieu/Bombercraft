@@ -13,7 +13,7 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
 #include "AIComponent/AIComponent.hpp"
-#include "Game/Factories/Block/BlockFactory.hpp"
+#include "Game/Factories/Bomb/BombFactory.hpp"
 
 using namespace Game;
 
@@ -76,12 +76,52 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     }
 }
 
+static bool isBombPlacable(float posX, float posY)
+{
+    auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
+        CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
+    auto my_data(map.getData(std::make_pair(posX, posY)));
+
+    if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
+        return true;
+    }
+    return false;
+}
+
+static raylib::MyVector2 getNextPos(const raylib::MyVector2 &position, const float rotation)
+{
+    auto my_position(position);
+
+    if (rotation == 0)
+        my_position.b++;
+    if (rotation == 90)
+        my_position.a--;
+    if (rotation == 180)
+        my_position.b--;
+    if (rotation == 270)
+        my_position.a++;
+    return my_position;
+}
+
+static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
+{
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
+    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+
+    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+        GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        return true;
+    }
+    return false;
+}
+
 static void handlerKeyEvent(const Engine::Entity character)
 {
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
@@ -110,10 +150,9 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            // TODO DROP BOMB
-            const auto &scene = Core::sceneManager->getCurrentScene();
-            //BlockFactory::create(scene->localEntities, );
-            render.select("setBomb");
+            if (placeBomb(
+                    character, hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2, render.getRotation().b))
+                render.select("setBomb");
         }
     }
 }
