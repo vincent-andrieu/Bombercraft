@@ -123,6 +123,10 @@ void raylib::TextureSequence::setRect(const MyVector2 rect)
     this->_size.y = rect.b;
 }
 
+void raylib::TextureSequence::setOgRect(const MyVector4 ogRect)
+{
+}
+
 Texture2D raylib::TextureSequence::getTexture() const
 {
     return this->_textures[_currentFrame];
@@ -136,6 +140,11 @@ string raylib::TextureSequence::getPath() const
 raylib::MyVector2 raylib::TextureSequence::getRect() const
 {
     return MyVector2(this->_size.x, this->_size.y);
+}
+
+raylib::MyVector2 raylib::TextureSequence::getSize() const
+{
+    return MyVector2(this->_size.width, this->_size.height);
 }
 
 raylib::MyVector2 raylib::TextureSequence::getPosition() const

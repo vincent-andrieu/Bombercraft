@@ -9,8 +9,9 @@
 
 using namespace Component;
 
-Component::PlayerConfig::PlayerConfig(const PlayerID playerId, PlayerKeyBindings defaultKeyBinding, const string &defaultSkinPath)
-    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding), _skinPath(defaultSkinPath)
+Component::PlayerConfig::PlayerConfig(
+    const PlayerID playerId, PlayerKeyBindings defaultKeyBinding, const string &defaultSkinPath, const size_t &xp)
+    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding), _skinPath(defaultSkinPath), _xp(xp)
 {
 }
 
@@ -19,6 +20,8 @@ PlayerConfig &PlayerConfig::operator=(const PlayerConfig &src)
     this->_id = src._id;
     this->_keyBindings = src._keyBindings;
     this->_defaultKeyBinding = src._defaultKeyBinding;
+    this->_skinPath = src._skinPath;
+    this->_xp = src._xp;
 
     return *this;
 }
@@ -41,6 +44,11 @@ const PlayerKeyBindings &PlayerConfig::getPlayerDefaultKeyBindings() const
 const string &PlayerConfig::getSkinPath() const
 {
     return this->_skinPath;
+}
+
+const size_t &PlayerConfig::getXP() const
+{
+    return this->_xp;
 }
 
 void PlayerConfig::resetAllKeyBindings()
@@ -81,6 +89,11 @@ void PlayerConfig::setKeyPlaceBomb(const raylib::KeyBoard &key)
 void PlayerConfig::setSkinPath(const string &skinpath)
 {
     this->_skinPath = skinpath;
+}
+
+void PlayerConfig::setXP(const size_t &xp)
+{
+    this->_xp = xp;
 }
 
 std::vector<raylib::KeyBoard> PlayerConfig::getPlayerKeyList() const
