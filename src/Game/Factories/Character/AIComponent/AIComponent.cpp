@@ -45,8 +45,8 @@ bool AIComponent::putBomb()
 
 void AIComponent::setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy)
 {
-    this->_AI->setEnemyPos(enemy);
     this->_AI->setIAEnv(AIComponent::translateMatrix(map));
+    this->_AI->setEnemyPos(enemy);
     this->_AI->setIAPos(pos);
 }
 

@@ -248,8 +248,9 @@ void CharacterFactory::handlerAITimer(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
-    auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
+
+    auto &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(entity);
+    auto relativPos = Component::Matrix2D::getMapIndex(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     std::vector<std::string> entityList = {PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),

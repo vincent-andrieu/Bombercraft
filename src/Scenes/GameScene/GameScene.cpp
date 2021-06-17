@@ -93,9 +93,10 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
-    for (size_t i = 0; i < 4; i++) {
+    /*for (size_t i = 0; i < 4; i++) {
         CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
-    }
+    }*/
+    CharacterFactory::create(this->localEntities, *config[0], map, true);
 }
 
 uint GameScene::getNbrPlayers()

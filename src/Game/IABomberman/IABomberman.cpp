@@ -60,11 +60,11 @@ void IABomberman::IASettings()
 
 void IABomberman::setIAEnv(std::vector<std::vector<TileType>> env)
 {
-    std::cout << "oui" << std::endl;
     for (size_t y = 0; y < env.size(); y++) {
         for (size_t x = 0; x < env[y].size(); x++) {
-            if (env[y][x] == TileType::TILE_BOMB)
-                this->getMapWithExposionEffect(env, {x, y}, this->_range);
+            if (env[y][x] == TileType::TILE_BOMB) {
+                env = this->getMapWithExposionEffect(env, {x, y}, this->_range);
+            }
         }
     }
     IACore::setIAEnv(env);
@@ -124,7 +124,6 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     for (size_t i = 0; i < available.size(); i++) {
         editedEnv = this->getMapWithExposionEffect(env, available[i], this->_range);
         if (this->findSecurePlace(pos, editedEnv, list)) {
-            std::cout << "checked: x: " << available[i].first << " y: " << available[i].second << std::endl;
             this->_MovementQueue = list;
             return true;
         }
@@ -181,9 +180,9 @@ bool IABomberman::isRunnable(TileType type) const
 
 bool IABomberman::isSecurePlace(TileType type) const
 {
-    if (type == TileType::TILE_EXPLOSION || type == TileType::TILE_BOMB)
-        return false;
-    return true;
+    if (type == TileType::TILE_BONUS || type == TileType::TILE_EMPTY || type == TileType::TILE_SOFT || type == TileType::TILE_HARD)
+        return true;
+    return false;
 }
 
 std::vector<std::vector<int>> IABomberman::getCostArray(
@@ -284,7 +283,7 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     size_t y = pos.second;
     int tmp;
 
-    if (env[y][x] != TileType::TILE_EMPTY)
+    if (env[y][x] != TileType::TILE_BOMB)
         return env;
     env[y][x] = TileType::TILE_EXPLOSION;
     for (size_t i = 0; i < range; i++) {
