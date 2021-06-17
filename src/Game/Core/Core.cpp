@@ -139,8 +139,8 @@ Core::Core()
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
-    double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
-    double frames(0);
+    // double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
+    // double frames(0);
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
