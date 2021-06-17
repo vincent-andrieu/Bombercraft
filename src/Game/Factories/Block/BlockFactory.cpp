@@ -37,7 +37,13 @@ Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::IModel> model = BlockFactory::getModel(position, type, ressourcePackRoot);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+    raylib::MyVector2 positionOnMap = Component::Matrix2D::getMapIndex(position);
 
+    if (type != BlockFactory::BlockType::BLOCK_FLOOR) {
+        matrix.getData()->save({(size_t)positionOnMap.a, (size_t)positionOnMap.b}, entity, type);
+    }
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
     BlockFactory::internalFactory(entity, type, position, size);
@@ -154,6 +160,12 @@ void BlockFactory::handlerBlastTimer(
     UNUSED Engine::EntityManager &entityManager, UNUSED Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     auto scene = Game::Core::sceneManager->getCurrentScene();
+    raylib::MyVector3 BlastPosition = Game::CoreData::entityManager->getComponent<Component::Render3D>(entity).modele->getPosition();
+    raylib::MyVector2 indexOnMap = Component::Matrix2D::getMapIndex(BlastPosition);
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+
+    matrix.getData()->save({(size_t)indexOnMap.a, (size_t)indexOnMap.b}, entity, BlockType::BLOCK_AIR);
     // TODO remove blast
     scene->localEntities.removeEntity(entity);
 }
@@ -179,7 +191,6 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
-        // TODO REMOVE SOFT BLOCK ON MATRIX
         scene->localEntities.removeEntity(toEntity);
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBONUSBLOCK) {
@@ -286,17 +297,14 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
     // TODO SPLIT INTO METHODS
     raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
     std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
-    Engine::Entity tmpEntityId;
 
     GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
     for (size_t i = 1; i < blastRadius; i++) {
         blockTmp = matrix.getData({(size_t) vector2.a + i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save(
-            {(size_t) vector2.a + i, (size_t) vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -304,10 +312,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a - i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save(
-            {(size_t) vector2.a - i, (size_t) vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -315,10 +321,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b + i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save(
-            {(size_t) vector2.a, (size_t) vector2.b + i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -326,10 +330,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b - i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save(
-            {(size_t) vector2.a, (size_t) vector2.b - i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }

@@ -64,12 +64,16 @@ bool BombFactory::placeBomb(Engine::Entity character)
 Engine::Entity BombFactory::create(
     Engine::EntityPack &entityPack, const raylib::MyVector3 position, Engine::Entity entityParent, const std::string &name)
 {
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::Animation> animation = BombFactory::getAnimation(position);
-
+    raylib::MyVector2 positionOnMap = Component::Matrix2D::getMapIndex(position);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
     int bombCountdown = Game::CoreData::settings->getInt("BOMB_COUNTDOWN");
 
+
+    matrix.getData()->save({(size_t)positionOnMap.a, (size_t)positionOnMap.b}, entity, GUI::BlockFactory::BlockType::BLOCK_BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, animation);
     if (bombCountdown < 0)
