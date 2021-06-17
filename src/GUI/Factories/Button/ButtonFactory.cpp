@@ -9,8 +9,12 @@
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "GUI/Factories/Label/LabelFactory.hpp"
+#include "Game/Factories/Sound/AudioFactory.hpp"
+#include "Game/Core/Core.hpp"
 
 using namespace GUI;
+
+extern std::unique_ptr<Game::Core> core;
 
 static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
 
@@ -108,12 +112,15 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     };
     Component::eventScript my_clickHandler = [my_position, my_size, clickAction](const Engine::Entity entity) {
         if (Game::CoreData::eventManager->MouseIsOverClicked(my_position, my_size)) {
+            Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("ButtonClick", core->globalEntities);
+
             clickAction(entity);
         }
     };
     Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
+
     auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
     my_render.unsetToDraw("hover");

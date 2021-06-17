@@ -117,11 +117,12 @@ void GameScene::update()
     auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
     auto &physic = this->_systemManager.getSystem<System::PhysicsSystem>();
     auto &hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+
     float dt = 1.0f / 10.0f;
 
     render3D.update();
-    modelList.update();
     render2D.update();
+    modelList.update();
     timer.update();
     audio.update();
     hitbox.update();

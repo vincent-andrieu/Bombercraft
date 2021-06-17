@@ -26,7 +26,6 @@ namespace Component
         raylib::KeyBoard moveDown;
         raylib::KeyBoard moveLeft;
         raylib::KeyBoard moveRight;
-        raylib::KeyBoard pause;
         raylib::KeyBoard placeBomb;
     };
 
@@ -52,7 +51,6 @@ namespace Component
         void setKeyMoveDown(const raylib::KeyBoard &key);
         void setKeyMoveLeft(const raylib::KeyBoard &key);
         void setKeyMoveRight(const raylib::KeyBoard &key);
-        void setKeyPause(const raylib::KeyBoard &key);
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
         void setSkinPath(const string &skinpath);
         void setXP(const size_t &xp);

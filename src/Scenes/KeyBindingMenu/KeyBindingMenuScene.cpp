@@ -61,7 +61,7 @@ void KeyBindingMenuScene::open()
         "resetKeysButton",
         bottomButtonsConfig,
         "Reset keys",
-        [this](UNUSED const Engine::Entity &entity) {
+        [this](const Engine::Entity &) {
             this->_selectedPlayer->resetAllKeyBindings();
             this->_refreshKeys();
         });
@@ -85,47 +85,40 @@ void KeyBindingMenuScene::update()
 
 void KeyBindingMenuScene::_createKeysLabel()
 {
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 25.5), "Move up", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 35.5), "Move down", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 45.5), "Move left", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 55.5), "Move right", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 65.5), "Pause", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(20, 75.5), "Place bomb", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 29.5), "Move up", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 39.5), "Move down", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 49.5), "Move left", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 59.5), "Move right", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 69.5), "Place bomb", this->_defaultLabelConfig);
 }
 
 void KeyBindingMenuScene::_createResetKeys()
 {
-    this->_createResetKey(23, "resetMoveUp", [this](UNUSED const Engine::Entity &entity) {
+    this->_createResetKey(27, "resetMoveUp", [this](UNUSED const Engine::Entity &entity) {
         const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().moveUp;
 
         this->_selectedPlayer->setKeyMoveUp(newKey);
         this->_refreshKeys("keyInputMoveUp", newKey);
     });
-    this->_createResetKey(33, "resetMoveDown", [this](UNUSED const Engine::Entity &entity) {
+    this->_createResetKey(37, "resetMoveDown", [this](UNUSED const Engine::Entity &entity) {
         const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().moveDown;
 
         this->_selectedPlayer->setKeyMoveDown(newKey);
         this->_refreshKeys("keyInputMoveDown", newKey);
     });
-    this->_createResetKey(43, "resetMoveLeft", [this](UNUSED const Engine::Entity &entity) {
+    this->_createResetKey(47, "resetMoveLeft", [this](UNUSED const Engine::Entity &entity) {
         const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().moveLeft;
 
         this->_selectedPlayer->setKeyMoveLeft(newKey);
         this->_refreshKeys("keyInputMoveLeft", newKey);
     });
-    this->_createResetKey(53, "resetMoveRight", [this](UNUSED const Engine::Entity &entity) {
+    this->_createResetKey(57, "resetMoveRight", [this](UNUSED const Engine::Entity &entity) {
         const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().moveRight;
 
         this->_selectedPlayer->setKeyMoveRight(newKey);
         this->_refreshKeys("keyInputMoveRight", newKey);
     });
-    this->_createResetKey(63, "resetPause", [this](UNUSED const Engine::Entity &entity) {
-        const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().pause;
-
-        this->_selectedPlayer->setKeyPause(newKey);
-        this->_refreshKeys("keyInputPause", newKey);
-    });
-    this->_createResetKey(73, "resetPlaceBomb", [this](UNUSED const Engine::Entity &entity) {
+    this->_createResetKey(67, "resetPlaceBomb", [this](UNUSED const Engine::Entity &entity) {
         const auto &newKey = this->_selectedPlayer->getPlayerDefaultKeyBindings().placeBomb;
 
         this->_selectedPlayer->setKeyPlaceBomb(newKey);
@@ -136,7 +129,7 @@ void KeyBindingMenuScene::_createResetKeys()
 void KeyBindingMenuScene::_createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler)
 {
     GUI::ButtonFactory::create(
-        this->localEntities, this->_resizer(60, y), name, this->_buttonDefaultConfig, "Reset", eventHandler);
+        this->localEntities, this->_resizer(63, y), name, this->_buttonDefaultConfig, "Reset", eventHandler);
 }
 
 void KeyBindingMenuScene::_createKeysInput()
@@ -144,42 +137,35 @@ void KeyBindingMenuScene::_createKeysInput()
     const auto &playerKeyBindings = this->_selectedPlayer->getPlayerKeyBindings();
 
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 25), "keyInputMoveUp", playerKeyBindings.moveUp},
+        {this->_resizer(43, 29), "keyInputMoveUp", playerKeyBindings.moveUp},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveUp(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 35), "keyInputMoveDown", playerKeyBindings.moveDown},
+        {this->_resizer(43, 39), "keyInputMoveDown", playerKeyBindings.moveDown},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveDown(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 45), "keyInputMoveLeft", playerKeyBindings.moveLeft},
+        {this->_resizer(43, 49), "keyInputMoveLeft", playerKeyBindings.moveLeft},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveLeft(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 55), "keyInputMoveRight", playerKeyBindings.moveRight},
+        {this->_resizer(43, 59), "keyInputMoveRight", playerKeyBindings.moveRight},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveRight(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 65), "keyInputPause", playerKeyBindings.pause},
-        this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
-        [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
-            this->_selectedPlayer->setKeyPause(key.first);
-        });
-    GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(40, 75), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
+        {this->_resizer(43, 69), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
         this->_defaultLabelConfig,
         this->_keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
@@ -195,7 +181,6 @@ void KeyBindingMenuScene::_refreshKeys()
     this->_refreshKeys("keyInputMoveDown", playerKeyBindings.moveDown);
     this->_refreshKeys("keyInputMoveLeft", playerKeyBindings.moveLeft);
     this->_refreshKeys("keyInputMoveRight", playerKeyBindings.moveRight);
-    this->_refreshKeys("keyInputPause", playerKeyBindings.pause);
     this->_refreshKeys("keyInputPlaceBomb", playerKeyBindings.placeBomb);
 }
 

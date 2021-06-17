@@ -139,16 +139,26 @@ Core::Core()
 void Core::loop()
 {
     const std::string iconPath = CoreData::settings->getString("STANDARD_ICON_FILEPATH");
+    double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
+    double frames(0);
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
-    while (CoreData::window->isOpen() && this->_loop == true) {
+    while (CoreData::window->isOpen() && Game::Core::_loop == true) {
         CoreData::window->clear();
         if (!this->isEndPreload()) {
             this->runPreload();
             this->printDuringPreload();
         } else {
             CoreData::sceneManager->run();
+            /*_clock.setElapsedTime();
+            frames = _clock.getElapsedTimeDouble() * calculationPerSecond;
+            if (frames != 0) {
+                _clock.resetStartingPoint();
+                while (frames-- > 0) {
+                    CoreData::sceneManager->run();
+                }
+            }*/
         }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
@@ -230,7 +240,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config2");
@@ -241,7 +250,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config3");
@@ -252,7 +260,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config4");
@@ -263,7 +270,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PLACE_BOMB")),
         });
 }

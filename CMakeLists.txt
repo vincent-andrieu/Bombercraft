@@ -102,7 +102,7 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         # UTILITIES
         src/Utilities/utilities.cpp
-        src/Utilities/ProportionUtilities.hpp
+        src/Utilities/Clock.cpp
         )
 
 add_executable(${NAME} ${SRCS})

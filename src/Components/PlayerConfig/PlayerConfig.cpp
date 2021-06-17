@@ -76,11 +76,6 @@ void PlayerConfig::setKeyMoveRight(const raylib::KeyBoard &key)
     this->_keyBindings.moveRight = key;
 }
 
-void PlayerConfig::setKeyPause(const raylib::KeyBoard &key)
-{
-    this->_keyBindings.pause = key;
-}
-
 void PlayerConfig::setKeyPlaceBomb(const raylib::KeyBoard &key)
 {
     this->_keyBindings.placeBomb = key;
