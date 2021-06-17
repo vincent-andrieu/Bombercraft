@@ -56,7 +56,7 @@ void SliderFactory::create(Engine::EntityPack &entityPack,
                 const MyVector2 &mousePos = CoreData::eventManager->getMousePos();
                 const MyVector2 &sliderPos = SliderFactory::_getSliderMousePos(my_position, mousePos.a, size.a, selectorSize);
 
-                value = SliderFactory::_getValueFromRange(mousePos.a - my_position.a, maxValue, size);
+                value = SliderFactory::_getValueFromRange(mousePos.a - my_position.a, minValue, maxValue, size);
                 selector->setPosition(sliderPos);
                 displayLabel->setText(label + toString(value));
                 sliderHandler(entity, value);
@@ -87,11 +87,12 @@ float SliderFactory::_getRangeValue(const float &origin,
     return pos;
 }
 
-sliderValue SliderFactory::_getValueFromRange(const float &position, const sliderValue &maxValue, const MyVector2 &size)
+sliderValue SliderFactory::_getValueFromRange(
+    const float &position, const sliderValue &minValue, const sliderValue &maxValue, const MyVector2 &size)
 {
     if (position < 0 || position > size.a)
         throw std::out_of_range("slider position is over limits");
-    return (int) ((position * maxValue) / size.a);
+    return ((sliderValue) ((position * maxValue) / size.a)) + minValue;
 }
 
 const MyVector2 SliderFactory::_getSliderMousePos(

@@ -76,6 +76,11 @@ const raylib::MyVector3 &raylib::Model::getPosition() const
     return this->_position;
 }
 
+const raylib::MyVector3 &raylib::Model::getRotation() const
+{
+    return this->_rotation;
+}
+
 void raylib::Model::setRotation(const MyVector3 rotation)
 {
     float pitch = rotation.a;
@@ -160,11 +165,6 @@ RModel raylib::Model::myModelLoad(const std::tuple<std::string, std::string> &st
 void raylib::Model::myModelUnload(RModel &model)
 {
     UnloadModel(model);
-}
-
-raylib::MyVector3 raylib::Model::getRotation() const
-{
-    return _rotation;
 }
 
 void raylib::Model::restartAnimation()

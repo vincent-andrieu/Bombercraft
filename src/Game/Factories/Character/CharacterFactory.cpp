@@ -13,16 +13,12 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "GUI/Factories/Inventory/InventoryFactory.hpp"
 #include "AIComponent/AIComponent.hpp"
-#include "Game/Factories/Block/BlockFactory.hpp"
+#include "Game/Factories/Bomb/BombFactory.hpp"
 
 using namespace Game;
 
 extern std::unique_ptr<Core> core;
-
-static const std::unordered_map<Component::PlayerID, std::string> PLAYER_ID_TO_NAME({{Component::ALPHA, "TL_ALPHA"},
-    {Component::BRAVO, "TR_BRAVO"},
-    {Component::DELTA, "BL_DELTA"},
-    {Component::CHARLIE, "BR_CHARLIE"}});
+extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
 static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
 {
@@ -40,7 +36,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
             CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
         } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
             CoreData::entityManager->removeComponent<Component::AIComponent>(character);
-         }
+        }
         auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
         audioSys.play("Death", core->globalEntities);
         /// Set Timer => remove entity
@@ -55,6 +51,13 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
                 });
                 if (it_name != PLAYER_ID_TO_NAME.end()) {
                     scene->localEntities.removeEntity(it_name->second);
+
+                    // End game detection
+                    if (GameScene::getNbrPlayers() <= 1) {
+                        Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getInt("STANDARD_CAMERA_FOV")));
+                        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+                        CoreData::sceneManager->setScene<EndGameScene>();
+                    }
                 }
             });
         render.select("death"); /// Play animation => Death
@@ -76,29 +79,69 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     }
 }
 
+static bool isBombPlacable(size_t posX, size_t posY)
+{
+    auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
+        CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
+    auto my_data(map.getData(std::make_pair(posX, posY)));
+
+    if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
+        return true;
+    }
+    return false;
+}
+
+static raylib::MyVector2 getNextPos(const raylib::MyVector2 &position, const float rotation)
+{
+    auto my_position(position);
+
+    if (rotation == 0)
+        my_position.b++;
+    if (rotation == 90)
+        my_position.a--;
+    if (rotation == 180)
+        my_position.b--;
+    if (rotation == 270)
+        my_position.a++;
+    return my_position;
+}
+
+static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
+{
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
+    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+
+    if (isBombPlacable((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b)) {
+        GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        return true;
+    }
+    return false;
+}
+
 static void handlerKeyEvent(const Engine::Entity character)
 {
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+    const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
-            velocity.y = -info.speed;
+            velocity.y = (float) -info.speed;
             render.setRotation({0, 180, 0}); // TOP
         } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
             render.setRotation({0, 0, 0}); // DOWN
-            velocity.y = info.speed;
+            velocity.y = (float) info.speed;
         } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
             velocity.y = 0;
         }
         if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
-            velocity.x = -info.speed;
+            velocity.x = (float) -info.speed;
             render.setRotation({0, 90, 0}); // LEFT
         } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
-            velocity.x = info.speed;
+            velocity.x = (float) info.speed;
             render.setRotation({0, 270, 0}); // RIGHT
         } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
             || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
@@ -110,10 +153,9 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            // TODO DROP BOMB
-            const auto &scene = Core::sceneManager->getCurrentScene();
-            //BlockFactory::create(scene->localEntities, );
-            render.select("setBomb");
+            if (placeBomb(
+                    character, hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2, render.getRotation().b))
+                render.select("setBomb");
         }
     }
 }
@@ -174,14 +216,12 @@ Engine::Entity Game::CharacterFactory::create(
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Velocity
-    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0, 0);
+    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0.0f, 0.0f);
     /// Specific
     if (isAI) {
         return CharacterFactory::createAI(entity);
-    } else {
-        return CharacterFactory::createPlayer(entity, config);
     }
-    return entity;
+    return CharacterFactory::createPlayer(entity, config);
 }
 
 /**
@@ -231,40 +271,43 @@ Engine::Entity CharacterFactory::createAI(Engine::Entity entity)
     float refreshTime = CoreData::settings->getFloat("AI_REFRESH_TIME");
 
     CoreData::entityManager->addComponent<Component::AIComponent>(entity);
-    Game::CoreData::entityManager->addComponent<Engine::Timer>(entity, refreshTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, CharacterFactory::handlerAITimer);
+    Game::CoreData::entityManager->addComponent<Engine::Timer>(
+        entity, refreshTime, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, CharacterFactory::handlerAITimer);
     return entity;
 }
 
-void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
+void CharacterFactory::handlerAITimer(
+    Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     Engine::Entity entityPlayer;
-    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
+    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(
+        sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
-    std::vector<std::string> entityList = {
-        PLAYER_ID_TO_NAME.at(Component::ALPHA),
+    std::vector<std::string> entityList = {PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
-        PLAYER_ID_TO_NAME.at(Component::DELTA)
-    };
+        PLAYER_ID_TO_NAME.at(Component::DELTA)};
     std::vector<std::pair<size_t, size_t>> posList;
 
     for (size_t i = 0; i < entityList.size(); i++) {
         if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
             entityPlayer = sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i]);
             if (entityPlayer != entity) {
-                auto tmp = Component::Matrix2D::getMapIndex(CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
-                posList.push_back({tmp.a, tmp.b});
+                auto tmp = Component::Matrix2D::getMapIndex(
+                    CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
+                posList.push_back({(size_t) tmp.a, (size_t) tmp.b});
             }
         }
     }
     (void) entityManager;
-    ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
+    ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
-    velocity.x = velocityIA.first;
-    velocity.y = velocityIA.second;
+    velocity.x = (float) velocityIA.first;
+    velocity.y = (float) velocityIA.second;
+
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB
