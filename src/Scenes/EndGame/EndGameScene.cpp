@@ -49,6 +49,8 @@ void EndGameScene::open()
     const std::vector<Component::PlayerID> ids = {
         Component::PlayerID::ALPHA, Component::PlayerID::BRAVO, Component::PlayerID::CHARLIE, Component::PlayerID::DELTA};
     const std::vector<std::vector<float>> playerZPosition = {{0}, {7, -7}, {10, 0, -10}, {11, 4, -4, -11}};
+    const raylib::MyVector2 xpBarSize = {182.0f * (windowSize.a / 640.0f), 5.0f * (windowSize.b / 360.0f)};
+    raylib::MyVector2 xpBarPosition = {windowSize.a / 2.0f - xpBarSize.a / 2.0f, windowSize.b * 0.7f};
 
     CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
     // BACKGROUND
@@ -79,7 +81,7 @@ void EndGameScene::open()
         "End Of Game",
         GUI::LabelFactory::getStandardLabelConfig(CoreData::settings->getInt("STANDARD_FONT_SIZE")));
 
-    // MODEL
+    // MODEL + XP
     CoreData::camera->setUp(CoreData::settings->getMyVector3("MENU_CAM_UP"));
     for (size_t i = 0; i < nbPlayers; i++) {
         Engine::Entity player = this->localEntities.createEntity("PlayerEndGame" + toString(i + 1));
@@ -88,6 +90,14 @@ void EndGameScene::open()
             playerConfig->getSkinPath(), animDefeat, raylib::MyVector3(0, -4, playerZPosition[nbPlayers - 1][i]));
         raylibAnimation->setRotation(rotation);
         CoreData::entityManager->addComponent<Component::Render3D>(player, raylibAnimation);
+        GUI::XPBarFactory::create(xpBarPosition,
+            xpBarSize,
+            CoreData::settings->getTabString("XP_BAR"),
+            ids[i],
+            this->localEntities,
+            *playerConfig,
+            "XPBarEndGame" + toString(i + 1));
+        xpBarPosition.b += xpBarSize.b * 2.0f;
     }
 }
 

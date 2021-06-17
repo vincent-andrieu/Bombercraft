@@ -58,6 +58,7 @@ void Core::registerComponents()
     CoreData::entityManager->registerComponent<Component::MouseMoveEvent>();
     CoreData::entityManager->registerComponent<Component::Hitbox>();
     CoreData::entityManager->registerComponent<Engine::Position>();
+    CoreData::entityManager->registerComponent<Engine::EntityBox>();
     CoreData::entityManager->registerComponent<Component::KeyBox>();
     CoreData::entityManager->registerComponent<Component::StringChoice>();
     CoreData::entityManager->registerComponent<Component::PlayerConfig>();

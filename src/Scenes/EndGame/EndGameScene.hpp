@@ -15,6 +15,8 @@
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
+#include "GUI/Factories/XPBar/XPBarFactory.hpp"
+
 namespace Game
 {
     class EndGameScene : public Engine::AbstractScene, public SceneWithEvents {

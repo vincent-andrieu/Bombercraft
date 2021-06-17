@@ -30,6 +30,7 @@ set(SRCS
         src/Exceptions/Exceptions.cpp
         ## GAME/FACTORIES
         src/Game/Factories/Block/BlockFactory.cpp
+        src/Game/Factories/Bomb/BombFactory.cpp
         src/Game/Factories/Sound/AudioFactory.cpp
         src/Game/Factories/KeyManagementFactory/KeyManagementFactory.cpp
         ## TMP
@@ -50,6 +51,7 @@ set(SRCS
         src/GUI/Factories/Image/ImageSequenceFactory.cpp
         src/GUI/Factories/Slider/SliderFactory.cpp
         src/GUI/Factories/Inventory/InventoryFactory.cpp
+        src/GUI/Factories/XPBar/XPBarFactory.cpp
         # IA
         src/Game/IABomberman/IABomberman.cpp
         src/Game/IABomberman/IACore.cpp

@@ -23,6 +23,7 @@
 #include "components/Velocity.hpp"
 #include "components/Script.hpp"
 #include "components/Timer.hpp"
+#include "components/EntityBox.hpp"
 
 #include "Systems/PhysicsSystem/PhysicsSystem.hpp"
 #include "Systems/TimerSystem/TimerSystem.hpp"
