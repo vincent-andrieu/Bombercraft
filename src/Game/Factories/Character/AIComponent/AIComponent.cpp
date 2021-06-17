@@ -63,7 +63,7 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
             switch (map->getCategory({x, y}))
             {
                 case GUI::BlockFactory::BlockType::BLOCK_BLAST: type = GameModule::TileType::TILE_EXPLOSION; break;
-                case GUI::BlockFactory::BlockType::BLOCK_BOMB: type = GameModule::TileType::TILE_EXPLOSION; break;
+                case GUI::BlockFactory::BlockType::BLOCK_BOMB: type = GameModule::TileType::TILE_BOMB; break;
                 case GUI::BlockFactory::BlockType::BLOCK_HARD: type = GameModule::TileType::TILE_HARD; break;
                 case GUI::BlockFactory::BlockType::BLOCK_SOFT: type = GameModule::TileType::TILE_SOFT; break;
                 case GUI::BlockFactory::BlockType::BLOCK_FLOOR: type = GameModule::TileType::TILE_EMPTY; break;

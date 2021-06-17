@@ -53,8 +53,10 @@ void IABomberman::IASettings()
         [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list) {
             return this->movementPrediction(pos, env, list);
         });
+    this->setRunnableTile(TileType::TILE_EXPLOSION);
     this->setRunnableTile(TileType::TILE_BONUS);
     this->setRunnableTile(TileType::TILE_EMPTY);
+    this->setRunnableTile(TileType::TILE_BOMB);
 }
 
 void IABomberman::setRandomMove(const size_t randomness)
@@ -94,7 +96,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
         return false;
     std::cout << "PUT?" << std::endl;
     editedEnv = this->getMapWithExposionEffect(env, pos, this->_range);
-    if (this->findSecurePlace(pos, env, list))
+    if (!this->findSecurePlace(pos, editedEnv, list))
         return false;
     std::cout << "KA BOOM" << std::endl;
     this->_MovementQueue = list;
@@ -127,10 +129,19 @@ bool IABomberman::findSecurePlace(
     std::vector<std::vector<int>> cost_array = this->getCostArray(pos, env);
     std::pair<size_t, size_t> secure_place = this->getCostLessSafeMove(cost_array, env, stat);
 
+    /*std::cout << (stat ? "true" : "false") << std::endl;
+    std::cout << "SELECTED: X: " << secure_place.first << " Y: " << secure_place.second << std::endl;
+    for (size_t y = 0; y < cost_array.size(); y++) {
+        for (size_t x = 0; x < cost_array[y].size(); x++) {
+            std::cout << cost_array[y][x] << "|";
+        }
+        std::cout << std::endl;
+    }*/
     if (!stat)
         return false;
     this->clearQueue(list);
     loadPath(cost_array, secure_place, list);
+    std::cout << "je suis NULL: " << list.size() << std::endl;
     return true;
 }
 
@@ -150,7 +161,7 @@ bool IABomberman::isRunnable(TileType type) const
 
 bool IABomberman::isSecurePlace(TileType type) const
 {
-    if (type == TileType::TILE_EXPLOSION)
+    if (type == TileType::TILE_EXPLOSION || type == TileType::TILE_BOMB)
         return false;
     return true;
 }
@@ -211,6 +222,7 @@ std::pair<size_t, size_t> IABomberman::getCostLessSafeMove(
             }
         }
     }
+    std::cout << (stat ? "true" : "false") << std::endl;
     return best;
 }
 
@@ -259,17 +271,12 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     size_t y = pos.second;
     int tmp;
 
+    std::cout << "POS BOMB: X: " << pos.first << " Y: " << pos.second << std::endl;
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
-            else if (env[y][tmp] == TileType::TILE_SOFT) {
-                env[y][tmp] = TileType::TILE_EXPLOSION;
-                break;
-            } else if (env[y][tmp] == TileType::TILE_HARD) {
-                break;
-            }
         }
     }
     for (size_t i = 0; i < range; i++) {
@@ -277,12 +284,6 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
-            else if (env[tmp][x] == TileType::TILE_SOFT) {
-                env[tmp][x] = TileType::TILE_EXPLOSION;
-                break;
-            } else if (env[tmp][x] == TileType::TILE_HARD) {
-                break;
-            }
         }
     }
     move = -1;
@@ -291,12 +292,6 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
-            else if (env[y][tmp] == TileType::TILE_SOFT) {
-                env[y][tmp] = TileType::TILE_EXPLOSION;
-                break;
-            } else if (env[y][tmp] == TileType::TILE_HARD) {
-                break;
-            }
         }
     }
     for (size_t i = 0; i < range; i++) {
@@ -304,14 +299,23 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
-            else if (env[tmp][x] == TileType::TILE_SOFT) {
-                env[tmp][x] = TileType::TILE_EXPLOSION;
-                break;
-            } else if (env[tmp][x] == TileType::TILE_HARD) {
-                break;
-            }
         }
     }
+    /*for (size_t y = 0; y < env.size(); y++) {
+        for (size_t x = 0; x < env[y].size(); x++) {
+            switch (env[y][x])
+            {
+                case TileType::TILE_BONUS: std::cout << "?"; break;
+                case TileType::TILE_DEFAULT: std::cout << "!"; break;
+                case TileType::TILE_EMPTY: std::cout << "."; break;
+                case TileType::TILE_EXPLOSION: std::cout << "O"; break;
+                case TileType::TILE_HARD: std::cout << "x"; break;
+                case TileType::TILE_SOFT: std::cout << "#"; break;
+                case TileType::TILE_BOMB: std::cout << "1"; break;
+            }
+        }
+        std::cout << std::endl;
+    }*/
     return env;
 }
 

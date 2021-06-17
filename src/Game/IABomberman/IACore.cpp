@@ -38,6 +38,7 @@ void IACore<TileType, Action>::setIAEnv(std::vector<std::vector<TileType>> env)
                 case TileType::TILE_EXPLOSION: std::cout << "O"; break;
                 case TileType::TILE_HARD: std::cout << "x"; break;
                 case TileType::TILE_SOFT: std::cout << "#"; break;
+                case TileType::TILE_BOMB: std::cout << "1"; break;
             }
         }
         std::cout << std::endl;
@@ -93,6 +94,7 @@ Movement IACore<TileType, Action>::getIAMovement()
 {
     Movement tmp;
 
+    std::cout << "TMP X: " << this->_MovementQueue.size() << std::endl;
     if (!this->_MovementQueue.size()) {
         if (!this->_MovementFunc)
             throw IAExceptions("Moving function not initialized", false);
@@ -103,7 +105,7 @@ Movement IACore<TileType, Action>::getIAMovement()
         return Movement::IA_MOVE_NONE;
     tmp = this->_MovementQueue.front();
     this->_MovementQueue.pop();
-    this->applyIAMovement(tmp);
+    //this->applyIAMovement(tmp);
     return tmp;
 }
 
