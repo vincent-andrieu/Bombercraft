@@ -71,7 +71,6 @@ void GameScene::open()
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// CHARACTERS
     this->createCharacters();
-    GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player); /// DEBUG
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
