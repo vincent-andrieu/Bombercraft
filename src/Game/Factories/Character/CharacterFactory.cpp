@@ -275,7 +275,7 @@ void CharacterFactory::handlerAITimer(
     velocity.y = (float) velocityIA.second;
 
     if (ai.putBomb()) {
-        std::cout << "PUT BOMB" << std::endl;
+        //std::cout << "PUT BOMB" << std::endl;
         render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
