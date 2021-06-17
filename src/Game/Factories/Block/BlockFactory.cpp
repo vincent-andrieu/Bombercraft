@@ -167,7 +167,7 @@ void BlockFactory::handlerBlastTimer(
 
     matrix.getData()->save({(size_t)indexOnMap.a, (size_t)indexOnMap.b}, entity, BlockType::BLOCK_AIR);
     // TODO remove blast
-    scene->localEntities.removeEntity(entity);
+    scene->localEntities.removeEntity(entity); // REMOVE BLAST
 }
 
 void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
@@ -191,7 +191,8 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
-        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(toEntity); // REMOVE SOFT BLOCK
+        Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("BlockDestroyed");
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBONUSBLOCK) {
         bonusType = randomBonus();
@@ -203,13 +204,13 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
             default: typeInStr = "DEFAULT"; break;
         }
         texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
-        scene->localEntities.removeEntity(toEntity);
-        scene->localEntities.removeEntity(fromEntity);
+        scene->localEntities.removeEntity(toEntity); // SOFT BONUS BLOCK
+        scene->localEntities.removeEntity(fromEntity); // BLAST
         entity = GUI::BlockFactory::create(scene->localEntities, position, bonusType, texturePath);
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
-        // scene->localEntities.removeEntity(toEntity);
+        // scene->localEntities.removeEntity(toEntity); // CHARACTER
     }
     // TODO kill entity if player
 }
@@ -220,14 +221,11 @@ void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine:
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
-        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         inventory.setBomb(info.bomb + 1);
-
-        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-        audio.play("PowerUpTaken");
     }
 }
 
@@ -237,14 +235,11 @@ void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine:
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
-        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         inventory.setBlastRadius(info.blastRadius + 1);
-
-        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-        audio.play("PowerUpTaken");
     }
 }
 
@@ -254,15 +249,13 @@ void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
-        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         if (info.speed < 1) {
             inventory.setSpeed(info.speed + 0.1);
         }
-        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-        audio.play("PowerUpTaken");
     }
 }
 
@@ -272,13 +265,10 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
-        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
         inventory.setWallPass(true);
-
-        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-        audio.play("PowerUpTaken");
     }
 }
 
