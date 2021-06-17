@@ -60,6 +60,7 @@ namespace GameModule
         bool isRunnable(TileType type) const;
         bool isSecurePlace(TileType type) const;
         void clearQueue(std::queue<IA::Movement> &list);
+        bool isCorrectBomb(const std::pair<size_t, size_t> &pos) const;
         void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
         std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;

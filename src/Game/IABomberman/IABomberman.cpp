@@ -123,7 +123,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     available = this->getAvailableTile(pos, env);
     for (size_t i = 0; i < available.size(); i++) {
         editedEnv = this->getMapWithExposionEffect(env, available[i], this->_range);
-        if (this->findSecurePlace(pos, editedEnv, list)) {
+        if (isCorrectBomb(available[i]) && this->findSecurePlace(pos, editedEnv, list)) {
             this->_MovementQueue = list;
             return true;
         }
@@ -469,4 +469,17 @@ std::pair<size_t, size_t> IABomberman::getNextPos(IA::Movement move) const
         default: throw IAExceptions("Invalide Move", false); break;
     }
     return pos;
+}
+
+bool IABomberman::isCorrectBomb(const std::pair<size_t, size_t> &pos) const
+{
+    if (pos.first + 1 < this->_env[pos.second].size() && this->_env[pos.second][pos.first + 1] == TileType::TILE_SOFT)
+        return true;
+    if (pos.second + 1 < this->_env.size() && this->_env[pos.second + 1][pos.first] == TileType::TILE_SOFT)
+        return true;
+    if (pos.first && this->_env[pos.second][pos.first - 1] == TileType::TILE_SOFT)
+        return true;
+    if (pos.second && this->_env[pos.second - 1][pos.first] == TileType::TILE_SOFT)
+        return true;
+    return false;
 }
