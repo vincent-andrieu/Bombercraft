@@ -30,6 +30,9 @@ namespace Game
         static uint getNbrPlayers();
 
         void update();
+
+      private:
+        void createCharacters();
     };
 } // namespace Game
 

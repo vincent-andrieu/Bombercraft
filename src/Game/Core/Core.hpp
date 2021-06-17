@@ -55,6 +55,8 @@ namespace Game
         void loop();
 
       private:
+        void createCharacterConfig();
+
         void registerComponents();
         void createSystems();
         void createScenes();

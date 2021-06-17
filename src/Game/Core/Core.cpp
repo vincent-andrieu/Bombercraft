@@ -130,30 +130,8 @@ Core::Core()
         (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
-    // DEBUG - START - Remove when players with PlayerConfig Component will be added
-    auto entity = this->globalEntities.createEntity("config1");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        Component::PlayerID::ALPHA,
-        Component::PlayerKeyBindings{
-            raylib::KeyBoard::IKEY_UP,
-            raylib::KeyBoard::IKEY_DOWN,
-            raylib::KeyBoard::IKEY_LEFT,
-            raylib::KeyBoard::IKEY_RIGHT,
-            raylib::KeyBoard::IKEY_END,
-            raylib::KeyBoard::IKEY_R_SHIFT,
-        });
-
-    entity = this->globalEntities.createEntity("config2");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
-        Component::PlayerID::BRAVO,
-        Component::PlayerKeyBindings{
-            raylib::KeyBoard::IKEY_Z,
-            raylib::KeyBoard::IKEY_S,
-            raylib::KeyBoard::IKEY_Q,
-            raylib::KeyBoard::IKEY_D,
-            raylib::KeyBoard::IKEY_W,
-            raylib::KeyBoard::IKEY_L_ALT,
-        });
+    /// CHARACTERS
+    this->createCharacterConfig();
     // MUSIC
     // this->loadMusic();
 }
@@ -240,4 +218,52 @@ void Core::printDuringPreload()
     size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
 
     std::cout << "loading: " << value << "%" << std::endl;
+}
+
+void Core::createCharacterConfig()
+{
+    auto entity = this->globalEntities.createEntity("config1");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::ALPHA,
+        Component::PlayerKeyBindings{
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_UP")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_DOWN")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_LEFT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_RIGHT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PAUSE")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PLACE_BOMB")),
+        });
+    entity = this->globalEntities.createEntity("config2");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::BRAVO,
+        Component::PlayerKeyBindings{
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_UP")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_DOWN")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_LEFT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_RIGHT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PAUSE")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PLACE_BOMB")),
+        });
+    entity = this->globalEntities.createEntity("config3");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::CHARLIE,
+        Component::PlayerKeyBindings{
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_UP")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_DOWN")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_LEFT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_RIGHT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PAUSE")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PLACE_BOMB")),
+        });
+    entity = this->globalEntities.createEntity("config4");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+        Component::PlayerID::DELTA,
+        Component::PlayerKeyBindings{
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_UP")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_DOWN")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_LEFT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_RIGHT")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PAUSE")),
+            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PLACE_BOMB")),
+        });
 }
