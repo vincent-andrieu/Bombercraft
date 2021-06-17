@@ -55,22 +55,22 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     raylib::MyVector2 size = map->getSize();
     std::vector<std::vector<GameModule::TileType>> matrix;
     std::vector<GameModule::TileType> tmp;
-    GameModule::TileType type;
+    GameModule::TileType Tiletype;
 
     for (size_t y = 0; y < size.b; y++) {
         tmp.clear();
         for (size_t x = 0; x < size.a; x++) {
             switch (map->getCategory({x, y}))
             {
-                case GUI::BlockFactory::BlockType::BLOCK_BLAST: type = GameModule::TileType::TILE_EXPLOSION; break;
-                case GUI::BlockFactory::BlockType::BLOCK_BOMB: type = GameModule::TileType::TILE_BOMB; break;
-                case GUI::BlockFactory::BlockType::BLOCK_HARD: type = GameModule::TileType::TILE_HARD; break;
-                case GUI::BlockFactory::BlockType::BLOCK_SOFT: type = GameModule::TileType::TILE_SOFT; break;
-                case GUI::BlockFactory::BlockType::BLOCK_FLOOR: type = GameModule::TileType::TILE_EMPTY; break;
-                case GUI::BlockFactory::BlockType::BLOCK_AIR: type = GameModule::TileType::TILE_EMPTY; break;
-                default: type = GameModule::TileType::TILE_BONUS; break;
+                case GUI::BlockFactory::BlockType::BLOCK_BLAST: Tiletype = GameModule::TileType::TILE_EXPLOSION; break;
+                case GUI::BlockFactory::BlockType::BLOCK_BOMB: Tiletype = GameModule::TileType::TILE_BOMB; break;
+                case GUI::BlockFactory::BlockType::BLOCK_HARD: Tiletype = GameModule::TileType::TILE_HARD; break;
+                case GUI::BlockFactory::BlockType::BLOCK_SOFT: Tiletype = GameModule::TileType::TILE_SOFT; break;
+                case GUI::BlockFactory::BlockType::BLOCK_FLOOR: Tiletype = GameModule::TileType::TILE_EMPTY; break;
+                case GUI::BlockFactory::BlockType::BLOCK_AIR: Tiletype = GameModule::TileType::TILE_EMPTY; break;
+                default: Tiletype = GameModule::TileType::TILE_BONUS; break;
             }
-            tmp.push_back(type);
+            tmp.push_back(Tiletype);
         }
         matrix.push_back(tmp);
     }

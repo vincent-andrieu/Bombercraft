@@ -177,7 +177,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
-        scene->localEntities.removeEntity(toEntity);
+        //scene->localEntities.removeEntity(toEntity);
     }
     // TODO kill entity if player
 }
@@ -246,42 +246,42 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
 
     GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({vector2.a + i, vector2.b});
+        blockTmp = matrix.getData({(size_t)vector2.a + i, (size_t)vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({vector2.a + i, vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t)vector2.a + i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({vector2.a - i, vector2.b});
+        blockTmp = matrix.getData({(size_t)vector2.a - i, (size_t)vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({vector2.a + i, vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t)vector2.a - i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({vector2.a, vector2.b + i});
+        blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b + i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({vector2.a + i, vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t) vector2.a, (size_t) vector2.b + i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({vector2.a, vector2.b - i});
+        blockTmp = matrix.getData({(size_t)vector2.a, (size_t)vector2.b - i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({vector2.a + i, vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t)vector2.a, (size_t)vector2.b - i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }

@@ -18,7 +18,6 @@
 using namespace Game;
 
 extern std::unique_ptr<Core> core;
-
 extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
 static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
@@ -80,7 +79,7 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
     }
 }
 
-static bool isBombPlacable(float posX, float posY)
+static bool isBombPlacable(size_t posX, size_t posY)
 {
     auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
         CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
@@ -112,7 +111,7 @@ static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &charact
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
 
-    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+    if (isBombPlacable((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b)) {
         GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
         return true;
     }
@@ -130,19 +129,19 @@ static void handlerKeyEvent(const Engine::Entity character)
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
-            velocity.y = -info.speed;
+            velocity.y = (float) -info.speed;
             render.setRotation({0, 180, 0}); // TOP
         } else if (CoreData::eventManager->isKeyPressed(keys.moveDown)) {
             render.setRotation({0, 0, 0}); // DOWN
-            velocity.y = info.speed;
+            velocity.y = (float) info.speed;
         } else if (CoreData::eventManager->isKeyReleased(keys.moveUp) || CoreData::eventManager->isKeyReleased(keys.moveDown)) {
             velocity.y = 0;
         }
         if (CoreData::eventManager->isKeyPressed(keys.moveLeft)) {
-            velocity.x = -info.speed;
+            velocity.x = (float) -info.speed;
             render.setRotation({0, 90, 0}); // LEFT
         } else if (CoreData::eventManager->isKeyPressed(keys.moveRight)) {
-            velocity.x = info.speed;
+            velocity.x = (float) info.speed;
             render.setRotation({0, 270, 0}); // RIGHT
         } else if (CoreData::eventManager->isKeyReleased(keys.moveLeft)
             || CoreData::eventManager->isKeyReleased(keys.moveRight)) {
@@ -217,14 +216,12 @@ Engine::Entity Game::CharacterFactory::create(
     CoreData::entityManager->addComponent<Component::Hitbox>(
         entity, characterPos, hitboxSize, handlerHitbox, EntityType::CHARACTER);
     /// Velocity
-    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0, 0);
+    CoreData::entityManager->addComponent<Engine::Velocity>(entity, 0.0f, 0.0f);
     /// Specific
     if (isAI) {
         return CharacterFactory::createAI(entity);
-    } else {
-        return CharacterFactory::createPlayer(entity, config);
     }
-    return entity;
+    return CharacterFactory::createPlayer(entity, config);
 }
 
 /**
@@ -301,15 +298,15 @@ void CharacterFactory::handlerAITimer(
             if (entityPlayer != entity) {
                 auto tmp = Component::Matrix2D::getMapIndex(
                     CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
-                posList.push_back({tmp.a, tmp.b});
+                posList.push_back({(size_t) tmp.a, (size_t) tmp.b});
             }
         }
     }
     (void) entityManager;
-    ai.setEnv(map.getData(), {relativPos.a, relativPos.b}, posList);
+    ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
-    velocity.x = velocityIA.first;
-    velocity.y = velocityIA.second;
+    velocity.x = (float) velocityIA.first;
+    velocity.y = (float) velocityIA.second;
 
     std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
     if (ai.putBomb()) {
