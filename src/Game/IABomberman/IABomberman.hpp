@@ -33,6 +33,7 @@ namespace GameModule
         IA::Movement getIAMovement();
         void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
         void setIAEnv(std::vector<std::vector<TileType>> env);
+        raylib::MyVector3 getOrientation() const;
 
       private:
         // SETTINGS
@@ -67,12 +68,14 @@ namespace GameModule
         std::vector<std::vector<int>> findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         std::vector<std::pair<size_t, size_t>> getAvailableTile(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         std::pair<size_t, size_t> getNextPos(IA::Movement move) const;
+        raylib::MyVector3 findOrientation(const std::pair<size_t, size_t> &pos, const std::pair<size_t, size_t> &bomb) const;
         
         private:
             size_t _range;
             int _defaultValue;
             size_t _randomMove;
             size_t _randomBomb;
+            raylib::MyVector3 _orentation;
     };
 } // namespace GameModule
 

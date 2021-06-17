@@ -248,6 +248,7 @@ void CharacterFactory::handlerAITimer(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+    Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(entity);
 
     auto &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(entity);
     auto relativPos = Component::Matrix2D::getMapIndex(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
@@ -275,6 +276,7 @@ void CharacterFactory::handlerAITimer(
 
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
+        render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
 }

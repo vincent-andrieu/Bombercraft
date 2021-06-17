@@ -76,3 +76,8 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     }
     return matrix;
 }
+
+raylib::MyVector3 AIComponent::getOrientation() const
+{
+    return this->_AI->getOrientation();
+}

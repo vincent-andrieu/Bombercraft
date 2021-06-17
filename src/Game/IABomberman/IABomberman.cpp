@@ -109,6 +109,24 @@ std::vector<std::pair<size_t, size_t>> IABomberman::getAvailableTile(const std::
     return valueOk;
 }
 
+raylib::MyVector3 IABomberman::findOrientation(const std::pair<size_t, size_t> &pos, const std::pair<size_t, size_t> &bomb) const
+{
+    if (pos.first + 1 == bomb.first && pos.second == bomb.second) {
+        //std::cout << "RIGHT" << std::endl;
+        return {0, 270, 0}; // RIGHT
+    }
+    if (pos.first == bomb.first && pos.second - 1 == bomb.second) {
+        //std::cout << "TOP" << std::endl;
+        return {0, 180, 0}; // TOP
+    }
+    if (pos.first - 1 == bomb.first && pos.second == bomb.second) {
+        //std::cout << "LEFT" << std::endl;
+        return {0, 90, 0};  // LEFT
+    }
+    //std::cout << "DOWN" << std::endl;
+    return {0, 0, 0};   // DOWN
+}
+
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 {
     std::queue<IA::Movement> list;
@@ -125,6 +143,8 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
         editedEnv = this->getMapWithExposionEffect(env, available[i], this->_range);
         if (isCorrectBomb(available[i]) && this->findSecurePlace(pos, editedEnv, list)) {
             this->_MovementQueue = list;
+            this->_orentation = this->findOrientation(pos, available[i]);
+            std::cout << "DEBUG: x: " << available[i].first << " y: " << available[i].second << std::endl;
             return true;
         }
     }
@@ -482,4 +502,9 @@ bool IABomberman::isCorrectBomb(const std::pair<size_t, size_t> &pos) const
     if (pos.second && this->_env[pos.second - 1][pos.first] == TileType::TILE_SOFT)
         return true;
     return false;
+}
+
+raylib::MyVector3 IABomberman::getOrientation() const
+{
+    return this->_orentation;
 }
