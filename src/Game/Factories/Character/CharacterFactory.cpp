@@ -87,7 +87,7 @@ static bool isBombPlacable(float posX, float posY)
     return false;
 }
 
-static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const float rotation)
+static raylib::MyVector2 getNextPos(const raylib::MyVector2 &position, const float rotation)
 {
     auto my_position(position);
 
@@ -102,10 +102,10 @@ static raylib::MyVector2 getNextPos(const raylib::MyVector2 position, const floa
     return my_position;
 }
 
-static bool placeBomb(Engine::Entity character, const raylib::MyVector3 characterPosition, const float characterOrientation)
+static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
 {
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
-    const auto bombPosition(Component::Matrix2D::getPositionAbs(bombIndexOnMap.a, bombIndexOnMap.b));
+    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
 
     if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
         GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
