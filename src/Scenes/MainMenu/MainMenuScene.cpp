@@ -62,23 +62,6 @@ void MainMenuScene::open()
             }
         });
 
-    // GAME TITLE
-    CoreData::entityManager->addComponent<Engine::Timer>(background,
-        0.01,
-        *CoreData::entityManager,
-        *CoreData::sceneManager,
-        [](Engine::EntityManager &, Engine::SceneManager &, const Engine::Entity entity) {
-            const raylib::MyVector2 backgroundSize = Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE");
-            raylib::Texture *pictureBg = static_cast<raylib::Texture *>(
-                Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
-            raylib::MyVector2 rect = pictureBg->getRect();
-            if (rect.a > backgroundSize.a) {
-                pictureBg->setRect(raylib::MyVector2(0, rect.b));
-            } else {
-                pictureBg->setRect(raylib::MyVector2((float) (rect.a + 0.8), rect.b));
-            }
-        });
-
     // GAME LOGO
     GUI::ImageFactory::create(this->localEntities,
         my_utility.getProportion({50, 20}, logoSize, {50, 50}),

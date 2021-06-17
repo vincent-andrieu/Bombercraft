@@ -24,6 +24,13 @@ using namespace Game;
 
 extern std::unique_ptr<Game::Core> core;
 
+const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME({
+    {Component::ALPHA, "TL_ALPHA"},
+    {Component::BRAVO, "TR_BRAVO"},
+    {Component::DELTA, "BL_DELTA"},
+    {Component::CHARLIE, "BR_CHARLIE"},
+});
+
 static void handlerGameTimeout()
 {
     Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
@@ -57,26 +64,48 @@ void GameScene::open()
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
-    std::cout << "Ressource pack: " << ressourcePackRoot << std::endl;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
     CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// CHARACTERS
-    auto &config = CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1"));
-    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
-    Engine::Entity player = CharacterFactory::create(this->localEntities, config, map, false);
-    GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player);
+    this->createCharacters();
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
-    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
+        this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
         Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
+}
+
+void GameScene::createCharacters()
+{
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
+
+    Component::PlayerConfig *config[4] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
+        &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
+    for (size_t i = 0; i < 4; i++) {
+        CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
+    }
+}
+
+uint GameScene::getNbrPlayers()
+{
+    uint counter = 0;
+
+    for (const auto &player : Game::PLAYER_ID_TO_NAME)
+        if (CoreData::sceneManager->getCurrentScene()->localEntities.entityIsSet(player.second))
+            counter++;
+    return counter;
 }
 
 void GameScene::update()

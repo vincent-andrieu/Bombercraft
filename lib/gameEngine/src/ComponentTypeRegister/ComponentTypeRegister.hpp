@@ -15,6 +15,7 @@
 #include <vector>
 #include <unordered_map>
 #include <bitset>
+#include <iostream>
 
 namespace Engine
 {
@@ -22,7 +23,7 @@ namespace Engine
       public:
         ComponentTypeRegister(std::vector<Signature> &entityToBitset);
 
-        virtual void allocate(std::size_t size) override;
+        void allocate(std::size_t size) override;
 
         T &get(Entity entity);
 
@@ -63,7 +64,7 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::allocate(std::size_t size)
     {
-        //        _components.reserve(size);
+        _components.reserve(size);
         _componentOwners.reserve(size);
         _ownersIndex.reserve(size);
     }

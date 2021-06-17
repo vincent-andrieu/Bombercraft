@@ -20,7 +20,9 @@ namespace Engine
         ~TimerSystem() = default;
 
         void update();
+        void pause();
+        void resume();
     };
-}
+} // namespace Engine
 
 #endif // TIMERSYSTEM_HPP

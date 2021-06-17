@@ -20,8 +20,11 @@ Engine::Entity Engine::EntityPack::createEntity(const std::string &key)
 {
     Entity entity;
 
+    if (key.empty()) {
+        throw std::invalid_argument("EntityPack::createEntity Empty key are forbidden.");
+    }
     if (_entities.find(key) != _entities.end()) {
-        throw std::invalid_argument("Key " + key + " already exist");
+        throw std::invalid_argument("EntityPack::createEntity Key " + key + " already exist");
     }
     entity = _entityManager.createEntity();
     _entities[key] = entity;
@@ -31,7 +34,7 @@ Engine::Entity Engine::EntityPack::createEntity(const std::string &key)
 Engine::Entity Engine::EntityPack::getEntity(const std::string &key)
 {
     if (_entities.find(key) == _entities.end()) {
-        throw std::invalid_argument("Key not found");
+        throw std::invalid_argument("EntityPack::getEntity Key (" + key + ") not found");
     }
     return _entities[key];
 }

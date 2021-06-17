@@ -70,7 +70,7 @@ void Render2D::remove(const std::string &label)
 std::shared_ptr<raylib::IRenderable> &Render2D::get(const std::string &label)
 {
     if (this->_modelIndex.find(label) == this->_modelIndex.end()) {
-        throw std::invalid_argument("in Render2D::get, Undefined label index");
+        throw std::invalid_argument("in Render2D::get, Undefined label \"" + label + "\"");
     }
     return this->_models[_modelIndex[label]];
 }
