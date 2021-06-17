@@ -76,7 +76,8 @@ void GameScene::open()
     GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player);
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
-    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
+        this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
         Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();

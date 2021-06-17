@@ -21,3 +21,19 @@ void TimerSystem::update()
         timer.eval(entity);
     }
 }
+
+void TimerSystem::pause()
+{
+    for (const Entity &entity : this->getManagedEntities()) {
+        auto &timer = this->_entityManager.getComponent<Timer>(entity);
+        timer.pause();
+    }
+}
+
+void TimerSystem::resume()
+{
+    for (const Entity &entity : this->getManagedEntities()) {
+        auto &timer = this->_entityManager.getComponent<Timer>(entity);
+        timer.resume();
+    }
+}

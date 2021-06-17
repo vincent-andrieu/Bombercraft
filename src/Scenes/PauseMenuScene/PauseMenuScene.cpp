@@ -24,6 +24,10 @@ static void goGameScene(const Engine::Entity)
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
     Game::CoreData::camera->setFovy((float) options.fov);
+    Game::CoreData::moveCamera(
+        Game::CoreData::settings->getMyVector3("CAM_POSITION"), Game::CoreData::settings->getMyVector3("CAM_TARGET"));
+    Game::CoreData::camera->setUp(Game::CoreData::settings->getMyVector3("CAM_UP"));
+    Game::CoreData::systemManager->getSystem<Engine::TimerSystem>().resume();
     Game::CoreData::sceneManager->setScene<Game::GameScene>(true, false);
 }
 
