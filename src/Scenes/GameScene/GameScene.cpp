@@ -66,7 +66,7 @@ void GameScene::open()
     /// CHARACTERS
     auto &config = CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1"));
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
-    Engine::Entity player = CharacterFactory::create(this->localEntities, config, map, false);
+    Engine::Entity player = CharacterFactory::create(this->localEntities, config, map, true);
     GUI::BombFactory::create(this->localEntities, raylib::MyVector3(1 * 2, 0, 11 * 2), player);
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;

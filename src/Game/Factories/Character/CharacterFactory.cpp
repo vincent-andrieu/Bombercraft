@@ -265,8 +265,6 @@ void CharacterFactory::handlerAITimer(Engine::EntityManager &entityManager, Engi
     std::pair<double, double> velocityIA = ai.getVelocity();
     velocity.x = velocityIA.first;
     velocity.y = velocityIA.second;
-
-    std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB

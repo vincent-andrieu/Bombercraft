@@ -83,6 +83,7 @@ void IABomberman::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
 
 bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
 {
+    // TODO REFACTO
     std::queue<IA::Movement> list;
     std::vector<std::vector<TileType>> editedEnv;
 
