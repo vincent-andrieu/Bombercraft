@@ -74,6 +74,8 @@ namespace Engine
 
     template <typename T> T &ComponentTypeRegister<T>::get(Entity entity)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         return _components[_ownersIndex[entity]];
     }
 
@@ -249,6 +251,8 @@ namespace Engine
 
     template <typename T> std::vector<T> &ComponentTypeRegister<T>::getComponents()
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
         return _components;
     }
 

@@ -26,6 +26,7 @@ namespace Engine
     class EntityManager {
       public:
         explicit EntityManager(SystemManager &sysManager);
+        explicit EntityManager(const EntityManager &src);
         ~EntityManager();
 
         template <typename T> void registerComponent();

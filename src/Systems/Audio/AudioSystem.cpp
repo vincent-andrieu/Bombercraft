@@ -88,8 +88,9 @@ void AudioSystem::setVolume(float volume)
 void AudioSystem::update()
 {
     std::lock_guard<std::mutex> lock_guard(this->_mutex);
+    const std::vector<Engine::Entity> entities(this->getManagedEntities());
 
-    for (const Engine::Entity entity : this->getManagedEntities()) {
+    for (const Engine::Entity entity : entities) {
         const auto soundComponent = this->_entityManager.getComponent<Component::Sound>(entity);
 
         if (soundComponent.isMusic && soundComponent.audio->isPlaying()) {

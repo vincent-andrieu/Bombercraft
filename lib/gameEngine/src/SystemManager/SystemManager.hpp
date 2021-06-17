@@ -16,6 +16,7 @@
 #include <exception>
 #include <iostream>
 #include <iterator>
+#include <mutex>
 
 namespace Engine
 {
@@ -36,18 +37,21 @@ namespace Engine
       private:
         std::vector<std::unique_ptr<AbstractSystem>> _systems;
         std::vector<std::reference_wrapper<const std::type_info>> _types;
+        std::mutex _mutex;
     };
-}
+} // namespace Engine
 
 #include "AbstractSystem/AbstractSystem.hpp"
 
-namespace Engine {
-    template <typename T, typename... Args>
-    T *SystemManager::createSystem(Args &&...args)
+namespace Engine
+{
+    template <typename T, typename... Args> T *SystemManager::createSystem(Args &&...args)
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
         const std::type_info &type = typeid(T);
 
-        if (std::find_if(_types.begin(), _types.end(),
+        if (std::find_if(_types.begin(),
+                _types.end(),
                 [&type](auto &sysType) {
                     return sysType.get() == type;
                 })
@@ -59,9 +63,9 @@ namespace Engine {
         return static_cast<T *>(system.get());
     }
 
-    template <typename T>
-    T &SystemManager::getSystem()
+    template <typename T> T &SystemManager::getSystem()
     {
+        std::lock_guard<std::mutex> lock_guard(this->_mutex);
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
         auto type_it = std::find_if(_types.begin(), _types.end(), [&](auto &sysType) {

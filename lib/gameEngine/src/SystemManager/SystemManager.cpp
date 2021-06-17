@@ -11,6 +11,8 @@ using namespace Engine;
 
 void SystemManager::onEntityUpdated(Entity entity, const Signature &signature)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (auto &system : _systems) {
         system->onEntityUpdated(entity, signature);
     }
@@ -18,6 +20,8 @@ void SystemManager::onEntityUpdated(Entity entity, const Signature &signature)
 
 void SystemManager::onEntityRemoved(Entity entity)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     for (auto &system : _systems) {
         system->onEntityRemoved(entity);
     }

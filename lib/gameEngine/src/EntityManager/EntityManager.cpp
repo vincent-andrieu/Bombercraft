@@ -14,6 +14,11 @@ EntityManager::EntityManager(SystemManager &sysManager) : _systemManager(sysMana
     //    load("last_save");
 }
 
+EntityManager::EntityManager(const EntityManager &src)
+    : _componentRegisters(src._componentRegisters), _entities(src._entities), _systemManager(src._systemManager)
+{
+}
+
 EntityManager::~EntityManager()
 {
     // save("last_save");

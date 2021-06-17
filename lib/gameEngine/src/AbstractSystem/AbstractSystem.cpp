@@ -9,16 +9,22 @@
 
 using namespace Engine;
 
-AbstractSystem::AbstractSystem(EntityManager &entityManager)
-    : _entityManager(entityManager)
+AbstractSystem::AbstractSystem(EntityManager &entityManager) : _entityManager(entityManager)
 {
+}
 
+AbstractSystem::AbstractSystem(const AbstractSystem &src)
+    : _entityManager(src._entityManager), _requirements(src._requirements), _managedEntities(src._managedEntities),
+      _entityToManagedEntity(src._entityToManagedEntity)
+{
 }
 
 void AbstractSystem::onEntityUpdated(Entity entity, const Signature &components)
 {
+    this->_mutex.lock();
     bool satisfied = (_requirements & components) == _requirements;
     bool managed = _entityToManagedEntity.find(entity) != std::end(_entityToManagedEntity);
+    this->_mutex.unlock();
 
     if (satisfied && !managed) {
         this->addEntity(entity);
@@ -36,6 +42,8 @@ void AbstractSystem::onEntityRemoved(Entity entity)
 
 void AbstractSystem::addEntity(Entity entity)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     _entityToManagedEntity[entity] = static_cast<Index>(_managedEntities.size());
     _managedEntities.emplace_back(entity);
     this->onManagedEntityAdded(entity);
@@ -43,6 +51,8 @@ void AbstractSystem::addEntity(Entity entity)
 
 void AbstractSystem::removeEntity(Entity entity)
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     this->onManagedEntityRemoved(entity);
     auto index = _entityToManagedEntity[entity];
     _entityToManagedEntity[_managedEntities.back()] = index;
@@ -51,7 +61,9 @@ void AbstractSystem::removeEntity(Entity entity)
     _managedEntities.pop_back();
 }
 
-const std::vector<Entity> &AbstractSystem::getManagedEntities() const
+const std::vector<Entity> AbstractSystem::getManagedEntities()
 {
+    std::lock_guard<std::mutex> lock_guard(this->_mutex);
+
     return _managedEntities;
 }
