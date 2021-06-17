@@ -284,8 +284,8 @@ IA::Movement IABomberman::getIAMovement()
 {
     IA::Movement tmp = IACore::getIAMovement();
 
-    if (this->isSecurePlace(this->_env[this->_prevPos.first][this->_prevPos.second])
-        && !this->isSecurePlace(this->_env[this->_pos.first][this->_pos.second])) {
+    if (this->isSecurePlace(this->_env[this->_prevPos.second][this->_prevPos.first])
+        && !this->isSecurePlace(this->_env[this->_pos.second][this->_pos.first])) {
         this->clearQueue(this->_MovementQueue);
         this->_pos = this->_prevPos;
         std::cout << "On a encore eu de la chance" << std::endl;

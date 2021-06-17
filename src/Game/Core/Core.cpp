@@ -208,7 +208,7 @@ void Core::runPreload()
 
 void Core::runAfterPreload()
 {
-    SceneLoader::setScene<MainMenuScene>();
+    SceneLoader::setScene<GameScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().setVolume(0);
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
 }
