@@ -255,6 +255,8 @@ void IABomberman::loadPath(
 
     if (!tab[y][x])
         return;
+    if (goal < 0)
+        return;
     if (x != 0 && tab[y][x - 1] == goal) {
         next = {x - 1, y};
         toPush = IA::Movement::IA_MOVE_RIGHT;
