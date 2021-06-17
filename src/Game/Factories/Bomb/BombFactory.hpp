@@ -23,7 +23,7 @@ namespace GUI
 
         protected:
         private:
-            static std::shared_ptr<raylib::Model> getModel(const raylib::MyVector3 &pos);
+            static std::shared_ptr<raylib::Animation> getModel(const raylib::MyVector3 &pos);
 
             static void handlerBombTimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
             static void handlerBombCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);

@@ -14,12 +14,13 @@ using namespace GUI;
 Engine::Entity BombFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, Engine::Entity entityParent, const std::string &name)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    std::shared_ptr<raylib::Model> model = BombFactory::getModel(position);
+    std::shared_ptr<raylib::Animation> animation = BombFactory::getModel(position);
+
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
     int bombCountdown = Game::CoreData::settings->getInt("BOMB_COUNTDOWN");
 
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
-    Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
+    Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, animation);
     if (bombCountdown < 0)
         bombCountdown = 0;
     Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, position, size, BombFactory::handlerBombCollision, Game::EntityType::BOMB);
@@ -29,13 +30,13 @@ Engine::Entity BombFactory::create(Engine::EntityPack &entityPack, const raylib:
     return entity;
 }
 
-std::shared_ptr<raylib::Model> BombFactory::getModel(const raylib::MyVector3 &pos)
+std::shared_ptr<raylib::Animation> BombFactory::getModel(const raylib::MyVector3 &pos)
 {
-    std::string modelPath = Game::CoreData::settings->getString("BLOCK_MODEL");
+    std::string animationPath = Game::CoreData::settings->getString("BOMB_ANIM");
     std::string typeInStr = "BOMB";
-    std::string texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
+    std::string texturePath = Game::CoreData::settings->getString("BOMB_ANIM_TEXTURE");
 
-    return std::make_shared<raylib::Model>(texturePath, modelPath, pos, raylib::RColor::RWHITE);
+    return std::make_shared<raylib::Animation>(texturePath, animationPath, pos, raylib::RColor::RWHITE);
 }
 
 void BombFactory::handlerBombCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
