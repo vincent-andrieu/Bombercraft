@@ -78,53 +78,12 @@ static void handlerHitbox(const Engine::Entity &character, const Engine::Entity 
         }
     }
 }
-
-static bool isBombPlacable(size_t posX, size_t posY)
-{
-    auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
-        CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
-    auto my_data(map.getData(std::make_pair(posX, posY)));
-
-    if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
-        return true;
-    }
-    return false;
-}
-
-static raylib::MyVector2 getNextPos(const raylib::MyVector2 &position, const float rotation)
-{
-    auto my_position(position);
-
-    if (rotation == 0)
-        my_position.b++;
-    if (rotation == 90)
-        my_position.a--;
-    if (rotation == 180)
-        my_position.b--;
-    if (rotation == 270)
-        my_position.a++;
-    return my_position;
-}
-
-static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
-{
-    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
-    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
-
-    if (isBombPlacable((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b)) {
-        GUI::BombFactory::create(Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
-        return true;
-    }
-    return false;
-}
-
 static void handlerKeyEvent(const Engine::Entity character)
 {
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-    const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
@@ -153,9 +112,7 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            if (placeBomb(
-                    character, hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2, render.getRotation().b))
-                render.select("setBomb");
+            GUI::BombFactory::placeBomb(character);
         }
     }
 }
@@ -166,10 +123,10 @@ Engine::Entity Game::CharacterFactory::create(
     Engine::Entity entity;
     raylib::MyVector3 characterPos;
     Component::PlayerID id = config.getPlayerId();
-    Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
-        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
-        (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
-        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")};
+//    Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
+//        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
+//        (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
+//        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")}; // TODO it is not used, remove ?
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
         return pair.first == id;
     });
@@ -310,5 +267,6 @@ void CharacterFactory::handlerAITimer(
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
         // TODO PUT BOMB
+        GUI::BombFactory::placeBomb(entity);
     }
 }
