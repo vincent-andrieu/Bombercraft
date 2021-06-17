@@ -285,33 +285,44 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     size_t y = pos.second;
     int tmp;
 
+    if (env[y][x] != TileType::TILE_EMPTY)
+        return env;
+    env[y][x] = TileType::TILE_EXPLOSION;
     for (size_t i = 0; i < range; i++) {
-        tmp = (int) (x + (i * move));
+        tmp = (int) (x + 1 + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
+            else
+                break;
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = (int) (y + (i * move));
+        tmp = (int) (y + 1 + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
+            else
+                break;
         }
     }
     move = -1;
     for (size_t i = 0; i < range; i++) {
-        tmp = (int) (x + (i * move));
-        if (tmp >= 0 && x + (i * move) < env[y].size()) {
+        tmp = (int) (x - 1 + (i * move));
+        if (tmp > 0 && x + (i * move) < env[y].size()) {
             if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
+            else
+                break;
         }
     }
     for (size_t i = 0; i < range; i++) {
-        tmp = (int) (y + (i * move));
-        if (tmp >= 0 && y + (i * move) < env.size()) {
+        tmp = (int) (y - 1 + (i * move));
+        if (tmp > 0 && y + (i * move) < env.size()) {
             if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
+            else
+                break;
         }
     }
     return env;
