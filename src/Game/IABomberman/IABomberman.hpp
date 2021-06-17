@@ -32,6 +32,7 @@ namespace GameModule
         void setRange(size_t range);
         IA::Movement getIAMovement();
         void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
+        void setIAEnv(std::vector<std::vector<TileType>> env);
 
       private:
         // SETTINGS
