@@ -116,7 +116,7 @@ namespace Engine
         }
         if (this->hasComponent<T>(entity)) {
             std::cerr << "EntityManager::addComponent : Entity " << (uint)entity << " => Component N " << T::type << std::endl;
-            throw std::invalid_argument("EntityManager::addComponent, An entity can only have one component of a type T.");
+            throw std::invalid_argument("EntityManager::addComponent, Same component added several time on an entity.");
         }
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
         // Send message to system
