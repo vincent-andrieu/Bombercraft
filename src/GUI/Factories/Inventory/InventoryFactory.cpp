@@ -35,7 +35,8 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
 
         playerInventoryInfo = playerInventory.getPlayerInventoryInfo();
         (*dynamic_cast<raylib::IText *>(bombValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.bomb));
-        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get())).setText(toString(static_cast<std::size_t>(playerInventoryInfo.speed * 10)));
+        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get()))
+            .setText(toString(static_cast<std::size_t>(playerInventoryInfo.speed * 10)));
         (*dynamic_cast<raylib::IText *>(wallPassValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.wallPass));
         (*dynamic_cast<raylib::IText *>(blastRadiusValueRender2d.get("text").get()))
             .setText(toString(playerInventoryInfo.blastRadius));
@@ -46,17 +47,19 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
 
 Component::PlayerInventoryInfo GUI::InventoryFactory::getDefaultPlayerInventory()
 {
-    Component::PlayerInventoryInfo myDefault{1, 1, false, 1, nullptr};
+    Component::PlayerInventoryInfo myDefault = {(std::size_t) Game::CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
+        (double) Game::CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
+        (bool) Game::CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
+        (std::size_t) Game::CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")};
     return myDefault;
 }
 
-void GUI::InventoryFactory::create(Engine::Entity entity,
+Engine::Entity GUI::InventoryFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     const raylib::MyVector2 &boxSize,
     std::vector<std::string> const &texturesPath,
     const GUI::LabelConfig &labelconfig,
     Component::PlayerID id,
-    Engine::EntityPack &pack,
     Component::PlayerConfig &config)
 {
     raylib::MyVector2 boxPosition = position;
@@ -66,9 +69,10 @@ void GUI::InventoryFactory::create(Engine::Entity entity,
     std::vector<std::shared_ptr<raylib::Texture>> cases = {};
     std::vector<std::shared_ptr<raylib::Texture>> powerUp = {};
     std::vector<size_t> defaultLabelValue = {1, 1, 0, 1};
+    Engine::Entity entity = pack.createAnonymousEntity();
 
     if (texturesPath.size() != 5)
-        return;
+        throw std::invalid_argument("InventoryFactory bad texturePath list size.");
     for (size_t i = 0; i < 4; i++) {
         cases.push_back(std::make_shared<raylib::Texture>(texturesPath[0], boxSize, boxPosition, raylib::RColor::RWHITE));
         powerUp.push_back(std::make_shared<raylib::Texture>(texturesPath[i + 1], itemSize, itemPosition, raylib::RColor::RWHITE));
@@ -95,4 +99,5 @@ void GUI::InventoryFactory::create(Engine::Entity entity,
     Game::CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, getDefaultPlayerInventory(), config);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, 1.0f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
+    return entity;
 }

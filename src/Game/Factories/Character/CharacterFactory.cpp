@@ -20,47 +20,58 @@ using namespace Game;
 extern std::unique_ptr<Core> core;
 extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
+static void handlerHitboxCharacterDeath(
+    const Engine::Entity &character, const Component::PlayerID id, Component::ModelList &render)
+{
+    if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
+        CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
+    } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
+        CoreData::entityManager->removeComponent<Component::AIComponent>(character);
+    }
+    CoreData::entityManager->removeComponent<Component::Hitbox>(character);
+    auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
+    audioSys.play("Death", core->globalEntities);
+    /// Set Timer => remove entity
+    if (CoreData::entityManager->hasComponent<Engine::Timer>(character)) {
+        CoreData::entityManager->removeComponent<Engine::Timer>(character);
+    }
+    CoreData::entityManager->addComponent<Engine::Timer>(character,
+        CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"),
+        *CoreData::entityManager,
+        *CoreData::sceneManager,
+        [id](Engine::EntityManager &, Engine::SceneManager &sm, const Engine::Entity) {
+            auto scene = sm.getCurrentScene();
+            auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
+                return pair.first == id;
+            });
+            if (it_name != PLAYER_ID_TO_NAME.end()) {
+                scene->localEntities.removeEntity(it_name->second);
+
+                // End game detection
+                if (GameScene::getNbrPlayers() <= 1) {
+                    Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getInt("STANDARD_CAMERA_FOV")));
+                    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+                    CoreData::sceneManager->setScene<EndGameScene>();
+                }
+            }
+        });
+    render.select("death"); /// Play animation => Death
+}
+
 static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
 {
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
-    const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(character);
+    const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     const Component::PlayerID &id = inventory.getPlayerId();
 
     Game::EntityType type = hitbox.entityType;
 
     if (type == EntityType::BLAST) {
-        if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
-            CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
-        } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
-            CoreData::entityManager->removeComponent<Component::AIComponent>(character);
-        }
-        auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
-        audioSys.play("Death", core->globalEntities);
-        /// Set Timer => remove entity
-        CoreData::entityManager->addComponent<Engine::Timer>(character,
-            CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"),
-            *CoreData::entityManager,
-            *CoreData::sceneManager,
-            [id](Engine::EntityManager &, Engine::SceneManager &sm, const Engine::Entity) {
-                auto scene = sm.getCurrentScene();
-                auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
-                    return pair.first == id;
-                });
-                if (it_name != PLAYER_ID_TO_NAME.end()) {
-                    scene->localEntities.removeEntity(it_name->second);
-
-                    // End game detection
-                    if (GameScene::getNbrPlayers() <= 1) {
-                        Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getInt("STANDARD_CAMERA_FOV")));
-                        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
-                        CoreData::sceneManager->setScene<EndGameScene>();
-                    }
-                }
-            });
-        render.select("death"); /// Play animation => Death
+        handlerHitboxCharacterDeath(character, id, render);
     } else if (type == EntityType::POWERUP) {
         /// Note : bonus are given by the power-up collision handlers
     } else if (!(type == EntityType::SOFTBLOCK && info.wallPass == true)) {
@@ -121,7 +132,9 @@ static bool placeBomb(Engine::Entity character, const raylib::MyVector3 &charact
 static void handlerKeyEvent(const Engine::Entity character)
 {
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
-    const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(character);
+    const Component::PlayerInventory &inventory =
+        CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
@@ -166,10 +179,6 @@ Engine::Entity Game::CharacterFactory::create(
     Engine::Entity entity;
     raylib::MyVector3 characterPos;
     Component::PlayerID id = config.getPlayerId();
-    Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
-        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
-        (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
-        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")};
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
         return pair.first == id;
     });
@@ -183,14 +192,14 @@ Engine::Entity Game::CharacterFactory::create(
     const std::vector<std::string> texturesPath = CoreData::settings->getTabString("INVENTORY_TEXTURE");
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     raylib::MyVector2 inventoryPosition = CharacterFactory::getInventoryPosition(id);
-    GUI::InventoryFactory::create(entity,
+    Engine::Entity inventoryEntity = GUI::InventoryFactory::create(pack,
         inventoryPosition,
         {windowSize.a / 15, windowSize.a / 15},
         texturesPath,
         GUI::LabelFactory::getStandardLabelConfig(20),
         id,
-        pack,
         config);
+    CoreData::entityManager->addComponent<Engine::EntityBox>(entity, inventoryEntity);
     /// Render3D
     const std::string &texturePath = config.getSkinPath();
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
