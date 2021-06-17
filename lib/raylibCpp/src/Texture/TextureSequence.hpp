@@ -19,11 +19,14 @@ namespace raylib
         TextureSequence(const string &path,
             const MyVector2 size = {-1, -1},
             const MyVector2 position = {0, 0},
-            const RColor color = RColor::RWHITE);
+            const RColor color = RColor::RWHITE,
+            bool loop = true);
         ~TextureSequence();
 
         void draw();
         void update();
+
+        static const std::vector<std::string> getFilePathList(const std::string &path);
 
         void setPosition(const MyVector2 position);
         void setColor(const RColor color);
@@ -48,6 +51,7 @@ namespace raylib
         size_t _frameNumber;
         Rectangle _size;
         bool _scaleMode;
+        bool _loop;
     };
 }; // namespace raylib
 

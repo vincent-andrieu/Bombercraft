@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 
+#include "Scenes/SplashScreen/SplashScreenScene.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
 #include "Scenes/SkinChoice/SkinChoiceScene.hpp"
 #include "Scenes/SoundOption/SoundOptionScene.hpp"
@@ -112,14 +113,7 @@ void Core::createScenes()
 
 Core::Core()
     : CoreData(), globalEntities(*CoreData::entityManager), _preloadStatus(false),
-      _preloadTexture(loadTexture,
-          {
-              "Asset/Interface/Button.png",
-              "Asset/Interface/HoverButton.png",
-              "Asset/Interface/Button.png",
-              "Asset/Interface/UnavailableButton.png",
-          }),
-      _preloadModel(loadModel, {{}})
+      _preloadTexture(loadTexture, raylib::TextureSequence::getFilePathList("Asset/SplashScreen")), _preloadModel(loadModel, {{}})
 {
     this->registerComponents();
     /// COMPONENTS - CREATION
@@ -142,14 +136,18 @@ void Core::loop()
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
+
+    CoreData::sceneManager->setScene<LoadingScreenScene>();
+    while (CoreData::window->isOpen() && !this->isEndPreload()) {
+        CoreData::window->clear();
+        this->runPreload();
+        this->printDuringPreload();
+        CoreData::window->refresh();
+        CoreData::sceneManager->updateScene();
+    }
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
-        if (!this->isEndPreload()) {
-            this->runPreload();
-            this->printDuringPreload();
-        } else {
-            CoreData::sceneManager->run();
-        }
+        CoreData::sceneManager->run();
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
         CoreData::systemManager->getSystem<System::AudioSystem>().update();
@@ -208,8 +206,7 @@ void Core::runPreload()
 
 void Core::runAfterPreload()
 {
-    SceneLoader::setScene<MainMenuScene>();
-    CoreData::systemManager->getSystem<System::AudioSystem>().setVolume(0);
+    CoreData::sceneManager->setScene<SplashScreenScene>();
     CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities);
 }
 
@@ -218,6 +215,8 @@ void Core::printDuringPreload()
     size_t value = (this->_preloadTexture.getPourcentOfRun() / 2) + (this->_preloadModel.getPourcentOfRun() / 2);
 
     std::cout << "loading: " << value << "%" << std::endl;
+    LoadingScreenScene &scene = *static_cast<LoadingScreenScene *>(CoreData::sceneManager->getCurrentScene().get());
+    scene.update(value);
 }
 
 void Core::createCharacterConfig()
