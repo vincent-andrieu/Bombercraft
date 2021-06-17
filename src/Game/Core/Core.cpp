@@ -150,14 +150,15 @@ void Core::loop()
             this->runPreload();
             this->printDuringPreload();
         } else {
-            _clock.setElapsedTime();
+            CoreData::sceneManager->run();
+            /*_clock.setElapsedTime();
             frames = _clock.getElapsedTimeDouble() * calculationPerSecond;
             if (frames != 0) {
                 _clock.resetStartingPoint();
                 while (frames-- > 0) {
                     CoreData::sceneManager->run();
                 }
-            }
+            }*/
         }
         CoreData::window->refresh();
         CoreData::sceneManager->updateScene();
