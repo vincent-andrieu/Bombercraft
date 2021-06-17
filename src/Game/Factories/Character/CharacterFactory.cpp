@@ -84,7 +84,6 @@ static void handlerKeyEvent(const Engine::Entity character)
     const Component::PlayerInventory &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-    const Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(character);
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
@@ -124,10 +123,10 @@ Engine::Entity Game::CharacterFactory::create(
     Engine::Entity entity;
     raylib::MyVector3 characterPos;
     Component::PlayerID id = config.getPlayerId();
-    Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
-        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
-        (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
-        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")};
+//    Component::PlayerInventoryInfo info = {(std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BOMB"),
+//        (double) CoreData::settings->getFloat("CHARACTER_INIT_SPEED"),
+//        (bool) CoreData::settings->getInt("CHARACTER_INIT_WALLPASS"),
+//        (std::size_t) CoreData::settings->getInt("CHARACTER_INIT_BLAST_RAD")}; // TODO it is not used, remove ?
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
         return pair.first == id;
     });
