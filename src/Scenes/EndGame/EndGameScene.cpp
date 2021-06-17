@@ -50,7 +50,7 @@ void EndGameScene::open()
         Component::PlayerID::ALPHA, Component::PlayerID::BRAVO, Component::PlayerID::CHARLIE, Component::PlayerID::DELTA};
     const std::vector<std::vector<float>> playerZPosition = {{0}, {7, -7}, {10, 0, -10}, {11, 4, -4, -11}};
     const raylib::MyVector2 xpBarSize = {182.0f * (windowSize.a / 640.0f), 5.0f * (windowSize.b / 360.0f)};
-    raylib::MyVector2 xpBarPosition = {windowSize.a / 2.0f - xpBarSize.a / 2.0f, windowSize.b * 0.7f};
+    raylib::MyVector2 xpBarPosition = {windowSize.a / 2.0f - xpBarSize.a / 2.0f, windowSize.b * 0.75f};
 
     CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
     // BACKGROUND

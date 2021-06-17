@@ -76,6 +76,8 @@ namespace GUI
         static void handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
       private:
+        static GUI::BlockFactory::BlockType randomBonus();
+
         static std::unordered_map<BlockFactory::BlockType,
             std::function<void(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)>>
             _factory;

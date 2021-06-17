@@ -35,7 +35,8 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
 
         playerInventoryInfo = playerInventory.getPlayerInventoryInfo();
         (*dynamic_cast<raylib::IText *>(bombValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.bomb));
-        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get())).setText(toString(static_cast<std::size_t>(playerInventoryInfo.speed * 10)));
+        (*dynamic_cast<raylib::IText *>(speedValueRender2d.get("text").get()))
+            .setText(toString(static_cast<std::size_t>(playerInventoryInfo.speed * 10)));
         (*dynamic_cast<raylib::IText *>(wallPassValueRender2d.get("text").get())).setText(toString(playerInventoryInfo.wallPass));
         (*dynamic_cast<raylib::IText *>(blastRadiusValueRender2d.get("text").get()))
             .setText(toString(playerInventoryInfo.blastRadius));
@@ -94,5 +95,5 @@ void GUI::InventoryFactory::create(Engine::Entity entity,
     }
     Game::CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, getDefaultPlayerInventory(), config);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
-        entity, 1.0f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
+        entity, 0.1f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
 }
