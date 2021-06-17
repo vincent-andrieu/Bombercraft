@@ -8,14 +8,17 @@
 #ifndef ENTITYTYPE_HPP
 #define ENTITYTYPE_HPP
 
-namespace Game {
-    enum class EntityType {
+namespace Game
+{
+    enum class EntityType
+    {
         SOFTBLOCK,
         HARDBLOCK,
         CHARACTER,
         BLAST,
         BOMB,
-        POWERUP
+        POWERUP,
+        SOFTBONUSBLOCK
     };
 }
 

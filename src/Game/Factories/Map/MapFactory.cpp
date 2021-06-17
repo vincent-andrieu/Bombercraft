@@ -77,36 +77,3 @@ GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType
         default: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;
     }
 }
-
-GUI::BlockFactory::BlockType MapFactory::randomBonus()
-{
-    int value = std::rand() % 101;
-    int total = 0;
-    std::vector<int> prob;
-    std::vector<GUI::BlockFactory::BlockType> tab = {
-        GUI::BlockFactory::BlockType::BLOCK_BONUS_BOOMUP,
-        GUI::BlockFactory::BlockType::BLOCK_BONUS_FIREUP,
-        GUI::BlockFactory::BlockType::BLOCK_BONUS_SPEEDUP,
-        GUI::BlockFactory::BlockType::BLOCK_BONUS_WALLPASS,
-    };
-
-    if (Game::CoreData::settings->isSetInFile("RANDOM_BONUS")) {
-        for (size_t i = 0; i < 4; i++)
-            prob.push_back(25);
-    } else {
-        prob = Game::CoreData::settings->getTabInt("RANDOM_BONUS");
-    }
-    if (prob.size() != 4)
-        throw std::invalid_argument("Invalide bonus array of proba");
-    for (size_t i = 0; i < 4; i++)
-        total += prob[i];
-    if (total != 100)
-        throw std::invalid_argument("Invalide bonus array of proba");
-    total = 0;
-    for (size_t i = 0; i < 4; i++) {
-        total += prob[i];
-        if (value <= total)
-            return tab[i];
-    }
-    return GUI::BlockFactory::BlockType::BLOCK_BONUS_BOOMUP;
-}
