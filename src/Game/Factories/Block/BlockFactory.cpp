@@ -177,7 +177,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
-        scene->localEntities.removeEntity(toEntity);
+        //scene->localEntities.removeEntity(toEntity);
     }
     // TODO kill entity if player
 }
@@ -261,7 +261,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a + i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t)vector2.a - i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -271,7 +271,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a + i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t) vector2.a, (size_t) vector2.b + i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -281,7 +281,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
             break;
         tmpEntityId = GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a + i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
+        matrix.getData()->save({(size_t)vector2.a, (size_t)vector2.b - i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
