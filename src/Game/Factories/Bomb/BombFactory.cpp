@@ -9,6 +9,7 @@
 #include "BombFactory.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "Components/ModelList/ModelList.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 using namespace GUI;
 
@@ -47,23 +48,13 @@ bool BombFactory::placeBomb(Engine::Entity character)
     auto characterPosition(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+    Component::PlayerInventory &playerInventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
-    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+    if (inventoryInfo.bomb && isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+        playerInventory.setBomb(inventoryInfo.bomb - 1);
         GUI::BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
         render.select("setBomb");
-        return true;
-    }
-    return false;
-}
-
-bool BombFactory::placeBomb(
-    Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
-{
-    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
-    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
-
-    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
-        GUI::BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
         return true;
     }
     return false;
@@ -115,6 +106,7 @@ void BombFactory::handlerBombTimer(
     Component::PlayerInventory &playerInventory = entityManager.getComponent<Component::PlayerInventory>(player.entity);
     const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
+    playerInventory.setBomb(inventoryInfo.bomb + 1);
     BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius);
     scene->localEntities.removeEntity(entity);
 }
