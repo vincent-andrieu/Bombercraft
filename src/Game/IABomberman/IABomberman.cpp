@@ -60,6 +60,7 @@ void IABomberman::IASettings()
 
 void IABomberman::setIAEnv(std::vector<std::vector<TileType>> env)
 {
+    std::cout << "oui" << std::endl;
     for (size_t y = 0; y < env.size(); y++) {
         for (size_t x = 0; x < env[y].size(); x++) {
             if (env[y][x] == TileType::TILE_BOMB)

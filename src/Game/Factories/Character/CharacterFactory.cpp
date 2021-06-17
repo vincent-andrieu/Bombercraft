@@ -274,7 +274,6 @@ void CharacterFactory::handlerAITimer(
 
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
-        // TODO PUT BOMB
         GUI::BombFactory::placeBomb(entity);
     }
 }
