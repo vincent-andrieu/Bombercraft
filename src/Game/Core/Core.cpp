@@ -136,14 +136,20 @@ void Core::loop()
 
     CoreData::window->setExitKey();
     CoreData::window->setWindowIcon(iconPath);
-
-    CoreData::sceneManager->setScene<LoadingScreenScene>();
-    while (CoreData::window->isOpen() && !this->isEndPreload()) {
-        CoreData::window->clear();
-        this->runPreload();
-        this->printDuringPreload();
-        CoreData::window->refresh();
-        CoreData::sceneManager->updateScene();
+    if (!CoreData::settings->getInt("SKIP_LOADING")) {
+        CoreData::sceneManager->setScene<LoadingScreenScene>();
+        while (!this->isEndPreload()) {
+            if (CoreData::window->isOpen()) {
+                return;
+            }
+            CoreData::window->clear();
+            this->runPreload();
+            this->printDuringPreload();
+            CoreData::window->refresh();
+            CoreData::sceneManager->updateScene();
+        }
+    } else {
+        CoreData::sceneManager->setScene<MainMenuScene>();
     }
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
