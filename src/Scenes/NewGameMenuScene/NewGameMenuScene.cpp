@@ -139,6 +139,12 @@ void Game::NewGameMenuScene::init()
         100,
         (int) options.IARandomProb,
         false); // TODO apply it gameScene
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
+    }));
+    Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 
 void Game::NewGameMenuScene::open()
