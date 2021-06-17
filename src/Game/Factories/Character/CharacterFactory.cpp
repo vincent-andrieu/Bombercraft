@@ -272,10 +272,8 @@ void CharacterFactory::handlerAITimer(
     velocity.x = (float) velocityIA.first;
     velocity.y = (float) velocityIA.second;
 
-    std::cout << "Velocity: x: " << velocity.x << " y: " << velocity.y << std::endl;
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
-        // TODO PUT BOMB
         GUI::BombFactory::placeBomb(entity);
     }
 }

@@ -98,6 +98,6 @@ Engine::Entity GUI::InventoryFactory::create(Engine::EntityPack &pack,
     }
     Game::CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, getDefaultPlayerInventory(), config);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
-        entity, 1.0f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
+        entity, 0.1f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
     return entity;
 }

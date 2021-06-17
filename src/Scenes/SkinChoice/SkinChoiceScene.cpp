@@ -20,19 +20,6 @@
 
 using namespace Game;
 
-/*const std::vector<string> SKINS{
-    "Asset/Skin/Simple_Steve.png",
-    "Asset/Skin/Bloody_White.png",
-    "Asset/Skin/Deep_Blue.png",
-    "Asset/Skin/Cyber_White.png",
-    "Asset/Skin/Happy_White.png",
-    "Asset/Skin/Lava_Orange.png",
-    "Asset/Skin/Prince_Gold.png",
-    "Asset/Skin/Pure_Green.png",
-    "Asset/Skin/Rebel_Black.png",
-    "Asset/Skin/Revenge_Red.png",
-};*/
-
 static void previousHandler(Engine::Entity const)
 {
     auto scene = CoreData::sceneManager->getCurrentScene();
@@ -78,7 +65,6 @@ void Game::SkinChoiceScene::open()
 {
     const raylib::MyVector2 window_size(CoreData::settings->getMyVector2("WIN_SIZE"));
     const ProportionUtilities my_utility(window_size);
-    CoreData::moveCamera(raylib::MyVector3(12, 0, 0), raylib::MyVector3(0, 0, 0));
     const string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     const GUI::ButtonConfig &smallButtonConfig = GUI::ButtonFactory::getSmallButtonConfig();
     const GUI::ButtonConfig &mediumButtonConfig = GUI::ButtonFactory::getMediumButtonConfig();
@@ -117,21 +103,18 @@ void Game::SkinChoiceScene::open()
     GUI::ButtonFactory::create(this->localEntities, my_utility(50.5, 80), "rightButton", mediumButtonConfig, "Next", nextHandler);
     GUI::ButtonFactory::create(
         this->localEntities, my_utility(25, 90), "cancelButton", mediumButtonConfig, "Cancel", cancelHandler);
-    GUI::ButtonFactory::create(this->localEntities,
-        my_utility(50.5, 90),
-        "applyButton",
-        mediumButtonConfig,
-        "Apply",
-        [this](UNUSED const Engine::Entity &entity) {
+    GUI::ButtonFactory::create(
+        this->localEntities, my_utility(50.5, 90), "applyButton", mediumButtonConfig, "Apply", [this](const Engine::Entity &) {
             const Engine::Entity &model = CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("skin");
             Component::StringChoice &choice = CoreData::entityManager->getComponent<Component::StringChoice>(model);
             this->_selectedPlayer->setSkinPath(choice.get());
         });
     // Skin
+    CoreData::moveCamera(raylib::MyVector3(12, 100, 100), raylib::MyVector3(0, 100, 100));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("MENU_CAM_UP"));
     Engine::Entity skin = this->localEntities.createEntity("skin");
-    CoreData::entityManager->addComponent<Component::Render3D>(
-        skin, std::make_shared<raylib::Model>(this->_selectedPlayer->getSkinPath(), modelPath, raylib::MyVector3(0, -4, 0)));
+    CoreData::entityManager->addComponent<Component::Render3D>(skin,
+        std::make_shared<raylib::Model>(this->_selectedPlayer->getSkinPath(), modelPath, raylib::MyVector3(0, 100 - 4, 100)));
     CoreData::entityManager->addComponent<Component::StringChoice>(skin, std::vector<string>(SKINS));
     CoreData::entityManager->addComponent<Engine::Timer>(
         skin, 0.005f, *CoreData::entityManager, *CoreData::sceneManager, rotateHandler);

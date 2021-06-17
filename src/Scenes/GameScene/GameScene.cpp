@@ -73,7 +73,8 @@ void GameScene::open()
     this->createCharacters();
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
-    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
+        this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
         Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
@@ -116,11 +117,12 @@ void GameScene::update()
     auto &audio = this->_systemManager.getSystem<System::AudioSystem>();
     auto &physic = this->_systemManager.getSystem<System::PhysicsSystem>();
     auto &hitbox = this->_systemManager.getSystem<System::HitboxSystem>();
+
     float dt = 1.0f / 10.0f;
 
     render3D.update();
-    modelList.update();
     render2D.update();
+    modelList.update();
     timer.update();
     audio.update();
     hitbox.update();

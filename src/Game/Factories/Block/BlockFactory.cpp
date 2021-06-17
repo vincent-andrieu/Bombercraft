@@ -37,7 +37,13 @@ Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::IModel> model = BlockFactory::getModel(position, type, ressourcePackRoot);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+    raylib::MyVector2 positionOnMap = Component::Matrix2D::getMapIndex(position);
 
+    if (type != BlockFactory::BlockType::BLOCK_FLOOR) {
+        matrix.getData()->save({(size_t)positionOnMap.a, (size_t)positionOnMap.b}, entity, type);
+    }
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
     BlockFactory::internalFactory(entity, type, position, size);
@@ -122,7 +128,8 @@ void BlockFactory::blastFactory(const Engine::Entity &entity, const raylib::MyVe
 
 void BlockFactory::softBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
 {
-    BlockFactory::softFactory(entity, pos, size);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, pos, size, BlockFactory::handlerCollision, Game::EntityType::SOFTBONUSBLOCK);
 }
 
 void BlockFactory::boomUpBonusFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size)
@@ -153,6 +160,12 @@ void BlockFactory::handlerBlastTimer(
     UNUSED Engine::EntityManager &entityManager, UNUSED Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     auto scene = Game::Core::sceneManager->getCurrentScene();
+    raylib::MyVector3 BlastPosition = Game::CoreData::entityManager->getComponent<Component::Render3D>(entity).modele->getPosition();
+    raylib::MyVector2 indexOnMap = Component::Matrix2D::getMapIndex(BlastPosition);
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+
+    matrix.getData()->save({(size_t)indexOnMap.a, (size_t)indexOnMap.b}, entity, BlockType::BLOCK_AIR);
     // TODO remove blast
     scene->localEntities.removeEntity(entity);
 }
@@ -168,16 +181,42 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
 {
     auto scene = Game::Core::sceneManager->getCurrentScene();
     auto &hitboxTo = Game::CoreData::entityManager->getComponent<Component::Hitbox>(toEntity);
+    auto &render3DTo = Game::CoreData::entityManager->getComponent<Component::Render3D>(toEntity);
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+    BlockFactory::BlockType bonusType;
+    std::string texturePath;
+    std::string typeInStr;
+    Engine::Entity entity;
+    const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
-        // TODO REMOVE SOFT BLOCK ON MATRIX
-        std::cout << "should remove block" << std::endl;
         scene->localEntities.removeEntity(toEntity);
+    }
+    if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBONUSBLOCK) {
+        bonusType = randomBonus();
+        switch (bonusType) {
+            case BlockType::BLOCK_BONUS_BOOMUP: typeInStr = "BONUS_BOOMUP"; break;
+            case BlockType::BLOCK_BONUS_FIREUP: typeInStr = "BONUS_FIREUP"; break;
+            case BlockType::BLOCK_BONUS_SPEEDUP: typeInStr = "BONUS_SPEEDUP"; break;
+            case BlockType::BLOCK_BONUS_WALLPASS: typeInStr = "BONUS_WALLPASS"; break;
+            default: typeInStr = "DEFAULT"; break;
+        }
+        texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
+        scene->localEntities.removeEntity(toEntity);
+        scene->localEntities.removeEntity(fromEntity);
+        entity = GUI::BlockFactory::create(scene->localEntities, position, bonusType, texturePath);
+        switch (bonusType) {
+            case BlockType::BLOCK_BONUS_BOOMUP: GUI::BlockFactory::boomUpBonusFactory(entity, position, size); break;
+            case BlockType::BLOCK_BONUS_FIREUP: GUI::BlockFactory::fireUpBonusFactory(entity, position, size); break;
+            case BlockType::BLOCK_BONUS_SPEEDUP: GUI::BlockFactory::speedUpBonusFactory(entity, position, size); break;
+            case BlockType::BLOCK_BONUS_WALLPASS: GUI::BlockFactory::wallPassBonusFactory(entity, position, size); break;
+            default: typeInStr = "DEFAULT"; break;
+        }
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
-        //scene->localEntities.removeEntity(toEntity);
+        // scene->localEntities.removeEntity(toEntity);
     }
     // TODO kill entity if player
 }
@@ -185,53 +224,69 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
 void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
-    scene->localEntities.removeEntity(fromEntity);
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
-    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
-    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-    inventory.setBomb(info.bomb + 1);
+    if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        scene->localEntities.removeEntity(toEntity);
 
-    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-    audio.play("PowerUpTaken");
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+        inventory.setBomb(info.bomb + 1);
+
+        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+        audio.play("PowerUpTaken");
+    }
 }
 
 void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
-    scene->localEntities.removeEntity(fromEntity);
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
-    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
-    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-    inventory.setBlastRadius(info.blastRadius + 1);
+    if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        scene->localEntities.removeEntity(toEntity);
 
-    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-    audio.play("PowerUpTaken");
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+        inventory.setBlastRadius(info.blastRadius + 1);
+
+        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+        audio.play("PowerUpTaken");
+    }
 }
 
 void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
-    scene->localEntities.removeEntity(fromEntity);
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
-    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
-    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-    if (info.speed < 1) {
-        inventory.setSpeed(info.speed + 0.1);
+    if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        scene->localEntities.removeEntity(toEntity);
+
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+        if (info.speed < 1) {
+            inventory.setSpeed(info.speed + 0.1);
+        }
+        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+        audio.play("PowerUpTaken");
     }
-    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-    audio.play("PowerUpTaken");
 }
 
 void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
-    scene->localEntities.removeEntity(fromEntity);
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
 
-    auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(toEntity);
-    inventory.setWallPass(true);
+    if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        scene->localEntities.removeEntity(toEntity);
 
-    auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
-    audio.play("PowerUpTaken");
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        inventory.setWallPass(true);
+
+        auto &audio = Game::CoreData::systemManager->getSystem<System::AudioSystem>();
+        audio.play("PowerUpTaken");
+    }
 }
 
 void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius)
@@ -242,26 +297,23 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
     // TODO SPLIT INTO METHODS
     raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
     std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
-    Engine::Entity tmpEntityId;
 
     GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({(size_t)vector2.a + i, (size_t)vector2.b});
+        blockTmp = matrix.getData({(size_t) vector2.a + i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a + i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({(size_t)vector2.a - i, (size_t)vector2.b});
+        blockTmp = matrix.getData({(size_t) vector2.a - i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a - i, (size_t)vector2.b}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
@@ -269,20 +321,51 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b + i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t) vector2.a, (size_t) vector2.b + i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
-        blockTmp = matrix.getData({(size_t)vector2.a, (size_t)vector2.b - i});
+        blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b - i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        tmpEntityId = GUI::BlockFactory::create(
+        GUI::BlockFactory::create(
             entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        matrix.getData()->save({(size_t)vector2.a, (size_t)vector2.b - i}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
             break;
     }
+}
+
+GUI::BlockFactory::BlockType BlockFactory::randomBonus()
+{
+    int value = std::rand() % 101;
+    int total = 0;
+    std::vector<int> prob;
+    std::vector<GUI::BlockFactory::BlockType> tab = {
+        GUI::BlockFactory::BlockType::BLOCK_BONUS_BOOMUP,
+        GUI::BlockFactory::BlockType::BLOCK_BONUS_FIREUP,
+        GUI::BlockFactory::BlockType::BLOCK_BONUS_SPEEDUP,
+        GUI::BlockFactory::BlockType::BLOCK_BONUS_WALLPASS,
+    };
+
+    if (Game::CoreData::settings->isSetInFile("RANDOM_BONUS")) {
+        for (size_t i = 0; i < 4; i++)
+            prob.push_back(25);
+    } else {
+        prob = Game::CoreData::settings->getTabInt("RANDOM_BONUS");
+    }
+    if (prob.size() != 4)
+        throw std::invalid_argument("Invalide bonus array of proba");
+    for (size_t i = 0; i < 4; i++)
+        total += prob[i];
+    if (total != 100)
+        throw std::invalid_argument("Invalide bonus array of proba");
+    total = 0;
+    for (size_t i = 0; i < 4; i++) {
+        total += prob[i];
+        if (value <= total)
+            return tab[i];
+    }
+    return GUI::BlockFactory::BlockType::BLOCK_BONUS_BOOMUP;
 }

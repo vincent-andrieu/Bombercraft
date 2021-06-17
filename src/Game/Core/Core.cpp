@@ -229,7 +229,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config2");
@@ -240,7 +239,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config3");
@@ -251,7 +249,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PLACE_BOMB")),
         });
     entity = this->globalEntities.createEntity("config4");
@@ -262,7 +259,6 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_DOWN")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_LEFT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_RIGHT")),
-            static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PAUSE")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_PLACE_BOMB")),
         });
 }

@@ -17,7 +17,7 @@ bool BombFactory::isBombPlacable(float posX, float posY)
 {
     auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
         Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
-    auto my_data(map.getData(std::make_pair(posX, posY)));
+    auto my_data(map.getData(std::make_pair(static_cast<size_t>(posX), static_cast<size_t>(posY))));
 
     if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
         return true;
@@ -48,7 +48,8 @@ bool BombFactory::placeBomb(Engine::Entity character)
     auto characterPosition(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
-    Component::PlayerInventory &playerInventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+    Component::PlayerInventory &playerInventory =
+        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
     const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
     if (inventoryInfo.bomb && isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
@@ -63,12 +64,16 @@ bool BombFactory::placeBomb(Engine::Entity character)
 Engine::Entity BombFactory::create(
     Engine::EntityPack &entityPack, const raylib::MyVector3 position, Engine::Entity entityParent, const std::string &name)
 {
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::Animation> animation = BombFactory::getAnimation(position);
-
+    raylib::MyVector2 positionOnMap = Component::Matrix2D::getMapIndex(position);
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
     int bombCountdown = Game::CoreData::settings->getInt("BOMB_COUNTDOWN");
 
+
+    matrix.getData()->save({(size_t)positionOnMap.a, (size_t)positionOnMap.b}, entity, GUI::BlockFactory::BlockType::BLOCK_BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, animation);
     if (bombCountdown < 0)

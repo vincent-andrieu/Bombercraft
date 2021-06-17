@@ -32,6 +32,7 @@ namespace GameModule
         void setRange(size_t range);
         IA::Movement getIAMovement();
         void setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy);
+        void setIAEnv(std::vector<std::vector<TileType>> env);
 
       private:
         // SETTINGS
@@ -55,6 +56,7 @@ namespace GameModule
 
 
         // TOOLS
+        bool isStuck() const;
         bool isRunnable(TileType type) const;
         bool isSecurePlace(TileType type) const;
         void clearQueue(std::queue<IA::Movement> &list);
@@ -62,6 +64,8 @@ namespace GameModule
         std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
         std::vector<std::vector<int>> findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        std::vector<std::pair<size_t, size_t>> getAvailableTile(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        std::pair<size_t, size_t> getNextPos(IA::Movement move) const;
         
         private:
             size_t _range;

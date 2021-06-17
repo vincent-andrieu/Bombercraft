@@ -41,6 +41,8 @@
 #include "Components/PlayerInventory/PlayerInventory.hpp"
 #include "Preloader/Preloader.hpp"
 
+#include "Utilities/Clock.hpp"
+
 #define EXIT_ERROR 84
 
 namespace Game
@@ -59,11 +61,14 @@ namespace Game
         void createSystems();
         void createScenes();
         void loadMusic();
-        std::unordered_map<std::string, std::string> getAudioList(std::string const &varPathList, std::string const &varNameList) const;
+        std::unordered_map<std::string, std::string> getAudioList(
+            std::string const &varPathList, std::string const &varNameList) const;
         bool isEndPreload();
         void printDuringPreload();
         void runPreload();
         void runAfterPreload();
+
+        Clock _clock;
 
       public:
         Engine::EntityPack globalEntities;
