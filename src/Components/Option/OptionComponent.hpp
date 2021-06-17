@@ -2,13 +2,14 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 14/06/2021 OptionComponent.hpp.h
+** 14/06/2021 OptionComponent.hpp
 */
 
 #ifndef OPTIONCOMPONENT_HPP
 #define OPTIONCOMPONENT_HPP
 
 #include "GameEngine.hpp"
+#include "Game/CoreData/CoreData.hpp"
 
 namespace Component
 {
@@ -19,7 +20,7 @@ namespace Component
 
         float volume{50};
         std::string ressourcePack;
-        size_t fov{90};
+        float fov{Game::CoreData::camera->getFovy()};
 
         size_t nbPlayers{1};
         size_t gameTimerDuration{120}; // 0 for unlimited time
