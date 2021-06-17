@@ -15,11 +15,11 @@ namespace Component
 {
     class OptionComponent : public Engine::Component<OptionComponent> {
       public:
-        explicit OptionComponent(float volume, const std::string &ressourcePack, size_t fov);
+        explicit OptionComponent(float volume, const string &ressourcePack, float fov);
         virtual ~OptionComponent() = default;
 
         float volume{50};
-        std::string ressourcePack;
+        string ressourcePack;
         float fov{Game::CoreData::camera->getFovy()};
 
         size_t nbPlayers{1};
