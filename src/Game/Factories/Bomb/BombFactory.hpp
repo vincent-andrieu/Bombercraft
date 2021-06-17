@@ -19,16 +19,15 @@ namespace GUI
       public:
         BombFactory() = delete;
         ~BombFactory() = delete;
+
+        static bool placeBomb(Engine::Entity character);
+
+      protected:
+      private:
         static Engine::Entity create(Engine::EntityPack &entityPack,
             const raylib::MyVector3 position,
             Engine::Entity entityParent,
             const std::string &name = "");
-        static bool placeBomb(Engine::Entity character);
-        static bool placeBomb(
-            Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation);
-
-      protected:
-      private:
         static std::shared_ptr<raylib::Animation> getAnimation(const raylib::MyVector3 &pos);
 
         static void handlerBombTimer(
