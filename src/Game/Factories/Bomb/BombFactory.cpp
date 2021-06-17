@@ -8,10 +8,69 @@
 #include "Game/Factories/Block/BlockFactory.hpp"
 #include "BombFactory.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
+#include "Components/ModelList/ModelList.hpp"
 
 using namespace GUI;
 
-Engine::Entity BombFactory::create(Engine::EntityPack &entityPack, const raylib::MyVector3 position, Engine::Entity entityParent, const std::string &name)
+bool BombFactory::isBombPlacable(float posX, float posY)
+{
+    auto map(Game::CoreData::entityManager->getComponent<Component::Matrix2D>(
+        Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap")));
+    auto my_data(map.getData(std::make_pair(posX, posY)));
+
+    if (my_data.second == GUI::BlockFactory::BlockType::BLOCK_AIR) {
+        return true;
+    }
+    return false;
+}
+
+raylib::MyVector2 BombFactory::getNextPos(const raylib::MyVector2 &position, const float rotation)
+{
+    auto my_position(position);
+
+    if (rotation == 0)
+        my_position.b++;
+    if (rotation == 90)
+        my_position.a--;
+    if (rotation == 180)
+        my_position.b--;
+    if (rotation == 270)
+        my_position.a++;
+    return my_position;
+}
+
+bool BombFactory::placeBomb(Engine::Entity character)
+{
+    Component::ModelList &render = Game::CoreData::entityManager->getComponent<Component::ModelList>(character);
+    const Component::Hitbox &hitbox = Game::CoreData::entityManager->getComponent<Component::Hitbox>(character);
+    auto characterOrientation(render.getRotation().b);
+    auto characterPosition(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
+    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+
+    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+        GUI::BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        render.select("setBomb");
+        return true;
+    }
+    return false;
+}
+
+bool BombFactory::placeBomb(
+    Engine::Entity character, const raylib::MyVector3 &characterPosition, const float characterOrientation)
+{
+    auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
+    const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+
+    if (isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
+        GUI::BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        return true;
+    }
+    return false;
+}
+
+Engine::Entity BombFactory::create(
+    Engine::EntityPack &entityPack, const raylib::MyVector3 position, Engine::Entity entityParent, const std::string &name)
 {
     const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     std::shared_ptr<raylib::Model> model = BombFactory::getModel(position);
@@ -22,7 +81,8 @@ Engine::Entity BombFactory::create(Engine::EntityPack &entityPack, const raylib:
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
     if (bombCountdown < 0)
         bombCountdown = 0;
-    Game::CoreData::entityManager->addComponent<Component::Hitbox>(entity, position, size, BombFactory::handlerBombCollision, Game::EntityType::BOMB);
+    Game::CoreData::entityManager->addComponent<Component::Hitbox>(
+        entity, position, size, BombFactory::handlerBombCollision, Game::EntityType::BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, bombCountdown, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, BombFactory::handlerBombTimer);
     Game::CoreData::entityManager->addComponent<Engine::EntityBox>(entity, entityParent);
