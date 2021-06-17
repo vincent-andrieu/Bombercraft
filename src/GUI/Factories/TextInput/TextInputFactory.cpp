@@ -130,6 +130,9 @@ static Component::eventScript focusHandler = [](const Engine::Entity entityChild
 void TextInputFactory::create(
     Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput, LabelConfig const &label)
 {
+    if (dynConf.name.empty()) {
+        throw std::invalid_argument("TextInputFactory::create empty entity name");
+    }
     Engine::Entity entity = pack.createEntity(dynConf.name);
     raylib::MyVector2 textPos = dynConf.position + textInput.textPositionOffset;
     raylib::MyVector2 inputPosition(dynConf.position.a + textInput.borderSize, dynConf.position.b + textInput.borderSize);

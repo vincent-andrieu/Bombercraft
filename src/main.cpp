@@ -24,20 +24,15 @@ int main(void)
         core = std::make_unique<Game::Core>();
         core->loop();
     } catch (const ParserExceptions &e) {
-        running_end("Fatal error : " + std::string(e.what()));
-        return EXIT_ERROR;
+        return running_end("Fatal error : " + std::string(e.what()));
     } catch (std::invalid_argument const &e) {
-        running_end("Invalid argument : " + std::string(e.what()));
-        return EXIT_ERROR;
+        return running_end("Invalid argument : " + std::string(e.what()));
     } catch (std::filesystem::filesystem_error const &e) {
-        running_end("Filesystem : " + std::string(e.what()));
-        return EXIT_ERROR;
+        return running_end("Filesystem : " + std::string(e.what()));
     } catch (std::exception const &e) {
-        running_end(e.what());
-        return EXIT_ERROR;
+        return running_end(e.what());
     } catch (...) {
-        running_end("Warning: Caught unknown exceptions");
-        return EXIT_ERROR;
+        return running_end("Warning: Caught unknown exceptions");
     }
     core.reset();
     return EXIT_SUCCESS;

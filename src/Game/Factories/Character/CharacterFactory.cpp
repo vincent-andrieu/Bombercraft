@@ -206,8 +206,6 @@ Engine::Entity Game::CharacterFactory::create(
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
-    /// Inventory
-    CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, info, config);
     /// Hitbox
     const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
     CoreData::entityManager->addComponent<Component::Hitbox>(
