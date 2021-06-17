@@ -84,6 +84,7 @@ raylib::MyVector3 AIComponent::getOrientation() const
 
 void AIComponent::setRandomness(size_t randomness)
 {
-    _AI->setRandomBomb(randomness);
-    _AI->setRandomMove(randomness);
+    // TODO PAS UNE BONNE ID2E DE METTRE DU RANDOM DANS L'IA
+    // _AI->setRandomBomb(randomness);
+    // _AI->setRandomMove(randomness);
 }
