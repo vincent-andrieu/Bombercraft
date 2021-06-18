@@ -118,6 +118,6 @@ void BombFactory::handlerBombTimer(
 
     Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("Explosion");
     playerInventory.setBomb(inventoryInfo.bomb + 1);
-    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius);
+    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius, player.entity);
     scene->localEntities.removeEntity(entity); // BOMB
 }

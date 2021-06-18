@@ -62,6 +62,26 @@ static void handlerHitboxCharacterDeath(
     }
 }
 
+static void rewardXP(const Engine::Entity player, const std::string &xpType)
+{
+    auto &playerConfig(Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(player));
+    const auto nbXP((CoreData::settings->isSetInFile("XP_PER_" + xpType) ? CoreData::settings->getInt("XP_PER_" + xpType) : 1));
+
+    playerConfig.setXP(playerConfig.getXP() + nbXP);
+}
+
+static void killRewardXP(const Engine::Entity blast)
+{
+    auto player(Game::CoreData::entityManager->getComponent<Engine::EntityBox>(blast).entity);
+
+    rewardXP(player, "KILL");
+}
+
+static void bonusRewardXP(const Engine::Entity player)
+{
+    rewardXP(player, "BONUS");
+}
+
 static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
 {
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
@@ -79,11 +99,13 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
         Component::PlayerConfig *playerConfig =
             &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id);
         playerConfig->setStatus(Component::PlayerStatus::DEAD);
+        killRewardXP(other);
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
+        bonusRewardXP(character);
     } else if (type != EntityType::CHARACTER
-        && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
+               && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
@@ -107,6 +129,8 @@ static void handlerKeyEvent(const Engine::Entity character)
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
+    std::cout << "player " << character << " has "
+              << Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(character).getXP() << "XP" << std::endl;
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
