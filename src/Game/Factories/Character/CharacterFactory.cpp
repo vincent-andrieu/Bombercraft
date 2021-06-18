@@ -154,7 +154,7 @@ Engine::Entity Game::CharacterFactory::create(
         inventoryPosition,
         {windowSize.a / 15, windowSize.a / 15},
         texturesPath,
-        GUI::LabelFactory::getStandardLabelConfig(20),
+        GUI::LabelFactory::getStandardLabelConfig((size_t) (windowSize.a / 64)),
         id,
         config);
     CoreData::entityManager->addComponent<Engine::EntityBox>(entity, inventoryEntity);

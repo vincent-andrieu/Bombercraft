@@ -86,7 +86,7 @@ static const std::map<raylib::KeyBoard, std::string> _letterMap = {
 
 TextInputConfig TextInputFactory::getStandardConfig()
 {
-    const TextInputConfig t = {raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, 16, raylib::MyVector2(5, 5)};
+    const TextInputConfig t = {raylib::RColor::RBLACK, 2, raylib::RColor::RGRAY, 12, raylib::MyVector2(5, 5)};
     return t;
 }
 

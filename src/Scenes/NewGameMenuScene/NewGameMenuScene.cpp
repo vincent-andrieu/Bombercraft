@@ -120,9 +120,9 @@ void Game::NewGameMenuScene::init()
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
             "textInputIASeed",
-            "IA seed"},
+            "Seed"},
         GUI::TextInputFactory::getStandardConfig(),
-        GUI::LabelFactory::getStandardLabelConfig());
+        GUI::LabelFactory::getStandardLabelConfig(windowSize.a / 32));
     GUI::SliderFactory::create(
         localEntities,
         my_utility.getProportion({20, 75}),
