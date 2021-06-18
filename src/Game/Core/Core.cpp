@@ -121,7 +121,7 @@ Core::Core()
     CoreData::entityManager->addComponent<Component::OptionComponent>(options,
         CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"),
         CoreData::settings->getString("STANDARD_RESSOURCE_PACK"),
-        (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+        CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
     /// CHARACTERS

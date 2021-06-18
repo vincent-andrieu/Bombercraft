@@ -11,6 +11,7 @@
 #include "Game/Factories/Map/MapFactory.hpp"
 #include "Game/Factories/Bomb/BombFactory.hpp"
 #include "Game/Factories/Character/CharacterFactory.hpp"
+#include "Game/Factories/MouseWheel/MouseWheelFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
@@ -66,6 +67,14 @@ void GameScene::open()
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// CHARACTERS
     this->createCharacters();
+    /// MOUSE WHEEL FOV
+    Game::MouseWheelFactory::create(this->localEntities, [](const float &value) {
+        const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+        auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
+        options.fov += value * -5;
+        CoreData::camera->setFovy(options.fov);
+    });
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
@@ -86,7 +95,7 @@ void GameScene::createCharacters()
     Engine::Entity entity;
     Component::AIComponent AI;
 
-    Component::PlayerConfig *config[4] = {
+    Component::PlayerConfig *config[MAX_PLAYERS] = {
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),

@@ -46,3 +46,8 @@ void raylib::Camera::setFovy(const float fovy)
 {
     this->_camera.fovy = fovy;
 }
+
+const float &raylib::Camera::getFovy() const
+{
+    return this->_camera.fovy;
+}

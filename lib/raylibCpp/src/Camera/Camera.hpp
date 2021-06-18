@@ -22,6 +22,8 @@ namespace raylib
         void begin3D();
         void end3D();
 
+        const float &getFovy() const;
+
         void setPosition(const MyVector3 position);
         void setTarget(const MyVector3 target);
         void setUp(const MyVector3 up);
