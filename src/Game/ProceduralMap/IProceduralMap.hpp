@@ -17,6 +17,7 @@ namespace GameModule
     {
         TILE_EXPLOSION,
         TILE_DEFAULT,
+        TILE_DANGER,
         TILE_EMPTY,
         TILE_BONUS,
         TILE_BOMB,

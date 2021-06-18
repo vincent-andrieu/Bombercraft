@@ -24,7 +24,7 @@ void AudioSystem::play(const std::string &entityName)
     this->play(entityName, core->globalEntities);
 }
 
-void AudioSystem::play(std::string const& entityName, Engine::EntityPack &scenePack)
+void AudioSystem::play(std::string const &entityName, Engine::EntityPack &scenePack)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     if (scene == nullptr) {
@@ -43,7 +43,7 @@ void AudioSystem::play(std::string const& entityName, Engine::EntityPack &sceneP
             }
             sound.audio->play();
         }
-    } catch (UNUSED std::invalid_argument const& e) {
+    } catch (UNUSED std::invalid_argument const &e) {
         std::cerr << "Warning: AudioSystem::update entity " << entityName << " not found." << std::endl;
     }
 }
@@ -70,12 +70,23 @@ void AudioSystem::stopMusic()
     }
 }
 
-void AudioSystem::setVolume(float volume)
+void AudioSystem::setVolumeEffects(const float &volume)
 {
-    for (Engine::Entity entity : this->getManagedEntities()) {
-        auto component = _entityManager.getComponent<Component::Sound>(entity);
+    for (const Engine::Entity &entity : this->getManagedEntities()) {
+        auto &component = _entityManager.getComponent<Component::Sound>(entity);
 
-        component.audio->setVolume(volume);
+        if (!component.isMusic)
+            component.audio->setVolume(volume);
+    }
+}
+
+void AudioSystem::setVolumeMusic(const float &volume)
+{
+    for (const Engine::Entity &entity : this->getManagedEntities()) {
+        auto &component = _entityManager.getComponent<Component::Sound>(entity);
+
+        if (component.isMusic)
+            component.audio->setVolume(volume);
     }
 }
 

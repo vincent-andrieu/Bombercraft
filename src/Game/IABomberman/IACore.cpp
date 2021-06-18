@@ -33,6 +33,7 @@ template <typename TileType, typename Action> void IACore<TileType, Action>::set
                 case TileType::TILE_DEFAULT: std::cout << "!"; break;
                 case TileType::TILE_EMPTY: std::cout << "."; break;
                 case TileType::TILE_EXPLOSION: std::cout << "O"; break;
+                case TileType::TILE_DANGER: std::cout << "0"; break;
                 case TileType::TILE_HARD: std::cout << "x"; break;
                 case TileType::TILE_SOFT: std::cout << "#"; break;
                 case TileType::TILE_BOMB: std::cout << "1"; break;
@@ -85,14 +86,17 @@ template <typename TileType, typename Action> Movement IACore<TileType, Action>:
 {
     Movement tmp;
 
+    std::cout << "test: " << this->_MovementQueue.size() << std::endl;
     if (!this->_MovementQueue.size()) {
         if (!this->_MovementFunc)
             throw IAExceptions("Moving function not initialized", false);
         else
             this->_MovementFunc(this->_env, this->_pos, this->_MovementQueue);
     }
-    if (!this->_MovementQueue.size())
+    if (!this->_MovementQueue.size()) {
+        std::cout << "LALALALA 1" << std::endl;
         return Movement::IA_MOVE_NONE;
+    }
     tmp = this->_MovementQueue.front();
     this->_MovementQueue.pop();
     return tmp;

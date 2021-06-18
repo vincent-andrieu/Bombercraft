@@ -22,6 +22,7 @@ namespace Component
             std::pair<double, double> getVelocity();
             bool putBomb();
             void setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy);
+            raylib::MyVector3 getOrientation() const;
 
             void setRandomness(size_t randomness);
 
