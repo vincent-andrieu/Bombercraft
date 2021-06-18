@@ -102,7 +102,7 @@ void LabelFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
 }
 
-void LabelFactory::createCentered(
+Engine::Entity LabelFactory::createCentered(
     Engine::EntityPack &pack, raylib::MyVector2 position, string const &label, LabelConfig const &config, const std::string &name)
 {
     Engine::Entity entity;
@@ -116,9 +116,11 @@ void LabelFactory::createCentered(
     }
     my_text->setPosition(my_position);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
+
+    return entity;
 }
 
-void LabelFactory::createCentered(Engine::EntityPack &pack,
+Engine::Entity LabelFactory::createCentered(Engine::EntityPack &pack,
     raylib::MyVector2 position,
     const raylib::MyVector2 size,
     string const &label,
@@ -137,4 +139,6 @@ void LabelFactory::createCentered(Engine::EntityPack &pack,
     }
     my_text->setPosition(my_position);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
+
+    return entity;
 }
