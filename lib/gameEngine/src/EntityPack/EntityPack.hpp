@@ -25,7 +25,7 @@ namespace Engine
         Entity createEntity(const std::string &key);
         Entity createAnonymousEntity();
 
-        void removeEntity(const std::string &key);
+        void removeEntity(const std::string key);
         void removeEntity(const Engine::Entity entity);
 
         Entity getEntity(const std::string &key);

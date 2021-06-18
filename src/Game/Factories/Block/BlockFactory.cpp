@@ -209,9 +209,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
-        // scene->localEntities.removeEntity(toEntity); // CHARACTER
     }
-    // TODO kill entity if player
 }
 
 void BlockFactory::setAirBlock(const raylib::MyVector3 &pos)
