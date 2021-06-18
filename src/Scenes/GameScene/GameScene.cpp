@@ -91,9 +91,11 @@ void GameScene::open()
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
 
-    setCameraAnimation(countdownEntity);
-    cameraAnimation(cameraPosition, cameraUp, cameraTarget);
-    unsetCameraAnimation(countdownEntity);
+    if (CoreData::settings->getInt("CAMERA_ANIMATION")) {
+        setCameraAnimation(countdownEntity);
+        cameraAnimation(cameraPosition, cameraUp, cameraTarget);
+        unsetCameraAnimation(countdownEntity);
+    }
 }
 
 void GameScene::createCharacters()
