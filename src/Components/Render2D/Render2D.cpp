@@ -75,6 +75,11 @@ std::shared_ptr<raylib::IRenderable> &Render2D::get(const std::string &label)
     return this->_models[_modelIndex[label]];
 }
 
+bool Render2D::doesGet(const std::string &label)
+{
+    return this->_modelIndex.find(label) != this->_modelIndex.end();
+}
+
 void Render2D::setToDrawFirst(const string &label)
 {
     const auto &my_index(_modelIndex.at(label));
@@ -92,6 +97,11 @@ void Render2D::setToDrawLast(const string &label)
 void Render2D::unsetToDraw(const string &label)
 {
     _modelsToDrawIndex.erase(_modelIndex.at(label));
+}
+
+bool Render2D::isSetToDraw(const std::string &label) const
+{
+    return this->_modelsToDrawIndex.find(this->_modelIndex.at(label)) != this->_modelsToDrawIndex.end();
 }
 
 // bool Render2D::save(Engine::SaveManager &saver) const

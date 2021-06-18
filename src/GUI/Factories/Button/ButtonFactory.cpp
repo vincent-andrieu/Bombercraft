@@ -27,7 +27,6 @@ ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &but
 {
     ButtonConfig my_standard{Game::CoreData::settings->getString("STANDARD_IDLE_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
-        Game::CoreData::settings->getString("STANDARD_CLICKED_BUTTON_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"),
         buttonSize,
         static_cast<size_t>(Game::CoreData::settings->getInt("STANDARD_FONT_SIZE")),
@@ -64,11 +63,11 @@ ButtonConfig ButtonFactory::getLargeButtonConfig()
     return getSizedButtonConfig(LargeProportions);
 }
 
-void GUI::ButtonFactory::create(Engine::EntityPack &pack,
+Engine::Entity GUI::ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     const string &name,
     const GUI::ButtonConfig &conf,
-    const string &label, // TODO add click action, event script that would be captured in clickHandler and execute on click
+    const string &label,
     const Component::eventScript clickAction,
     const bool centered)
 {
@@ -92,26 +91,30 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     raylib::Text::setFontSize(*my_label, (conf.size.a < 20 && conf.size.b < 20) ? conf.size : conf.size - 20);
     auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
     my_label->setPosition(my_labelPosition);
-    Component::render2dMapModels my_models(
-        {{"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
-            {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
-            {"label", my_label},
-            /*{"clicked", std::make_shared<raylib::Texture>(conf.clickedTexturePath, my_size, my_position)},*/
-            /*{"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)}*/});
+    Component::render2dMapModels my_models({
+        {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)},
+        {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, my_size, my_position)},
+        {"hover", std::make_shared<raylib::Texture>(conf.hoverTexturePath, my_size, my_position)},
+        {"label", my_label},
+    });
 
     Component::eventScript my_moveHandler = [my_position, my_size](const Engine::Entity entity) {
         auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
-        if (Game::CoreData::eventManager->MouseIsOver(my_position, my_size)) {
-            my_render.setToDrawFirst("hover");
-            my_render.unsetToDraw("idle");
-        } else {
-            my_render.unsetToDraw("hover");
-            my_render.setToDrawFirst("idle");
+        if (!my_render.isSetToDraw("unavailable")) {
+            if (Game::CoreData::eventManager->MouseIsOver(my_position, my_size)) {
+                my_render.setToDrawFirst("hover");
+                my_render.unsetToDraw("idle");
+            } else {
+                my_render.unsetToDraw("hover");
+                my_render.setToDrawFirst("idle");
+            }
         }
     };
     Component::eventScript my_clickHandler = [my_position, my_size, clickAction](const Engine::Entity entity) {
-        if (Game::CoreData::eventManager->MouseIsOverClicked(my_position, my_size)) {
+        const auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
+
+        if (Game::CoreData::eventManager->MouseIsOverClicked(my_position, my_size) && !my_render.isSetToDraw("unavailable")) {
             Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("ButtonClick", core->globalEntities);
 
             clickAction(entity);
@@ -124,6 +127,7 @@ void GUI::ButtonFactory::create(Engine::EntityPack &pack,
     auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
     my_render.unsetToDraw("hover");
-    //    my_render.unsetToDraw("clicked");
-    //    my_render.unsetToDraw("unavailable");
+    my_render.unsetToDraw("unavailable");
+
+    return entity;
 }

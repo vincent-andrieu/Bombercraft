@@ -96,12 +96,16 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
 
     if (type == EntityType::BLAST) {
         handlerHitboxCharacterDeath(character, id, render);
+        Component::PlayerConfig *playerConfig =
+            &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id);
+        playerConfig->setStatus(Component::PlayerStatus::DEAD);
         killRewardXP(other);
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
         bonusRewardXP(character);
-    } else if (!((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
+    } else if (type != EntityType::CHARACTER
+        && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
@@ -286,6 +290,9 @@ void CharacterFactory::handlerAITimer(
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
         PLAYER_ID_TO_NAME.at(Component::DELTA)};
     std::vector<std::pair<size_t, size_t>> posList;
+    const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(entity);
+    const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
     for (size_t i = 0; i < entityList.size(); i++) {
         if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
@@ -298,18 +305,20 @@ void CharacterFactory::handlerAITimer(
         }
     }
     (void) entityManager;
+    if (info.wallPass) {
+        ai.setBonusWallPass();
+    }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
-        std::cout << "PUT BOMB" << std::endl;
         render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
 
-    if (Game::CoreData::settings->getInt("AI_VELOCITY_MODE") == 1) {
-        velocity.x = (float) velocityIA.first;
-        velocity.y = (float) velocityIA.second;
+    if (ai.getMoveType()) {
+        velocity.x = (float) velocityIA.first / 2;
+        velocity.y = (float) velocityIA.second / 2;
     } else {
         const raylib::MyVector3 &position = render.getPosition()
             + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));

@@ -31,7 +31,6 @@ namespace GUI
     struct KeyInputConfig {
         const raylib::MyVector2 size;
         const raylib::RColor color;
-        const raylib::MyVector2 textPositionOffset;
     };
 
     struct KeyInputDynConf {
@@ -44,6 +43,7 @@ namespace GUI
       public:
         ~KeyInputFactory() = delete;
 
+        static KeyInputConfig getStandardConfig(const raylib::MyVector2 &size = raylib::MyVector2(195, 40));
         static void create(
             Engine::EntityPack &pack,
             KeyInputDynConf const &dynConf,
@@ -52,7 +52,6 @@ namespace GUI
             const KeyInputEventScript keyInputHandler = [](UNUSED const Engine::Entity &entity,
                                                             UNUSED const std::pair<const raylib::KeyBoard, string> &key) {
             });
-        static KeyInputConfig getStandardConfig();
         static const std::map<raylib::KeyBoard, string> keyToStr;
 
       protected:

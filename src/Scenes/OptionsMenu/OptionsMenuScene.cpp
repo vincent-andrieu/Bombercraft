@@ -49,6 +49,8 @@ void OptionsMenuScene::open()
         CoreData::settings->getMyVector2("WIN_SIZE"),
         CoreData::settings->getString("STANDARD_BACKGROUND"),
         false);
+    GUI::LabelFactory::createCentered(
+        this->localEntities, my_utility(50, 4), "Options", GUI::LabelFactory::getStandardLabelConfig());
     GUI::ButtonFactory::create(
         this->localEntities,
         buttonPosition[0],

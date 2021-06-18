@@ -84,12 +84,16 @@ void LabelFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 size,
     string const &label,
     LabelConfig const &config,
-    const std::string &name)
+    const std::string &name,
+    const bool centered)
 {
     Engine::Entity entity;
     auto my_text(std::make_shared<raylib::Text>(label, config.fontPath, position, config.fontSize, config.fontColor));
 
-    raylib::Text::setFontSize(*my_text, size);
+    if (centered)
+        raylib::Text::setFontSize(*my_text, size);
+    my_text->setPosition(position
+        + ProportionUtilities::getProportionWin(size, raylib::MyVector2(50, 50), my_text->getSize(), raylib::MyVector2(50, 50)));
     if (name.empty()) {
         entity = pack.createAnonymousEntity();
     } else {

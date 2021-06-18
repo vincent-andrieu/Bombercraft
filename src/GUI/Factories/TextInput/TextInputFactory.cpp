@@ -145,6 +145,8 @@ void TextInputFactory::create(
     raylib::MyVector2 textPos = dynConf.position + textInput.textPositionOffset;
     raylib::MyVector2 inputPosition(dynConf.position.a + textInput.borderSize, dynConf.position.b + textInput.borderSize);
     raylib::MyVector2 inputSize(dynConf.size.a - textInput.borderSize * 2, dynConf.size.b - textInput.borderSize * 2);
+    auto textModel =
+        std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos + 5, label.fontSize, label.fontColor);
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
@@ -156,9 +158,9 @@ void TextInputFactory::create(
             {"rectangle",
                 std::make_shared<raylib::Texture>(
                     Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), inputSize, inputPosition)},
-            {"text",
-                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)},
+            {"text", textModel},
         }));
+    raylib::Text::setFontSize(*textModel, (dynConf.size.a < 20 && dynConf.size.b < 20) ? dynConf.size : dynConf.size - 20);
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequirement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);

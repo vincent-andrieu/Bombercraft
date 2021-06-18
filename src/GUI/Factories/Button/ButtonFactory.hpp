@@ -22,7 +22,6 @@ namespace GUI
     struct ButtonConfig {
         const string idleTexturePath;
         const string hoverTexturePath;
-        const string clickedTexturePath;
         const string unavailableTexturePath;
         raylib::MyVector2 size;
         std::size_t fontSize;
@@ -46,7 +45,7 @@ namespace GUI
         static ButtonConfig getBigButtonConfig();
         static ButtonConfig getSmallButtonConfig();
 
-        static void create(Engine::EntityPack &pack,
+        static Engine::Entity create(Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
             const string &name,
             ButtonConfig const &conf,

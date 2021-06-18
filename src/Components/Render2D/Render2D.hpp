@@ -32,10 +32,12 @@ namespace Component
         void remove(const std::string &label);
 
         std::shared_ptr<raylib::IRenderable> &get(const std::string &label);
+        bool doesGet(const std::string &label);
 
         void unsetToDraw(const std::string &label);
         void setToDrawFirst(const std::string &label);
         void setToDrawLast(const std::string &label);
+        bool isSetToDraw(const std::string &label) const;
 
         // bool save(Engine::SaveManager &saver) const override;
         // bool load(Engine::SaveManager &saver) override;

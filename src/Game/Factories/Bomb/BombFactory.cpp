@@ -49,8 +49,9 @@ bool BombFactory::placeBomb(Engine::Entity character)
     auto characterPosition(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     auto bombIndexOnMap(getNextPos(Component::Matrix2D::getMapIndex(characterPosition), characterOrientation));
     const auto bombPosition(Component::Matrix2D::getPositionAbs((size_t) bombIndexOnMap.a, (size_t) bombIndexOnMap.b));
+    const Engine::EntityBox &inventoryEntityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(character);
     Component::PlayerInventory &playerInventory =
-        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(character);
+        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
     const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
     if (inventoryInfo.bomb && isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
@@ -109,12 +110,14 @@ void BombFactory::handlerBombTimer(
 {
     auto scene = Game::Core::sceneManager->getCurrentScene();
     Engine::Position &pos = entityManager.getComponent<Engine::Position>(entity);
-    Engine::EntityBox &player = entityManager.getComponent<Engine::EntityBox>(entity);
-    Component::PlayerInventory &playerInventory = entityManager.getComponent<Component::PlayerInventory>(player.entity);
+    Engine::Entity player = entityManager.getComponent<Engine::EntityBox>(entity).entity;
+    Engine::EntityBox &playerInventoryEntity = entityManager.getComponent<Engine::EntityBox>(player);
+    Component::PlayerInventory &playerInventory =
+        entityManager.getComponent<Component::PlayerInventory>(playerInventoryEntity.entity);
     const Component::PlayerInventoryInfo &inventoryInfo = playerInventory.getPlayerInventoryInfo();
 
     Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("Explosion");
     playerInventory.setBomb(inventoryInfo.bomb + 1);
-    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius, player.entity);
+    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius, player);
     scene->localEntities.removeEntity(entity); // BOMB
 }

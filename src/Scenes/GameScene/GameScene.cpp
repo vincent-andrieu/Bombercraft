@@ -102,7 +102,6 @@ void GameScene::createCharacters()
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
     Engine::Entity entity;
-    Component::AIComponent AI;
 
     Component::PlayerConfig *config[MAX_PLAYERS] = {
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
@@ -112,8 +111,7 @@ void GameScene::createCharacters()
     for (size_t i = 0; i < 4; i++) {
         entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
-            AI = Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity);
-            AI.setRandomness(options.IARandomProb);
+            Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(options.IARandomProb, options.smoothMode);
         }
     }
 }
