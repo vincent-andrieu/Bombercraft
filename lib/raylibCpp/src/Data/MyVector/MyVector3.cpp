@@ -101,6 +101,11 @@ bool raylib::operator==(MyVector3 const &first, MyVector3 const &second)
     return a && b && c;
 }
 
+bool raylib::operator!=(MyVector3 const &first, MyVector3 const &second)
+{
+    return !(first == second);
+}
+
 std::ostream &raylib::operator<<(std::ostream &stream, MyVector3 const &vector)
 {
     stream << "a: " << vector.a << ", b: " << vector.b << ", c: " << vector.c;

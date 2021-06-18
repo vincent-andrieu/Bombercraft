@@ -32,7 +32,7 @@ namespace GUI
 
         static const TimerConfig getStandardConfig();
 
-        static void create(Engine::EntityPack &entityPack,
+        static Engine::Entity create(Engine::EntityPack &entityPack,
             raylib::MyVector2 position,
             TimerConfig const &config,
             std::size_t countdown,
@@ -40,7 +40,7 @@ namespace GUI
             std::string const &name = "",
             std::size_t refreshMsTime = DEFAULT_REFRESH_TIME);
 
-        static void create(Engine::EntityPack &entityPack,
+        static Engine::Entity create(Engine::EntityPack &entityPack,
             raylib::MyVector2 position,
             std::size_t countdown,
             CountDownTimeout handler,
