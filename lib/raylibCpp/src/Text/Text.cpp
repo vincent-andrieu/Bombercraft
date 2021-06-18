@@ -90,7 +90,7 @@ void raylib::Text::setFontSize(raylib::Text &text, const raylib::MyVector2 &size
         my_fontSize++;
         text.setFontSize(my_fontSize);
         my_textSize = text.getSize();
-    } while (my_textSize.a < size.a || my_textSize.b < size.b);
+    } while (my_textSize.a > 0 && my_textSize.a < size.a || my_textSize.b < size.b);
     do {
         my_fontSize--;
         text.setFontSize(my_fontSize);

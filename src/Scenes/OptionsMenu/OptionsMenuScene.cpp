@@ -80,8 +80,15 @@ void OptionsMenuScene::open()
         "video settings",
         bigButton,
         "Video Settings",
-        [](const Engine::Entity &) {
-            std::cout << "Video settings" << std::endl;
+        [](const Engine::Entity &entity) {
+            auto &component = CoreData::entityManager->getComponent<Component::Render2D>(entity);
+            raylib::Text *text = static_cast<raylib::Text *>(component.get("label").get());
+            const raylib::Texture *rectangle = static_cast<raylib::Texture *>(component.get("idle").get());
+
+            text->setText("Pranked !");
+            text->setPosition(rectangle->getPosition()
+                + ProportionUtilities::getProportionWin(
+                    rectangle->getSize(), raylib::MyVector2(50, 50), text->getSize(), raylib::MyVector2(50, 50)));
         },
         true);
     GUI::ButtonFactory::create(
