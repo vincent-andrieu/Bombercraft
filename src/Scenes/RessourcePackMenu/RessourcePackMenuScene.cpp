@@ -64,7 +64,7 @@ void RessourcePackMenuScene::open()
     const MyVector2 &window_size = CoreData::settings->getMyVector2("WIN_SIZE");
     const ProportionUtilities resizer(window_size);
     GUI::ButtonConfig menuButtons = GUI::ButtonFactory::getMediumButtonConfig();
-    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    const Engine::Entity optionEntity = core->globalEntities.getEntity("options");
 
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
