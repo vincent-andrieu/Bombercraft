@@ -214,7 +214,7 @@ static Component::eventScript focusHandler = [](const Engine::Entity keyEntity) 
     raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(keyEntity).get("rectangle").get());
 
-    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getRect())) {
+    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
         Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>(
             [keyEntity](Component::ClickFocusEvent &focusEvent) {
                 focusEvent.changeFocus(false);
