@@ -25,6 +25,9 @@ namespace Game
         GameScene(Engine::SystemManager &systemManager);
         ~GameScene() = default;
 
+        void cameraAnimation(const raylib::MyVector3 &toCameraPosition,
+            const raylib::MyVector3 &toCameraUp,
+            const raylib::MyVector3 &toCameraTarget);
         void open();
         static uint getNbrPlayers();
 
@@ -32,6 +35,8 @@ namespace Game
 
       private:
         void createCharacters();
+        void setCameraAnimation(Engine::Entity countdownEntity);
+        void unsetCameraAnimation(Engine::Entity countdownEntity);
     };
 } // namespace Game
 

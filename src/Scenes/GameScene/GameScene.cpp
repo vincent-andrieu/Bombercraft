@@ -5,11 +5,12 @@
 ** 03/06/2021 GameScene.cpp.cc
 */
 
+#include <unistd.h>
+
 #include "GameScene.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
-#include "Game/Factories/Bomb/BombFactory.hpp"
 #include "Game/Factories/Character/CharacterFactory.hpp"
 #include "Game/Factories/MouseWheel/MouseWheelFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
@@ -46,14 +47,18 @@ GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(syste
 
 void GameScene::open()
 {
+    const raylib::MyVector3 cameraPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
+    const raylib::MyVector3 cameraUp(CoreData::settings->getMyVector3("CAM_UP"));
+    const raylib::MyVector3 cameraTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
+    Engine::Entity countdownEntity;
 
     /// Chrono
     const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
-    GUI::CountdownFactory::create(this->localEntities,
+    countdownEntity = GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
         handlerGameTimeout);
@@ -62,8 +67,8 @@ void GameScene::open()
     const string &ressourcePackRoot = options.ressourcePack;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
     /// Camera
-    CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
-    CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
+    CoreData::moveCamera(cameraPosition, cameraTarget);
+    CoreData::camera->setUp(cameraUp);
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// CHARACTERS
     this->createCharacters();
@@ -85,6 +90,12 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
+
+    if (CoreData::settings->getInt("CAMERA_ANIMATION")) {
+        setCameraAnimation(countdownEntity);
+        cameraAnimation(cameraPosition, cameraUp, cameraTarget);
+        unsetCameraAnimation(countdownEntity);
+    }
 }
 
 void GameScene::createCharacters()
@@ -149,4 +160,56 @@ void GameScene::update()
     }
     audio.update();
     timer.update();
+}
+
+static void updateWindow()
+{
+    CoreData::window->clear();
+    CoreData::sceneManager->run();
+    CoreData::window->refresh();
+}
+
+void GameScene::cameraAnimation(
+    const raylib::MyVector3 &toCameraPosition, const raylib::MyVector3 &toCameraUp, const raylib::MyVector3 &toCameraTarget)
+{
+    raylib::MyVector3 my_distance(/*-10*/ 0, -75, -75);
+    auto my_cameraPosition(toCameraPosition - my_distance);
+    auto my_cameraTarget(toCameraTarget /* - my_distance*/);
+    auto my_cameraUp(toCameraUp /*- my_distance*/);
+
+    CoreData::moveCamera(my_cameraPosition, my_cameraTarget);
+    CoreData::camera->setUp(my_cameraUp);
+
+    //    sleep(3);
+    while (my_cameraPosition != toCameraPosition) {
+        usleep(35000);
+        if (my_cameraPosition.a < toCameraPosition.a)
+            my_cameraPosition.a++;
+        else if (my_cameraPosition.a > toCameraPosition.a)
+            my_cameraPosition.a--;
+        if (my_cameraPosition.b < toCameraPosition.b)
+            my_cameraPosition.b++;
+        else if (my_cameraPosition.b > toCameraPosition.b)
+            my_cameraPosition.b--;
+        if (my_cameraPosition.c < toCameraPosition.c)
+            my_cameraPosition.c++;
+        else if (my_cameraPosition.c > toCameraPosition.c)
+            my_cameraPosition.c--;
+
+        CoreData::moveCamera(my_cameraPosition, my_cameraTarget);
+        CoreData::camera->setUp(my_cameraUp);
+        updateWindow();
+    }
+}
+
+void GameScene::setCameraAnimation(const Engine::Entity countdownEntity)
+{
+    auto &my_timer(_entityManager.getComponent<Engine::Timer>(countdownEntity));
+    my_timer.pause();
+}
+
+void GameScene::unsetCameraAnimation(const Engine::Entity countdownEntity)
+{
+    auto &my_timer(_entityManager.getComponent<Engine::Timer>(countdownEntity));
+    my_timer.resume();
 }
