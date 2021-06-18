@@ -62,9 +62,13 @@ static void handlerHitboxCharacterDeath(
     }
 }
 
-static void rewardXP(const Engine::Entity player, const std::string &xpType)
+static void rewardXP(const Engine::Entity character, const std::string &xpType)
 {
-    auto &playerConfig(Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(player));
+    const Engine::EntityBox &inventoryEntityBox(CoreData::entityManager->getComponent<Engine::EntityBox>(character));
+    const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    const Component::PlayerID &id = inventory.getPlayerId();
+    Component::PlayerConfig &playerConfig(
+        Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id));
     const auto nbXP((CoreData::settings->isSetInFile("XP_PER_" + xpType) ? CoreData::settings->getInt("XP_PER_" + xpType) : 1));
 
     playerConfig.setXP(playerConfig.getXP() + nbXP);
@@ -77,9 +81,9 @@ static void killRewardXP(const Engine::Entity blast)
     rewardXP(player, "KILL");
 }
 
-static void bonusRewardXP(const Engine::Entity player)
+static void bonusRewardXP(const Engine::Entity character)
 {
-    rewardXP(player, "BONUS");
+    rewardXP(character, "BONUS");
 }
 
 static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
@@ -129,8 +133,14 @@ static void handlerKeyEvent(const Engine::Entity character)
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
-    std::cout << "player " << character << " has "
-              << Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(character).getXP() << "XP" << std::endl;
+    // TODO remove after debug
+    const Component::PlayerID &id = inventory.getPlayerId();
+    Component::PlayerConfig &playerConfig(
+        Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id));
+
+    std::cout << "player " << character << " has " << playerConfig.getXP() << "XP" << std::endl;
+    // TODO end of remove after debug
+
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
