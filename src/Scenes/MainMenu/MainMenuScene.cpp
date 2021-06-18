@@ -58,7 +58,6 @@ void MainMenuScene::open()
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
             const raylib::MyVector2 pictureRect(pictureBg->getRect());
             const raylib::MyVector2 pictureSize(pictureBg->getSize());
-            const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
             auto other(scene.getCurrentScene()->localEntities.getEntity("background2"));
             raylib::Texture *otherPictureBg = static_cast<raylib::Texture *>(
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(other).get("image").get());
@@ -67,7 +66,6 @@ void MainMenuScene::open()
             if (pictureRect.a <= pictureSize.a * -1) {
                 pictureBg->setRect(raylib::MyVector2(otherPictureBg->getRect().a + pictureSize.a - panoSpeed, pictureRect.b));
             } else {
-                std::cout << pictureRect << std::endl;
                 pictureBg->setRect(raylib::MyVector2((float) (pictureRect.a - panoSpeed), pictureRect.b));
             }
         });
@@ -88,7 +86,6 @@ void MainMenuScene::open()
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
             const raylib::MyVector2 pictureRect(pictureBg->getRect());
             const raylib::MyVector2 pictureSize(pictureBg->getSize());
-            const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
 
             auto other(scene.getCurrentScene()->localEntities.getEntity("background"));
             raylib::Texture *otherPictureBg = static_cast<raylib::Texture *>(
@@ -98,7 +95,6 @@ void MainMenuScene::open()
             if (pictureRect.a <= pictureSize.a * -1) {
                 pictureBg->setRect(raylib::MyVector2(otherPictureBg->getRect().a + pictureSize.a, pictureRect.b));
             } else {
-                std::cout << pictureRect << std::endl;
                 pictureBg->setRect(raylib::MyVector2((float) (pictureRect.a - panoSpeed), pictureRect.b));
             }
         });
