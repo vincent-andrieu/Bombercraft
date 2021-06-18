@@ -5,7 +5,7 @@
 ** 03/06/2021 GameScene.cpp.cc
 */
 
-#include <unistd.h>
+#include <thread>
 
 #include "GameScene.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
@@ -54,14 +54,7 @@ void GameScene::open()
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
-    Engine::Entity countdownEntity;
 
-    /// Chrono
-    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
-    countdownEntity = GUI::CountdownFactory::create(this->localEntities,
-        proportion.getProportion({50, 0}, {countdownSize.a, 0}),
-        options.gameTimerDuration,
-        handlerGameTimeout);
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
@@ -70,6 +63,16 @@ void GameScene::open()
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
+
+    if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
+        cameraAnimation(cameraPosition, cameraUp, cameraTarget);
+    }
+    /// Chrono
+    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
+    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
+        proportion.getProportion({50, 0}, {countdownSize.a, 0}),
+        options.gameTimerDuration,
+        handlerGameTimeout);
     /// CHARACTERS
     this->createCharacters();
     /// MOUSE WHEEL FOV
@@ -90,12 +93,6 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
-
-    if (CoreData::settings->getInt("CAMERA_ANIMATION")) {
-        setCameraAnimation(countdownEntity);
-        cameraAnimation(cameraPosition, cameraUp, cameraTarget);
-        unsetCameraAnimation(countdownEntity);
-    }
 }
 
 void GameScene::createCharacters()
@@ -172,17 +169,14 @@ static void updateWindow()
 void GameScene::cameraAnimation(
     const raylib::MyVector3 &toCameraPosition, const raylib::MyVector3 &toCameraUp, const raylib::MyVector3 &toCameraTarget)
 {
-    raylib::MyVector3 my_distance(/*-10*/ 0, -75, -75);
+    raylib::MyVector3 my_distance(0, -75, -75);
     auto my_cameraPosition(toCameraPosition - my_distance);
-    auto my_cameraTarget(toCameraTarget /* - my_distance*/);
-    auto my_cameraUp(toCameraUp /*- my_distance*/);
 
-    CoreData::moveCamera(my_cameraPosition, my_cameraTarget);
-    CoreData::camera->setUp(my_cameraUp);
+    CoreData::moveCamera(my_cameraPosition, toCameraTarget);
+    CoreData::camera->setUp(toCameraUp);
 
-    //    sleep(3);
     while (my_cameraPosition != toCameraPosition) {
-        usleep(35000);
+        std::this_thread::sleep_for(std::chrono::microseconds(35000));
         if (my_cameraPosition.a < toCameraPosition.a)
             my_cameraPosition.a++;
         else if (my_cameraPosition.a > toCameraPosition.a)
@@ -196,20 +190,7 @@ void GameScene::cameraAnimation(
         else if (my_cameraPosition.c > toCameraPosition.c)
             my_cameraPosition.c--;
 
-        CoreData::moveCamera(my_cameraPosition, my_cameraTarget);
-        CoreData::camera->setUp(my_cameraUp);
+        CoreData::moveCamera(my_cameraPosition, toCameraTarget);
         updateWindow();
     }
-}
-
-void GameScene::setCameraAnimation(const Engine::Entity countdownEntity)
-{
-    auto &my_timer(_entityManager.getComponent<Engine::Timer>(countdownEntity));
-    my_timer.pause();
-}
-
-void GameScene::unsetCameraAnimation(const Engine::Entity countdownEntity)
-{
-    auto &my_timer(_entityManager.getComponent<Engine::Timer>(countdownEntity));
-    my_timer.resume();
 }

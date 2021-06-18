@@ -35,8 +35,6 @@ namespace Game
 
       private:
         void createCharacters();
-        void setCameraAnimation(Engine::Entity countdownEntity);
-        void unsetCameraAnimation(Engine::Entity countdownEntity);
     };
 } // namespace Game
 
