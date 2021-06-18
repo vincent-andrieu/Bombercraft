@@ -157,13 +157,13 @@ void IABomberman::movementPrediction(
     size_t y = pos.second;
 
     if (this->isRandomMove()) {
-        //std::cout << "random move" << std::endl;
+        std::cout << "random move" << std::endl;
         this->randomMove(pos, env, list);
     } else if (this->isSecurePlace(env[y][x])) {
-        //std::cout << "offensive move" << std::endl;
+        std::cout << "offensive move" << std::endl;
         this->offensiveMove(pos, env, list);
     } else {
-        //std::cout << "findsecureplace move" << std::endl;
+        std::cout << "findsecureplace move" << std::endl;
         if (!this->findSecurePlace(pos, env, list))
             std::cerr << "RIP mon ruf" << std::endl;
     }
