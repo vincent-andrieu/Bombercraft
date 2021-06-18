@@ -15,18 +15,18 @@ namespace Component
 {
     class OptionComponent : public Engine::Component<OptionComponent> {
       public:
-        explicit OptionComponent(float volume, const string &ressourcePack, float fov);
+        explicit OptionComponent(float volumeMusic, float volumeEffects, const string &ressourcePack, float fov);
         virtual ~OptionComponent() = default;
 
-        float volume{50};
+        float volumeEffects{1};
+        float volumeMusic{1};
         string ressourcePack;
         float fov{Game::CoreData::camera->getFovy()};
 
         size_t nbPlayers{1};
         size_t gameTimerDuration{120}; // 0 for unlimited time
-        size_t mapSeed{42};            // Map factory
-        size_t IASeed{42};
-        size_t IARandomProb{42}; // difficulty / 100 (100 == minimum)
+        uint seed{42};                 // Map factory
+        size_t IARandomProb{42};       // difficulty / 100 (100 == minimum)
     };
 } // namespace Component
 

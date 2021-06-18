@@ -58,11 +58,12 @@ void GameScene::open()
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
-    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
+    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap", options.seed);
     /// Camera
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
+    size_t randValue = std::rand() % 13;
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
 
     if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
         cameraAnimation(cameraPosition, cameraUp, cameraTarget);
@@ -109,7 +110,7 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
     for (size_t i = 0; i < 4; i++) {
-        entity = CharacterFactory::create(this->localEntities, *config[i], map, (i >= options.nbPlayers));
+        entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
             AI = Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity);
             AI.setRandomness(options.IARandomProb);

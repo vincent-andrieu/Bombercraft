@@ -19,6 +19,36 @@
 
 namespace Engine
 {
+    #ifndef DEBUG
+        #define DEBUG 0
+    #endif
+
+    const std::vector<std::string> COMPONENTS = {
+        "MATRIX2D",
+        "RENDER 2D",
+        "RENDER 3D",
+        "CLICK EVENT",
+        "CLICK FOCUS EVENT",
+        "KEY EVENT",
+        "MOUSE MOVE EVENT",
+        "HITBOX",
+        "POSITION",
+        "ENTITY BOX",
+        "KEY BOX",
+        "STRING CHOICE",
+        "PLAYER CONFIG",
+        "VELOCITY",
+        "TIMER",
+        "SCRIPT",
+        "CHRONO",
+        "TEXT INPUT CONFIG",
+        "SOUND",
+        "OPTION COMPONENT",
+        "PLAYER INVENTORY",
+        "MODEL LIST",
+        "AI COMPONENT"
+    };
+
     template <typename T> class ComponentTypeRegister : public IComponentTypeRegister {
       public:
         ComponentTypeRegister(std::vector<Signature> &entityToBitset);
@@ -76,6 +106,9 @@ namespace Engine
 
     template <typename T> template <typename... Args> void ComponentTypeRegister<T>::add(Entity entity, Args &&...args)
     {
+        if (DEBUG) {
+            std::cerr << "ADD COMPONENT " << COMPONENTS[T::type] << " -> " << entity << "\n";
+        }
         auto index = static_cast<Index>(_components.size());
 
         _components.emplace_back(std::forward<Args>(args)...);
@@ -86,6 +119,9 @@ namespace Engine
 
     template <typename T> void ComponentTypeRegister<T>::remove(Entity entity)
     {
+        if (DEBUG) {
+            std::cerr << "REMOVE COMPONENT " << COMPONENTS[T::type] << " -> " << entity << "\n";
+        }
         _entitySignatures[entity][T::type] = false;
         auto index = _ownersIndex[entity];
         // update _components

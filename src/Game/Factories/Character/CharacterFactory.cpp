@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 14/06/2021 CharacterFactory.cpp.cc
+** 14/06/2021 CharacterFactory.cpp
 */
 
 #include "CharacterFactory.hpp"
@@ -21,31 +21,36 @@ extern std::unique_ptr<Core> core;
 extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
 static void handlerHitboxCharacterDeath(
-    const Engine::Entity &character, const Component::PlayerID id, Component::ModelList &render)
+    const Engine::Entity character, const Component::PlayerID id, Component::ModelList &render)
 {
     if (CoreData::entityManager->hasComponent<Component::KeyEvent>(character)) {
         CoreData::entityManager->removeComponent<Component::KeyEvent>(character);
     } else if (CoreData::entityManager->hasComponent<Component::AIComponent>(character)) {
         CoreData::entityManager->removeComponent<Component::AIComponent>(character);
     }
+    if (CoreData::entityManager->hasComponent<Engine::Velocity>(character)) {
+        CoreData::entityManager->removeComponent<Engine::Velocity>(character);
+    }
     CoreData::entityManager->removeComponent<Component::Hitbox>(character);
     auto &audioSys = CoreData::systemManager->getSystem<System::AudioSystem>();
     audioSys.play("Death", core->globalEntities);
+    render.select("death"); /// Play animation => Death
     /// Set Timer => remove entity
     if (CoreData::entityManager->hasComponent<Engine::Timer>(character)) {
         CoreData::entityManager->removeComponent<Engine::Timer>(character);
     }
-    CoreData::entityManager->addComponent<Engine::Timer>(character,
-        CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"),
-        *CoreData::entityManager,
-        *CoreData::sceneManager,
-        [id](Engine::EntityManager &, Engine::SceneManager &sm, const Engine::Entity) {
-            auto scene = sm.getCurrentScene();
-            auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
-                return pair.first == id;
-            });
-            if (it_name != PLAYER_ID_TO_NAME.end()) {
-                scene->localEntities.removeEntity(it_name->second); // REMOVE PLAYER
+    auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
+      return pair.first == id;
+    });
+    if (it_name != PLAYER_ID_TO_NAME.end()) {
+        std::string playerName = it_name->second;
+        CoreData::entityManager->addComponent<Engine::Timer>(character,
+            CoreData::settings->getFloat("CHARACTER_DEATH_DURATION"),
+            *CoreData::entityManager,
+            *CoreData::sceneManager,
+            [playerName](Engine::EntityManager &, Engine::SceneManager &sm, const Engine::Entity) {
+                auto scene = sm.getCurrentScene();
+                scene->localEntities.removeEntity(playerName); // REMOVE PLAYER
 
                 // End game detection
                 if (GameScene::getNbrPlayers() <= 1) {
@@ -53,12 +58,11 @@ static void handlerHitboxCharacterDeath(
                     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
                     CoreData::sceneManager->setScene<EndGameScene>();
                 }
-            }
-        });
-    render.select("death"); /// Play animation => Death
+            });
+    }
 }
 
-static void handlerHitbox(const Engine::Entity &character, const Engine::Entity &other)
+static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
 {
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
@@ -137,7 +141,7 @@ Engine::Entity Game::CharacterFactory::create(
     Engine::Entity entity;
     raylib::MyVector3 characterPos;
     Component::PlayerID id = config.getPlayerId();
-    auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
+    auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](const auto &pair) {
         return pair.first == id;
     });
 
@@ -154,7 +158,7 @@ Engine::Entity Game::CharacterFactory::create(
         inventoryPosition,
         {windowSize.a / 15, windowSize.a / 15},
         texturesPath,
-        GUI::LabelFactory::getStandardLabelConfig(20),
+        GUI::LabelFactory::getStandardLabelConfig((size_t) (windowSize.a / 64)),
         id,
         config);
     CoreData::entityManager->addComponent<Engine::EntityBox>(entity, inventoryEntity);
@@ -249,8 +253,10 @@ void CharacterFactory::handlerAITimer(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
-    auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
+    Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+
+    auto &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(entity);
+    auto relativPos = Component::Matrix2D::getMapIndex(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     std::vector<std::string> entityList = {PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
@@ -269,12 +275,22 @@ void CharacterFactory::handlerAITimer(
     }
     (void) entityManager;
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
-    std::pair<double, double> velocityIA = ai.getVelocity();
-    velocity.x = (float) velocityIA.first;
-    velocity.y = (float) velocityIA.second;
-
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
+        render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
+    }
+    ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
+    std::pair<double, double> velocityIA = ai.getVelocity();
+    
+    if (Game::CoreData::settings->getInt("AI_VELOCITY_MODE") == 1) {
+        velocity.x = (float) velocityIA.first;
+        velocity.y = (float) velocityIA.second;
+    } else {
+        const raylib::MyVector3 &position =
+        render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
+        render.setPosition(position);
+        hitbox.objectBox->setOrigin(
+            raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));
     }
 }
