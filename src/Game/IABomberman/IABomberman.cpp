@@ -402,27 +402,28 @@ void IABomberman::offensiveMove(
     const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
     std::queue<IA::Movement> path;
-    std::pair<int, int> tmp = {this->_defaultValue, this->_defaultValue};
     std::vector<std::vector<int>> cost;
 
     if (this->_enemyPos.size() > 3)
         throw IAExceptions("Invalide enemy list", true);
     cost = this->findEnemy(pos, env);
     for (size_t i = 0; i < this->_enemyPos.size(); i++) {
-        if (tmp.first == this->_defaultValue || tmp.second > cost[this->_enemyPos[i].second][this->_enemyPos[i].first]) {
-            tmp.first = (int) i;
-            tmp.second = cost[this->_enemyPos[i].second][this->_enemyPos[i].first];
+        if (cost[this->_enemyPos[i].second][this->_enemyPos[i].first] != this->_defaultValue) {
+            this->clearQueue(list);
+            this->loadPath(cost, this->_enemyPos[i], path);
+            if (path.size())
+                list.push(path.front());
+            else
+                this->randomMove(pos, env, list);
+            this->clearQueue(path);
+            return;
         }
     }
     if (!this->_enemyPos.size()) {
         this->clearQueue(list);
         list.push(IA::Movement::IA_MOVE_NONE);
-    } else {
-        this->loadPath(cost, this->_enemyPos[tmp.first], path);
-        this->clearQueue(list);
-        this->randomMove(pos, env, list);
-        this->clearQueue(path);
     }
+    this->attackBusy(pos, env, list);
 }
 
 bool IABomberman::isRandomMove() const
@@ -458,13 +459,13 @@ std::vector<std::vector<int>> IABomberman::findEnemy(
             for (size_t x = 0; x < cpy[y].size(); x++) {
                 if (cpy[y][x] == to_find) {
                     stat = true;
-                    if (x + 1 < cpy[y].size() && cpy[y][x + 1] == this->_defaultValue && env[y][x + 1] != TileType::TILE_HARD)
+                    if (x + 1 < cpy[y].size() && cpy[y][x + 1] == this->_defaultValue && this->isRunnable(env[y][x + 1]))
                         cpy[y][x + 1] = to_find + 1;
-                    if (y + 1 < cpy.size() && cpy[y + 1][x] == this->_defaultValue && env[y + 1][x] != TileType::TILE_HARD)
+                    if (y + 1 < cpy.size() && cpy[y + 1][x] == this->_defaultValue && this->isRunnable(env[y + 1][x]))
                         cpy[y + 1][x] = to_find + 1;
-                    if (x != 0 && cpy[y][x - 1] == this->_defaultValue && env[y][x - 1] != TileType::TILE_HARD)
+                    if (x != 0 && cpy[y][x - 1] == this->_defaultValue && this->isRunnable(env[y][x - 1]))
                         cpy[y][x - 1] = to_find + 1;
-                    if (y != 0 && cpy[y - 1][x] == this->_defaultValue && env[y - 1][x] != TileType::TILE_HARD)
+                    if (y != 0 && cpy[y - 1][x] == this->_defaultValue && this->isRunnable(env[y - 1][x]))
                         cpy[y - 1][x] = to_find + 1;
                 }
             }
@@ -504,10 +505,33 @@ bool IABomberman::isCorrectBomb(const std::pair<size_t, size_t> &pos) const
         return true;
     if (pos.second && this->_env[pos.second - 1][pos.first] == TileType::TILE_SOFT)
         return true;
+
+    if (pos.first + 1 < this->_env[pos.second].size() && this->isEnemy({pos.second, pos.first + 1}))
+        return true;
+    if (pos.second + 1 < this->_env.size() && this->isEnemy({pos.second + 1, pos.first}))
+        return true;
+    if (pos.first && this->isEnemy({pos.second, pos.first - 1}))
+        return true;
+    if (pos.second && this->isEnemy({pos.second - 1, pos.first}))
+        return true;
     return false;
 }
 
 raylib::MyVector3 IABomberman::getOrientation() const
 {
     return this->_orentation;
+}
+
+bool IABomberman::isEnemy(const std::pair<size_t, size_t> &pos) const
+{
+    auto it = std::find(this->_enemyPos.begin(), this->_enemyPos.end(), pos);
+
+    if (it == this->_enemyPos.end())
+        return false;
+    return true;
+}
+
+void IABomberman::attackBusy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
+{
+    this->randomMove(pos, env, list);
 }
