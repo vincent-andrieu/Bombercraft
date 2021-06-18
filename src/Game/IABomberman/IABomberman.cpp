@@ -307,8 +307,10 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x + 1 + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
-            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION || env[y][tmp] == TileType::TILE_DANGER)
-                env[y][tmp] = TileType::TILE_DANGER;
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION || env[y][tmp] == TileType::TILE_DANGER) {
+                if (env[y][tmp] != TileType::TILE_EXPLOSION)
+                    env[y][tmp] = TileType::TILE_DANGER;
+            }
             else
                 break;
         }
@@ -316,8 +318,10 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (y + 1 + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
-            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION || env[tmp][x] == TileType::TILE_DANGER)
-                env[tmp][x] = TileType::TILE_DANGER;
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION || env[tmp][x] == TileType::TILE_DANGER) {
+                if (env[tmp][x] != TileType::TILE_EXPLOSION)
+                    env[tmp][x] = TileType::TILE_DANGER;
+            }
             else
                 break;
         }
@@ -326,8 +330,10 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x - 1 + (i * move));
         if (tmp > 0 && x + (i * move) < env[y].size()) {
-            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION || env[y][tmp] == TileType::TILE_DANGER)
-                env[y][tmp] = TileType::TILE_DANGER;
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION || env[y][tmp] == TileType::TILE_DANGER) {
+                if (env[y][tmp] != TileType::TILE_EXPLOSION)
+                    env[y][tmp] = TileType::TILE_DANGER;
+            }
             else
                 break;
         }
@@ -335,8 +341,10 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (y - 1 + (i * move));
         if (tmp > 0 && y + (i * move) < env.size()) {
-            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION || env[tmp][x] == TileType::TILE_DANGER)
-                env[tmp][x] = TileType::TILE_DANGER;
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION || env[tmp][x] == TileType::TILE_DANGER) {
+                if (env[tmp][x] != TileType::TILE_EXPLOSION)
+                    env[tmp][x] = TileType::TILE_DANGER;
+            }
             else
                 break;
         }
