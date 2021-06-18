@@ -219,16 +219,17 @@ void KeyBindingMenuScene::_refreshKeys()
 
 void KeyBindingMenuScene::_refreshKeys(const string &name, const raylib::KeyBoard &defaultKey)
 {
-    raylib::Text *text = dynamic_cast<raylib::Text *>(
-        Game::CoreData::entityManager->getComponent<Component::Render2D>(this->localEntities.getEntity(name)).get("text").get());
-
-    text->setText(GUI::KeyInputFactory::keyToStr.at(defaultKey));
+    this->_refreshKeys(this->localEntities.getEntity(name), defaultKey);
 }
 
 void KeyBindingMenuScene::_refreshKeys(const Engine::Entity &entity, const raylib::KeyBoard &defaultKey)
 {
-    raylib::Text *text =
-        dynamic_cast<raylib::Text *>(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("text").get());
+    auto &component = Game::CoreData::entityManager->getComponent<Component::Render2D>(entity);
+    raylib::Text *text = static_cast<raylib::Text *>(component.get("text").get());
+    raylib::Texture *rectangle = static_cast<raylib::Texture *>(component.get("rectangle").get());
 
     text->setText(GUI::KeyInputFactory::keyToStr.at(defaultKey));
+    text->setPosition(rectangle->getPosition()
+        + ProportionUtilities::getProportionWin(
+            rectangle->getSize(), raylib::MyVector2(50, 50), text->getSize(), raylib::MyVector2(50, 50)));
 }
