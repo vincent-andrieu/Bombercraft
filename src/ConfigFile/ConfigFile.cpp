@@ -149,7 +149,8 @@ void ConfigFile::commentManagingLine(std::string line)
         line = line.substr(0, tofind);
     if (!line.empty() && tofind) {
         this->cleanLine(line);
-        this->_fileContent.push_back(line);
+        if (!line.empty())
+            this->_fileContent.push_back(line);
     }
 }
 
@@ -181,6 +182,7 @@ void ConfigFile::objInline(char start, char end)
             cnt = 1;
             do {
                 next = it + 1;
+                //std:: cout << "|" << *next << "|" << std::endl;
                 if (next == this->_fileContent.end())
                     throw ParserExceptions("The file incorrect: not find }");
                 if (next->back() == start)
