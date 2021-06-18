@@ -27,6 +27,7 @@ namespace Component
         size_t gameTimerDuration{120}; // 0 for unlimited time
         uint seed{42};                 // Map factory
         size_t IARandomProb{42};       // difficulty / 100 (100 == minimum)
+        bool smoothMode{false};
     };
 } // namespace Component
 

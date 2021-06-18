@@ -24,13 +24,15 @@ namespace Component
             void setEnv(const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy);
             raylib::MyVector3 getOrientation() const;
 
-            void setRandomness(size_t randomness);
+            void setRandomness(size_t randomness, bool smoothMode);
+            bool getMoveType() const;
 
         private:
             static GameModule::MapType translateMatrix(const std::shared_ptr<DataMatrix> &map);
 
         private:
             std::shared_ptr<GameModule::IABomberman> _AI;
+            bool _smoothMode;
     };
 }
 

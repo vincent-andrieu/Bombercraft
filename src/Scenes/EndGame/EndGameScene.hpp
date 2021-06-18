@@ -12,6 +12,7 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
+#include "Scenes/GameScene/GameScene.hpp"
 #include "Game/EventRequirement/EventRequirement.hpp"
 #include "Game/CoreData/CoreData.hpp"
 
@@ -27,7 +28,7 @@ namespace Game
         void open();
 
         void update();
-      
+
       private:
         static size_t getNbPlayer();
     };
