@@ -32,7 +32,8 @@ void KeyBindingMenuScene::open()
         CoreData::settings->getMyVector2("WIN_SIZE"),
         CoreData::settings->getString("STANDARD_BACKGROUND"),
         false);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(45, 2), "Controls", this->_defaultLabelConfig);
+    GUI::LabelFactory::createCentered(
+        this->localEntities, this->_resizer(50, 4), "Controls", GUI::LabelFactory::getStandardLabelConfig());
 
     // Change player
     GUI::ButtonFactory::create(this->localEntities,
@@ -85,11 +86,41 @@ void KeyBindingMenuScene::update()
 
 void KeyBindingMenuScene::_createKeysLabel()
 {
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 29.5), "Move up", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 39.5), "Move down", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 49.5), "Move left", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 59.5), "Move right", this->_defaultLabelConfig);
-    GUI::LabelFactory::create(this->localEntities, this->_resizer(23, 69.5), "Place bomb", this->_defaultLabelConfig);
+    GUI::LabelFactory::create(this->localEntities,
+        this->_resizer(20, 27),
+        this->_buttonDefaultConfig.size - 10,
+        "Move up",
+        this->_defaultLabelConfig,
+        "",
+        true);
+    GUI::LabelFactory::create(this->localEntities,
+        this->_resizer(20, 37),
+        this->_buttonDefaultConfig.size - 10,
+        "Move down",
+        this->_defaultLabelConfig,
+        "",
+        true);
+    GUI::LabelFactory::create(this->localEntities,
+        this->_resizer(20, 47),
+        this->_buttonDefaultConfig.size - 10,
+        "Move left",
+        this->_defaultLabelConfig,
+        "",
+        true);
+    GUI::LabelFactory::create(this->localEntities,
+        this->_resizer(20, 57),
+        this->_buttonDefaultConfig.size - 10,
+        "Move right",
+        this->_defaultLabelConfig,
+        "",
+        true);
+    GUI::LabelFactory::create(this->localEntities,
+        this->_resizer(20, 67),
+        this->_buttonDefaultConfig.size - 10,
+        "Place bomb",
+        this->_defaultLabelConfig,
+        "",
+        true);
 }
 
 void KeyBindingMenuScene::_createResetKeys()
@@ -129,45 +160,47 @@ void KeyBindingMenuScene::_createResetKeys()
 void KeyBindingMenuScene::_createResetKey(const float &y, const string &name, const Component::eventScript &eventHandler)
 {
     GUI::ButtonFactory::create(
-        this->localEntities, this->_resizer(63, y), name, this->_buttonDefaultConfig, "Reset", eventHandler);
+        this->localEntities, this->_resizer(65, y), name, this->_buttonDefaultConfig, "Reset", eventHandler);
 }
 
 void KeyBindingMenuScene::_createKeysInput()
 {
     const auto &playerKeyBindings = this->_selectedPlayer->getPlayerKeyBindings();
+    const GUI::KeyInputConfig keyInputDefaultConfig =
+        GUI::KeyInputFactory::getStandardConfig(GUI::ButtonFactory::getStandardButtonConfig(this->_resizer(20, 8)).size);
 
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(43, 29), "keyInputMoveUp", playerKeyBindings.moveUp},
+        {this->_resizer(40, 27), "keyInputMoveUp", playerKeyBindings.moveUp},
         this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
+        keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveUp(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(43, 39), "keyInputMoveDown", playerKeyBindings.moveDown},
+        {this->_resizer(40, 37), "keyInputMoveDown", playerKeyBindings.moveDown},
         this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
+        keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveDown(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(43, 49), "keyInputMoveLeft", playerKeyBindings.moveLeft},
+        {this->_resizer(40, 47), "keyInputMoveLeft", playerKeyBindings.moveLeft},
         this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
+        keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveLeft(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(43, 59), "keyInputMoveRight", playerKeyBindings.moveRight},
+        {this->_resizer(40, 57), "keyInputMoveRight", playerKeyBindings.moveRight},
         this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
+        keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyMoveRight(key.first);
         });
     GUI::KeyInputFactory::create(this->localEntities,
-        {this->_resizer(43, 69), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
+        {this->_resizer(40, 67), "keyInputPlaceBomb", playerKeyBindings.placeBomb},
         this->_defaultLabelConfig,
-        this->_keyInputDefaultConfig,
+        keyInputDefaultConfig,
         [this](UNUSED const Engine::Entity &entity, const std::pair<const raylib::KeyBoard, string> &key) {
             this->_selectedPlayer->setKeyPlaceBomb(key.first);
         });
