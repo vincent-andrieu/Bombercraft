@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 10/06/2021 AudioFactory.cpp.cc
+** 10/06/2021 AudioFactory.cpp
 */
 
 #include "Components/Sound/Sound.hpp"
@@ -14,8 +14,9 @@ using namespace Game;
 
 const AudioConfig AudioFactory::getDefaultConfig()
 {
-    return AudioConfig{
-        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"), CoreData::settings->getFloat("STANDARD_SOUND_PITCH")};
+    return AudioConfig{CoreData::settings->getFloat("STANDARD_SOUND_VOLUME_EFFECTS"),
+        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME_MUSIC"),
+        CoreData::settings->getFloat("STANDARD_SOUND_PITCH")};
 }
 
 void AudioFactory::create(Engine::EntityPack &entityPack,
@@ -25,7 +26,7 @@ void AudioFactory::create(Engine::EntityPack &entityPack,
     std::string const &name)
 {
     Engine::Entity entity;
-    bool isMusic = (type == AudioType::MUSIC);
+    const bool isMusic = (type == AudioType::MUSIC);
 
     if (name.empty()) {
         throw std::invalid_argument("AudioFactory::create Invalid entity name");
@@ -34,10 +35,10 @@ void AudioFactory::create(Engine::EntityPack &entityPack,
     }
     if (isMusic) {
         CoreData::entityManager->addComponent<Component::Sound>(
-        entity, std::make_shared<raylib::Music>(filePath, config.volume, config.pitch), isMusic);
+            entity, std::make_shared<raylib::Music>(filePath, config.volumeMusic, config.pitch), isMusic);
     } else {
         CoreData::entityManager->addComponent<Component::Sound>(
-        entity, std::make_shared<raylib::Sound>(filePath, config.volume, config.pitch), isMusic);
+            entity, std::make_shared<raylib::Sound>(filePath, config.volumeEffects, config.pitch), isMusic);
     }
 }
 
