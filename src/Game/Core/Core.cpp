@@ -121,7 +121,7 @@ Core::Core()
     CoreData::entityManager->addComponent<Component::OptionComponent>(options,
         CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"),
         CoreData::settings->getString("STANDARD_RESSOURCE_PACK"),
-        (size_t) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+        CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
     this->createSystems();
     this->createScenes();
     /// CHARACTERS
@@ -137,7 +137,7 @@ void Core::loop()
     if (!CoreData::settings->getInt("SKIP_LOADING")) {
         CoreData::sceneManager->setScene<LoadingScreenScene>();
         while (!this->isEndPreload()) {
-            if (CoreData::window->isOpen()) {
+            if (!CoreData::window->isOpen()) {
                 return;
             }
             CoreData::window->clear();

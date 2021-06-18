@@ -9,6 +9,7 @@
 #define IABOMBERMAN_HPP
 
 #include <iostream>
+#include <ctime>
 #include "IACore.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "../../ConfigFile/IConfigFile.hpp"
@@ -54,7 +55,6 @@ namespace GameModule
         void offensiveMove(
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
         bool isRandomMove() const;
-
 
         // TOOLS
         bool isStuck() const;

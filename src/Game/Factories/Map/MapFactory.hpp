@@ -28,7 +28,7 @@ namespace GUI
             unsigned int seed = 0);
 
       private:
-        static GameModule::MapType getProceduralMap(unsigned int seed, std::pair<size_t, size_t> &sizeDest);
+        static GameModule::MapType getProceduralMap(std::pair<size_t, size_t> &sizeDest);
         static GUI::BlockFactory::BlockType blockTypeSinceTile(GameModule::TileType tile);
     };
 } // namespace GUI

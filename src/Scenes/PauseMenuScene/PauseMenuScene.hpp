@@ -11,6 +11,8 @@
 #include "AbstractScene/AbstractScene.hpp"
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Game/CoreData/CoreData.hpp"
+#include "Components/ModelList/ModelList.hpp"
+#include "Components/PlayerConfig/PlayerConfig.hpp"
 
 namespace Game
 {

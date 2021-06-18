@@ -117,15 +117,20 @@ void raylib::Model::setTexture(const std::string &texturePath)
     char **filenames = nullptr;
     int count = 0;
     std::string workingDirectory = GetWorkingDirectory();
+    std::vector<std::string> vectorOfFilenames = {};
 
     _textures.clear();
     _texturePath = texturePath;
     if (texturePath.compare("") != 0) {
         if (DirectoryExists(texturePath.data())) {
-            filenames = GetDirectoryFiles(_path.data(), &count);
-            ChangeDirectory(_path.data());
+            filenames = GetDirectoryFiles(_texturePath.data(), &count);
+            ChangeDirectory(_texturePath.data());
+            for (size_t i = 0; i < (size_t) count; i++)
+                vectorOfFilenames.push_back(filenames[i]);
+            std::sort(vectorOfFilenames.begin(), vectorOfFilenames.end());
             for (size_t i = 0; i < (size_t) count; i++) {
-                _textures.push_back(raylib::Texture::_loaderManager->load(filenames[i]));
+                if (!DirectoryExists(vectorOfFilenames[i].data()))
+                    _textures.push_back(raylib::Texture::_loaderManager->load(vectorOfFilenames[i]));
             }
             ClearDirectoryFiles();
             ChangeDirectory(workingDirectory.data());

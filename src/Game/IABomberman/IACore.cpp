@@ -10,13 +10,12 @@
 using namespace IA;
 
 template <typename TileType, typename Action>
-IACore<TileType, Action>::IACore(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env, unsigned int seed)
-: _pos(pos), _prevPos(pos), _env(env), _isRunnable({0}), _seed(seed), _actLink({0}), _MovementFunc(nullptr)
+IACore<TileType, Action>::IACore(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
+    : _pos(pos), _prevPos(pos), _env(env), _isRunnable({0}), _actLink({0}), _MovementFunc(nullptr)
 {
 }
 
-template <typename TileType, typename Action>
-IACore<TileType, Action>::~IACore()
+template <typename TileType, typename Action> IACore<TileType, Action>::~IACore()
 {
     this->_env.clear();
     this->_actLink.clear();
@@ -25,13 +24,11 @@ IACore<TileType, Action>::~IACore()
 
 #include <iostream>
 
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::setIAEnv(std::vector<std::vector<TileType>> env)
+template <typename TileType, typename Action> void IACore<TileType, Action>::setIAEnv(std::vector<std::vector<TileType>> env)
 {
     for (size_t y = 0; y < env.size(); y++) {
         for (size_t x = 0; x < env[y].size(); x++) {
-            switch (env[y][x])
-            {
+            switch (env[y][x]) {
                 case TileType::TILE_BONUS: std::cout << "?"; break;
                 case TileType::TILE_DEFAULT: std::cout << "!"; break;
                 case TileType::TILE_EMPTY: std::cout << "."; break;
@@ -47,27 +44,23 @@ void IACore<TileType, Action>::setIAEnv(std::vector<std::vector<TileType>> env)
     this->_env = env;
 }
 
-template <typename TileType, typename Action>
-std::vector<std::vector<TileType>> IACore<TileType, Action>::getIAEnv() const
+template <typename TileType, typename Action> std::vector<std::vector<TileType>> IACore<TileType, Action>::getIAEnv() const
 {
     return this->_env;
 }
 
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::setIAPos(std::pair<size_t, size_t> pos)
+template <typename TileType, typename Action> void IACore<TileType, Action>::setIAPos(std::pair<size_t, size_t> pos)
 {
     std::cout << "x: " << pos.first << " y: " << pos.second << std::endl;
     this->_pos = pos;
 }
 
-template <typename TileType, typename Action>
-std::pair<size_t, size_t> IACore<TileType, Action>::getIAPos() const
+template <typename TileType, typename Action> std::pair<size_t, size_t> IACore<TileType, Action>::getIAPos() const
 {
     return this->_pos;
 }
 
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::setRunnableTile(TileType tile)
+template <typename TileType, typename Action> void IACore<TileType, Action>::setRunnableTile(TileType tile)
 {
     auto it = std::find(this->_isRunnable.begin(), this->_isRunnable.end(), tile);
 
@@ -78,8 +71,7 @@ void IACore<TileType, Action>::setRunnableTile(TileType tile)
     }
 }
 
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::unsetRunnableTile(TileType tile)
+template <typename TileType, typename Action> void IACore<TileType, Action>::unsetRunnableTile(TileType tile)
 {
     auto it = std::find(this->_isRunnable.begin(), this->_isRunnable.end(), tile);
 
@@ -90,8 +82,7 @@ void IACore<TileType, Action>::unsetRunnableTile(TileType tile)
     }
 }
 
-template <typename TileType, typename Action>
-Movement IACore<TileType, Action>::getIAMovement()
+template <typename TileType, typename Action> Movement IACore<TileType, Action>::getIAMovement()
 {
     Movement tmp;
 
@@ -111,8 +102,7 @@ Movement IACore<TileType, Action>::getIAMovement()
     return tmp;
 }
 
-template <typename TileType, typename Action>
-Action IACore<TileType, Action>::getIAAction() const
+template <typename TileType, typename Action> Action IACore<TileType, Action>::getIAAction() const
 {
     for (auto it : this->_actLink) {
         if (it.second(this->_env, this->_pos))
@@ -122,42 +112,31 @@ Action IACore<TileType, Action>::getIAAction() const
 }
 
 template <typename TileType, typename Action>
-void IACore<TileType, Action>::setIAAction(Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func)
+void IACore<TileType, Action>::setIAAction(
+    Action act, std::function<bool(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos)> func)
 {
     this->_actLink[act] = func;
 }
 
 template <typename TileType, typename Action>
-void IACore<TileType, Action>::setIAMovement(std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)> func)
+void IACore<TileType, Action>::setIAMovement(
+    std::function<void(std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list)>
+        func)
 {
     this->_MovementFunc = func;
 }
 
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::applyIAMovement(Movement move)
+template <typename TileType, typename Action> void IACore<TileType, Action>::applyIAMovement(Movement move)
 {
     this->_prevPos = this->_pos;
-    switch (move)
-    {
+    switch (move) {
         case Movement::IA_MOVE_UP: this->_pos.second--; break;
-        case Movement::IA_MOVE_NONE: ; break;
+        case Movement::IA_MOVE_NONE:; break;
         case Movement::IA_MOVE_DOWN: this->_pos.second++; break;
         case Movement::IA_MOVE_LEFT: this->_pos.first--; break;
         case Movement::IA_MOVE_RIGHT: this->_pos.first++; break;
         default: throw IAExceptions("Invalide Move", false); break;
     }
-}
-
-template <typename TileType, typename Action>
-unsigned int IACore<TileType, Action>::getSeed() const
-{
-    return this->_seed;
-}
-
-template <typename TileType, typename Action>
-void IACore<TileType, Action>::setSeed(unsigned int seed)
-{
-    this->_seed = seed;
 }
 
 template <typename TileType, typename Action>

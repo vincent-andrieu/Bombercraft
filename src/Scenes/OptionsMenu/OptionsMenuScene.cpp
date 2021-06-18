@@ -112,7 +112,7 @@ void OptionsMenuScene::open()
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
-            options.fov = value;
+            options.fov = static_cast<float>(value);
         },
         "FOV: ",
         bigButton.size,

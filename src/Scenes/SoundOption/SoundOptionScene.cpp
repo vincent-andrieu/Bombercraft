@@ -66,7 +66,7 @@ void Game::SoundOptionScene::open()
         GUI::ButtonFactory::getMediumButtonConfig().size,
         0,
         100,
-        static_cast<GUI::sliderValue>(options.volume * 100));
+        static_cast<GUI::sliderValue>(options.volume));
 
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;

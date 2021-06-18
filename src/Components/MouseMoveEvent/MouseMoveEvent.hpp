@@ -16,7 +16,7 @@ namespace Component
 {
     class MouseMoveEvent : public AbstractEvent, public Engine::Component<MouseMoveEvent> {
       public:
-        explicit MouseMoveEvent(eventScript &handler);
+        explicit MouseMoveEvent(eventScript handler);
         virtual ~MouseMoveEvent() = default;
     };
 } // namespace Component

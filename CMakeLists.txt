@@ -34,6 +34,7 @@ set(SRCS
         src/Game/Factories/Bomb/BombFactory.cpp
         src/Game/Factories/Sound/AudioFactory.cpp
         src/Game/Factories/KeyManagementFactory/KeyManagementFactory.cpp
+        src/Game/Factories/MouseWheel/MouseWheelFactory.cpp
         ## TMP
         src/Components/Matrix2D/DataMatrix/DataMatrix.cpp
         src/Components/Matrix2D/Matrix2D.cpp

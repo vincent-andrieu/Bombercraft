@@ -12,9 +12,8 @@
 #include <algorithm>
 #include "ProceduralMap.hpp"
 
-ProceduralMap::ProceduralMap(unsigned int seed) : _seed((seed) ? seed : (unsigned int)std::time(nullptr))
+ProceduralMap::ProceduralMap()
 {
-    std::srand(this->_seed);
 }
 
 ProceduralMap::~ProceduralMap()
@@ -27,7 +26,6 @@ void ProceduralMap::reset()
     this->_mapProcedural.clear();
     this->_mapModel.clear();
     this->_mapProba.clear();
-    this->_seed = 0;
 }
 
 void ProceduralMap::regenerateProceduralMap()
@@ -47,18 +45,6 @@ void ProceduralMap::setMapModel(MapDisponibility model)
     this->_mapModel = model;
 }
 
-unsigned int ProceduralMap::getSeed()
-{
-    return this->_seed;
-}
-
-void ProceduralMap::setSeed(unsigned int seed)
-{
-    this->_seed = seed;
-    std::srand(this->_seed);
-}
-
-
 void ProceduralMap::setModelSettings(std::unordered_map<TileType, int> linkList)
 {
     this->_mapProba.clear();
@@ -74,7 +60,7 @@ void ProceduralMap::generateMap()
     this->_mapProcedural.clear();
     this->mapInitEmpty();
     for (auto proba : this->_mapProba) {
-        this->randomFill((float)proba.second, proba.first);
+        this->randomFill((float) proba.second, proba.first);
     }
     this->clearMap();
     this->modelApply();
@@ -89,7 +75,6 @@ void ProceduralMap::randomFill(float prob, TileType type)
     GameModule::MapType::iterator map_it_y = this->_mapProcedural.begin();
     std::vector<GameModule::TileType>::iterator map_it_x = map_it_y->begin();
 
-    std::srand(this->_seed);
     while (map_it_y != this->_mapProcedural.end()) {
         map_it_x = map_it_y->begin();
         while (map_it_x != map_it_y->end()) {
@@ -117,14 +102,12 @@ void ProceduralMap::modelApply()
     for (auto it_y : this->_mapModel) {
         map_it_x = map_it_y->begin();
         for (auto it_x : it_y) {
-            switch (it_x)
-            {
+            switch (it_x) {
                 case TileDisponibility::TILE_FORCE_EMPTY: *map_it_x = TileType::TILE_EMPTY; break;
                 case TileDisponibility::TILE_FORCE_HARD: *map_it_x = TileType::TILE_HARD; break;
                 case TileDisponibility::TILE_FORCE_SOFT: *map_it_x = TileType::TILE_SOFT; break;
                 case TileDisponibility::TILE_FORCE_BONUS: *map_it_x = TileType::TILE_BONUS; break;
-                default:
-                    break;
+                default: break;
             }
             map_it_x++;
         }
@@ -147,7 +130,7 @@ void ProceduralMap::mapInitEmpty()
 
     for (auto it_y : this->_mapModel) {
         list.clear();
-        for ([[maybe_unused]]auto it : it_y) {
+        for ([[maybe_unused]] auto it : it_y) {
             list.push_back(TileType::TILE_DEFAULT);
         }
         this->_mapProcedural.push_back(list);

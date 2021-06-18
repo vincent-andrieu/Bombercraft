@@ -11,6 +11,6 @@ using namespace Component;
 
 static const Game::EventRequirement my_requirements(true);
 
-MouseMoveEvent::MouseMoveEvent(eventScript &handler) : AbstractEvent(handler, my_requirements)
+MouseMoveEvent::MouseMoveEvent(eventScript handler) : AbstractEvent(handler, my_requirements)
 {
 }
