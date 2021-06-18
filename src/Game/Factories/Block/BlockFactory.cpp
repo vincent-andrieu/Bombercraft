@@ -190,7 +190,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::POWERUP) {
-        scene->localEntities.removeEntity(toEntity); //REMOVE BONUS
+        scene->localEntities.removeEntity(toEntity); // REMOVE BONUS
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
         scene->localEntities.removeEntity(toEntity); // REMOVE SOFT BLOCK
@@ -234,7 +234,8 @@ void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine:
         setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
-        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        auto &entityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(fromEntity);
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(entityBox.entity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         inventory.setBomb(info.bomb + 1);
     }
@@ -250,7 +251,8 @@ void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine:
         setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
-        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        auto &entityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(fromEntity);
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(entityBox.entity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         inventory.setBlastRadius(info.blastRadius + 1);
     }
@@ -266,7 +268,8 @@ void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine
         setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
-        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        auto &entityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(fromEntity);
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(entityBox.entity);
         const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
         if (info.speed < 1) {
             inventory.setSpeed(info.speed + 0.1);
@@ -284,7 +287,8 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
         setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
-        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
+        auto &entityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(fromEntity);
+        auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(entityBox.entity);
         inventory.setWallPass(true);
     }
 }

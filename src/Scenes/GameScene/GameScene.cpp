@@ -63,8 +63,6 @@ void GameScene::open()
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
     size_t randValue = std::rand() % 13;
-    std::cout << "NAME = "
-              << "GAME" + toString(randValue) << std::endl;
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
 
     if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
