@@ -40,7 +40,7 @@ static void handlerHitboxCharacterDeath(
         CoreData::entityManager->removeComponent<Engine::Timer>(character);
     }
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
-      return pair.first == id;
+        return pair.first == id;
     });
     if (it_name != PLAYER_ID_TO_NAME.end()) {
         std::string playerName = it_name->second;
@@ -76,6 +76,9 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
 
     if (type == EntityType::BLAST) {
         handlerHitboxCharacterDeath(character, id, render);
+        Component::PlayerConfig *playerConfig =
+            &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id);
+        playerConfig->setStatus(Component::PlayerStatus::DEAD);
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
@@ -276,16 +279,15 @@ void CharacterFactory::handlerAITimer(
     (void) entityManager;
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
-        std::cout << "PUT BOMB" << std::endl;
         render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
     
-    if (Game::CoreData::settings->getInt("AI_VELOCITY_MODE") == 1) {
-        velocity.x = (float) velocityIA.first;
-        velocity.y = (float) velocityIA.second;
+    if (ai.getMoveType()) {
+        velocity.x = (float) velocityIA.first / 2;
+        velocity.y = (float) velocityIA.second / 2;
     } else {
         const raylib::MyVector3 &position =
         render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
