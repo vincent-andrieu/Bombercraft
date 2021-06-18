@@ -86,8 +86,14 @@ void EndGameScene::open()
     for (size_t i = 0; i < nbPlayers; i++) {
         Engine::Entity player = this->localEntities.createEntity("PlayerEndGame" + toString(i + 1));
         playerConfig = &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(ids[i]);
-        raylibAnimation = std::make_shared<raylib::Animation>(
-            playerConfig->getSkinPath(), animDefeat, raylib::MyVector3(0, -4, playerZPosition[nbPlayers - 1][i]));
+        if (playerConfig->getStatus() == Component::PlayerStatus::ALIVE) {
+            raylibAnimation = std::make_shared<raylib::Animation>(
+                playerConfig->getSkinPath(), animVictory, raylib::MyVector3(0, -4, playerZPosition[nbPlayers - 1][i]));
+        } else {
+            raylibAnimation = std::make_shared<raylib::Animation>(
+                playerConfig->getSkinPath(), animDefeat, raylib::MyVector3(0, -4, playerZPosition[nbPlayers - 1][i]));
+        }
+        playerConfig->setStatus(Component::PlayerStatus::ALIVE);
         raylibAnimation->setRotation(rotation);
         CoreData::entityManager->addComponent<Component::Render3D>(player, raylibAnimation);
         GUI::XPBarFactory::create(xpBarPosition,

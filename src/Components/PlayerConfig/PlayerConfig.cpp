@@ -11,7 +11,8 @@ using namespace Component;
 
 Component::PlayerConfig::PlayerConfig(
     const PlayerID playerId, PlayerKeyBindings defaultKeyBinding, const string &defaultSkinPath, const size_t &xp)
-    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding), _skinPath(defaultSkinPath), _xp(xp)
+    : _id(playerId), _keyBindings(defaultKeyBinding), _defaultKeyBinding(defaultKeyBinding), _skinPath(defaultSkinPath), _xp(xp),
+      _status(PlayerStatus::ALIVE)
 {
 }
 
@@ -49,6 +50,11 @@ const string &PlayerConfig::getSkinPath() const
 const size_t &PlayerConfig::getXP() const
 {
     return this->_xp;
+}
+
+const PlayerStatus &PlayerConfig::getStatus() const
+{
+    return this->_status;
 }
 
 void PlayerConfig::resetAllKeyBindings()
@@ -89,6 +95,11 @@ void PlayerConfig::setSkinPath(const string &skinpath)
 void PlayerConfig::setXP(const size_t &xp)
 {
     this->_xp = xp;
+}
+
+void PlayerConfig::setStatus(const PlayerStatus &status)
+{
+    this->_status = status;
 }
 
 std::vector<raylib::KeyBoard> PlayerConfig::getPlayerKeyList() const

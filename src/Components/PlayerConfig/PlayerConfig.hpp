@@ -21,6 +21,12 @@ namespace Component
         DELTA = 3
     };
 
+    enum PlayerStatus
+    {
+        DEAD = 0,
+        ALIVE = 1
+    };
+
     struct PlayerKeyBindings {
         raylib::KeyBoard moveUp;
         raylib::KeyBoard moveDown;
@@ -45,6 +51,7 @@ namespace Component
         const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         const string &getSkinPath() const;
         const size_t &getXP() const;
+        const PlayerStatus &getStatus() const;
 
         void resetAllKeyBindings();
         void setKeyMoveUp(const raylib::KeyBoard &key);
@@ -54,6 +61,7 @@ namespace Component
         void setKeyPlaceBomb(const raylib::KeyBoard &key);
         void setSkinPath(const string &skinpath);
         void setXP(const size_t &xp);
+        void setStatus(const PlayerStatus &status);
 
       private:
         PlayerID _id;
@@ -61,6 +69,7 @@ namespace Component
         PlayerKeyBindings _defaultKeyBinding;
         string _skinPath;
         size_t _xp;
+        PlayerStatus _status;
     };
 } // namespace Component
 
