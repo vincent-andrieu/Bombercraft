@@ -50,6 +50,7 @@ namespace GUI
         // FACTORY
         static void internalFactory(
             const Engine::Entity &entity, BlockType type, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
+        static void setAirBlock(const raylib::MyVector3 &pos);
 
         // FACTORY_FUNC
         static void softFactory(const Engine::Entity &entity, const raylib::MyVector3 &pos, const raylib::MyVector3 &size);
