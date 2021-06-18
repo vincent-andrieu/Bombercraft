@@ -36,7 +36,7 @@ const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NA
 
 static void handlerGameTimeout()
 {
-    Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+    Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -88,7 +88,7 @@ void GameScene::open()
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
-        Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+        Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));

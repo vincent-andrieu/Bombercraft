@@ -214,12 +214,23 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     // TODO kill entity if player
 }
 
+void BlockFactory::setAirBlock(const raylib::MyVector3 &pos)
+{
+    raylib::MyVector2 indexOnMap = Component::Matrix2D::getMapIndex(pos);
+    Engine::Entity entityMap = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("gameMap");
+    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
+
+    matrix.getData()->save({(size_t) indexOnMap.a, (size_t) indexOnMap.b}, 0, BlockType::BLOCK_AIR);
+}
+
 void BlockFactory::handlerBoomUp(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+    auto &bonusPos = Game::CoreData::entityManager->getComponent<Engine::Position>(toEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
@@ -232,8 +243,10 @@ void BlockFactory::handlerFireUp(const Engine::Entity &fromEntity, const Engine:
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+    auto &bonusPos = Game::CoreData::entityManager->getComponent<Engine::Position>(toEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
@@ -246,8 +259,10 @@ void BlockFactory::handlerSpeedUp(const Engine::Entity &fromEntity, const Engine
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+    auto &bonusPos = Game::CoreData::entityManager->getComponent<Engine::Position>(toEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);
@@ -262,8 +277,10 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
 {
     auto scene = Game::CoreData::sceneManager->getCurrentScene();
     auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+    auto &bonusPos = Game::CoreData::entityManager->getComponent<Engine::Position>(toEntity);
 
     if (hitboxFrom.entityType == Game::EntityType::CHARACTER) {
+        setAirBlock(raylib::MyVector3(bonusPos.x, bonusPos.y, bonusPos.z));
         scene->localEntities.removeEntity(toEntity); // RM BONUS
 
         auto &inventory = Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(fromEntity);

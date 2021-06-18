@@ -49,7 +49,7 @@ static void handlerHitboxCharacterDeath(
 
                 // End game detection
                 if (GameScene::getNbrPlayers() <= 1) {
-                    Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getInt("STANDARD_CAMERA_FOV")));
+                    Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getFloat("STANDARD_CAMERA_FOV")));
                     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
                     CoreData::sceneManager->setScene<EndGameScene>();
                 }
