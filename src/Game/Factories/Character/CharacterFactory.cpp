@@ -266,6 +266,9 @@ void CharacterFactory::handlerAITimer(
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
         PLAYER_ID_TO_NAME.at(Component::DELTA)};
     std::vector<std::pair<size_t, size_t>> posList;
+    const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(entity);
+    const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
     for (size_t i = 0; i < entityList.size(); i++) {
         if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
@@ -278,6 +281,9 @@ void CharacterFactory::handlerAITimer(
         }
     }
     (void) entityManager;
+    if (info.wallPass) {
+        ai.setBonusWallPass();
+    }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
         render.setRotation(ai.getOrientation());
