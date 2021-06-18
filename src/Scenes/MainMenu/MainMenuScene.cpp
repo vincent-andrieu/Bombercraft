@@ -37,28 +37,69 @@ void MainMenuScene::open()
     const GUI::ButtonConfig mediumButton(GUI::ButtonFactory::getMediumButtonConfig());
 
     // BACKGROUND
-    raylib::MyVector2 logoSize(my_utility.getProportion({70, 15}));
-    GUI::ImageFactory::create(this->localEntities,
+    const raylib::MyVector2 logoSize(my_utility.getProportion({70, 15}));
+    raylib::MyVector2 backgroundSize(Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE"));
+    const float my_multiplier(my_utility.getProportion({0, 100}).b / backgroundSize.b);
+    backgroundSize = backgroundSize * my_multiplier;
+
+    Engine::Entity background = GUI::ImageFactory::create(this->localEntities,
         raylib::MyVector2(0, 0),
-        Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE"),
+        backgroundSize,
         Game::CoreData::settings->getString("HOME_BACKGROUND"),
-        false,
+        true,
         "background",
-        Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_START"));
-    Engine::Entity background = localEntities.getEntity("background");
+        raylib::MyVector2(0, 0));
     CoreData::entityManager->addComponent<Engine::Timer>(background,
         0.01,
         *CoreData::entityManager,
         *CoreData::sceneManager,
-        [](Engine::EntityManager &, Engine::SceneManager &, const Engine::Entity entity) {
-            const raylib::MyVector2 backgroundSize = Game::CoreData::settings->getMyVector2("HOME_BACKGROUND_SIZE");
+        [](Engine::EntityManager &, Engine::SceneManager &scene, const Engine::Entity entity) {
             raylib::Texture *pictureBg = static_cast<raylib::Texture *>(
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
-            raylib::MyVector2 rect = pictureBg->getRect();
-            if (rect.a > backgroundSize.a) {
-                pictureBg->setRect(raylib::MyVector2(0, rect.b));
+            const raylib::MyVector2 pictureRect(pictureBg->getRect());
+            const raylib::MyVector2 pictureSize(pictureBg->getSize());
+            const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+            auto other(scene.getCurrentScene()->localEntities.getEntity("background2"));
+            raylib::Texture *otherPictureBg = static_cast<raylib::Texture *>(
+                Game::CoreData::entityManager->getComponent<Component::Render2D>(other).get("image").get());
+            const auto panoSpeed(Game::CoreData::settings->getFloat("PANORAMA_SPEED"));
+
+            if (pictureRect.a <= pictureSize.a * -1) {
+                pictureBg->setRect(raylib::MyVector2(otherPictureBg->getRect().a + pictureSize.a - panoSpeed, pictureRect.b));
             } else {
-                pictureBg->setRect(raylib::MyVector2((float) (rect.a + 0.8), rect.b));
+                std::cout << pictureRect << std::endl;
+                pictureBg->setRect(raylib::MyVector2((float) (pictureRect.a - panoSpeed), pictureRect.b));
+            }
+        });
+
+    Engine::Entity background2 = GUI::ImageFactory::create(this->localEntities,
+        raylib::MyVector2(0, 0),
+        backgroundSize,
+        Game::CoreData::settings->getString("HOME_BACKGROUND"),
+        true,
+        "background2",
+        raylib::MyVector2(backgroundSize.a, 0));
+    CoreData::entityManager->addComponent<Engine::Timer>(background2,
+        0.01,
+        *CoreData::entityManager,
+        *CoreData::sceneManager,
+        [](Engine::EntityManager &, Engine::SceneManager &scene, const Engine::Entity entity) {
+            raylib::Texture *pictureBg = static_cast<raylib::Texture *>(
+                Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
+            const raylib::MyVector2 pictureRect(pictureBg->getRect());
+            const raylib::MyVector2 pictureSize(pictureBg->getSize());
+            const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+
+            auto other(scene.getCurrentScene()->localEntities.getEntity("background"));
+            raylib::Texture *otherPictureBg = static_cast<raylib::Texture *>(
+                Game::CoreData::entityManager->getComponent<Component::Render2D>(other).get("image").get());
+            const auto panoSpeed(Game::CoreData::settings->getFloat("PANORAMA_SPEED"));
+
+            if (pictureRect.a <= pictureSize.a * -1) {
+                pictureBg->setRect(raylib::MyVector2(otherPictureBg->getRect().a + pictureSize.a, pictureRect.b));
+            } else {
+                std::cout << pictureRect << std::endl;
+                pictureBg->setRect(raylib::MyVector2((float) (pictureRect.a - panoSpeed), pictureRect.b));
             }
         });
 
@@ -89,12 +130,21 @@ void MainMenuScene::open()
 
     // TEXT
     raylib::MyVector2 bottomLeftPos(my_utility.getProportion({1, 95}));
-    raylib::MyVector2 bottomRightPos(my_utility.getProportion({62, 95}));
+    raylib::MyVector2 bottomRightPos(
+        my_utility.getProportion({100, 95}, my_utility.getProportion(GUI::ButtonFactory::MediumProportions), {100, 0}));
     raylib::MyVector2 splashPos(my_utility.getProportion({70, 30}));
-    GUI::LabelFactory::create(
-        this->localEntities, bottomLeftPos, bottomLeftText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomleft");
-    GUI::LabelFactory::create(
-        this->localEntities, bottomRightPos, bottomRightText, GUI::LabelFactory::getStandardLabelConfig(fontSize), "bottomright");
+    GUI::LabelFactory::create(this->localEntities,
+        bottomLeftPos,
+        my_utility.getProportion(GUI::ButtonFactory::SmallProportions),
+        bottomLeftText,
+        GUI::LabelFactory::getStandardLabelConfig(fontSize),
+        "bottomleft");
+    GUI::LabelFactory::create(this->localEntities,
+        bottomRightPos,
+        my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
+        bottomRightText,
+        GUI::LabelFactory::getStandardLabelConfig(fontSize),
+        "bottomright");
     // CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
     GUI::LabelFactory::create(this->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
     Engine::Entity splashTxt = localEntities.getEntity("splash");
