@@ -82,7 +82,8 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
-    } else if (!((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
+    } else if (type != EntityType::CHARACTER
+        && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
@@ -284,13 +285,13 @@ void CharacterFactory::handlerAITimer(
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
-    
+
     if (ai.getMoveType()) {
         velocity.x = (float) velocityIA.first / 2;
         velocity.y = (float) velocityIA.second / 2;
     } else {
-        const raylib::MyVector3 &position =
-        render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
+        const raylib::MyVector3 &position = render.getPosition()
+            + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
         render.setPosition(position);
         hitbox.objectBox->setOrigin(
             raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));
