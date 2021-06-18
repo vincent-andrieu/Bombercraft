@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** gameEngine
 ** File description:
-** 14/06/2021 CharacterFactory.cpp.cc
+** 14/06/2021 CharacterFactory.cpp
 */
 
 #include "CharacterFactory.hpp"
@@ -247,7 +247,7 @@ void CharacterFactory::handlerAITimer(
     Engine::Entity entityPlayer;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
-    //auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
+    // auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(entity);
 
@@ -281,13 +281,15 @@ void CharacterFactory::handlerAITimer(
     // velocity.x = (float) velocityIA.first;
     // velocity.y = (float) velocityIA.second;
 
-    const raylib::MyVector3 &position = render.getPosition() + raylib::MyVector3(velocityIA.first, 0, velocityIA.second);
+    const raylib::MyVector3 &position =
+        render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
     render.setPosition(position);
 
-    //auto pos = hitbox.objectBox->getBoxOrigin();
+    // auto pos = hitbox.objectBox->getBoxOrigin();
 
-    hitbox.objectBox->setOrigin(raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));
+    hitbox.objectBox->setOrigin(
+        raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));
 
-    //auto size = hitbox.objectBox->getBoxSize();
-    //hitbox.objectBox->setOrigin({pos.a + velocityIA.first * size.a, pos.b + velocityIA.second * size.b, pos.c + 0 * size.c});
+    // auto size = hitbox.objectBox->getBoxSize();
+    // hitbox.objectBox->setOrigin({pos.a + velocityIA.first * size.a, pos.b + velocityIA.second * size.b, pos.c + 0 * size.c});
 }
