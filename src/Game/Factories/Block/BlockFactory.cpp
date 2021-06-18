@@ -189,6 +189,9 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     std::string typeInStr;
     const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
+    if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::POWERUP) {
+        scene->localEntities.removeEntity(toEntity); //REMOVE BONUS
+    }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
         scene->localEntities.removeEntity(toEntity); // REMOVE SOFT BLOCK
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("BlockDestroyed");
