@@ -55,12 +55,14 @@ namespace GameModule
         void offensiveMove(
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
         bool isRandomMove() const;
+        void attackBusy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
 
         // TOOLS
         bool isStuck() const;
         bool isRunnable(TileType type) const;
         bool isSecurePlace(TileType type) const;
         void clearQueue(std::queue<IA::Movement> &list);
+        bool isEnemy(const std::pair<size_t, size_t> &pos) const;
         bool isCorrectBomb(const std::pair<size_t, size_t> &pos) const;
         void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
         std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
