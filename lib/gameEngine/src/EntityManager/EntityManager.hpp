@@ -110,6 +110,7 @@ namespace Engine
     {
         this->checkComponentTypes<Ts...>();
         if (this->hasComponents<Ts...>(entity) == false) {
+            ((std::cerr << "EntityManager::getComponents Entity " << entity << " request " << Ts::type << " component." << std::endl), ...);
             throw std::invalid_argument("EntityManager::getComponents The entity don't have the requested components.");
         }
         return std::tie(this->getComponentContainer<Ts>()->get(entity)...);
