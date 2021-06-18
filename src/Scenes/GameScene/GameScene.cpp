@@ -60,7 +60,7 @@ void GameScene::open()
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
-    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap");
+    GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap", options.seed);
     /// Camera
     CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
     CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));

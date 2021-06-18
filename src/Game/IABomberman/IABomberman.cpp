@@ -12,11 +12,6 @@ using namespace GameModule;
 IABomberman::IABomberman(std::pair<size_t, size_t> pos, std::vector<std::vector<TileType>> env)
     : IA::IACore<TileType, BombermanAction>(pos, env), _range(0), _defaultValue(-1), _randomMove(0), _randomBomb(7)
 {
-    // seed
-    if (Game::CoreData::settings->isSetInFile("IA_SEED"))
-        this->setSeed(Game::CoreData::settings->getInt("IA_SEED"));
-    else
-        std::cerr << "Random seed" << std::endl;
     // default value
     if (Game::CoreData::settings->isSetInFile("IA_INTERNAL_DEFAULT_VALUE"))
         this->_defaultValue = Game::CoreData::settings->getInt("IA_INTERNAL_DEFAULT_VALUE");
@@ -92,7 +87,8 @@ void IABomberman::setEnemyPos(std::vector<std::pair<size_t, size_t>> enemy)
     IACore::setEnemyPos(enemy);
 }
 
-std::vector<std::pair<size_t, size_t>> IABomberman::getAvailableTile(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
+std::vector<std::pair<size_t, size_t>> IABomberman::getAvailableTile(
+    const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
 {
     size_t x = pos.first;
     size_t y = pos.second;
@@ -117,6 +113,7 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
 
     if (!this->isSecurePlace(env[pos.second][pos.first]))
         return false;
+
     int tmp = std::rand() % this->_randomBomb;
     if (tmp)
         return false;
@@ -290,7 +287,8 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x + 1 + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
-            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION)
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS
+                || env[y][tmp] == TileType::TILE_EXPLOSION)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
             else
                 break;
@@ -299,7 +297,8 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (y + 1 + (i * move));
         if (tmp >= 0 && y + (i * move) < env.size()) {
-            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION)
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS
+                || env[tmp][x] == TileType::TILE_EXPLOSION)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
             else
                 break;
@@ -309,7 +308,8 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x - 1 + (i * move));
         if (tmp > 0 && x + (i * move) < env[y].size()) {
-            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS || env[y][tmp] == TileType::TILE_EXPLOSION)
+            if (env[y][tmp] == TileType::TILE_EMPTY || env[y][tmp] == TileType::TILE_BONUS
+                || env[y][tmp] == TileType::TILE_EXPLOSION)
                 env[y][tmp] = TileType::TILE_EXPLOSION;
             else
                 break;
@@ -318,7 +318,8 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (y - 1 + (i * move));
         if (tmp > 0 && y + (i * move) < env.size()) {
-            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS || env[tmp][x] == TileType::TILE_EXPLOSION)
+            if (env[tmp][x] == TileType::TILE_EMPTY || env[tmp][x] == TileType::TILE_BONUS
+                || env[tmp][x] == TileType::TILE_EXPLOSION)
                 env[tmp][x] = TileType::TILE_EXPLOSION;
             else
                 break;
@@ -414,7 +415,8 @@ bool IABomberman::isRandomMove() const
     return false;
 }
 
-std::vector<std::vector<int>> IABomberman::findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
+std::vector<std::vector<int>> IABomberman::findEnemy(
+    const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const
 {
     bool stat = true;
     int to_find = 0;
@@ -460,10 +462,9 @@ std::pair<size_t, size_t> IABomberman::getNextPos(IA::Movement move) const
 {
     std::pair<size_t, size_t> pos = this->_pos;
 
-    switch (move)
-    {
+    switch (move) {
         case IA::Movement::IA_MOVE_UP: pos.second--; break;
-        case IA::Movement::IA_MOVE_NONE: ; break;
+        case IA::Movement::IA_MOVE_NONE:; break;
         case IA::Movement::IA_MOVE_DOWN: pos.second++; break;
         case IA::Movement::IA_MOVE_LEFT: pos.first--; break;
         case IA::Movement::IA_MOVE_RIGHT: pos.first++; break;

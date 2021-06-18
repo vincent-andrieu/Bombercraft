@@ -9,6 +9,7 @@
 #define IABOMBERMAN_HPP
 
 #include <iostream>
+#include <ctime>
 #include "IACore.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "../../ConfigFile/IConfigFile.hpp"
@@ -54,24 +55,28 @@ namespace GameModule
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
         bool isRandomMove() const;
 
-
         // TOOLS
         bool isStuck() const;
         bool isRunnable(TileType type) const;
         bool isSecurePlace(TileType type) const;
         void clearQueue(std::queue<IA::Movement> &list);
-        void loadPath(const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
-        std::vector<std::vector<int>> getCostArray(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
-        std::pair<size_t, size_t> getCostLessSafeMove(const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
-        std::vector<std::vector<int>> findEnemy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
-        std::vector<std::pair<size_t, size_t>> getAvailableTile(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        void loadPath(
+            const std::vector<std::vector<int>> &tab, std::pair<size_t, size_t> end, std::queue<IA::Movement> &list) const;
+        std::vector<std::vector<int>> getCostArray(
+            const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        std::pair<size_t, size_t> getCostLessSafeMove(
+            const std::vector<std::vector<int>> &tab, const std::vector<std::vector<TileType>> &env, bool &stat) const;
+        std::vector<std::vector<int>> findEnemy(
+            const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
+        std::vector<std::pair<size_t, size_t>> getAvailableTile(
+            const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env) const;
         std::pair<size_t, size_t> getNextPos(IA::Movement move) const;
-        
-        private:
-            size_t _range;
-            int _defaultValue;
-            size_t _randomMove;
-            size_t _randomBomb;
+
+      private:
+        size_t _range;
+        int _defaultValue;
+        size_t _randomMove;
+        size_t _randomBomb;
     };
 } // namespace GameModule
 

@@ -13,7 +13,8 @@
 
 namespace GameModule
 {
-    enum class TileType {
+    enum class TileType
+    {
         TILE_EXPLOSION,
         TILE_DEFAULT,
         TILE_EMPTY,
@@ -23,7 +24,8 @@ namespace GameModule
         TILE_HARD,
     };
 
-    enum class TileDisponibility {
+    enum class TileDisponibility
+    {
         TILE_AVAILABLE = 0,
         TILE_FORCE_EMPTY = 1,
         TILE_FORCE_HARD = 2,
@@ -36,16 +38,14 @@ namespace GameModule
 
     class IProceduralMap {
       public:
-        virtual ~IProceduralMap() {};
+        virtual ~IProceduralMap(){};
         virtual void reset() = 0;
         virtual MapType getProceduralMap() = 0;
         virtual void regenerateProceduralMap() = 0;
         virtual void setMapModel(MapDisponibility model) = 0;
-        virtual unsigned int getSeed() = 0;
-        virtual void setSeed(unsigned int seed) = 0;
         virtual void setModelSettings(std::unordered_map<TileType, int> linkList) = 0;
         virtual std::pair<size_t, size_t> getSize() const = 0;
     };
-}
+} // namespace GameModule
 
 #endif
