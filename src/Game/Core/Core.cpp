@@ -228,8 +228,8 @@ void Core::printDuringPreload()
 
 void Core::createCharacterConfig()
 {
-    auto entity = this->globalEntities.createEntity("config1");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+    Engine::Entity entity1 = this->globalEntities.createEntity("config1");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity1,
         Component::PlayerID::ALPHA,
         Component::PlayerKeyBindings{
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_UP")),
@@ -238,8 +238,8 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_RIGHT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_ONE_MOVE_PLACE_BOMB")),
         });
-    entity = this->globalEntities.createEntity("config2");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+    Engine::Entity entity2 = this->globalEntities.createEntity("config2");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity2,
         Component::PlayerID::BRAVO,
         Component::PlayerKeyBindings{
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_UP")),
@@ -248,8 +248,8 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_RIGHT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_TWO_MOVE_PLACE_BOMB")),
         });
-    entity = this->globalEntities.createEntity("config3");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+    Engine::Entity entity3 = this->globalEntities.createEntity("config3");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity3,
         Component::PlayerID::CHARLIE,
         Component::PlayerKeyBindings{
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_UP")),
@@ -258,8 +258,8 @@ void Core::createCharacterConfig()
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_RIGHT")),
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_THREE_MOVE_PLACE_BOMB")),
         });
-    entity = this->globalEntities.createEntity("config4");
-    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity,
+    Engine::Entity entity4 = this->globalEntities.createEntity("config4");
+    CoreData::entityManager->addComponent<Component::PlayerConfig>(entity4,
         Component::PlayerID::DELTA,
         Component::PlayerKeyBindings{
             static_cast<raylib::KeyBoard>(CoreData::settings->getInt("PLAYER_FOUR_MOVE_UP")),
