@@ -59,7 +59,7 @@ void Engine::EntityPack::unload()
     _anonymousEntities.clear();
 }
 
-void Engine::EntityPack::removeEntity(const std::string &key)
+void Engine::EntityPack::removeEntity(const std::string key)
 {
     if (_entities.find(key) == _entities.end()) {
         throw std::invalid_argument("EntityPack:: removeEntity: Key " + key + " not found");
@@ -80,8 +80,16 @@ void Engine::EntityPack::removeEntity(const Engine::Entity entity)
     auto it = std::find(_anonymousEntities.begin(), _anonymousEntities.end(), entity);
 
     if (it == _anonymousEntities.end()) {
-        throw std::invalid_argument("EntityPack:: removeEntity: Entity not found");
+        auto itKey = std::find_if(_entities.begin(), _entities.end(), [entity](auto &pair) {
+            return pair.second == entity;
+        });
+        if (itKey == _entities.end()) {
+            throw std::invalid_argument("EntityPack:: removeEntity: Entity not found");
+        } else {
+            this->removeEntity(itKey->first);
+        }
+    } else {
+        _entityManager.removeEntity(entity);
+        _anonymousEntities.erase(it);
     }
-    _entityManager.removeEntity(entity);
-    _anonymousEntities.erase(it);
 }

@@ -26,11 +26,11 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
 {
     size_t nbPlayers;
     size_t gameTimerDuration;
-    size_t seed;
+    uint seed;
     size_t IARandomProb;
 
     if (Game::CoreData::settings->isSetInFile("NB_PLAYERS")) {
-        nbPlayers = (size_t) CoreData::settings->getInt("NB_PLAYERS");
+        nbPlayers = (uint) CoreData::settings->getInt("NB_PLAYERS");
         if (nbPlayers > 4 || nbPlayers <= 0)
             nbPlayers = 1;
         options.nbPlayers = nbPlayers;
@@ -40,7 +40,7 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
         options.gameTimerDuration = gameTimerDuration;
     }
     if (Game::CoreData::settings->isSetInFile("SEED")) {
-        seed = (size_t) CoreData::settings->getInt("SEED");
+        seed = (uint) CoreData::settings->getInt("SEED");
         options.seed = seed;
     }
     if (Game::CoreData::settings->isSetInFile("IA_RANDOM_PROB")) {
@@ -120,9 +120,9 @@ void Game::NewGameMenuScene::init()
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
             "textInputIASeed",
-            "IA seed"},
+            "Seed"},
         GUI::TextInputFactory::getStandardConfig(),
-        GUI::LabelFactory::getStandardLabelConfig());
+        GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32));
     GUI::SliderFactory::create(
         localEntities,
         my_utility.getProportion({20, 75}),

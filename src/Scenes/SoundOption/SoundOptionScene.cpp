@@ -20,15 +20,26 @@ using namespace Game;
 
 extern std::unique_ptr<Game::Core> core;
 
-static void handler_slider(Engine::Entity, GUI::sliderValue &value)
+static void handler_slider_volume_effects(Engine::Entity, GUI::sliderValue &value)
 {
-    float volume = ((float) value / 100);
-    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    const float volume = (static_cast<float>(value) / 100);
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
 
-    options.volume = volume;
-    audioSystem.setVolume(volume);
+    options.volumeEffects = volume;
+    audioSystem.setVolumeEffects(volume);
+}
+
+static void handler_slider_volume_music(Engine::Entity, GUI::sliderValue &value)
+{
+    const float volume = (static_cast<float>(value) / 100);
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
+
+    options.volumeMusic = volume;
+    audioSystem.setVolumeMusic(volume);
 }
 
 Game::SoundOptionScene::SoundOptionScene() : Engine::AbstractScene(*CoreData::systemManager, *CoreData::entityManager)
@@ -39,7 +50,8 @@ void Game::SoundOptionScene::open()
 {
     const raylib::MyVector2 window_size(CoreData::settings->getMyVector2("WIN_SIZE"));
     const ProportionUtilities resizer(window_size);
-    const GUI::ButtonConfig doneButton = GUI::ButtonFactory::getMediumButtonConfig();
+    const GUI::ButtonConfig &doneButton = GUI::ButtonFactory::getMediumButtonConfig();
+    const GUI::ButtonConfig &menuButton = GUI::ButtonFactory::getLargeButtonConfig();
     ProportionUtilities pos(window_size);
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
@@ -47,6 +59,9 @@ void Game::SoundOptionScene::open()
     /// Background
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+    // Title
+    GUI::LabelFactory::createCentered(
+        this->localEntities, resizer(50, 4), "Music & Sounds", GUI::LabelFactory::getStandardLabelConfig());
     /// Quit button
     GUI::ButtonFactory::create(
         this->localEntities,
@@ -60,13 +75,23 @@ void Game::SoundOptionScene::open()
         true);
     /// Slider
     GUI::SliderFactory::create(this->localEntities,
-        resizer(25, 20),
-        handler_slider,
-        "Master Volume: ",
-        GUI::ButtonFactory::getMediumButtonConfig().size,
+        resizer(50, 35),
+        handler_slider_volume_effects,
+        "Effects volume: ",
+        menuButton.size,
         0,
         100,
-        static_cast<GUI::sliderValue>(options.volume));
+        static_cast<GUI::sliderValue>(options.volumeEffects * 100),
+        true);
+    GUI::SliderFactory::create(this->localEntities,
+        resizer(50, 50),
+        handler_slider_volume_music,
+        "Music volume: ",
+        menuButton.size,
+        0,
+        100,
+        static_cast<GUI::sliderValue>(options.volumeMusic * 100),
+        true);
 
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;

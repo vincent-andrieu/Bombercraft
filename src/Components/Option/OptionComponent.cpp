@@ -7,7 +7,7 @@
 
 #include "OptionComponent.hpp"
 
-Component::OptionComponent::OptionComponent(float volume, const std::string &ressourcePack, float fov)
-    : volume(volume), ressourcePack(ressourcePack), fov(fov)
+Component::OptionComponent::OptionComponent(float volumeMusic, float volumeEffects, const std::string &ressourcePack, float fov)
+    : volumeEffects(volumeEffects), volumeMusic(volumeMusic), ressourcePack(ressourcePack), fov(fov)
 {
 }
