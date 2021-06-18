@@ -99,12 +99,19 @@ namespace Engine
     template <typename T> T &EntityManager::getComponent(Entity entity)
     {
         this->checkComponentType<T>();
+        if (this->hasComponent<T>(entity) == false) {
+            std::cerr << "EntityManager::getComponent Entity " << entity << " request " << T::type << " component." << std::endl;
+            throw std::invalid_argument("EntityManager::getComponent The entity don't have the requested component.");
+        }
         return this->getComponentContainer<T>()->get(entity);
     }
 
     template <typename... Ts> std::tuple<Ts &...> EntityManager::getComponents(Entity entity)
     {
         this->checkComponentTypes<Ts...>();
+        if (this->hasComponents<Ts...>(entity) == false) {
+            throw std::invalid_argument("EntityManager::getComponents The entity don't have the requested components.");
+        }
         return std::tie(this->getComponentContainer<Ts>()->get(entity)...);
     }
 
