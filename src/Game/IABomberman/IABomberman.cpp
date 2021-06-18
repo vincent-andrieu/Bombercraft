@@ -123,9 +123,10 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
     std::vector<std::vector<TileType>> editedEnv;
     std::vector<std::pair<size_t, size_t>> available;
 
-    if (!this->isSecurePlace(env[pos.second][pos.first]))
+    if (!this->isSecurePlace(env[pos.second][pos.first]) || this->_MovementQueue.size())
         return false;
-
+    if (this->offensiveMove(pos, env, list) && std::find(this->_enemyPos.begin(), this->_enemyPos.end(), this->_pos) == this->_enemyPos.end())
+        return false;
     int tmp = std::rand() % this->_randomBomb;
     if (tmp)
         return false;
@@ -136,6 +137,16 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
             this->_MovementQueue = list;
             this->_orentation = this->findOrientation(pos, available[i]);
             return true;
+        }
+    }
+    if (available.size()) {
+        if (std::find(this->_enemyPos.begin(), this->_enemyPos.end(), this->_pos) != this->_enemyPos.end()) {
+            editedEnv = this->getMapWithExposionEffect(env, available[0], this->_range);
+            if (this->findSecurePlace(pos, editedEnv, list)) {
+                this->_MovementQueue = list;
+                this->_orentation = this->findOrientation(pos, available[0]);
+                return true;
+            }
         }
     }
     return false;
@@ -398,7 +409,7 @@ void IABomberman::randomMove(
     list.push(toPush);
 }
 
-void IABomberman::offensiveMove(
+bool IABomberman::offensiveMove(
     const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
     std::queue<IA::Movement> path;
@@ -416,7 +427,7 @@ void IABomberman::offensiveMove(
             else
                 this->randomMove(pos, env, list);
             this->clearQueue(path);
-            return;
+            return true;
         }
     }
     if (!this->_enemyPos.size()) {
@@ -424,6 +435,7 @@ void IABomberman::offensiveMove(
         list.push(IA::Movement::IA_MOVE_NONE);
     }
     this->attackBusy(pos, env, list);
+    return false;
 }
 
 bool IABomberman::isRandomMove() const

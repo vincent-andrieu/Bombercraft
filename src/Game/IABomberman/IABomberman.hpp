@@ -52,7 +52,7 @@ namespace GameModule
             std::vector<std::vector<TileType>> env, const std::pair<size_t, size_t> &pos, size_t range) const;
         void randomMove(
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
-        void offensiveMove(
+        bool offensiveMove(
             const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);
         bool isRandomMove() const;
         void attackBusy(const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list);

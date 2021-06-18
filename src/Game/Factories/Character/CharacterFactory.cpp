@@ -82,7 +82,7 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
-    } else if (!(type == EntityType::SOFTBLOCK && info.wallPass == true)) {
+    } else if (!((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
@@ -279,7 +279,6 @@ void CharacterFactory::handlerAITimer(
     (void) entityManager;
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
-        std::cout << "PUT BOMB" << std::endl;
         render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }

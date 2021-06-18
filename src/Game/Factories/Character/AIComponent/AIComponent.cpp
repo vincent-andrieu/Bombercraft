@@ -20,15 +20,6 @@ std::pair<double, double> AIComponent::getVelocity()
     move = this->_AI->getIAMovement();
     switch (move)
     {
-        case IA::Movement::IA_MOVE_UP: std::cout << "IA_MOVE_UP" << std::endl;break;
-        case IA::Movement::IA_MOVE_DOWN: std::cout << "IA_MOVE_DOW" << std::endl;break;
-        case IA::Movement::IA_MOVE_LEFT: std::cout << "IA_MOVE_LEFT" << std::endl;break;
-        case IA::Movement::IA_MOVE_NONE: std::cout << "IA_MOVE_NON" << std::endl;break;
-        case IA::Movement::IA_MOVE_RIGHT: std::cout << "IA_MOVE_RIGH" << std::endl;break;
-        default: std::cout << "IA_MOVE_RIGH" << std::endl;break;
-    }
-    switch (move)
-    {
         case IA::Movement::IA_MOVE_UP: return {0, -2};break;
         case IA::Movement::IA_MOVE_DOWN: return {0, 2};break;
         case IA::Movement::IA_MOVE_LEFT: return {-2, 0};break;
