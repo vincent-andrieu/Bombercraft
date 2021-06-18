@@ -25,9 +25,8 @@ namespace Component
 
         size_t nbPlayers{1};
         size_t gameTimerDuration{120}; // 0 for unlimited time
-        size_t mapSeed{42};            // Map factory
-        size_t IASeed{42};
-        size_t IARandomProb{42}; // difficulty / 100 (100 == minimum)
+        size_t seed{42};               // Map factory
+        size_t IARandomProb{42};       // difficulty / 100 (100 == minimum)
     };
 } // namespace Component
 

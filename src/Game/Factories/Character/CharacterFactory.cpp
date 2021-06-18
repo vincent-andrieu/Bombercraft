@@ -247,10 +247,12 @@ void CharacterFactory::handlerAITimer(
     Engine::Entity entityPlayer;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
-    auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
+    //auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
-    auto &pos = CoreData::entityManager->getComponent<Component::ModelList>(entity);
-    auto relativPos = Component::Matrix2D::getMapIndex(pos.getPosition());
+    Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+
+    auto &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(entity);
+    auto relativPos = Component::Matrix2D::getMapIndex(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
     std::vector<std::string> entityList = {PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
@@ -269,12 +271,23 @@ void CharacterFactory::handlerAITimer(
     }
     (void) entityManager;
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
-    std::pair<double, double> velocityIA = ai.getVelocity();
-    velocity.x = (float) velocityIA.first;
-    velocity.y = (float) velocityIA.second;
-
     if (ai.putBomb()) {
         std::cout << "PUT BOMB" << std::endl;
+        render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
+    ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
+    std::pair<double, double> velocityIA = ai.getVelocity();
+    // velocity.x = (float) velocityIA.first;
+    // velocity.y = (float) velocityIA.second;
+
+    const raylib::MyVector3 &position = render.getPosition() + raylib::MyVector3(velocityIA.first, 0, velocityIA.second);
+    render.setPosition(position);
+
+    //auto pos = hitbox.objectBox->getBoxOrigin();
+
+    hitbox.objectBox->setOrigin(raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));
+
+    //auto size = hitbox.objectBox->getBoxSize();
+    //hitbox.objectBox->setOrigin({pos.a + velocityIA.first * size.a, pos.b + velocityIA.second * size.b, pos.c + 0 * size.c});
 }

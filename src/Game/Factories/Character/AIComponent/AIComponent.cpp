@@ -18,20 +18,22 @@ std::pair<double, double> AIComponent::getVelocity()
     IA::Movement move;
 
     move = this->_AI->getIAMovement();
-    switch (move) {
-        case IA::Movement::IA_MOVE_UP: std::cout << "IA_MOVE_UP" << std::endl; break;
-        case IA::Movement::IA_MOVE_DOWN: std::cout << "IA_MOVE_DOW" << std::endl; break;
-        case IA::Movement::IA_MOVE_LEFT: std::cout << "IA_MOVE_LEFT" << std::endl; break;
-        case IA::Movement::IA_MOVE_NONE: std::cout << "IA_MOVE_NON" << std::endl; break;
-        case IA::Movement::IA_MOVE_RIGHT: std::cout << "IA_MOVE_RIGH" << std::endl; break;
-        default: std::cout << "IA_MOVE_RIGH" << std::endl; break;
+    switch (move)
+    {
+        case IA::Movement::IA_MOVE_UP: std::cout << "IA_MOVE_UP" << std::endl;break;
+        case IA::Movement::IA_MOVE_DOWN: std::cout << "IA_MOVE_DOW" << std::endl;break;
+        case IA::Movement::IA_MOVE_LEFT: std::cout << "IA_MOVE_LEFT" << std::endl;break;
+        case IA::Movement::IA_MOVE_NONE: std::cout << "IA_MOVE_NON" << std::endl;break;
+        case IA::Movement::IA_MOVE_RIGHT: std::cout << "IA_MOVE_RIGH" << std::endl;break;
+        default: std::cout << "IA_MOVE_RIGH" << std::endl;break;
     }
-    switch (move) {
-        case IA::Movement::IA_MOVE_UP: return {0, -1}; break;
-        case IA::Movement::IA_MOVE_DOWN: return {0, 1}; break;
-        case IA::Movement::IA_MOVE_LEFT: return {-1, 0}; break;
-        case IA::Movement::IA_MOVE_NONE: return {0, 0}; break;
-        case IA::Movement::IA_MOVE_RIGHT: return {1, 0}; break;
+    switch (move)
+    {
+        case IA::Movement::IA_MOVE_UP: return {0, -2};break;
+        case IA::Movement::IA_MOVE_DOWN: return {0, 2};break;
+        case IA::Movement::IA_MOVE_LEFT: return {-2, 0};break;
+        case IA::Movement::IA_MOVE_NONE: return {0, 0};break;
+        case IA::Movement::IA_MOVE_RIGHT: return {2, 0};break;
         default: return {0, 0}; break;
     }
 }
@@ -44,8 +46,8 @@ bool AIComponent::putBomb()
 void AIComponent::setEnv(
     const std::shared_ptr<DataMatrix> &map, std::pair<size_t, size_t> pos, std::vector<std::pair<size_t, size_t>> &enemy)
 {
-    this->_AI->setEnemyPos(enemy);
     this->_AI->setIAEnv(AIComponent::translateMatrix(map));
+    this->_AI->setEnemyPos(enemy);
     this->_AI->setIAPos(pos);
 }
 
@@ -75,8 +77,14 @@ GameModule::MapType AIComponent::translateMatrix(const std::shared_ptr<DataMatri
     return matrix;
 }
 
+raylib::MyVector3 AIComponent::getOrientation() const
+{
+    return this->_AI->getOrientation();
+}
+
 void AIComponent::setRandomness(size_t randomness)
 {
-    _AI->setRandomBomb(randomness);
-    _AI->setRandomMove(randomness);
+    // TODO PAS UNE BONNE ID2E DE METTRE DU RANDOM DANS L'IA
+    // _AI->setRandomBomb(randomness);
+    // _AI->setRandomMove(randomness);
 }

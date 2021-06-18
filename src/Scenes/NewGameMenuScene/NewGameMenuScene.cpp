@@ -26,8 +26,7 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
 {
     size_t nbPlayers;
     size_t gameTimerDuration;
-    size_t mapSeed;
-    size_t IASeed;
+    size_t seed;
     size_t IARandomProb;
 
     if (Game::CoreData::settings->isSetInFile("NB_PLAYERS")) {
@@ -40,13 +39,9 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
         gameTimerDuration = (size_t) CoreData::settings->getInt("STANDARD_COUNTDOWN");
         options.gameTimerDuration = gameTimerDuration;
     }
-    if (Game::CoreData::settings->isSetInFile("MAP_SEED")) {
-        mapSeed = (size_t) CoreData::settings->getInt("MAP_SEED");
-        options.mapSeed = mapSeed;
-    }
-    if (Game::CoreData::settings->isSetInFile("IA_SEED")) {
-        IASeed = (size_t) CoreData::settings->getInt("IA_SEED");
-        options.IASeed = IASeed;
+    if (Game::CoreData::settings->isSetInFile("SEED")) {
+        seed = (size_t) CoreData::settings->getInt("SEED");
+        options.seed = seed;
     }
     if (Game::CoreData::settings->isSetInFile("IA_RANDOM_PROB")) {
         IARandomProb = (size_t) CoreData::settings->getInt("IA_RANDOM_PROB");
@@ -83,7 +78,20 @@ void Game::NewGameMenuScene::init()
         [](const Engine::Entity) {
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+            Engine::Entity textInput =
+                Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputIASeed");
+            auto &textInputRender2D = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInput);
+            auto &text = *dynamic_cast<raylib::IText *>(textInputRender2D.get("text").get());
+            std::string string = "";
 
+            for (auto c : text.getText())
+                if (c != ' ')
+                    string += c;
+            try {
+                options.seed = std::stoul(string, nullptr, 36);
+            } catch (...) {
+                options.seed = 42;
+            }
             Game::CoreData::camera->setFovy((float) options.fov);
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
