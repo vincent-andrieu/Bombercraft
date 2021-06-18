@@ -22,6 +22,12 @@ static void goGameScene(const Engine::Entity)
 {
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    const std::vector<Component::PlayerID> ids = {Component::ALPHA, Component::BRAVO, Component::CHARLIE, Component::DELTA};
+    Component::PlayerConfig *config[4] = {
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
 
     Game::CoreData::camera->setFovy((float) options.fov);
     Game::CoreData::moveCamera(
@@ -29,6 +35,15 @@ static void goGameScene(const Engine::Entity)
     Game::CoreData::camera->setUp(Game::CoreData::settings->getMyVector3("CAM_UP"));
     Game::CoreData::systemManager->getSystem<Engine::TimerSystem>().resume();
     Game::CoreData::sceneManager->setScene<Game::GameScene>(true, false);
+
+    auto scene = Game::Core::sceneManager->peekLastScene();
+    for (size_t i = 0; i < 4; i++) {
+        Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+        auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
+        const std::string &texturePath = (*config[i]).getSkinPath();
+
+        modelList.setTexture(texturePath);
+    }
 }
 
 void Game::PauseMenuScene::open()
