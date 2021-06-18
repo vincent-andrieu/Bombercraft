@@ -23,9 +23,14 @@ void MainMenuScene::open()
     const std::string bottomLeftText = Game::CoreData::settings->getString("HOME_BOTTOM_LEFT_TXT");
     const std::string bottomRightText = Game::CoreData::settings->getString("HOME_BOTTOM_RIGHT_TXT");
     GUI::LabelConfig splashConf = {fontSize, raylib::RColor::RGOLD, Game::CoreData::settings->getString("STANDARD_FONT")};
-    const std::vector<std::string> splashMsg = Game::CoreData::settings->getTabString("SPLASH_MSG");
-    const size_t splashMsgIdx = std::rand() % splashMsg.size();
+    std::vector<std::string> splashMsg = Game::CoreData::settings->getTabString("SPLASH_MSG");
+    size_t splashMsgIdx = 0;
 
+    if (splashMsg.size())
+        splashMsgIdx = std::rand() % splashMsg.size();
+    else {
+        splashMsg.push_back("Serieux Julien?????");
+    }
     ProportionUtilities my_utility(windowSize);
     const std::vector<raylib::MyVector2> buttonPosition = {
         my_utility.getProportion({25, 40}),
