@@ -19,7 +19,7 @@ namespace GUI
 {
     struct LabelConfig {
         const std::size_t fontSize;
-        const raylib::RColor fontColor;
+        raylib::RColor fontColor;
         const std::string fontPath;
     };
 
