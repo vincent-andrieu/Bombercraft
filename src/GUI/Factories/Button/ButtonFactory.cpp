@@ -89,7 +89,9 @@ Engine::Entity GUI::ButtonFactory::create(Engine::EntityPack &pack,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
 
     raylib::Text::setFontSize(*my_label, (conf.size.a < 20 && conf.size.b < 20) ? conf.size : conf.size - 20);
-    auto my_labelPosition(my_position + ProportionUtilities::getProportionWin(my_size, {50, 50}, my_label->getSize(), {50, 50}));
+    auto my_labelPosition(my_position
+        + ProportionUtilities::getProportionWin(
+            my_size, raylib::MyVector2(50, 50), my_label->getSize(), raylib::MyVector2(50, 50)));
     my_label->setPosition(my_labelPosition);
     Component::render2dMapModels my_models({
         {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, my_size, my_position)},
