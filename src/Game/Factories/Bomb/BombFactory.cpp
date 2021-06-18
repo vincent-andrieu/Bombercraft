@@ -73,7 +73,8 @@ Engine::Entity BombFactory::create(
     Engine::Entity entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
     int bombCountdown = Game::CoreData::settings->getInt("BOMB_COUNTDOWN");
 
-    matrix.getData()->save({(size_t)positionOnMap.a, (size_t)positionOnMap.b}, entity, GUI::BlockFactory::BlockType::BLOCK_BOMB);
+    matrix.getData()->save(
+        {(size_t) positionOnMap.a, (size_t) positionOnMap.b}, entity, GUI::BlockFactory::BlockType::BLOCK_BOMB);
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, animation);
     if (bombCountdown < 0)
@@ -114,6 +115,6 @@ void BombFactory::handlerBombTimer(
 
     Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("Explosion");
     playerInventory.setBomb(inventoryInfo.bomb + 1);
-    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius);
+    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius, player.entity);
     scene->localEntities.removeEntity(entity); // BOMB
 }

@@ -70,7 +70,7 @@ void GameScene::open()
     }
     /// Chrono
     const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
-    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
+    GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
         handlerGameTimeout);

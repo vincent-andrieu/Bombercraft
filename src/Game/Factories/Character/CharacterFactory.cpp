@@ -40,7 +40,7 @@ static void handlerHitboxCharacterDeath(
         CoreData::entityManager->removeComponent<Engine::Timer>(character);
     }
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](auto &pair) {
-      return pair.first == id;
+        return pair.first == id;
     });
     if (it_name != PLAYER_ID_TO_NAME.end()) {
         std::string playerName = it_name->second;
@@ -62,6 +62,26 @@ static void handlerHitboxCharacterDeath(
     }
 }
 
+static void rewardXP(const Engine::Entity player, const std::string &xpType)
+{
+    auto &playerConfig(Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(player));
+    const auto nbXP((CoreData::settings->isSetInFile("XP_PER_" + xpType) ? CoreData::settings->getInt("XP_PER_" + xpType) : 1));
+
+    playerConfig.setXP(playerConfig.getXP() + nbXP);
+}
+
+static void killRewardXP(const Engine::Entity blast)
+{
+    auto player(Game::CoreData::entityManager->getComponent<Engine::EntityBox>(blast).entity);
+
+    rewardXP(player, "KILL");
+}
+
+static void bonusRewardXP(const Engine::Entity player)
+{
+    rewardXP(player, "BONUS");
+}
+
 static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
 {
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
@@ -76,9 +96,11 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
 
     if (type == EntityType::BLAST) {
         handlerHitboxCharacterDeath(character, id, render);
+        killRewardXP(other);
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
+        bonusRewardXP(character);
     } else if (!((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
@@ -103,6 +125,8 @@ static void handlerKeyEvent(const Engine::Entity character)
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
+    std::cout << "player " << character << " has "
+              << Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(character).getXP() << "XP" << std::endl;
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
         if (CoreData::eventManager->isKeyPressed(keys.moveUp)) {
@@ -282,13 +306,13 @@ void CharacterFactory::handlerAITimer(
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
-    
+
     if (Game::CoreData::settings->getInt("AI_VELOCITY_MODE") == 1) {
         velocity.x = (float) velocityIA.first;
         velocity.y = (float) velocityIA.second;
     } else {
-        const raylib::MyVector3 &position =
-        render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
+        const raylib::MyVector3 &position = render.getPosition()
+            + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
         render.setPosition(position);
         hitbox.objectBox->setOrigin(
             raylib::MyVector3({position.a, position.b, position.c}) + Game::CoreData::settings->getMyVector3("AI_SHIFT"));

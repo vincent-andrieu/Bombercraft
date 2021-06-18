@@ -14,21 +14,12 @@
 namespace Engine
 {
     struct EntityBox : public Component<EntityBox> {
-        EntityBox(Entity entity) : entity(entity)
+        explicit EntityBox(Entity entity) : entity(entity)
         {
         }
 
         Entity entity;
     };
-}
-
-class EntityBox {
-    public:
-        EntityBox();
-        ~EntityBox();
-
-    protected:
-    private:
-};
+} // namespace Engine
 
 #endif /* !ENTITYBOX_HPP_ */

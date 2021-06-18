@@ -31,14 +31,17 @@ void MapFactory::create(
         for (size_t x = 0; x < map[y].size(); x++) {
             if (map[y][x] != GameModule::TileType::TILE_EMPTY) {
                 tmpBlockType = MapFactory::blockTypeSinceTile(map[y][x]);
-                tmpEntityId =
-                    GUI::BlockFactory::create(entityPack, {x * size.a, 0 * size.b, y * size.c}, tmpBlockType, ressourcePackRoot);
+                tmpEntityId = GUI::BlockFactory::create(
+                    entityPack, {x * size.a, 0 * size.b, y * size.c}, tmpBlockType, entity, ressourcePackRoot);
                 matrix.getData()->save({x, y}, tmpEntityId, tmpBlockType);
             } else {
                 matrix.getData()->save({x, y}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
             }
-            tmpEntityId = GUI::BlockFactory::create(
-                entityPack, {x * size.a, -1 * size.b, y * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
+            tmpEntityId = GUI::BlockFactory::create(entityPack,
+                {x * size.a, -1 * size.b, y * size.c},
+                BlockFactory::BlockType::BLOCK_FLOOR,
+                entity,
+                ressourcePackRoot);
         }
     }
 }
