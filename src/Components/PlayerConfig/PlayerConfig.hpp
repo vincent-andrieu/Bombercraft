@@ -51,7 +51,7 @@ namespace Component
         [[nodiscard]] const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
         [[nodiscard]] const string &getSkinPath() const;
         [[nodiscard]] const size_t &getXP() const;
-        const PlayerStatus &getStatus() const;
+        [[nodiscard]] const PlayerStatus &getStatus() const;
 
         void resetAllKeyBindings();
         void setKeyMoveUp(const raylib::KeyBoard &key);
