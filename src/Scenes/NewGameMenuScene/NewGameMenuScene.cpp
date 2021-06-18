@@ -122,7 +122,7 @@ void Game::NewGameMenuScene::init()
             "textInputIASeed",
             "Seed"},
         GUI::TextInputFactory::getStandardConfig(),
-        GUI::LabelFactory::getStandardLabelConfig(windowSize.a / 32));
+        GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32));
     GUI::SliderFactory::create(
         localEntities,
         my_utility.getProportion({20, 75}),
