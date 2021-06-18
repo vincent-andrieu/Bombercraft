@@ -26,7 +26,8 @@ namespace System
         void play(std::string const &entityName, Engine::EntityPack &entityPack);
         void play(std::string const &entityName);
 
-        void setVolume(float volume);
+        void setVolumeEffects(const float &volume);
+        void setVolumeMusic(const float &volume);
 
         void stopAll();
         void stopMusic();

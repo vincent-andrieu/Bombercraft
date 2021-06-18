@@ -119,7 +119,8 @@ Core::Core()
     /// COMPONENTS - CREATION
     Engine::Entity options = this->globalEntities.createEntity("options");
     CoreData::entityManager->addComponent<Component::OptionComponent>(options,
-        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME"),
+        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME_MUSIC"),
+        CoreData::settings->getFloat("STANDARD_SOUND_VOLUME_EFFECTS"),
         CoreData::settings->getString("STANDARD_RESSOURCE_PACK"),
         CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
     this->createSystems();
