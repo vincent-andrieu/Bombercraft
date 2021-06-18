@@ -5,11 +5,12 @@
 ** 03/06/2021 GameScene.cpp.cc
 */
 
+#include <thread>
+
 #include "GameScene.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
-#include "Game/Factories/Bomb/BombFactory.hpp"
 #include "Game/Factories/Character/CharacterFactory.hpp"
 #include "Game/Factories/MouseWheel/MouseWheelFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
@@ -35,7 +36,7 @@ const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NA
 
 static void handlerGameTimeout()
 {
-    Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+    Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
     CoreData::sceneManager->setScene<EndGameScene>();
 }
@@ -46,25 +47,32 @@ GameScene::GameScene(Engine::SystemManager &systemManager) : AbstractScene(syste
 
 void GameScene::open()
 {
+    const raylib::MyVector3 cameraPosition(CoreData::settings->getMyVector3("CAM_POSITION"));
+    const raylib::MyVector3 cameraUp(CoreData::settings->getMyVector3("CAM_UP"));
+    const raylib::MyVector3 cameraTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
 
-    /// Chrono
-    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
-    GUI::CountdownFactory::create(this->localEntities,
-        proportion.getProportion({50, 0}, {countdownSize.a, 0}),
-        options.gameTimerDuration,
-        handlerGameTimeout);
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
     GUI::MapFactory::create(this->localEntities, ressourcePackRoot, "gameMap", options.seed);
     /// Camera
-    CoreData::moveCamera(CoreData::settings->getMyVector3("CAM_POSITION"), CoreData::settings->getMyVector3("CAM_TARGET"));
-    CoreData::camera->setUp(CoreData::settings->getMyVector3("CAM_UP"));
+    CoreData::moveCamera(cameraPosition, cameraTarget);
+    CoreData::camera->setUp(cameraUp);
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
+
+    if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
+        cameraAnimation(cameraPosition, cameraUp, cameraTarget);
+    }
+    /// Chrono
+    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
+    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
+        proportion.getProportion({50, 0}, {countdownSize.a, 0}),
+        options.gameTimerDuration,
+        handlerGameTimeout);
     /// CHARACTERS
     this->createCharacters();
     /// MOUSE WHEEL FOV
@@ -80,7 +88,7 @@ void GameScene::open()
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
-        Game::CoreData::camera->setFovy((float) CoreData::settings->getInt("STANDARD_CAMERA_FOV"));
+        Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
@@ -149,4 +157,40 @@ void GameScene::update()
     }
     audio.update();
     timer.update();
+}
+
+static void updateWindow()
+{
+    CoreData::window->clear();
+    CoreData::sceneManager->run();
+    CoreData::window->refresh();
+}
+
+void GameScene::cameraAnimation(
+    const raylib::MyVector3 &toCameraPosition, const raylib::MyVector3 &toCameraUp, const raylib::MyVector3 &toCameraTarget)
+{
+    raylib::MyVector3 my_distance(0, -75, -75);
+    auto my_cameraPosition(toCameraPosition - my_distance);
+
+    CoreData::moveCamera(my_cameraPosition, toCameraTarget);
+    CoreData::camera->setUp(toCameraUp);
+
+    while (my_cameraPosition != toCameraPosition) {
+        std::this_thread::sleep_for(std::chrono::microseconds(35000));
+        if (my_cameraPosition.a < toCameraPosition.a)
+            my_cameraPosition.a++;
+        else if (my_cameraPosition.a > toCameraPosition.a)
+            my_cameraPosition.a--;
+        if (my_cameraPosition.b < toCameraPosition.b)
+            my_cameraPosition.b++;
+        else if (my_cameraPosition.b > toCameraPosition.b)
+            my_cameraPosition.b--;
+        if (my_cameraPosition.c < toCameraPosition.c)
+            my_cameraPosition.c++;
+        else if (my_cameraPosition.c > toCameraPosition.c)
+            my_cameraPosition.c--;
+
+        CoreData::moveCamera(my_cameraPosition, toCameraTarget);
+        updateWindow();
+    }
 }

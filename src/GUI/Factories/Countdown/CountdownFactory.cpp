@@ -33,7 +33,7 @@ static void timer_handler(
     }
 }
 
-void CountdownFactory::create(Engine::EntityPack &entityPack,
+Engine::Entity CountdownFactory::create(Engine::EntityPack &entityPack,
     raylib::MyVector2 position,
     const TimerConfig &config,
     std::size_t countdown,
@@ -67,9 +67,10 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
             handler();
             em.removeComponent<Engine::Timer>(entity);
         });
+    return entity;
 }
 
-void CountdownFactory::create(Engine::EntityPack &entityPack,
+Engine::Entity CountdownFactory::create(Engine::EntityPack &entityPack,
     raylib::MyVector2 position,
     std::size_t countdown,
     CountDownTimeout handler,
@@ -78,7 +79,7 @@ void CountdownFactory::create(Engine::EntityPack &entityPack,
 {
     const TimerConfig &config = CountdownFactory::getStandardConfig();
 
-    CountdownFactory::create(entityPack, position, config, countdown, handler, name, refreshMsTime);
+    return CountdownFactory::create(entityPack, position, config, countdown, handler, name, refreshMsTime);
 }
 
 const TimerConfig CountdownFactory::getStandardConfig()
