@@ -87,4 +87,5 @@ void AIComponent::setRandomness(size_t randomness)
     // TODO PAS UNE BONNE ID2E DE METTRE DU RANDOM DANS L'IA
     // _AI->setRandomBomb(randomness);
     // _AI->setRandomMove(randomness);
+    (void) randomness;
 }
