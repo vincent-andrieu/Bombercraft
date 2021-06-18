@@ -55,7 +55,7 @@ void IABomberman::IASettings()
         });
     //this->setRunnableTile(TileType::TILE_DANGER);
     this->setRunnableTile(TileType::TILE_EMPTY);
-    this->setRunnableTile(TileType::TILE_BOMB);
+    //this->setRunnableTile(TileType::TILE_BOMB);
 }
 
 void IABomberman::setIAEnv(std::vector<std::vector<TileType>> env)
@@ -175,10 +175,8 @@ bool IABomberman::findSecurePlace(
     std::pair<size_t, size_t> secure_place = this->getCostLessSafeMove(cost_array, env, stat);
 
     if (!stat) {
-        this->setRunnableTile(TileType::TILE_DANGER);
         cost_array = this->getCostArray(pos, env);
         secure_place = this->getCostLessSafeMove(cost_array, env, stat);
-        this->unsetRunnableTile(TileType::TILE_DANGER);
     }
     if (!stat)
         return false;
@@ -354,19 +352,25 @@ IA::Movement IABomberman::getIAMovement()
     std::pair<size_t, size_t> nextPos;
     IA::Movement tmp;
 
+    if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
+        this->setRunnableTile(TileType::TILE_DANGER);
     if (this->isStuck()) {
         this->clearQueue(this->_MovementQueue);
         this->randomMove(this->_pos, this->_env, this->_MovementQueue);
     }
     tmp = IACore::getIAMovement();
     nextPos = this->getNextPos(tmp);
-    if ((this->isSecurePlace(this->_env[this->_pos.second][this->_pos.first]) || this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
-        && (!this->isSecurePlace(this->_env[nextPos.second][nextPos.first]) && this->_env[this->_pos.second][this->_pos.first] != TileType::TILE_DANGER)) {
+    if (this->isSecurePlace(this->_env[this->_pos.second][this->_pos.first])
+        && !this->isSecurePlace(this->_env[nextPos.second][nextPos.first])) {
         this->clearQueue(this->_MovementQueue);
         std::cout << "On a encore eu de la chance" << std::endl;
+        if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
+            this->unsetRunnableTile(TileType::TILE_DANGER);
         return IA::Movement::IA_MOVE_NONE;
     }
     this->_prevPos = this->_pos;
+    if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
+        this->unsetRunnableTile(TileType::TILE_DANGER);
     return tmp;
 }
 
@@ -378,13 +382,13 @@ void IABomberman::randomMove(
     IA::Movement toPush;
     std::vector<IA::Movement> valueOk;
 
-    if (x != 0 && env[y][x - 1] == TileType::TILE_EMPTY)
+    if (x != 0 && this->isRunnable(env[y][x - 1]))
         valueOk.push_back(IA::Movement::IA_MOVE_LEFT);
-    if (y != 0 && env[y - 1][x] == TileType::TILE_EMPTY)
+    if (y != 0 && this->isRunnable(env[y - 1][x]))
         valueOk.push_back(IA::Movement::IA_MOVE_UP);
-    if (x + 1 < env[y].size() && env[y][x + 1] == TileType::TILE_EMPTY)
+    if (x + 1 < env[y].size() && this->isRunnable(env[y][x + 1]))
         valueOk.push_back(IA::Movement::IA_MOVE_RIGHT);
-    if (y + 1 < env.size() && env[y + 1][x] == TileType::TILE_EMPTY)
+    if (y + 1 < env.size() && this->isRunnable(env[y + 1][x]))
         valueOk.push_back(IA::Movement::IA_MOVE_DOWN);
     this->clearQueue(list);
     if (valueOk.size()) {
