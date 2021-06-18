@@ -276,7 +276,6 @@ void CharacterFactory::handlerAITimer(
     (void) entityManager;
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
-        std::cout << "PUT BOMB" << std::endl;
         render.setRotation(ai.getOrientation());
         GUI::BombFactory::placeBomb(entity);
     }
