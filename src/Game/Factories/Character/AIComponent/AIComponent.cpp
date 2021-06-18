@@ -75,8 +75,9 @@ raylib::MyVector3 AIComponent::getOrientation() const
 
 void AIComponent::setRandomness(size_t randomness, bool smoothMode)
 {
-    this->_AI->setRandomBomb(randomness);
-    this->_AI->setRandomMove(randomness);
+    size_t value = 100 - randomness;
+    this->_AI->setRandomBomb((value) ? value : 1);
+    this->_AI->setRandomMove(value);
     this->_smoothMode = smoothMode;
 }
 
