@@ -38,11 +38,13 @@ static void goGameScene(const Engine::Entity)
 
     auto scene = Game::Core::sceneManager->peekLastScene();
     for (size_t i = 0; i < 4; i++) {
-        Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
-        auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
-        const std::string &texturePath = (*config[i]).getSkinPath();
+        if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
+            Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+            auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
+            const std::string &texturePath = (*config[i]).getSkinPath();
 
-        modelList.setTexture(texturePath);
+            modelList.setTexture(texturePath);
+        }
     }
 }
 
