@@ -37,127 +37,118 @@ static const std::array<string, nbrRessourcePacks> ressourcePackPaths({
     "Asset/Texture/SnowyToundra/",
 });
 
-static const std::array<raylib::MyVector2, nbrRessourcePacks> ressourcePackPositions({
-    raylib::MyVector2(25, 20),
-    raylib::MyVector2(75, 20),
-    raylib::MyVector2(25, 30),
-    raylib::MyVector2(75, 30),
-    raylib::MyVector2(25, 40),
-    raylib::MyVector2(75, 40),
-    raylib::MyVector2(25, 50),
-    raylib::MyVector2(75, 50),
-});
-
-static void setRessourcePack(const Engine::Entity &optionEntity,
-    const Engine::Entity &selectedEntity,
-    const ProportionUtilities &resizer,
-    const uint index)
+static void setRessourcePack(const Engine::Entity &optionEntity, const Engine::Entity &buttonEntity, const uint index)
 {
     CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity).ressourcePack = ressourcePackPaths[index];
-    static_cast<raylib::Texture *>(CoreData::entityManager->getComponent<Component::Render2D>(selectedEntity).get("image").get())
-        ->setPosition(resizer(ressourcePackPositions[index])
-            + raylib::MyVector2(150, -1 * (GUI::ButtonFactory::getMediumButtonConfig().size.b / 2 + 10)));
+    Component::Render2D &button = CoreData::entityManager->getComponent<Component::Render2D>(buttonEntity);
+    CoreData::entityManager->foreachComponent<Component::Render2D>([buttonEntity](Component::Render2D &component) {
+        if (component.doesGet("unavailable") && component.isSetToDraw("unavailable")) {
+            component.setToDrawFirst("idle");
+            component.unsetToDraw("unavailable");
+        }
+    });
+    button.unsetToDraw("idle");
+    button.unsetToDraw("hover");
+    button.setToDrawFirst("unavailable");
 }
 
 void RessourcePackMenuScene::open()
 {
     const MyVector2 &window_size = CoreData::settings->getMyVector2("WIN_SIZE");
     const ProportionUtilities resizer(window_size);
-    GUI::ButtonConfig menuButtons = GUI::ButtonFactory::getMediumButtonConfig();
-    const Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    GUI::ButtonConfig menuButtons = GUI::ButtonFactory::getBigButtonConfig();
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+    std::vector<Engine::Entity> buttonEntities;
 
     GUI::ImageFactory::create(
         this->localEntities, raylib::MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     GUI::LabelFactory::createCentered(
         this->localEntities, resizer(50, 4), "Ressource pack", GUI::LabelFactory::getStandardLabelConfig());
-    Engine::Entity selectedEntity = GUI::ImageFactory::create(this->localEntities,
-        resizer(ressourcePackPositions[this->_getSelectedRessourcePackIndex(optionEntity)])
-            + raylib::MyVector2(150, -1 * (menuButtons.size.b / 2 + 10)),
-        raylib::MyVector2(menuButtons.size.b + 60, menuButtons.size.b + 10),
-        "Asset/Interface/check.png",
-        true,
-        "selected");
 
-    GUI::ButtonFactory::create(
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[0]),
+        resizer(25, 20),
         "desertButton",
         menuButtons,
         "Desert",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 0);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 0);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[1]),
+        resizer(75, 20),
         "endButton",
         menuButtons,
         "End",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 1);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 1);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[2]),
+        resizer(25, 30),
         "mountains",
         menuButtons,
         "Mountains",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 2);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 2);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[3]),
+        resizer(75, 30),
         "mushroom",
         menuButtons,
         "Mushroom",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 3);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 3);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[4]),
+        resizer(25, 40),
         "nether",
         menuButtons,
         "Nether",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 4);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 4);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[5]),
+        resizer(75, 40),
         "ocean",
         menuButtons,
         "Ocean",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 5);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 5);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[6]),
+        resizer(25, 50),
         "plains",
         menuButtons,
         "Plains",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 6);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 6);
         },
-        true);
-    GUI::ButtonFactory::create(
+        true));
+    buttonEntities.push_back(GUI::ButtonFactory::create(
         this->localEntities,
-        resizer(ressourcePackPositions[7]),
+        resizer(75, 50),
         "snowyToundra",
         menuButtons,
         "Snowy",
-        [optionEntity, selectedEntity, resizer](const Engine::Entity &) {
-            setRessourcePack(optionEntity, selectedEntity, resizer, 7);
+        [optionEntity](const Engine::Entity &entityButton) {
+            setRessourcePack(optionEntity, entityButton, 7);
         },
-        true);
+        true));
+
+    const uint &selectedButtonIndex = this->_getSelectedRessourcePackIndex(optionEntity);
+    const Engine::Entity &selectedButtonEntity = buttonEntities.at(selectedButtonIndex);
+    setRessourcePack(optionEntity, selectedButtonEntity, selectedButtonIndex);
 
     GUI::ButtonFactory::create(this->localEntities, resizer(50, 90), "doneButton", menuButtons, "Done", doneButtonHandler, true);
 
