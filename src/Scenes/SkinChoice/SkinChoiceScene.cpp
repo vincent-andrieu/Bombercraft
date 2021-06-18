@@ -79,7 +79,7 @@ void Game::SkinChoiceScene::open()
         my_utility(44, 10),
         "changePlayer",
         smallButtonConfig,
-        "Player " + toString(this->_selectedPlayer->getPlayerId()),
+        "Player " + toString(this->_selectedPlayer->getPlayerId() + 1),
         [this](const Engine::Entity &entity) {
             // Change selected player
             this->_selectedPlayer =
@@ -88,7 +88,7 @@ void Game::SkinChoiceScene::open()
             // Change button label
             static_cast<raylib::Text *>(
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
-                ->setText("Player " + toString(this->_selectedPlayer->getPlayerId()));
+                ->setText("Player " + toString(this->_selectedPlayer->getPlayerId() + 1));
 
             // Change skin choice
             const Engine::Entity &model = CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("skin");
@@ -102,7 +102,7 @@ void Game::SkinChoiceScene::open()
         this->localEntities, my_utility(25, 80), "leftButton", mediumButtonConfig, "Previous", previousHandler);
     GUI::ButtonFactory::create(this->localEntities, my_utility(50.5, 80), "rightButton", mediumButtonConfig, "Next", nextHandler);
     GUI::ButtonFactory::create(
-        this->localEntities, my_utility(25, 90), "cancelButton", mediumButtonConfig, "Cancel", cancelHandler);
+        this->localEntities, my_utility(25, 90), "cancelButton", mediumButtonConfig, "Done", cancelHandler);
     GUI::ButtonFactory::create(
         this->localEntities, my_utility(50.5, 90), "applyButton", mediumButtonConfig, "Apply", [this](const Engine::Entity &) {
             const Engine::Entity &model = CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("skin");

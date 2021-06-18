@@ -97,15 +97,17 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
     raylib::Text *textActual = dynamic_cast<raylib::Text *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
+    if (!focusState)
+        return;
     for (auto const &x : _letterMap) {
-        if (focusState && Game::CoreData::eventManager->isKeyPressed(x.first)) {
+        if (Game::CoreData::eventManager->isKeyPressed(x.first)) {
             stringActual = textActual->getText();
             if (stringActual.length() < maxChar) {
                 textActual->setText(stringActual + x.second);
             }
         }
     }
-    if (focusState && Game::CoreData::eventManager->isKeyPressed(raylib::KeyBoard::IKEY_BACKSPACE)) {
+    if (Game::CoreData::eventManager->isKeyPressed(raylib::KeyBoard::IKEY_BACKSPACE)) {
         if (!textActual->getText().empty()) {
             std::string newText = textActual->getText();
 
@@ -115,15 +117,21 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
     }
 };
 
-static Component::eventScript focusHandler = [](const Engine::Entity entityChild) {
-    raylib::Rectangle *rectActual = dynamic_cast<raylib::Rectangle *>(
-        Game::CoreData::entityManager->getComponent<Component::Render2D>(entityChild).get("rectangle").get());
+static Component::eventScript focusHandler = [](const Engine::Entity &childEntity) {
+    raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
+        Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("rectangle").get());
 
     if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
-        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
-            focusEvent.changeFocus(false);
-        });
-        Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(entityChild).changeFocus(true);
+        raylib::Texture *rectangle = dynamic_cast<raylib::Texture *>(
+            Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("rectangle").get());
+
+        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>(
+            [rectangle](Component::ClickFocusEvent &focusEvent) {
+                rectangle->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
+                focusEvent.changeFocus(false);
+            });
+        Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).changeFocus(true);
+        rectangle->setPath(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"));
     }
 };
 
@@ -139,11 +147,18 @@ void TextInputFactory::create(
     raylib::MyVector2 inputSize(dynConf.size.a - textInput.borderSize * 2, dynConf.size.b - textInput.borderSize * 2);
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels({{"rectangle",
-                                          std::make_shared<raylib::Rectangle>(inputPosition, inputSize, textInput.color)},
-            {"border", std::make_shared<raylib::Rectangle>(dynConf.position, dynConf.size, textInput.borderColor)},
+        Component::render2dMapModels({
+            {"border",
+                std::make_shared<raylib::Texture>(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
+                    dynConf.size,
+                    dynConf.position,
+                    textInput.borderColor)},
+            {"rectangle",
+                std::make_shared<raylib::Texture>(
+                    Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), inputSize, inputPosition)},
             {"text",
-                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)}}));
+                std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos, label.fontSize, label.fontColor)},
+        }));
     Game::CoreData::entityManager->addComponent<Component::TextInputConfig>(entity, textInput.maxChar);
     Game::CoreData::entityManager->addComponent<Component::KeyEvent>(entity, inputHandler, inputHandlerRequirement);
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
