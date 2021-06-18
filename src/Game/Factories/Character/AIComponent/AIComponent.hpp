@@ -26,6 +26,7 @@ namespace Component
 
             void setRandomness(size_t randomness, bool smoothMode);
             bool getMoveType() const;
+            void setBonusWallPass();
 
         private:
             static GameModule::MapType translateMatrix(const std::shared_ptr<DataMatrix> &map);
@@ -33,6 +34,7 @@ namespace Component
         private:
             std::shared_ptr<GameModule::IABomberman> _AI;
             bool _smoothMode;
+            bool _isSet;
     };
 }
 

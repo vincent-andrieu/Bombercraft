@@ -28,9 +28,14 @@ namespace System
         void update()
         {
             for (const Engine::Entity &entity : this->getManagedEntities()) {
-                auto [event] = Game::CoreData::entityManager->getComponents<T>(entity);
+                try {
+                    auto [event] = Game::CoreData::entityManager->getComponents<T>(entity);
 
-                event.trigger(entity);
+                    event.trigger(entity);
+                } catch (std::invalid_argument const &) {
+                    this->onEntityRemoved(entity);
+                    std::cerr << "Warning: EventSystem::update invalid entity components. Unregister entity." << std::endl;
+                }
             }
         }
     };
