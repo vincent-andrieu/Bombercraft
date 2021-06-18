@@ -17,7 +17,6 @@ void CreditScene::CreditScene::open()
 {
     const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities my_utility(windowSize);
-    auto scene = CoreData::sceneManager->getCurrentScene();
     const size_t fontSize = (size_t) CoreData::settings->getInt("STANDARD_FONT_SIZE");
     raylib::MyVector2 logoSize(my_utility.getProportion({70, 25}));
     raylib::MyVector2 textPosition = my_utility.getProportion({50, 95});
@@ -27,9 +26,9 @@ void CreditScene::CreditScene::open()
     GUI::LabelConfig conf = GUI::LabelFactory::getStandardLabelConfig(fontSize);
 
     GUI::ImageFactory::create(
-        scene->localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+        this->localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     const Engine::Entity &logo = GUI::ImageFactory::create(
-        scene->localEntities, logoPosition, logoSize, Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"), true, "logo");
+        this->localEntities, logoPosition, logoSize, Game::CoreData::settings->getString("BOMBERCRAFT_LOGO"), true, "logo");
     // MOVING LOGO
     CoreData::entityManager->addComponent<Engine::Timer>(logo,
         0.01,
@@ -40,6 +39,11 @@ void CreditScene::CreditScene::open()
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("image").get());
             raylib::MyVector2 bgPos = pictureBg->getPosition() + raylib::MyVector2(0, -1);
 
+            const float mouseWheel = CoreData::eventManager->getMouseWheel();
+            if (mouseWheel == 1)
+                bgPos = bgPos + raylib::MyVector2(0, -20);
+            else if (mouseWheel == -1)
+                bgPos = bgPos + raylib::MyVector2(0, 10);
             pictureBg->setPosition(bgPos);
         });
 
@@ -56,6 +60,11 @@ void CreditScene::CreditScene::open()
                     Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("text").get());
                 raylib::MyVector2 textPos = text->getPosition() + raylib::MyVector2(0, -1);
 
+                const float mouseWheel = CoreData::eventManager->getMouseWheel();
+                if (mouseWheel == 1)
+                    textPos = textPos + raylib::MyVector2(0, -20);
+                else if (mouseWheel == -1)
+                    textPos = textPos + raylib::MyVector2(0, 10);
                 text->setPosition(textPos);
                 if (line == creditText.back() && textPos.b + text->getSize().b < 0)
                     CoreData::sceneManager->setScene<MainMenuScene>();
@@ -67,7 +76,7 @@ void CreditScene::CreditScene::open()
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
         CoreData::sceneManager->setScene<MainMenuScene>();
     }));
-    Game::KeyManagementFactory::create(scene->localEntities, my_keyTriggers);
+    Game::KeyManagementFactory::create(this->localEntities, my_keyTriggers);
 }
 
 void Game::CreditScene::update()

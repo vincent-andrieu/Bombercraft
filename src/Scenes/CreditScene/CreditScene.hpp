@@ -23,17 +23,14 @@
 namespace Game
 {
     class CreditScene : public Engine::AbstractScene, public SceneWithEvents {
-        public:
-            CreditScene(Engine::SystemManager &systemManager);
-            ~CreditScene() = default;
+      public:
+        CreditScene(Engine::SystemManager &systemManager);
+        ~CreditScene() = default;
 
-            virtual void open();
+        virtual void open();
 
-            void update();
-
-        protected:
-        private:
+        void update();
     };
-}
+} // namespace Game
 
 #endif /* !CREDITSCENE_HPP_ */
