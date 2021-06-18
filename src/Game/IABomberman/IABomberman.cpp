@@ -138,6 +138,16 @@ bool IABomberman::actionPutBomber(std::pair<size_t, size_t> pos, std::vector<std
             return true;
         }
     }
+    if (available.size()) {
+        if (std::find(this->_enemyPos.begin(), this->_enemyPos.end(), this->_pos) != this->_enemyPos.end()) {
+            editedEnv = this->getMapWithExposionEffect(env, available[0], this->_range);
+            if (this->findSecurePlace(pos, editedEnv, list)) {
+                this->_MovementQueue = list;
+                this->_orentation = this->findOrientation(pos, available[0]);
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -497,6 +507,7 @@ std::pair<size_t, size_t> IABomberman::getNextPos(IA::Movement move) const
 
 bool IABomberman::isCorrectBomb(const std::pair<size_t, size_t> &pos) const
 {
+    std::cout << "here: x: " << pos.first << " y: " << pos.second << std::endl;
     if (pos.first + 1 < this->_env[pos.second].size() && this->_env[pos.second][pos.first + 1] == TileType::TILE_SOFT)
         return true;
     if (pos.second + 1 < this->_env.size() && this->_env[pos.second + 1][pos.first] == TileType::TILE_SOFT)
