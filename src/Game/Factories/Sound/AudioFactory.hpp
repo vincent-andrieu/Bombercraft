@@ -13,11 +13,13 @@
 namespace Game
 {
     struct AudioConfig {
-        float volume;
+        float volumeEffects;
+        float volumeMusic;
         float pitch;
     };
 
-    enum class AudioType {
+    enum class AudioType
+    {
         MUSIC,
         SOUND
     };
@@ -28,10 +30,13 @@ namespace Game
 
         static const AudioConfig getDefaultConfig();
 
-        static void create(Engine::EntityPack &entityPack, AudioType type, std::string const &filePath, AudioConfig const &config,
+        static void create(Engine::EntityPack &entityPack,
+            AudioType type,
+            std::string const &filePath,
+            AudioConfig const &config,
             std::string const &name);
         static void create(Engine::EntityPack &entityPack, AudioType type, std::string const &filePath, std::string const &name);
     };
-}
+} // namespace Game
 
 #endif // AUDIOFACTORY_HPP

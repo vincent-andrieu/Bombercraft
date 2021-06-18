@@ -189,6 +189,9 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
     std::string typeInStr;
     const raylib::MyVector3 position = render3DTo.modele->getPosition();
 
+    if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::POWERUP) {
+        scene->localEntities.removeEntity(toEntity); //REMOVE BONUS
+    }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::SOFTBLOCK) {
         scene->localEntities.removeEntity(toEntity); // REMOVE SOFT BLOCK
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("BlockDestroyed");
@@ -301,7 +304,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         GUI::BlockFactory::create(entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
@@ -309,7 +312,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         GUI::BlockFactory::create(entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
@@ -317,7 +320,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
     }
     for (size_t i = 1; i < blastRadius; i++) {
@@ -325,7 +328,7 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
         GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
-        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT)
+        if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
     }
 }
