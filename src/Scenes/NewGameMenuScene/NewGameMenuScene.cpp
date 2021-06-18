@@ -92,7 +92,7 @@ void Game::NewGameMenuScene::init()
             } catch (...) {
                 options.seed = 42;
             }
-            Game::CoreData::camera->setFovy((float) options.fov);
+            Game::CoreData::camera->setFovy(options.fov);
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });
@@ -116,13 +116,15 @@ void Game::NewGameMenuScene::init()
     // TODO check if not a number
     // TODO add eventHandler to textInputFactory
     // TODO set textRec, to limit the input inside the borders
+    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
+    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
     GUI::TextInputFactory::create(localEntities,
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
             "textInputIASeed",
             "Seed"},
         GUI::TextInputFactory::getStandardConfig(),
-        GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32));
+        labelConfig);
     GUI::SliderFactory::create(
         localEntities,
         my_utility.getProportion({20, 75}),

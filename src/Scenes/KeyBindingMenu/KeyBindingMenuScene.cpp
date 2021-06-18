@@ -39,13 +39,13 @@ void KeyBindingMenuScene::open()
         this->_resizer(44, 10),
         "playerNumberTitle",
         this->_buttonDefaultConfig,
-        "Player " + toString(this->_selectedPlayer->getPlayerId()),
+        "Player " + toString(this->_selectedPlayer->getPlayerId() + 1),
         [this](const Engine::Entity &entity) {
             this->_selectedPlayer =
                 &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getNextPlayer(*this->_selectedPlayer);
             static_cast<raylib::Text *>(
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
-                ->setText("Player " + toString(this->_selectedPlayer->getPlayerId()));
+                ->setText("Player " + toString(this->_selectedPlayer->getPlayerId() + 1));
             this->_refreshKeys();
         });
 
