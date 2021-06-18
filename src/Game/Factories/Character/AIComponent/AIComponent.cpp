@@ -9,7 +9,7 @@
 
 using namespace Component;
 
-AIComponent::AIComponent() : _AI(std::make_shared<GameModule::IABomberman>())
+AIComponent::AIComponent() : _AI(std::make_shared<GameModule::IABomberman>()), _smoothMode(false)
 {
 }
 
@@ -73,10 +73,14 @@ raylib::MyVector3 AIComponent::getOrientation() const
     return this->_AI->getOrientation();
 }
 
-void AIComponent::setRandomness(size_t randomness)
+void AIComponent::setRandomness(size_t randomness, bool smoothMode)
 {
-    // TODO PAS UNE BONNE ID2E DE METTRE DU RANDOM DANS L'IA
-    // _AI->setRandomBomb(randomness);
-    // _AI->setRandomMove(randomness);
-    (void) randomness;
+    this->_AI->setRandomBomb(randomness);
+    this->_AI->setRandomMove(randomness);
+    this->_smoothMode = smoothMode;
+}
+
+bool AIComponent::getMoveType() const
+{
+    return this->_smoothMode;
 }

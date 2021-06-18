@@ -142,6 +142,7 @@ void Game::NewGameMenuScene::init()
         my_utility.getProportion({20, 85}),
         [&](const Engine::Entity &, GUI::sliderValue IARandomProb) {
             options.IARandomProb = (IARandomProb * -1) + 100;
+            options.smoothMode = IARandomProb < 50;
         },
         "AI difficulty: ",
         my_utility.getProportion(GUI::ButtonFactory::MediumProportions),

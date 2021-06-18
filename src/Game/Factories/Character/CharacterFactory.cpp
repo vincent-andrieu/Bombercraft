@@ -282,10 +282,12 @@ void CharacterFactory::handlerAITimer(
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();
     
-    if (Game::CoreData::settings->getInt("AI_VELOCITY_MODE") == 1) {
-        velocity.x = (float) velocityIA.first;
-        velocity.y = (float) velocityIA.second;
+    if (ai.getMoveType()) {
+        velocity.x = (float) velocityIA.first / 2;
+        velocity.y = (float) velocityIA.second / 2;
+        std::cout << "x: " << velocity.x << " y: " << velocity.y << std::endl;
     } else {
+        std::cout << "lalalalala" << std::endl;
         const raylib::MyVector3 &position =
         render.getPosition() + raylib::MyVector3(static_cast<float>(velocityIA.first), 0, static_cast<float>(velocityIA.second));
         render.setPosition(position);
