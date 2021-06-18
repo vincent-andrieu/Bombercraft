@@ -48,9 +48,7 @@ void IABomberman::IASettings()
         [this](std::vector<std::vector<TileType>> env, std::pair<size_t, size_t> pos, std::queue<IA::Movement> &list) {
             return this->movementPrediction(pos, env, list);
         });
-    //this->setRunnableTile(TileType::TILE_DANGER);
     this->setRunnableTile(TileType::TILE_EMPTY);
-    //this->setRunnableTile(TileType::TILE_BOMB);
 }
 
 void IABomberman::setIAEnv(std::vector<std::vector<TileType>> env)
@@ -150,13 +148,10 @@ void IABomberman::movementPrediction(
     size_t y = pos.second;
 
     if (this->isRandomMove()) {
-        std::cout << "random move" << std::endl;
         this->randomMove(pos, env, list);
     } else if (this->isSecurePlace(env[y][x])) {
-        std::cout << "offensive move" << std::endl;
         this->offensiveMove(pos, env, list);
     } else {
-        std::cout << "findsecureplace move" << std::endl;
         if (!this->findSecurePlace(pos, env, list)) {
             std::cerr << "RIP mon ruf" << std::endl;
             this->clearQueue(list);
@@ -303,7 +298,6 @@ std::vector<std::vector<TileType>> IABomberman::getMapWithExposionEffect(
 
     if (env[y][x] != TileType::TILE_BOMB)
         return env;
-    env[y][x] = TileType::TILE_DANGER;
     for (size_t i = 0; i < range; i++) {
         tmp = (int) (x + 1 + (i * move));
         if (tmp >= 0 && x + (i * move) < env[y].size()) {
@@ -368,7 +362,7 @@ IA::Movement IABomberman::getIAMovement()
     if (this->isSecurePlace(this->_env[this->_pos.second][this->_pos.first])
         && !this->isSecurePlace(this->_env[nextPos.second][nextPos.first])) {
         this->clearQueue(this->_MovementQueue);
-        std::cout << "On a encore eu de la chance" << std::endl;
+        std::cerr << "On a encore eu de la chance" << std::endl;
         if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
             this->unsetRunnableTile(TileType::TILE_DANGER);
         return IA::Movement::IA_MOVE_NONE;
@@ -399,7 +393,6 @@ void IABomberman::randomMove(
     if (valueOk.size()) {
         toPush = valueOk[std::rand() % valueOk.size()];
     } else {
-        std::cout << "LALALALA 2" << std::endl;
         toPush = IA::Movement::IA_MOVE_NONE;
     }
     list.push(toPush);
@@ -423,7 +416,6 @@ void IABomberman::offensiveMove(
     }
     if (!this->_enemyPos.size()) {
         this->clearQueue(list);
-        std::cout << "LALALALA 3" << std::endl;
         list.push(IA::Movement::IA_MOVE_NONE);
     } else {
         this->loadPath(cost, this->_enemyPos[tmp.first], path);
