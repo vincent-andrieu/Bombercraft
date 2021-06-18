@@ -18,3 +18,9 @@ void Component::AbstractEvent::trigger(Engine::Entity entity)
         this->_handler(entity);
     }
 }
+
+void Component::AbstractEvent::setRequirements(const Game::EventRequirement &requirements)
+{
+    _requirements.reset();
+    _requirements = std::make_shared<Game::EventRequirement>(requirements);
+}

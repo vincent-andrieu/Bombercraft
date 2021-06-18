@@ -12,6 +12,7 @@
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 
 extern std::unique_ptr<Game::Core> core;
+extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
 Game::PauseMenuScene::PauseMenuScene(Engine::SystemManager &systemManager)
     : AbstractScene(systemManager, *Game::CoreData::entityManager)
@@ -40,10 +41,21 @@ static void goGameScene(const Engine::Entity)
     for (size_t i = 0; i < 4; i++) {
         if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
             Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+            /// Update skin
             auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
             const std::string &texturePath = (*config[i]).getSkinPath();
-
             modelList.setTexture(texturePath);
+            /// Update keybiding
+            const Engine::EntityBox &inventoryEntityBox = Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
+            const Component::PlayerInventory &inventory =
+                Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+            const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+            if (info.config != nullptr) {
+                const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+                Game::EventRequirement requirements(
+                    info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
+                Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+            }
         }
     }
 }
