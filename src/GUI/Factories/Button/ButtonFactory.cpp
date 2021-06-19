@@ -148,6 +148,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     const Engine::Entity &entity = name.empty() ? pack.createAnonymousEntity() : pack.createEntity(name);
     const raylib::MyVector2 screenSize((mySize.a * 25) / 100, mySize.b);
 
+    std::cout << "screenSize: " << screenSize << std::endl;
     // Label
     const raylib::MyVector2 labelSize(mySize.a, mySize.b);
     auto myLabel(std::make_shared<raylib::Text>(label,
@@ -193,7 +194,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
-    const raylib::MyVector2 buttonBorder((mySize.a * 0.6) / 100, (mySize.b * 5) / 100);
+    const raylib::MyVector2 buttonBorder((mySize.a * 0.6f) / 100, (mySize.b * 5) / 100);
     if (!screenPath.empty() && std::filesystem::exists(screenPath) && std::filesystem::is_regular_file(screenPath))
         GUI::ImageFactory::create(pack, myPosition + buttonBorder, screenSize - buttonBorder * 2, screenPath, true);
 
