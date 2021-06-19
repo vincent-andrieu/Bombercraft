@@ -33,6 +33,7 @@ void GameScene::loadPlayerConfig()
                 continue;
             CoreData::entityManager->saveManager.setReadingFile(my_filename);
             CoreData::entityManager->saveManager.readActFile(my_xp);
+            // TODO ajouter toutes les variables de playerConfig à la suite
             CoreData::entityManager->saveManager.closeReadingFile(my_filename);
         } catch (const std::filesystem::filesystem_error &my_e) {
             std::cerr << my_e.what() << std::endl;
@@ -53,4 +54,22 @@ void GameScene::loadGame(const std::string &loadName)
     }
     loadPlayerConfig();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
+}
+
+void GameScene::preLoadGames()
+{
+    // TODO get only directories
+    //    /*container = */ CoreData::entityManager->saveManager.listWD();
+    // TODO create entities : save selector
+    //  with
+    //      name (directory name)
+    //      screenshot (in directory)
+    //      date (of the directory)
+    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl;
+    const auto my_dir(CoreData::entityManager->saveManager.listWD());
+
+    for (const auto &entry : my_dir) {
+        std::cout << entry.path() << std::endl;
+    }
+    std::cout << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl;
 }

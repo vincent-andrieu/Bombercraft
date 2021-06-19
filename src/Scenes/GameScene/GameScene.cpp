@@ -55,6 +55,7 @@ void GameScene::open()
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
 
+    preLoadGames();
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;

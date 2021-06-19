@@ -25,6 +25,8 @@ namespace Game
         GameScene(Engine::SystemManager &systemManager);
         ~GameScene() = default;
 
+        void preLoadGames();
+
         void loadGame(const std::string &loadName);
         void saveGame(const std::string &saveName);
         void cameraAnimation(const raylib::MyVector3 &toCameraPosition,

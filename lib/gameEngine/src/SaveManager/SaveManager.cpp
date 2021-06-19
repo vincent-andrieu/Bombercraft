@@ -91,6 +91,11 @@ const std::filesystem::path &SaveManager::getWorkingDirectory() const
     return _workingDirectory;
 }
 
+std::filesystem::directory_iterator SaveManager::listWD()
+{
+    return std::filesystem::directory_iterator(_workingDirectory);
+}
+
 inline void SaveManager::unsetWorkingDirectory()
 {
     _workingDirectory.replace_filename("");

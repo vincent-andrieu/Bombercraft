@@ -33,8 +33,8 @@ void GameScene::savePlayerConfig()
                 CoreData::entityManager->saveManager.createFile(my_filename);
             CoreData::entityManager->saveManager.setWritingFile(my_filename);
             CoreData::entityManager->saveManager.writeActFile(my_xp);
+            // TODO ajouter toutes les variables de playerConfig à la suite
             CoreData::entityManager->saveManager.closeWritingFile(my_filename);
-            CoreData::entityManager->saveManager.unsetWorkingDirectory();
         } catch (const std::filesystem::filesystem_error &my_e) {
             std::cerr << my_e.what() << std::endl;
         }

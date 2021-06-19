@@ -65,6 +65,12 @@ namespace Engine
          * @return A path to the actual working directory
          */
         [[nodiscard]] const std::filesystem::path &getWorkingDirectory() const; // TODO implement
+
+        /**
+         * @brief List files and directories in working directory
+         * @return A container with the name and the type of each entry in the working directory
+         */
+        [[nodiscard]] std::filesystem::directory_iterator listWD();
         /**
          * @brief Remove the actual working directory from the stack of actual writing directories,
          * so the last working directory is now the actual
