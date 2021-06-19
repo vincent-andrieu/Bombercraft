@@ -21,8 +21,7 @@ namespace raylib
             const MyVector2 position = {0, 0},
             const RColor color = RColor::RWHITE,
             const bool scaleMode = true,
-            const MyVector2 rectPosition = {-1, -1},
-            const MyVector4 ogRectPercentage = {-1, -1, -1, -1});
+            const MyVector2 rectSize = {0, 0});
         ~Texture();
 
         void draw();
@@ -34,7 +33,7 @@ namespace raylib
         void setSize(const MyVector2 size);
         void setScaleMode(const bool mode);
         void setRect(const MyVector2 rect);
-        void setOgRect(const MyVector4 ogRect);
+        void setTruncateSize(const MyVector2 &size);
 
         [[nodiscard]] Texture2D getTexture() const;
         [[nodiscard]] string getPath() const;
@@ -54,10 +53,12 @@ namespace raylib
         MyVector2 _position;
         RColor _color;
         string _path;
+        MyVector2 _size;
         Texture2D _texture;
-        Rectangle _size;
+        Rectangle _destRect;
         bool _scaleMode;
-        Rectangle _ogRect;
+        MyVector2 _truncateSize;
+        MyVector2 _truncateCoef;
     };
 }; // namespace raylib
 

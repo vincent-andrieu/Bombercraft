@@ -32,6 +32,12 @@ namespace GUI
             Component::PlayerConfig &config);
 
         static Component::PlayerInventoryInfo getDefaultPlayerInventory();
+
+      private:
+        static void CreatePlayerXpbar(Engine::EntityPack &pack,
+            const raylib::MyVector2 &position,
+            const raylib::MyVector2 &boxSize,
+            Component::PlayerID id);
     };
 } // namespace GUI
 
