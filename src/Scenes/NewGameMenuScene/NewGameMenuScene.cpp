@@ -87,7 +87,7 @@ void Game::NewGameMenuScene::init()
         my_utility.getProportion({55.5, 75}),
         my_button_prefix + "newGame",
         my_mediumButtonConfig,
-        "Create New Game",
+        "Start",
         [](const Engine::Entity) {
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);

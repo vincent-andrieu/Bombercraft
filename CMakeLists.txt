@@ -97,6 +97,7 @@ set(SRCS
         src/Scenes/EndGame/EndGameScene.cpp
         src/Scenes/CreditScene/CreditScene.cpp
         src/Scenes/RessourcePackMenu/RessourcePackMenuScene.cpp
+        src/Scenes/SaveMenu/SaveMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

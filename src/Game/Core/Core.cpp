@@ -14,6 +14,8 @@
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/CreditScene/CreditScene.hpp"
 #include "Scenes/RessourcePackMenu/RessourcePackMenuScene.hpp"
+#include "Scenes/SaveMenu/SaveMenuScene.hpp"
+#include "Scenes/NewGameMenuScene/NewGameMenuScene.hpp"
 
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
@@ -105,6 +107,7 @@ void Core::createScenes()
     CoreData::sceneManager->createScene<PauseMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<GameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<SoundOptionScene>();
+    CoreData::sceneManager->createScene<SaveMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<NewGameMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<EndGameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);
