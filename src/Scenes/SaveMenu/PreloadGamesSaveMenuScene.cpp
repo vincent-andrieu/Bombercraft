@@ -26,11 +26,13 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
         this->localEntities,
         my_position,
         my_config,
-        [&](const Engine::Entity &) {
+        [dir](const Engine::Entity &) {
             const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
             auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
             options.loadName = dir.filename();
+            CoreData::sceneManager->popLastScene();
+            CoreData::sceneManager->setScene<GameScene>();
         },
         my_screenshotPath,
         dir.filename(),
