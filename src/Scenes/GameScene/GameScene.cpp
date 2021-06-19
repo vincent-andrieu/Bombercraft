@@ -90,6 +90,8 @@ void GameScene::open()
     /// PAUSE SHORTCUT
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [this](Engine::Entity) {
+        if (CoreData::sceneManager->getCurrentScene() != CoreData::sceneManager->getScene<GameScene>())
+            return;
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
         Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
