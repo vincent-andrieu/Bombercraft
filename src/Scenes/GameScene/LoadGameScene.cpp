@@ -54,7 +54,7 @@ void GameScene::loadPlayerConfig()
 
 void GameScene::loadGame(const std::string &loadName)
 {
-    if (loadName.empty())
+    if (loadName.empty() || loadName == "Game name")
         return;
     try {
         CoreData::entityManager->saveManager.setWorkingDirectory(loadName);
