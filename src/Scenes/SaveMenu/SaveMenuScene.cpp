@@ -41,9 +41,9 @@ void Game::SaveMenuScene::open()
     GUI::LabelFactory::createCentered(this->localEntities, resizer(50, 4), "Saves", GUI::LabelFactory::getStandardLabelConfig());
 
     GUI::ButtonFactory::create(
-        this->localEntities, resizer(25, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
+        this->localEntities, resizer(35, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
     GUI::ButtonFactory::create(
-        this->localEntities, resizer(75, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
+        this->localEntities, resizer(65, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
 
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
