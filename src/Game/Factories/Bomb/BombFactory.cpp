@@ -107,8 +107,6 @@ void BombFactory::handlerBombCollision(const Engine::Entity fromEntity, const En
             Game::CoreData::entityManager->getComponent<Engine::Timer>(toEntity).script.trigger(toEntity);
         }
     }
-    (void) fromEntity;
-    (void) toEntity;
 }
 
 void BombFactory::handlerBombTimer(
