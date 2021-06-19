@@ -46,6 +46,7 @@ namespace GUI
         static void blastPropagation(
             const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius, Engine::Entity player);
 
+        static std::string getTexturePath(BlockType type, std::string const &resourcePackRoot);
       private:
         static std::shared_ptr<raylib::IModel> getModel(
             const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot);

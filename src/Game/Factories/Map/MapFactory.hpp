@@ -27,6 +27,8 @@ namespace GUI
             const std::string &name = "",
             unsigned int seed = 0);
 
+        static void updateMapTextures(std::string const &resourcePackRoot, Engine::Entity mapEntity);
+
       private:
         static GameModule::MapType getProceduralMap(std::pair<size_t, size_t> &sizeDest);
         static GUI::BlockFactory::BlockType blockTypeSinceTile(GameModule::TileType tile);

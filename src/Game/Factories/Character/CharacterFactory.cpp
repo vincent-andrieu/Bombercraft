@@ -168,7 +168,7 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            GUI::BombFactory::placeBomb(character);
+            Game::BombFactory::placeBomb(character);
         }
     }
 }
@@ -182,6 +182,8 @@ Engine::Entity Game::CharacterFactory::create(
     auto it_name = std::find_if(PLAYER_ID_TO_NAME.begin(), PLAYER_ID_TO_NAME.end(), [id](const auto &pair) {
         return pair.first == id;
     });
+    std::vector<std::string> listOfSkins = CoreData::settings->getTabString("CHARACTER_SKINS");
+    std::vector<std::string> listOfDeathTextures = CoreData::settings->getTabString("CHARACTER_DEATH_ANIM_TEXTURES");
 
     if (it_name == PLAYER_ID_TO_NAME.end()) {
         throw std::invalid_argument("CharacterFactory::create Invalid player id.");
@@ -202,13 +204,18 @@ Engine::Entity Game::CharacterFactory::create(
     CoreData::entityManager->addComponent<Engine::EntityBox>(entity, inventoryEntity);
     /// Render3D
     const std::string &texturePath = config.getSkinPath();
+    std::string deathTexturePath = texturePath;
+    for (size_t i = 0; i < listOfSkins.size(); i++) {
+        if (texturePath.compare(listOfSkins[i]) == 0) {
+            deathTexturePath = listOfDeathTextures[i];
+        }
+    }
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
-    std::cerr << "TEXTURE: " << texturePath << " Model: " << modelPath << std::endl;
     CoreData::entityManager->addComponent<Component::ModelList>(entity,
         Component::ModelListMap({{"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos)},
             {"death",
                 std::make_shared<raylib::Animation>(
-                    texturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
+                    deathTexturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
             {"walk",
                 std::make_shared<raylib::Animation>(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE, true)},
@@ -321,7 +328,7 @@ void CharacterFactory::handlerAITimer(
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
         render.setRotation(ai.getOrientation());
-        GUI::BombFactory::placeBomb(entity);
+        Game::BombFactory::placeBomb(entity);
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();

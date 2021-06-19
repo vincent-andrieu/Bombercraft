@@ -52,11 +52,8 @@ Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
     return entity;
 }
 
-std::shared_ptr<raylib::IModel> BlockFactory::getModel(
-    const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot)
+std::string BlockFactory::getTexturePath(BlockFactory::BlockType type, const std::string &resourcePackRoot)
 {
-    std::string modelPath = Game::CoreData::settings->getString("BLOCK_MODEL");
-    std::string animPath = Game::CoreData::settings->getString("BLOCK_BLAST_ANIM");
     std::string texturePath;
     std::string typeInStr;
 
@@ -75,11 +72,21 @@ std::shared_ptr<raylib::IModel> BlockFactory::getModel(
     }
     texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
     switch (type) {
-        case BlockType::BLOCK_SOFT: texturePath = ressourcePackRoot + texturePath; break;
-        case BlockType::BLOCK_FLOOR: texturePath = ressourcePackRoot + texturePath; break;
-        case BlockType::BLOCK_BONUS_SOFT: texturePath = ressourcePackRoot + texturePath; break;
-        default:; break;
+        case BlockType::BLOCK_SOFT: return resourcePackRoot + texturePath; break;
+        case BlockType::BLOCK_FLOOR: return resourcePackRoot + texturePath; break;
+        case BlockType::BLOCK_BONUS_SOFT: return resourcePackRoot + texturePath; break;
+        default: break;
     }
+    return texturePath;
+}
+
+std::shared_ptr<raylib::IModel> BlockFactory::getModel(
+    const raylib::MyVector3 &pos, BlockType type, const std::string &ressourcePackRoot)
+{
+    std::string modelPath = Game::CoreData::settings->getString("BLOCK_MODEL");
+    std::string animPath = Game::CoreData::settings->getString("BLOCK_BLAST_ANIM");
+    const std::string &texturePath = BlockFactory::getTexturePath(type, ressourcePackRoot);
+
     if (type == BlockType::BLOCK_BLAST) {
         return std::make_shared<raylib::Animation>(texturePath, animPath, pos, raylib::RColor::RWHITE, true);
     }
@@ -169,13 +176,11 @@ void BlockFactory::handlerBlastTimer(
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
 
     matrix.getData()->save({(size_t) indexOnMap.a, (size_t) indexOnMap.b}, entity, BlockType::BLOCK_AIR);
-    // TODO remove blast
     scene->localEntities.removeEntity(entity); // REMOVE BLAST
 }
 
 void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    // TODO stop moving
     (void) fromEntity;
     (void) toEntity;
 }

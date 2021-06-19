@@ -85,3 +85,32 @@ GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType
         default: return GUI::BlockFactory::BlockType::BLOCK_FLOOR; break;
     }
 }
+void MapFactory::updateMapTextures(const std::string &resourcePackRoot, Engine::Entity mapEntity)
+{
+    const raylib::MyVector3 size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+    auto &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(mapEntity);
+    const raylib::MyVector2 &mapSize = matrix.getMapSize();
+    const std::shared_ptr<DataMatrix> &dataMatrix = matrix.getData();
+
+    // Update soft blocks texture
+    for (size_t y = 0; y < mapSize.b; y++) {
+        for (size_t x = 0; x < mapSize.a; x++) {
+            if (dataMatrix->getCategory({x, y}) == GUI::BlockFactory::BlockType::BLOCK_SOFT) {
+                std::string const &path = BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_SOFT, resourcePackRoot);
+                auto &render = Game::CoreData::entityManager->getComponent<Component::Render3D>(dataMatrix->getEntity({x, y}));
+                static_cast<raylib::IModel *>(render.modele.get())->setTexture(path);
+            }
+        }
+    }
+    // Update Floor blocks Texture
+    const std::string path = BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_FLOOR, resourcePackRoot);
+    Game::CoreData::entityManager->foreachComponent<Engine::Position>([path, size](Engine::Position const &position) {
+        if (position.y == (size.b * -1)) { // IS A TILE BLOCK
+            Engine::Entity entity = Game::CoreData::entityManager->getOwner<Engine::Position>(position);
+            if (Game::CoreData::entityManager->hasComponent<Component::Render3D>(entity)) {
+                auto &render = Game::CoreData::entityManager->getComponent<Component::Render3D>(entity);
+                static_cast<raylib::IModel *>(render.modele.get())->setTexture(path);
+            }
+        }
+    });
+}

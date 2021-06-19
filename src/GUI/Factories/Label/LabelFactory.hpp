@@ -29,7 +29,6 @@ namespace GUI
 
         static LabelConfig getStandardLabelConfig(std::size_t fontSize = Game::CoreData::settings->getInt("STANDARD_FONT_SIZE"));
 
-        // TODO: add name on entity (modifiate the size of the box)
         static void create(Engine::EntityPack &pack,
             raylib::MyVector2 position,
             std::string const &label,
