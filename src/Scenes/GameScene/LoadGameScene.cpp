@@ -13,7 +13,9 @@ extern std::unique_ptr<Game::Core> core;
 
 void GameScene::loadPlayerConfig()
 {
+    string my_skinPath;
     size_t my_xp;
+    Component::PlayerStatus my_status;
     const auto configName_prefix("config");
     std::string my_filename;
     Component::PlayerConfig *config[MAX_PLAYERS] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(
@@ -32,15 +34,21 @@ void GameScene::loadPlayerConfig()
             if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
                 continue;
             CoreData::entityManager->saveManager.setReadingFile(my_filename);
+            CoreData::entityManager->saveManager.readActFile(my_skinPath);
             CoreData::entityManager->saveManager.readActFile(my_xp);
+            CoreData::entityManager->saveManager.readActFile(my_status);
             // TODO ajouter toutes les variables de playerConfig à la suite
             CoreData::entityManager->saveManager.closeReadingFile(my_filename);
         } catch (const std::filesystem::filesystem_error &my_e) {
             std::cerr << my_e.what() << std::endl;
             continue;
         }
+        config[i]->setSkinPath(my_skinPath);
         config[i]->setXP(my_xp);
+        config[i]->setStatus(my_status);
+        std::cout << "my_skinPath loaded : " << my_skinPath << std::endl;
         std::cout << "my_xp loaded : " << my_xp << std::endl;
+        std::cout << "my_status loaded : " << my_status << std::endl;
     }
 }
 

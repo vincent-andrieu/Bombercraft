@@ -47,16 +47,11 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
 
 void Game::SaveMenuScene::preLoadGames()
 {
-    // TODO create entities : save selector
-    //  with
-    //      name (directory name)
-    //      screenshot (in directory)
-    //      date (of the directory)
     const auto my_dir(CoreData::entityManager->saveManager.listWD());
     size_t entryNb(0);
 
     for (const auto &entry : my_dir) {
-        if (entry.is_directory()) {
+        if (entry.is_directory() && entry.path().filename().string() != "Game name") {
             createButtonGamePreload(entry, entryNb);
             entryNb++;
         }

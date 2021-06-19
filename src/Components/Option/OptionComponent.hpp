@@ -23,8 +23,8 @@ namespace Component
         string ressourcePack;
         float fov{Game::CoreData::camera->getFovy()};
 
-        std::string loadName{"anything"}; // TODO change it, init elsewhere
-        std::string saveName{"anything"}; // TODO change it, init elsewhere
+        std::string loadName{"Game name"};
+        std::string saveName{"Game name"};
         size_t nbPlayers{1};
         size_t gameTimerDuration{120}; // 0 for unlimited time
         uint seed{42};                 // Map factory
