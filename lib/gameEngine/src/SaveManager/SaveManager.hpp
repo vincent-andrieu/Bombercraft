@@ -43,10 +43,10 @@ namespace Engine
          * @param dirname The name of the directory to check
          * @return True if directory exists, false otherwise
          */
-        bool directoryExistsInWD(const std::filesystem::path &dirname);
+        bool directoryExistsInWD(const string &dirname);
 
         static bool fileExists(const std::filesystem::path &dirname);
-        bool fileExistsInWD(const std::filesystem::path &dirname);
+        bool fileExistsInWD(const string &dirname);
 
         /**
          * @brief Create a Directory from the current working directory

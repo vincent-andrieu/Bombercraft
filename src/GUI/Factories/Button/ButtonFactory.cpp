@@ -194,7 +194,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
-    const raylib::MyVector2 buttonBorder((mySize.a * 0.6) / 100, (mySize.b * 5) / 100);
+    const raylib::MyVector2 buttonBorder((mySize.a * 0.6f) / 100, (mySize.b * 5) / 100);
     GUI::ImageFactory::create(pack, myPosition + buttonBorder, screenSize - buttonBorder * 2, screenPath, true);
 
     auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));

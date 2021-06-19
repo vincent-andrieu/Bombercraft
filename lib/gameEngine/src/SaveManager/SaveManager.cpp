@@ -39,7 +39,7 @@ inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
     return false;
 }
 
-bool SaveManager::directoryExistsInWD(const std::filesystem::path &dirname)
+bool SaveManager::directoryExistsInWD(const string &dirname)
 {
     auto my_dirname(getFileDir(dirname));
 
@@ -56,7 +56,7 @@ inline bool SaveManager::fileExists(const std::filesystem::path &dirname)
     return false;
 }
 
-bool SaveManager::fileExistsInWD(const std::filesystem::path &filename)
+bool SaveManager::fileExistsInWD(const string &filename)
 {
     auto my_filename(getFileDir(filename));
     return fileExists(my_filename);
