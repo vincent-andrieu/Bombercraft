@@ -49,8 +49,10 @@ namespace GUI
         static void create(Engine::EntityPack &pack,
             TextInputDynConf const &dynConf,
             TextInputConfig const &textInput,
-            LabelConfig const &label);
-        static void create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label);
+            LabelConfig const &label,
+            const bool centered = false);
+        static void create(
+            Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label, const bool centered = false);
 
       protected:
       private:
