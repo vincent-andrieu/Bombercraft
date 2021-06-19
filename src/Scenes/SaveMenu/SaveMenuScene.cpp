@@ -41,9 +41,20 @@ void Game::SaveMenuScene::open()
     GUI::LabelFactory::createCentered(this->localEntities, resizer(50, 4), "Saves", GUI::LabelFactory::getStandardLabelConfig());
 
     GUI::ButtonFactory::create(
-        this->localEntities, resizer(35, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
+        this->localEntities,
+        resizer(50, 50),
+        menuButtons,
+        [](const Engine::Entity &) {
+            std::cout << "Clicked !" << std::endl;
+        },
+        "Asset/Background/SkinChoiceBackground.png",
+        "Yolo",
+        true);
+
     GUI::ButtonFactory::create(
-        this->localEntities, resizer(65, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
+        this->localEntities, resizer(35, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
+    GUI::ButtonFactory::create(
+        this->localEntities, resizer(65, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
 
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
