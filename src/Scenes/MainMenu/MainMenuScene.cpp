@@ -11,6 +11,8 @@
 
 using namespace Game;
 
+extern std::unique_ptr<Game::Core> core;
+
 MainMenuScene::MainMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
 {
@@ -146,7 +148,9 @@ void MainMenuScene::open()
         bottomRightText,
         GUI::LabelFactory::getStandardLabelConfig(fontSize),
         "bottomright");
-    // CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", core->globalEntities);
+    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
+    if (!audioSystem.isPlaying("MENU", core->globalEntities))
+        audioSystem.play("MENU", core->globalEntities);
     GUI::LabelFactory::create(this->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
     Engine::Entity splashTxt = localEntities.getEntity("splash");
     CoreData::entityManager->addComponent<Engine::Timer>(splashTxt,

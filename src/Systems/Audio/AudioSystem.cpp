@@ -19,6 +19,34 @@ AudioSystem::AudioSystem() : AbstractSystem(*Game::CoreData::entityManager)
     this->setRequirements<Component::Sound>();
 }
 
+bool AudioSystem::isPlaying(const std::string &entityName)
+{
+    return this->isPlaying(entityName, core->globalEntities);
+}
+
+bool AudioSystem::isPlaying(const std::string &entityName, Engine::EntityPack &scenePack)
+{
+    auto scene = Game::CoreData::sceneManager->getCurrentScene();
+    if (scene == nullptr) {
+        return false;
+    }
+    try {
+        Engine::Entity soundEntity = scenePack.getEntity(entityName);
+
+        if (_entityManager.hasComponent<Component::Sound>(soundEntity) == false) {
+            std::cerr << "Warning: AudioSystem::isPlaying entity " << entityName << " does not have a Sound component."
+                      << std::endl;
+        } else {
+            auto sound = _entityManager.getComponent<Component::Sound>(soundEntity);
+
+            return sound.audio->isPlaying();
+        }
+    } catch (UNUSED std::invalid_argument const &e) {
+        std::cerr << "Warning: AudioSystem::update entity " << entityName << " not found." << std::endl;
+    }
+    return false;
+}
+
 void AudioSystem::play(const std::string &entityName)
 {
     this->play(entityName, core->globalEntities);
