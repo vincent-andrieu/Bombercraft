@@ -43,6 +43,8 @@ void GameScene::savePlayerConfig()
 
 void GameScene::saveGame(const std::string &saveName)
 {
+    if (saveName.empty())
+        return;
     try {
         if (!CoreData::entityManager->saveManager.directoryExistsInWD(saveName))
             CoreData::entityManager->saveManager.createDirectory(saveName);

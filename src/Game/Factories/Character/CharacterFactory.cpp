@@ -123,7 +123,7 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
         /// Note : bonus are given by the power-up collision handlers
         bonusRewardXP(character);
     } else if (type != EntityType::CHARACTER
-               && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
+        && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
@@ -146,14 +146,6 @@ static void handlerKeyEvent(const Engine::Entity character)
         CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-
-    // TODO remove after debug
-    const Component::PlayerID &id = inventory.getPlayerId();
-    Component::PlayerConfig &playerConfig(
-        Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id));
-
-    std::cout << "player " << character << " has " << playerConfig.getXP() << "XP" << std::endl;
-    // TODO end of remove after debug
 
     if (info.config != nullptr) {
         const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
