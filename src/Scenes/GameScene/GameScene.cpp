@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "GameScene.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
@@ -64,14 +65,16 @@ void GameScene::open()
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
 
+    CoreData::systemManager->getSystem<System::AudioSystem>().stopMusic();
     if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
         cameraAnimation(cameraPosition, cameraUp, cameraTarget);
     }
-    const size_t randValue = std::rand() % 13;
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// Chrono
-    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
-    GUI::CountdownFactory::create(this->localEntities,
+    const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
+    const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
+
+    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
         handlerGameTimeout);
@@ -95,7 +98,7 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
-    if (!options.loadName.empty()) { // TODO do it before animation ? but how to load every entity before
+    if (!options.loadName.empty()) {
         loadGame(options.saveName);
     }
 }
@@ -144,7 +147,7 @@ void GameScene::update()
     float dt = 1.0f / 10.0f;
 
     double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
-    double frames;
+    double frames(0);
 
     core->_clock.setElapsedTime();
     frames = core->_clock.getElapsedTimeDouble() * calculationPerSecond;

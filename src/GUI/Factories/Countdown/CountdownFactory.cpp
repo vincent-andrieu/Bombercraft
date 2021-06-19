@@ -6,6 +6,7 @@
 */
 
 #include "CountdownFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 #include "TimeText.hpp"
 #include "Components/Render2D/Render2D.hpp"
 #include "Components/Chrono/Chrono.hpp"
@@ -51,16 +52,19 @@ Engine::Entity CountdownFactory::create(Engine::EntityPack &entityPack,
     CoreData::entityManager->addComponent<Engine::Timer>(
         entity, (double) refreshMsTime, *CoreData::entityManager, *CoreData::sceneManager, &timer_handler);
     raylib::MyVector2 textPos(position.a + 5, position.b + 5);
-    CoreData::entityManager->addComponent<Component::Render2D>(entity,
-        Component::render2dMapModels{
-            {"texture", std::make_shared<raylib::Texture>(config.pathTexture, config.size, position)},
-            {"timeText",
-                std::make_shared<GUI::TimeText>(entity,
+    auto label(std::make_shared<GUI::TimeText>(entity,
                     "00:00",
                     textPos + Game::CoreData::settings->getMyVector2("TIMER_TEXT_SHIFT"),
                     config.fontSize,
                     config.textColor,
-                    config.pathFont)},
+                    config.pathFont)
+    );
+
+    raylib::Text::setFontSize(*label, (config.size.a < 20 && config.size.b < 20) ? config.size : config.size - 20);
+    CoreData::entityManager->addComponent<Component::Render2D>(entity,
+        Component::render2dMapModels{
+            {"texture", std::make_shared<raylib::Texture>(config.pathTexture, config.size, position)},
+            {"timeText", label},
         });
     CoreData::entityManager->addComponent<Component::Chrono>(
         entity, (double) countdown, [handler](Engine::EntityManager &em, Engine::SceneManager &, const Engine::Entity entity) {
@@ -84,10 +88,14 @@ Engine::Entity CountdownFactory::create(Engine::EntityPack &entityPack,
 
 const TimerConfig CountdownFactory::getStandardConfig()
 {
+    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+    const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
+    const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
+
     const TimerConfig t = {Game::CoreData::settings->getString("TIMER_TEXTURE"),
         Game::CoreData::settings->getString("STANDARD_FONT"),
         static_cast<std::size_t>(Game::CoreData::settings->getInt("TIMER_FONT_SIZE")),
         CONF_GET_COLOR("TIMER_COLOR"),
-        Game::CoreData::settings->getMyVector2("TIMER_SIZE")};
+        countdownSize};
     return t;
 }

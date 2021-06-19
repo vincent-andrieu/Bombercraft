@@ -42,29 +42,33 @@ static void goGameScene(const Engine::Entity)
 
     auto scene = Game::Core::sceneManager->peekLastScene();
     try {
-        const std::string &resourcePackRoot = options.ressourcePack;
-        Engine::Entity map = scene->localEntities.getEntity("gameMap");
-        for (size_t i = 0; i < 4; i++) {
-            if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
-                Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
-                /// Update skin
-                auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
-                const std::string &texturePath = (*config[i]).getSkinPath();
-                modelList.setTexture(texturePath);
-                /// Update keybiding
-                const Engine::EntityBox &inventoryEntityBox =
-                    Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
-                const Component::PlayerInventory &inventory =
-                    Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
-                const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-                if (info.config != nullptr) {
-                    const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
-                    Game::EventRequirement requirements(
-                        info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
-                    Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+        if (scene->localEntities.entityIsSet("gameMap")) {
+            const std::string &resourcePackRoot = options.ressourcePack;
+            Engine::Entity map = scene->localEntities.getEntity("gameMap");
+            for (size_t i = 0; i < 4; i++) {
+                if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
+                    Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+                    /// Update skin
+                    auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
+                    const std::string &texturePath = (*config[i]).getSkinPath();
+                    modelList.setTexture(texturePath);
+                    /// Update keybiding
+                    if (Game::CoreData::entityManager->hasComponent<Component::KeyEvent>(player)) {
+                        const Engine::EntityBox &inventoryEntityBox =
+                            Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
+                        const Component::PlayerInventory &inventory =
+                            Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+                        const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+                        if (info.config != nullptr) {
+                            const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+                            const Game::EventRequirement requirements(
+                                info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
+                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                        }
+                    }
+                    /// Update map textures
+                    GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
                 }
-                /// Update map textures
-                GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
             }
         }
     } catch (std::invalid_argument const &e) {

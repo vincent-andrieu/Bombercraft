@@ -17,7 +17,6 @@ LoadingScreenScene::LoadingScreenScene(Engine::SystemManager &systemManager)
 
 void LoadingScreenScene::open()
 {
-    std::cerr << "\tOPEN\n";
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
 
     auto background = this->localEntities.createEntity("LoadingScreenBackground");
@@ -27,16 +26,15 @@ void LoadingScreenScene::open()
                  std::make_shared<raylib::Rectangle>(
                      raylib::MyVector2(0, 0), raylib::MyVector2(windowSize.a, windowSize.b), raylib::RColor::RWHITE)},
                 {"Text",
-                    std::make_shared<raylib::Text>("EPIJANG",
-                        "Asset/Font/Code-Bold.ttf",
-                        ProportionUtilities::getProportionWin(windowSize, {50, 50}, {500, 100}),
-                        130,
-                        raylib::RColor::RBLACK)}}));
+                    std::make_shared<raylib::Texture>(CoreData::settings->getString("LOADING_SCREEN_TITLE"),
+                        ProportionUtilities::getProportionWin(windowSize, {50, 30}),
+                        ProportionUtilities::getProportionWin(windowSize, {25, 30})
+                        )}}));
     Engine::Entity jauge = this->localEntities.createEntity("jauge");
     CoreData::entityManager->addComponent<Component::Render2D>(jauge,
         Component::render2dMapModels({
             {"rect",
-                std::make_shared<raylib::Rectangle>(ProportionUtilities::getProportionWin(windowSize, {50, 70}, {800, 10}),
+                std::make_shared<raylib::Rectangle>(ProportionUtilities::getProportionWin(windowSize, {25, 70}),
                     raylib::MyVector2(0, 0),
                     raylib::RColor::RRED)},
         }));
@@ -44,11 +42,13 @@ void LoadingScreenScene::open()
 
 void Game::LoadingScreenScene::update(std::size_t value)
 {
+    const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
+
     // UPDATE JAUGE
     Engine::Entity entity = this->localEntities.getEntity("jauge");
     auto &render = CoreData::entityManager->getComponent<Component::Render2D>(entity);
     raylib::Rectangle &rect = *static_cast<raylib::Rectangle *>(render.get("rect").get());
-    rect.setSize({(float)(value * 8), 30});
+    rect.setSize({(float)((float)value / 100) * (windowSize.a / 2), 30});
     // DISPLAY
     auto &render2D = this->_systemManager.getSystem<System::Render2DSystem>();
     render2D.update();

@@ -187,6 +187,8 @@ void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engi
 
 void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
+    if (!Game::CoreData::entityManager->hasComponent<Component::Render3D>(toEntity))
+        return;
     auto scene = Game::Core::sceneManager->getCurrentScene();
     auto &hitboxTo = Game::CoreData::entityManager->getComponent<Component::Hitbox>(toEntity);
     auto &render3DTo = Game::CoreData::entityManager->getComponent<Component::Render3D>(toEntity);
