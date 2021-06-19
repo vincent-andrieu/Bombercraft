@@ -62,12 +62,12 @@ void GameScene::open()
     /// Camera
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
-    size_t randValue = std::rand() % 13;
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
 
     if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
         cameraAnimation(cameraPosition, cameraUp, cameraTarget);
     }
+    const size_t randValue = std::rand() % 13;
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
     /// Chrono
     const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
     /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
@@ -111,7 +111,8 @@ void GameScene::createCharacters()
     for (size_t i = 0; i < 4; i++) {
         entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
-            Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(options.IARandomProb, options.smoothMode);
+            Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(
+                options.IARandomProb, options.smoothMode);
         }
     }
 }

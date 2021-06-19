@@ -9,7 +9,7 @@
 
 using namespace Component;
 
-AIComponent::AIComponent() : _AI(std::make_shared<GameModule::IABomberman>()), _smoothMode(false)
+AIComponent::AIComponent() : _AI(std::make_shared<GameModule::IABomberman>()), _smoothMode(false), _isSet(false)
 {
 }
 
@@ -84,4 +84,12 @@ void AIComponent::setRandomness(size_t randomness, bool smoothMode)
 bool AIComponent::getMoveType() const
 {
     return this->_smoothMode;
+}
+
+void AIComponent::setBonusWallPass()
+{
+    if (!this->_isSet) {
+        this->_AI->setRunnableTile(GameModule::TileType::TILE_SOFT);
+        this->_isSet = true;
+    }
 }

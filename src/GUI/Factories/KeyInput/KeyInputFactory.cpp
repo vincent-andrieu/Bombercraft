@@ -6,6 +6,7 @@
 */
 
 #include "KeyInputFactory.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 using namespace GUI;
 
@@ -213,7 +214,7 @@ static Component::eventScript focusHandler = [](const Engine::Entity keyEntity) 
     raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(keyEntity).get("rectangle").get());
 
-    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getRect())) {
+    if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
         Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>(
             [keyEntity](Component::ClickFocusEvent &focusEvent) {
                 focusEvent.changeFocus(false);
@@ -240,21 +241,26 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
         throw std::invalid_argument("KeyInputFactory::create empty entity name");
     }
     Engine::Entity entity = pack.createEntity(dynConf.name);
-    raylib::MyVector2 textPos = dynConf.position + keyInput.textPositionOffset;
 
+    auto textModel = std::make_shared<raylib::Text>(
+        keyToStr.at(dynConf.key), label.fontPath, dynConf.position, label.fontSize, label.fontColor);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
             {"rectangle",
                 std::make_shared<raylib::Texture>(
                     Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"), keyInput.size, dynConf.position)},
-            {"text",
-                std::make_shared<raylib::Text>(
-                    keyToStr.at(dynConf.key), label.fontPath, textPos, label.fontSize, label.fontColor)},
+            {"text", textModel},
         }));
+    raylib::Text::setFontSize(*textModel, (keyInput.size.a < 20 && keyInput.size.b < 20) ? keyInput.size : keyInput.size - 20);
+    textModel->setPosition(dynConf.position
+        + ProportionUtilities::getProportionWin(
+            keyInput.size, raylib::MyVector2(50, 50), textModel->getSize(), raylib::MyVector2(50, 50)));
 
-    const Component::eventScript inputHandler = [keyInputHandler](const Engine::Entity &childEntity) {
+    const Component::eventScript inputHandler = [keyInputHandler, dynConf, keyInput](const Engine::Entity &childEntity) {
         const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
         Component::KeyBox &keyBox = Game::CoreData::entityManager->getComponent<Component::KeyBox>(childEntity);
+        raylib::Text *textModel = static_cast<raylib::Text *>(
+            Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
         raylib::Text *textActual = dynamic_cast<raylib::Text *>(
             Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
@@ -264,6 +270,9 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
                 keyInputHandler(childEntity, x);
                 textActual->setText(x.second);
                 keyBox.key = x.first;
+                textModel->setPosition(dynConf.position
+                    + ProportionUtilities::getProportionWin(
+                        keyInput.size, raylib::MyVector2(50, 50), textModel->getSize(), raylib::MyVector2(50, 50)));
             }
         }
     };
@@ -272,9 +281,9 @@ void KeyInputFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::KeyBox>(entity);
 }
 
-KeyInputConfig KeyInputFactory::getStandardConfig()
+KeyInputConfig KeyInputFactory::getStandardConfig(const raylib::MyVector2 &size)
 {
-    const KeyInputConfig config = {raylib::MyVector2(195, 40), raylib::RColor::RBLACK, raylib::MyVector2(5, 4)};
+    const KeyInputConfig config = {size, raylib::RColor::RBLACK};
 
     return config;
 }
