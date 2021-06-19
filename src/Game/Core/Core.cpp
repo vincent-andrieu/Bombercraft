@@ -151,6 +151,7 @@ void Core::loop()
         this->loadMusic();
         CoreData::sceneManager->setScene<MainMenuScene>();
     }
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("MENU", this->globalEntities); // PLAYER MUSIC
     while (CoreData::window->isOpen() && this->_loop == true) {
         CoreData::window->clear();
         CoreData::sceneManager->run();
