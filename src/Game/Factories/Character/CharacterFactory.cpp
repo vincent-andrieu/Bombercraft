@@ -20,6 +20,17 @@ using namespace Game;
 extern std::unique_ptr<Core> core;
 extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
+static bool endGame()
+{
+    uint counter = 0;
+
+    for (const auto &player : Game::PLAYER_ID_TO_NAME)
+        if (CoreData::sceneManager->getCurrentScene()->localEntities.entityIsSet(player.second))
+            if (!CoreData::entityManager->hasComponent<Component::AIComponent>(CoreData::sceneManager->getCurrentScene()->localEntities.getEntity(player.second)))
+                counter++;
+    return counter == 0 || GameScene::getNbrPlayers() <= 1;
+}
+
 static void handlerHitboxCharacterDeath(
     const Engine::Entity character, const Component::PlayerID id, Component::ModelList &render)
 {
@@ -53,7 +64,7 @@ static void handlerHitboxCharacterDeath(
                 scene->localEntities.removeEntity(playerName); // REMOVE PLAYER
 
                 // End game detection
-                if (GameScene::getNbrPlayers() <= 1) {
+                if (endGame()) {
                     Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getFloat("STANDARD_CAMERA_FOV")));
                     CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
                     CoreData::sceneManager->setScene<EndGameScene>();
