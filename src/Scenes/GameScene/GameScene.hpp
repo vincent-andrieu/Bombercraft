@@ -37,6 +37,9 @@ namespace Game
 
       private:
         void createCharacters();
+
+        void loadPlayerConfig();
+        void savePlayerConfig();
     };
 } // namespace Game
 
