@@ -184,10 +184,12 @@ void GameScene::loadGame(const std::string &loadName)
         for (size_t i = 0; i < 4; i++) {
             if (!CoreData::entityManager->saveManager.fileExistsInWD(configName_prefix + toString(i + 1)))
                 continue;
+            my_xp = 0;
             CoreData::entityManager->saveManager.setReadingFile(configName_prefix + toString(i + 1));
             CoreData::entityManager->saveManager.readActFile(my_xp);
             config[i]->setXP(my_xp);
             std::cout << "my_var loaded : " << my_xp << std::endl;
+            CoreData::entityManager->saveManager.closeReadingFile(configName_prefix + toString(i + 1));
         }
 
     } catch (const std::filesystem::filesystem_error &my_e) {
@@ -227,6 +229,7 @@ void GameScene::saveGame(const std::string &saveName)
                 CoreData::entityManager->saveManager.createFile(configName_prefix + toString(i + 1));
             CoreData::entityManager->saveManager.setWritingFile(configName_prefix + toString(i + 1));
             CoreData::entityManager->saveManager.writeActFile(config[i]->getXP());
+            CoreData::entityManager->saveManager.closeWritingFile(configName_prefix + toString(i + 1));
         }
 
         CoreData::entityManager->saveManager.unsetWorkingDirectory();

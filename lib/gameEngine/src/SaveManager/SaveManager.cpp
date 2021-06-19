@@ -129,8 +129,14 @@ void SaveManager::closeWritingFile()
 
 void SaveManager::closeWritingFile(const string &filename)
 {
-    this->_writingFiles[filename]->close();
-    this->_writingFiles.erase(filename);
+    auto my_filename(getFileDir(filename));
+
+    try {
+        this->_writingFiles.at(my_filename)->close();
+        this->_writingFiles.erase(my_filename);
+    } catch (const std::out_of_range &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
 }
 
 void SaveManager::setReadingFile(const string &filename)
@@ -155,8 +161,14 @@ void SaveManager::closeReadingFile()
 
 void SaveManager::closeReadingFile(const string &filename)
 {
-    this->_readingFiles[filename]->close();
-    this->_readingFiles.erase(filename);
+    auto my_filename(getFileDir(filename));
+
+    try {
+        this->_readingFiles.at(my_filename)->close();
+        this->_readingFiles.erase(my_filename);
+    } catch (const std::out_of_range &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
 }
 
 inline std::filesystem::path SaveManager::getFileDir(const string &filename)
