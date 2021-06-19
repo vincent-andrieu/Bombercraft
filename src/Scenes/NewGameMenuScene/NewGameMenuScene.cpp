@@ -61,6 +61,8 @@ void Game::NewGameMenuScene::init()
     setStandardOptions(options);
     GUI::ImageFactory::create(
         localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+    GUI::LabelFactory::createCentered(
+        this->localEntities, my_utility(50, 4), "New game", GUI::LabelFactory::getStandardLabelConfig());
 
     GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
     labelConfig.fontColor = raylib::RColor::RDARKGRAY;
