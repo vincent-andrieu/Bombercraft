@@ -40,7 +40,7 @@ set(SRCS
         # Other
         src/EntityPack/EntityPack.cpp
         # Save
-        #src/SaveManager/SaveManager.cpp
+        src/SaveManager/SaveManager.cpp
         )
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})

@@ -6,7 +6,7 @@
  */
 
 #include "SaveManager.hpp"
-/*
+
 using namespace Engine;
 
 SaveManager::SaveManager(const std::string &dirname)
@@ -29,9 +29,9 @@ SaveManager::~SaveManager()
         file.second->close();
 }
 
-//TO REVIEW: https://en.cppreference.com/w/cpp/filesystem/exists
+// TO REVIEW: https://en.cppreference.com/w/cpp/filesystem/exists
 // first arg of exists and is directory: const std::filesystem::path& p
-//inline bool SaveManager::directoryExists(const string &dirname)
+// inline bool SaveManager::directoryExists(const string &dirname)
 inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_directory(dirname)) {
@@ -40,8 +40,8 @@ inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
     return false;
 }
 
-//TO REVIEW: SAME PROBLEME
-//inline bool SaveManager::fileExists(const string &dirname)
+// TO REVIEW: SAME PROBLEME
+// inline bool SaveManager::fileExists(const string &dirname)
 inline bool SaveManager::fileExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_regular_file(dirname)) {
@@ -162,16 +162,18 @@ void SaveManager::write(const string &filename, const string &value)
     file.write(value.c_str(), size);
 }
 
-void SaveManager::read(const string &filename, void *value)
+void *SaveManager::read(const string &filename, void *value)
 {
     ifstream &file = this->_getReadingFile(filename);
     size_t size;
 
     file.read((char *) &size, sizeof(size_t));
     file.read((char *) value, size);
+
+    return value;
 }
 
-void SaveManager::read(const string &filename, string &value)
+string &SaveManager::read(const string &filename, string &value)
 {
     ifstream &file = this->_getReadingFile(filename);
     size_t size;
@@ -182,6 +184,8 @@ void SaveManager::read(const string &filename, string &value)
     file.read(dest, size);
     value = dest;
     delete dest;
+
+    return value;
 }
 
 ofstream &SaveManager::_getWritingFile(const string &filename)
@@ -206,4 +210,3 @@ void SaveManager::printException(const std::filesystem::filesystem_error &except
 {
     std::cerr << except.what() << std::endl;
 }
-*/
