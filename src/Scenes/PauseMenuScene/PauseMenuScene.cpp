@@ -41,39 +41,49 @@ static void goGameScene(const Engine::Entity)
     Game::CoreData::sceneManager->setScene<Game::GameScene>(true, false);
 
     auto scene = Game::Core::sceneManager->peekLastScene();
-    try {
-        if (scene->localEntities.entityIsSet("gameMap")) {
-            const std::string &resourcePackRoot = options.ressourcePack;
-            Engine::Entity map = scene->localEntities.getEntity("gameMap");
-            for (size_t i = 0; i < 4; i++) {
-                if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
-                    Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
-                    /// Update skin
-                    auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
-                    const std::string &texturePath = (*config[i]).getSkinPath();
-                    modelList.setTexture(texturePath);
-                    /// Update keybiding
-                    if (Game::CoreData::entityManager->hasComponent<Component::KeyEvent>(player)) {
-                        const Engine::EntityBox &inventoryEntityBox =
-                            Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
-                        const Component::PlayerInventory &inventory =
-                            Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
-                        const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-                        if (info.config != nullptr) {
-                            const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
-                            const Game::EventRequirement requirements(
-                                info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
-                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
-                        }
+    // try {
+    if (scene->localEntities.entityIsSet("gameMap")) {
+        const std::string &resourcePackRoot = options.ressourcePack;
+        std::cerr << "START 31" << std::endl;
+        Engine::Entity map = scene->localEntities.getEntity("gameMap");
+        std::cerr << "END 31" << std::endl;
+        for (size_t i = 0; i < 4; i++) {
+            if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
+                Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+                /// Update skin
+                std::cerr << "START 15" << std::endl;
+                auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(player);
+                std::cerr << "END 15" << std::endl;
+                const std::string &texturePath = (*config[i]).getSkinPath();
+                modelList.setTexture(texturePath);
+                /// Update keybiding
+                if (Game::CoreData::entityManager->hasComponent<Component::KeyEvent>(player)) {
+                    std::cerr << "START 16" << std::endl;
+                    const Engine::EntityBox &inventoryEntityBox =
+                        Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
+                    std::cerr << "END 16" << std::endl;
+                    std::cerr << "START 17" << std::endl;
+                    const Component::PlayerInventory &inventory =
+                        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+                    std::cerr << "END 17" << std::endl;
+                    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+                    if (info.config != nullptr) {
+                        const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+                        const Game::EventRequirement requirements(
+                            info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
+                        std::cerr << "START 18" << std::endl;
+                        Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                        std::cerr << "END 18" << std::endl;
                     }
-                    /// Update map textures
-                    GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
                 }
+                /// Update map textures
+                GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
             }
         }
-    } catch (std::invalid_argument const &e) {
-        std::cerr << "Warning: fail to apply options " << e.what() << std::endl;
     }
+    // } catch (std::invalid_argument const &e) {
+    //     std::cerr << "Warning: fail to apply options " << e.what() << std::endl;
+    // }
 }
 
 void Game::PauseMenuScene::open()

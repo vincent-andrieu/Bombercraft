@@ -52,7 +52,9 @@ void GameScene::open()
     const raylib::MyVector3 cameraUp(CoreData::settings->getMyVector3("CAM_UP"));
     const raylib::MyVector3 cameraTarget(CoreData::settings->getMyVector3("CAM_TARGET"));
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    std::cerr << "1" << std::endl;
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    std::cerr << "2" << std::endl;
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
 
@@ -82,7 +84,9 @@ void GameScene::open()
     /// MOUSE WHEEL FOV
     Game::MouseWheelFactory::create(this->localEntities, [](const float &value) {
         const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
+        std::cerr << "3" << std::endl;
         auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+        std::cerr << "4" << std::endl;
 
         options.fov += value * -5;
         CoreData::camera->setFovy(options.fov);
@@ -102,8 +106,11 @@ void GameScene::open()
 void GameScene::createCharacters()
 {
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    std::cerr << "4" << std::endl;
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    std::cerr << "5" << std::endl;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(this->localEntities.getEntity("gameMap"));
+    std::cerr << "6" << std::endl;
     Engine::Entity entity;
 
     Component::PlayerConfig *config[MAX_PLAYERS] = {
@@ -111,11 +118,14 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
+    std::cerr << "7" << std::endl;
     for (size_t i = 0; i < 4; i++) {
         entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
+            std::cerr << "8" << std::endl;
             Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(
                 options.IARandomProb, options.smoothMode);
+            std::cerr << "9" << std::endl;
         }
     }
 }

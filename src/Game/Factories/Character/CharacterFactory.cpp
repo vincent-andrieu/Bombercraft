@@ -78,11 +78,16 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
 {
     if (!CoreData::entityManager->hasComponent<Component::ModelList>(character))
         return;
+    std::cerr << "START 32" << std::endl;
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
+    std::cerr << "MIDDLE 32 1" << std::endl;
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
+    std::cerr << "MIDDLE 32 2" << std::endl;
     const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(character);
+    std::cerr << "MIDDLE 32 3" << std::endl;
     const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    std::cerr << "END 32" << std::endl;
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
     const Component::PlayerID &id = inventory.getPlayerId();
 
@@ -98,7 +103,9 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
         /// Note : bonus are given by the power-up collision handlers
     } else if (type != EntityType::CHARACTER
         && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
+        std::cerr << "START 33" << std::endl;
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
+        std::cerr << "END 33" << std::endl;
         raylib::MyVector3 otherPosition = otherRender.modele->getPosition();
         raylib::MyVector3 playerPosition = render.getPosition();
         raylib::MyVector3 delta = playerPosition - otherPosition;
@@ -114,11 +121,16 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
 }
 static void handlerKeyEvent(const Engine::Entity character)
 {
+    std::cerr << "START 34" << std::endl;
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
+    std::cerr << "MIDDLE 34 1" << std::endl;
     const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(character);
+    std::cerr << "MIDDLE 34 2" << std::endl;
     const Component::PlayerInventory &inventory =
         CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    std::cerr << "MIDDLE 34 3" << std::endl;
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
+    std::cerr << "END 34" << std::endl;
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
     if (info.config != nullptr) {
@@ -203,7 +215,9 @@ Engine::Entity Game::CharacterFactory::create(
                 std::make_shared<raylib::Animation>(
                     texturePath, CoreData::settings->getString("CHARA_ANIM_SET_BOMB"), characterPos, raylib::RColor::RWHITE)}}),
         "idle");
+    std::cerr << "START 35" << std::endl;
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+    std::cerr << "END 35" << std::endl;
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
     /// Hitbox
     const raylib::MyVector3 &hitboxSize = CoreData::settings->getMyVector3("HITBOX_SIZE");
@@ -274,29 +288,41 @@ void CharacterFactory::handlerAITimer(
     Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity)
 {
     Engine::Entity entityPlayer;
+    std::cerr << "START 36" << std::endl;
     auto &map = CoreData::entityManager->getComponent<Component::Matrix2D>(
         sceneManager.getCurrentScene()->localEntities.getEntity("gameMap"));
+    std::cerr << "MIDDLE 36 1" << std::endl;
     auto &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(entity);
+    std::cerr << "MIDDLE 36 2" << std::endl;
     auto &ai = CoreData::entityManager->getComponent<Component::AIComponent>(entity);
+    std::cerr << "MIDDLE 36 3" << std::endl;
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(entity);
+    std::cerr << "MIDDLE 36 4" << std::endl;
 
     auto &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(entity);
+    std::cerr << "MIDDLE 36 5" << std::endl;
     auto relativPos = Component::Matrix2D::getMapIndex(hitbox.objectBox->getBoxOrigin() + hitbox.objectBox->getBoxSize() / 2);
-    std::vector<std::string> entityList = {PLAYER_ID_TO_NAME.at(Component::ALPHA),
+    std::vector<std::string> entityList = {
+        PLAYER_ID_TO_NAME.at(Component::ALPHA),
         PLAYER_ID_TO_NAME.at(Component::BRAVO),
         PLAYER_ID_TO_NAME.at(Component::CHARLIE),
-        PLAYER_ID_TO_NAME.at(Component::DELTA)};
+        PLAYER_ID_TO_NAME.at(Component::DELTA),
+    };
     std::vector<std::pair<size_t, size_t>> posList;
     const Engine::EntityBox &inventoryEntityBox = CoreData::entityManager->getComponent<Engine::EntityBox>(entity);
+    std::cerr << "MIDDLE 36 6" << std::endl;
     const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    std::cerr << "END 36" << std::endl;
     const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
 
     for (size_t i = 0; i < entityList.size(); i++) {
         if (sceneManager.getCurrentScene()->localEntities.entityIsSet(entityList[i])) {
             entityPlayer = sceneManager.getCurrentScene()->localEntities.getEntity(entityList[i]);
             if (entityPlayer != entity) {
+                std::cerr << "START 37" << std::endl;
                 auto tmp = Component::Matrix2D::getMapIndex(
                     CoreData::entityManager->getComponent<Component::ModelList>(entityPlayer).getPosition());
+                std::cerr << "END 37" << std::endl;
                 posList.push_back({(size_t) tmp.a, (size_t) tmp.b});
             }
         }
