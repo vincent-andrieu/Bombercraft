@@ -43,6 +43,13 @@ void EntityManager::removeEntity(Entity entity)
     }
 }
 
+bool EntityManager::hasEntity(Entity entity)
+{
+    if (_entities.isSet(entity) == false)
+        return false;
+    return true;
+}
+
 SystemManager &EntityManager::getSystemManager()
 {
     return _systemManager;

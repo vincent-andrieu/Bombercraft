@@ -116,7 +116,7 @@ void MainMenuScene::open()
     // BUTTON
     GUI::ButtonFactory::create(this->localEntities, buttonPosition[0], "play", largeButton, "Play", [](const Engine::Entity) {
         CoreData::sceneManager->pushLastScene();
-        CoreData::sceneManager->setScene<NewGameMenuScene>();
+        CoreData::sceneManager->setScene<SaveMenuScene>();
     });
     GUI::ButtonFactory::create(this->localEntities, buttonPosition[1], "credit", largeButton, "Credit", [](const Engine::Entity) {
         CoreData::sceneManager->setScene<CreditScene>();

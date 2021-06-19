@@ -61,6 +61,20 @@ void Game::NewGameMenuScene::init()
     setStandardOptions(options);
     GUI::ImageFactory::create(
         localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+
+    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
+    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
+    // InComing with save menu
+    GUI::TextInputFactory::create(this->localEntities,
+        {
+            my_utility(50, 20),
+            my_utility(GUI::ButtonFactory::LargeProportions),
+            "textInputGameName",
+            "Game name",
+        },
+        labelConfig,
+        true);
+
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion(67, 85),
         my_button_prefix + "cancel",
@@ -74,17 +88,21 @@ void Game::NewGameMenuScene::init()
         my_utility.getProportion({55.5, 75}),
         my_button_prefix + "newGame",
         my_mediumButtonConfig,
-        "Create New Game",
+        "Start",
         [](const Engine::Entity) {
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
-            Engine::Entity textInput =
+            Engine::Entity textInputSeed =
                 Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputIASeed");
-            auto &textInputRender2D = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInput);
-            auto &text = *dynamic_cast<raylib::IText *>(textInputRender2D.get("text").get());
+            Engine::Entity textInputName =
+                Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputGameName");
+            auto &textInputRender2DSeed = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputSeed);
+            auto &textInputRender2DName = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputName);
+            auto &textSeed = *dynamic_cast<raylib::IText *>(textInputRender2DSeed.get("text").get());
+            auto &textName = *dynamic_cast<raylib::IText *>(textInputRender2DName.get("text").get());
             std::string string = "";
 
-            for (auto c : text.getText())
+            for (auto c : textSeed.getText())
                 if (c != ' ')
                     string += c;
             try {
@@ -92,7 +110,7 @@ void Game::NewGameMenuScene::init()
             } catch (...) {
                 options.seed = 42;
             }
-            Game::CoreData::camera->setFovy(options.fov);
+            options.saveName = textName.getText();
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });
@@ -112,12 +130,6 @@ void Game::NewGameMenuScene::init()
                 ->setText(nbPlayersLabel + toString(options.nbPlayers));
         });
 
-    // TODO set IA seed from text input
-    // TODO check if not a number
-    // TODO add eventHandler to textInputFactory
-    // TODO set textRec, to limit the input inside the borders
-    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
-    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
     GUI::TextInputFactory::create(localEntities,
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),

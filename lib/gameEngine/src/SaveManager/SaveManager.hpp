@@ -43,10 +43,10 @@ namespace Engine
          * @param dirname The name of the directory to check
          * @return True if directory exists, false otherwise
          */
-        bool directoryExistsInWD(const std::filesystem::path &dirname);
+        bool directoryExistsInWD(const string &dirname);
 
         static bool fileExists(const std::filesystem::path &dirname);
-        bool fileExistsInWD(const std::filesystem::path &dirname);
+        bool fileExistsInWD(const string &dirname);
 
         /**
          * @brief Create a Directory from the current working directory
@@ -65,6 +65,12 @@ namespace Engine
          * @return A path to the actual working directory
          */
         [[nodiscard]] const std::filesystem::path &getWorkingDirectory() const; // TODO implement
+
+        /**
+         * @brief List files and directories in working directory
+         * @return A container with the name and the type of each entry in the working directory
+         */
+        [[nodiscard]] std::filesystem::directory_iterator listWD();
         /**
          * @brief Remove the actual working directory from the stack of actual writing directories,
          * so the last working directory is now the actual

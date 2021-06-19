@@ -98,7 +98,6 @@ std::vector<std::string> raylib::Animation::goInDirectoryAndGetFileNames(const s
 void raylib::Animation::LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath)
 {
     ClearDirectoryFiles();
-    std::cout << "OLD PATH = " << oldDirectoryPath << std::endl;
     ChangeDirectory(oldDirectoryPath.data());
 }
 
