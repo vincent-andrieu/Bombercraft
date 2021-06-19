@@ -41,6 +41,16 @@ static const Game::EventRequirement inputHandlerRequirement(
         raylib::KeyBoard::IKEY_Z,
         raylib::KeyBoard::IKEY_BACKSPACE,
         raylib::KeyBoard::IKEY_SPACE,
+        raylib::KeyBoard::IKEY_ZERO,
+        raylib::KeyBoard::IKEY_ONE,
+        raylib::KeyBoard::IKEY_TWO,
+        raylib::KeyBoard::IKEY_THREE,
+        raylib::KeyBoard::IKEY_FOUR,
+        raylib::KeyBoard::IKEY_FIVE,
+        raylib::KeyBoard::IKEY_SIX,
+        raylib::KeyBoard::IKEY_SEVEN,
+        raylib::KeyBoard::IKEY_EIGHT,
+        raylib::KeyBoard::IKEY_NINE,
     },
     {});
 
