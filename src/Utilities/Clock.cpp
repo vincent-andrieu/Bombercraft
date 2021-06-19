@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** Clock.cpp
 ** File description:
-** TODO: add description
+** add description
 */
 
 #include "Clock.hpp"
