@@ -26,7 +26,8 @@ static bool endGame()
 
     for (const auto &player : Game::PLAYER_ID_TO_NAME)
         if (CoreData::sceneManager->getCurrentScene()->localEntities.entityIsSet(player.second))
-            if (!CoreData::entityManager->hasComponent<Component::AIComponent>(CoreData::sceneManager->getCurrentScene()->localEntities.getEntity(player.second)))
+            if (!CoreData::entityManager->hasComponent<Component::AIComponent>(
+                    CoreData::sceneManager->getCurrentScene()->localEntities.getEntity(player.second)))
                 counter++;
     return counter == 0 || GameScene::getNbrPlayers() <= 1;
 }
@@ -75,6 +76,8 @@ static void handlerHitboxCharacterDeath(
 
 static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
 {
+    if (!CoreData::entityManager->hasComponent<Component::ModelList>(character))
+        return;
     Component::Hitbox &hitbox = CoreData::entityManager->getComponent<Component::Hitbox>(other);
     Component::ModelList &render = CoreData::entityManager->getComponent<Component::ModelList>(character);
     Engine::Velocity &velocity = CoreData::entityManager->getComponent<Engine::Velocity>(character);
