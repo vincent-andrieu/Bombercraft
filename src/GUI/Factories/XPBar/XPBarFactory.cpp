@@ -18,7 +18,6 @@ static void timer_handler([[maybe_unused]] Engine::EntityManager &entityManager,
     [[maybe_unused]] const Engine::Entity entity)
 {
     try {
-        std::shared_ptr<Engine::AbstractScene> scene = sceneManager.getCurrentScene();
         Component::PlayerID playerID = entityManager.getComponent<Component::PlayerIdBox>(entity).id;
         auto &playerConfig = entityManager.getComponent<Component::PlayerConfig>(
             core->globalEntities.getEntity("config" + toString(playerID + 1)));
@@ -71,8 +70,8 @@ void GUI::XPBarFactory::create(const raylib::MyVector2 &position,
             }
             })
         );
-    timer_handler(*Game::CoreData::entityManager, *Game::CoreData::sceneManager, entity); // first update
+    Game::CoreData::entityManager->addComponent<Component::PlayerIdBox>(entity, id);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, 1.0f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
-    Game::CoreData::entityManager->addComponent<Component::PlayerIdBox>(entity, id);
+    timer_handler(*Game::CoreData::entityManager, *Game::CoreData::sceneManager, entity); // first update
 }
