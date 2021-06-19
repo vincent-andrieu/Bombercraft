@@ -94,6 +94,9 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
+    if (!options.loadName.empty()) { // TODO do it before animation ? but how to load every entity before
+        loadGame(options.saveName);
+    }
 }
 
 void GameScene::createCharacters()
@@ -140,7 +143,7 @@ void GameScene::update()
     float dt = 1.0f / 10.0f;
 
     double calculationPerSecond((double) CoreData::settings->getInt("CPS"));
-    double frames(0);
+    double frames;
 
     core->_clock.setElapsedTime();
     frames = core->_clock.getElapsedTimeDouble() * calculationPerSecond;
@@ -157,6 +160,81 @@ void GameScene::update()
     }
     audio.update();
     timer.update();
+}
+
+void GameScene::loadGame(const std::string &loadName)
+{
+    try {
+        CoreData::entityManager->saveManager.setWorkingDirectory(loadName);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+        return;
+    }
+    size_t my_xp;
+    try {
+        const auto configName_prefix("config");
+        Component::PlayerConfig *config[MAX_PLAYERS] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                                                            core->globalEntities.getEntity(configName_prefix + toString(1))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(2))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(3))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(4)))};
+        for (size_t i = 0; i < 4; i++) {
+            if (!CoreData::entityManager->saveManager.fileExistsInWD(configName_prefix + toString(i + 1)))
+                continue;
+            CoreData::entityManager->saveManager.setReadingFile(configName_prefix + toString(i + 1));
+            CoreData::entityManager->saveManager.readActFile(my_xp);
+            config[i]->setXP(my_xp);
+            std::cout << "my_var loaded : " << my_xp << std::endl;
+        }
+
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
+    CoreData::entityManager->saveManager.unsetWorkingDirectory();
+
+    //    template <typename T, class Function> void EntityManager::foreachComponent(Function fn); // TODO do it iteratively ?
+    //      non mais on sait jamais
+}
+
+void GameScene::saveGame(const std::string &saveName)
+{
+    try {
+        if (!CoreData::entityManager->saveManager.directoryExistsInWD(saveName))
+            CoreData::entityManager->saveManager.createDirectory(saveName);
+        CoreData::entityManager->saveManager.setWorkingDirectory(saveName);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+        return;
+    }
+    // TODO loop ou à la main ? entitées imbriquées (inventaire/config) ?
+    //    for (const auto entity : entitiesToSave /* TODO make variable to store entities to save ? container without doubles
+    // * (knowing that the scene is created and destroyed once)*/) {
+    try {
+        const auto configName_prefix("config");
+        Component::PlayerConfig *config[MAX_PLAYERS] = {&CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                                                            core->globalEntities.getEntity(configName_prefix + toString(1))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(2))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(3))),
+            &CoreData::entityManager->getComponent<Component::PlayerConfig>(
+                core->globalEntities.getEntity(configName_prefix + toString(4)))};
+        for (size_t i = 0; i < 4; i++) {
+            if (!CoreData::entityManager->saveManager.fileExistsInWD(configName_prefix + toString(i + 1)))
+                CoreData::entityManager->saveManager.createFile(configName_prefix + toString(i + 1));
+            CoreData::entityManager->saveManager.setWritingFile(configName_prefix + toString(i + 1));
+            CoreData::entityManager->saveManager.writeActFile(config[i]->getXP());
+        }
+
+        CoreData::entityManager->saveManager.unsetWorkingDirectory();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
+    //    }
+    CoreData::entityManager->saveManager.unsetWorkingDirectory();
 }
 
 static void updateWindow()

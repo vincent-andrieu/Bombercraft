@@ -60,6 +60,11 @@ void SceneManager::pushLastScene()
     _lastScenes.push(_currentScene);
 }
 
+std::shared_ptr<AbstractScene> SceneManager::getLastScene()
+{
+    return _lastScenes.top();
+}
+
 std::shared_ptr<AbstractScene> SceneManager::peekLastScene()
 {
     std::shared_ptr<AbstractScene> my_last(_lastScenes.top());
