@@ -12,7 +12,7 @@
 #include "Game/CoreData/CoreData.hpp"
 #include "Systems/Audio/AudioSystem.hpp"
 
-using namespace GUI;
+using namespace Game;
 
 bool BombFactory::isBombPlacable(float posX, float posY)
 {
@@ -56,7 +56,7 @@ bool BombFactory::placeBomb(Engine::Entity character)
 
     if (inventoryInfo.bomb && isBombPlacable(bombIndexOnMap.a, bombIndexOnMap.b)) {
         playerInventory.setBomb(inventoryInfo.bomb - 1);
-        GUI::BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+        BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
         render.select("setBomb");
         return true;
     }
@@ -98,8 +98,15 @@ std::shared_ptr<raylib::Animation> BombFactory::getAnimation(const raylib::MyVec
     return std::make_shared<raylib::Animation>(texturePath, animationPath, pos, raylib::RColor::RWHITE);
 }
 
-void BombFactory::handlerBombCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
+void BombFactory::handlerBombCollision(const Engine::Entity fromEntity, const Engine::Entity toEntity)
 {
+    auto &hitboxFrom = Game::CoreData::entityManager->getComponent<Component::Hitbox>(fromEntity);
+
+    if (hitboxFrom.entityType == Game::EntityType::BLAST) {
+        if (Game::CoreData::entityManager->hasComponent<Engine::Timer>(toEntity)) {
+            Game::CoreData::entityManager->getComponent<Engine::Timer>(toEntity).script.trigger(toEntity);
+        }
+    }
     // TODO stop moving
     (void) fromEntity;
     (void) toEntity;
@@ -118,6 +125,6 @@ void BombFactory::handlerBombTimer(
 
     Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("Explosion");
     playerInventory.setBomb(inventoryInfo.bomb + 1);
-    BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius);
+    GUI::BlockFactory::blastPropagation(pos, sceneManager.getCurrentScene()->localEntities, inventoryInfo.blastRadius);
     scene->localEntities.removeEntity(entity); // BOMB
 }

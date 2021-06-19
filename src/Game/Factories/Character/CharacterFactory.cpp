@@ -134,7 +134,7 @@ static void handlerKeyEvent(const Engine::Entity character)
             render.select("idle");
         }
         if (CoreData::eventManager->isKeyPressed(keys.placeBomb)) {
-            GUI::BombFactory::placeBomb(character);
+            Game::BombFactory::placeBomb(character);
         }
     }
 }
@@ -287,7 +287,7 @@ void CharacterFactory::handlerAITimer(
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     if (ai.putBomb()) {
         render.setRotation(ai.getOrientation());
-        GUI::BombFactory::placeBomb(entity);
+        Game::BombFactory::placeBomb(entity);
     }
     ai.setEnv(map.getData(), {(size_t) relativPos.a, (size_t) relativPos.b}, posList);
     std::pair<double, double> velocityIA = ai.getVelocity();

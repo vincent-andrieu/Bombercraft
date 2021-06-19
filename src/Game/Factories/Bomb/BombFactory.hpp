@@ -13,7 +13,7 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 
-namespace GUI
+namespace Game
 {
     class BombFactory {
       public:
@@ -32,7 +32,7 @@ namespace GUI
 
         static void handlerBombTimer(
             Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
-        static void handlerBombCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
+        static void handlerBombCollision(const Engine::Entity fromEntity, const Engine::Entity toEntity);
 
         static raylib::MyVector2 getNextPos(const raylib::MyVector2 &position, const float rotation);
         static bool isBombPlacable(float posX, float posY);
