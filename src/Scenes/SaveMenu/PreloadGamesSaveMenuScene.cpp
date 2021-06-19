@@ -51,7 +51,7 @@ void Game::SaveMenuScene::preLoadGames()
     size_t entryNb(0);
 
     for (const auto &entry : my_dir) {
-        if (entry.is_directory() && entry.path().filename().string() != "Game name") {
+        if (entry.is_directory()) {
             createButtonGamePreload(entry, entryNb);
             entryNb++;
         }

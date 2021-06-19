@@ -37,7 +37,6 @@ void GameScene::loadPlayerConfig()
             CoreData::entityManager->saveManager.readActFile(my_skinPath);
             CoreData::entityManager->saveManager.readActFile(my_xp);
             CoreData::entityManager->saveManager.readActFile(my_status);
-            // TODO ajouter toutes les variables de playerConfig à la suite
             CoreData::entityManager->saveManager.closeReadingFile(my_filename);
         } catch (const std::filesystem::filesystem_error &my_e) {
             std::cerr << my_e.what() << std::endl;
@@ -54,9 +53,11 @@ void GameScene::loadPlayerConfig()
 
 void GameScene::loadGame(const std::string &loadName)
 {
-    if (loadName.empty() || loadName == "Game name")
+    if (loadName.empty())
         return;
     try {
+        if (!CoreData::entityManager->saveManager.directoryExistsInWD(loadName))
+            return;
         CoreData::entityManager->saveManager.setWorkingDirectory(loadName);
     } catch (const std::filesystem::filesystem_error &my_e) {
         std::cerr << my_e.what() << std::endl;

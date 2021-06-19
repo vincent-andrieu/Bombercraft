@@ -70,7 +70,7 @@ void Game::NewGameMenuScene::init()
             my_utility(50, 20),
             my_utility(GUI::ButtonFactory::LargeProportions),
             "textInputGameName",
-            "Game name",
+            "GameName",
         },
         labelConfig,
         true);
