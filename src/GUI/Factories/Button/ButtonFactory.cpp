@@ -22,6 +22,7 @@ const raylib::MyVector2 ButtonFactory::SmallProportions(13, 8);
 const raylib::MyVector2 ButtonFactory::MediumProportions(24.5, 8);
 const raylib::MyVector2 ButtonFactory::BigProportions(33, 8);
 const raylib::MyVector2 ButtonFactory::LargeProportions(50, 8);
+const raylib::MyVector2 ButtonFactory::BigHighProportions(33, 16);
 
 ButtonConfig ButtonFactory::getStandardButtonConfig(const raylib::MyVector2 &buttonSize)
 {
@@ -56,6 +57,11 @@ ButtonConfig ButtonFactory::getMediumButtonConfig()
 ButtonConfig ButtonFactory::getBigButtonConfig()
 {
     return getSizedButtonConfig(BigProportions);
+}
+
+ButtonConfig ButtonFactory::getBighHighButtonConfig()
+{
+    return getSizedButtonConfig(BigHighProportions);
 }
 
 ButtonConfig ButtonFactory::getLargeButtonConfig()
@@ -146,21 +152,22 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     auto mySize(conf.size);
     auto myPosition(centered ? position - ProportionUtilities::getProportionWin(mySize, raylib::MyVector2(50, 50)) : position);
     const Engine::Entity &entity = name.empty() ? pack.createAnonymousEntity() : pack.createEntity(name);
-    const raylib::MyVector2 screenSize((mySize.a * 25) / 100, mySize.b);
+    const raylib::MyVector2 screenSize((mySize.a * 0.33), mySize.b);
 
-    std::cout << "screenSize: " << screenSize << std::endl;
     // Label
-    const raylib::MyVector2 labelSize(mySize.a, mySize.b);
+    raylib::MyVector2 labelSize(mySize);
     auto myLabel(std::make_shared<raylib::Text>(label,
         myPosition,
         conf.fontSize,
         conf.fontColor,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
-    raylib::Text::setFontSize(*myLabel, (labelSize.a < 20 && labelSize.b < 20) ? labelSize : labelSize - 20);
-    myLabel->setPosition(myPosition + raylib::MyVector2(screenSize.a, 0)
-        + ProportionUtilities::getProportionWin(
-            labelSize, raylib::MyVector2(7, 35), myLabel->getSize(), raylib::MyVector2(7, 35)));
-
+    labelSize.a -= screenSize.a;
+    labelSize = (labelSize.a < 20 && labelSize.b < 20) ? labelSize : labelSize - 20;
+    labelSize = labelSize * 0.85;
+    auto my_labelPosition(
+        myPosition + raylib::MyVector2(screenSize.a, 0) + ProportionUtilities::getProportionWin(labelSize, {15, 15}));
+    myLabel->setPosition(my_labelPosition);
+    raylib::Text::setFontSize(*myLabel, labelSize);
     Component::render2dMapModels my_models({
         {"unavailable", std::make_shared<raylib::Texture>(conf.unavailableTexturePath, mySize, myPosition)},
         {"idle", std::make_shared<raylib::Texture>(conf.idleTexturePath, mySize, myPosition)},

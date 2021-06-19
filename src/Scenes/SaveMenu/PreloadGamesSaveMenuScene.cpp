@@ -15,13 +15,19 @@ extern std::unique_ptr<Game::Core> core;
 void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &dir, const size_t entryNb)
 {
     const ProportionUtilities my_utility(CoreData::settings->getMyVector2("WIN_SIZE"));
-    const GUI::ButtonConfig my_config(GUI::ButtonFactory::getBigButtonConfig());
-    raylib::MyVector2 my_position(my_utility(50, 20));
-    std::string my_screenshotPath(dir.string() + "GameShot.png");
+    const GUI::ButtonConfig my_config(GUI::ButtonFactory::getBighHighButtonConfig());
+    raylib::MyVector2 my_position(my_utility(25, 20));
+    std::string my_screenshotPath(dir.string() + "/GameShot.png");
     my_position.b += (float) (my_config.size.b * 1.3) * (float) entryNb;
 
-    if (my_position.b > my_utility.getProportion(100, 80).b)
-        return;
+    if (my_position.b > my_utility.getProportion(100, 80).b) {
+        my_position = my_utility(75, 20);
+        my_position.b += (float) (my_config.size.b * 1.3)
+            * (float) (entryNb - ((size_t) (my_utility.getProportion(100, 60).b / my_config.size.b)));
+        if (my_position.b > my_utility.getProportion(100, 80).b) {
+            return;
+        }
+    }
     GUI::ButtonFactory::create(
         this->localEntities,
         my_position,

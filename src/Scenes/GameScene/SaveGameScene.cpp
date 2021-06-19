@@ -47,6 +47,9 @@ void GameScene::saveGame(const std::string &saveName)
         if (!CoreData::entityManager->saveManager.directoryExistsInWD(saveName))
             CoreData::entityManager->saveManager.createDirectory(saveName);
         CoreData::entityManager->saveManager.setWorkingDirectory(saveName);
+        std::filesystem::copy("Asset/ScreenShot/GameShot.png",
+            CoreData::entityManager->saveManager.getWorkingDirectory(),
+            std::filesystem::copy_options::update_existing);
     } catch (const std::filesystem::filesystem_error &my_e) {
         Engine::SaveManager::printException(my_e);
         return;
