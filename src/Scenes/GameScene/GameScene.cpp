@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "GameScene.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
@@ -69,7 +70,9 @@ void GameScene::open()
     const size_t randValue = std::rand() % 13;
     CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
     /// Chrono
-    const raylib::MyVector2 &countdownSize = CoreData::settings->getMyVector2("TIMER_SIZE");
+    const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
+    const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
+
     /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
