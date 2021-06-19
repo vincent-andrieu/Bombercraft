@@ -14,29 +14,20 @@ raylib::Texture::Texture(const string &path,
     const MyVector2 position,
     const RColor color,
     const bool scaleMode,
-    const MyVector2 rectPosition,
-    const MyVector4 ogRectPercentage)
+    const MyVector2 truncateSize)
 {
     if (!this->_loaderManager)
         this->setLoaderManager();
     this->_path = path;
     this->_position = position;
     this->_color = color;
+    this->_size = size;
     this->_texture = this->_loaderManager->load(path.data());
-    if (rectPosition.a == -1 && rectPosition.b == -1) {
-        this->_size = {this->_position.a, this->_position.b, size.a, size.b};
-    } else {
-        this->_size = {rectPosition.a, rectPosition.b, size.a, size.b};
-    }
+    this->_truncateCoef = {size.a / _texture.width, size.b / _texture.height};
+    this->_destRect = {
+        _position.a, _position.b, (_texture.width * _truncateCoef.a - truncateSize.a) , (_texture.height * _truncateCoef.b - truncateSize.b)};
     this->_scaleMode = scaleMode;
-    if (ogRectPercentage.a == -1 && ogRectPercentage.b == -1 && ogRectPercentage.c == -1 && ogRectPercentage.d == -1) {
-        _ogRect = {-1, -1, -1, -1};
-    } else {
-        _ogRect = {ogRectPercentage.a * (float) _texture.width,
-            ogRectPercentage.b * (float) _texture.height,
-            ogRectPercentage.c * (float) _texture.width,
-            ogRectPercentage.d * (float) _texture.height};
-    }
+    this->_truncateSize = truncateSize;
 }
 
 raylib::Texture::~Texture()
@@ -46,25 +37,19 @@ raylib::Texture::~Texture()
 void raylib::Texture::draw()
 {
     Vector2 rayPos = {this->_position.a, this->_position.b};
-    Rectangle ogRect = {0, 0, (float) _texture.width, (float) _texture.height};
+    Rectangle srcRect = {0, 0, (float) _texture.width - (_truncateSize.a / _truncateCoef.a), (float) _texture.height - (_truncateSize.b / _truncateCoef.b)};
     Rectangle position = {this->_position.a, this->_position.b, (float) _texture.width, (float) _texture.height};
 
-    if (!(_ogRect.x == -1 && _ogRect.y == -1 && _ogRect.width == -1 && _ogRect.height == -1)) {
-        ogRect.x = _ogRect.x;
-        ogRect.y = _ogRect.y;
-        ogRect.width = _ogRect.width;
-        ogRect.height = _ogRect.height;
-    }
     if (_scaleMode) {
-        if (_size.width == -1)
-            DrawTexturePro(this->_texture, ogRect, position, {0, 0}, 0, _matchingColors.at(this->_color));
+        if (_destRect.width == -1)
+            DrawTexturePro(this->_texture, srcRect, position, {0, 0}, 0, _matchingColors.at(this->_color));
         else
-            DrawTexturePro(this->_texture, ogRect, this->_size, {0, 0}, 0, _matchingColors.at(this->_color));
+            DrawTexturePro(this->_texture, srcRect, this->_destRect, {0, 0}, 0, _matchingColors.at(this->_color));
     } else {
-        if (_size.width == -1)
+        if (_destRect.width == -1)
             DrawTexture(this->_texture, this->_position.a, this->_position.b, _matchingColors.at(this->_color));
         else
-            DrawTextureRec(this->_texture, this->_size, rayPos, _matchingColors.at(this->_color));
+            DrawTextureRec(this->_texture, this->_destRect, rayPos, _matchingColors.at(this->_color));
     }
 }
 
@@ -75,8 +60,8 @@ void raylib::Texture::update()
 void raylib::Texture::setPosition(const MyVector2 position)
 {
     this->_position = position;
-    this->_size.x = this->_position.a;
-    this->_size.y = this->_position.b;
+    this->_destRect.x = this->_position.a;
+    this->_destRect.y = this->_position.b;
 }
 
 void raylib::Texture::setColor(const RColor color)
@@ -92,22 +77,20 @@ void raylib::Texture::setPath(const string &path)
 
 void raylib::Texture::setSize(const MyVector2 size)
 {
-    this->_size.width = size.a;
-    this->_size.height = size.b;
+    this->_size = size;
 }
 
 void raylib::Texture::setRect(const MyVector2 rect)
 {
-    this->_size.x = rect.a;
-    this->_size.y = rect.b;
+    this->_destRect.x = rect.a;
+    this->_destRect.y = rect.b;
 }
 
-void raylib::Texture::setOgRect(const MyVector4 ogRect)
+void raylib::Texture::setTruncateSize(const MyVector2 &size)
 {
-    _ogRect = {ogRect.a * (float) _texture.width,
-        ogRect.b * (float) _texture.height,
-        ogRect.c * (float) _texture.width,
-        ogRect.d * (float) _texture.height};
+    this->_truncateCoef = {_size.a / _texture.width, _size.b / _texture.height};
+    this->_destRect = {_position.a, _position.b, (_texture.width * _truncateCoef.a - size.a), (_texture.height * _truncateCoef.b - size.b)};
+    this->_truncateSize = size;
 }
 
 void raylib::Texture::setScaleMode(const bool mode)
@@ -127,12 +110,12 @@ string raylib::Texture::getPath() const
 
 raylib::MyVector2 raylib::Texture::getRect() const
 {
-    return MyVector2(this->_size.x, this->_size.y);
+    return MyVector2(this->_destRect.x, this->_destRect.y);
 }
 
 raylib::MyVector2 raylib::Texture::getSize() const
 {
-    return MyVector2(this->_size.width, this->_size.height);
+    return _size;
 }
 
 void raylib::Texture::setLoaderManager()

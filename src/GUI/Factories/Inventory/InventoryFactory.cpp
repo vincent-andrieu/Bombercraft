@@ -8,6 +8,7 @@
 #include "InventoryFactory.hpp"
 #include "Game/CoreData/CoreData.hpp"
 #include "Components/Render2D/Render2D.hpp"
+#include "GUI/Factories/XPBar/XPBarFactory.hpp"
 
 static const std::vector<std::string> valueNames = {
     "InventoryValueBomb",
@@ -99,5 +100,22 @@ Engine::Entity GUI::InventoryFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::PlayerInventory>(entity, id, getDefaultPlayerInventory(), config);
     Game::CoreData::entityManager->addComponent<Engine::Timer>(
         entity, 0.1f, *Game::CoreData::entityManager, *Game::CoreData::sceneManager, &timer_handler);
+    InventoryFactory::CreatePlayerXpbar(pack, position, boxSize, id);
     return entity;
+}
+
+void GUI::InventoryFactory::CreatePlayerXpbar(
+    Engine::EntityPack &pack, const raylib::MyVector2 &position, const raylib::MyVector2 &boxSize, Component::PlayerID id)
+{
+    raylib::MyVector2 xpBarPosition(position);
+    const raylib::MyVector2 windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
+    const raylib::MyVector2 xpBarSize = {boxSize.a * 4.0f, 5.0f * (windowSize.b / 360.0f)};
+
+    if (position.b < windowSize.b / 2) { // Upper bar
+        xpBarPosition.b += boxSize.b;
+    } else { // Lower bar
+        xpBarPosition.b -= (boxSize.b * 0.12);
+    }
+     GUI::XPBarFactory::create(xpBarPosition, xpBarSize, Game::CoreData::settings->getTabString("XP_BAR"), id, pack,
+     "");
 }

@@ -21,12 +21,13 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
-#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
+#include "Components/PlayerIdBox.hpp"
 
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
 
 #include "Game/Factories/Sound/AudioFactory.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 using namespace Game;
 
@@ -73,6 +74,7 @@ void Core::registerComponents()
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
     CoreData::entityManager->registerComponent<Component::AIComponent>();
+    CoreData::entityManager->registerComponent<Component::PlayerIdBox>();
 }
 
 void Core::createSystems()
