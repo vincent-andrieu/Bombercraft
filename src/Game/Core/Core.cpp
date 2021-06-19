@@ -169,6 +169,12 @@ void Core::loadMusic()
         Game::AudioFactory::create(this->globalEntities, Game::AudioType::MUSIC, once.second, once.first);
     for (auto once : listSound)
         Game::AudioFactory::create(this->globalEntities, Game::AudioType::SOUND, once.second, once.first);
+    // Set default volume
+    const Engine::Entity &optionEntity = this->globalEntities.getEntity("options");
+    auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
+    audioSystem.setVolumeEffects(options.volumeEffects);
+    audioSystem.setVolumeMusic(options.volumeMusic);
 }
 
 std::unordered_map<std::string, std::string> Core::getAudioList(
