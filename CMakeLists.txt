@@ -100,6 +100,7 @@ set(SRCS
         src/Scenes/CreditScene/CreditScene.cpp
         src/Scenes/RessourcePackMenu/RessourcePackMenuScene.cpp
         src/Scenes/SaveMenu/SaveMenuScene.cpp
+        src/Scenes/SaveMenu/PreloadGamesSaveMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

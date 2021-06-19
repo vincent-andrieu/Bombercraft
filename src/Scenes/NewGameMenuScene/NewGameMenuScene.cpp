@@ -65,15 +65,15 @@ void Game::NewGameMenuScene::init()
     GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
     labelConfig.fontColor = raylib::RColor::RDARKGRAY;
     // InComing with save menu
-    // GUI::TextInputFactory::create(this->localEntities,
-    //     {
-    //         my_utility(50, 20),
-    //         my_utility(GUI::ButtonFactory::LargeProportions),
-    //         "gameInputName",
-    //         "Game name",
-    //     },
-    //     labelConfig,
-    //     true);
+    GUI::TextInputFactory::create(this->localEntities,
+        {
+            my_utility(50, 20),
+            my_utility(GUI::ButtonFactory::LargeProportions),
+            "textInputGameName",
+            "Game name",
+        },
+        labelConfig,
+        true);
 
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion(67, 85),
@@ -92,13 +92,17 @@ void Game::NewGameMenuScene::init()
         [](const Engine::Entity) {
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
-            Engine::Entity textInput =
+            Engine::Entity textInputSeed =
                 Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputIASeed");
-            auto &textInputRender2D = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInput);
-            auto &text = *dynamic_cast<raylib::IText *>(textInputRender2D.get("text").get());
+            Engine::Entity textInputName =
+                Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputGameName");
+            auto &textInputRender2DSeed = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputSeed);
+            auto &textInputRender2DName = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputName);
+            auto &textSeed = *dynamic_cast<raylib::IText *>(textInputRender2DSeed.get("text").get());
+            auto &textName = *dynamic_cast<raylib::IText *>(textInputRender2DName.get("text").get());
             std::string string = "";
 
-            for (auto c : text.getText())
+            for (auto c : textSeed.getText())
                 if (c != ' ')
                     string += c;
             try {
@@ -106,7 +110,7 @@ void Game::NewGameMenuScene::init()
             } catch (...) {
                 options.seed = 42;
             }
-            Game::CoreData::camera->setFovy(options.fov);
+            options.saveName = textName.getText();
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         });

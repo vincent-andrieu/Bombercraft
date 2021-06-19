@@ -39,17 +39,7 @@ void Game::SaveMenuScene::open()
     GUI::ImageFactory::create(
         this->localEntities, MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     GUI::LabelFactory::createCentered(this->localEntities, resizer(50, 4), "Saves", GUI::LabelFactory::getStandardLabelConfig());
-
-    GUI::ButtonFactory::create(
-        this->localEntities,
-        resizer(50, 50),
-        menuButtons,
-        [](const Engine::Entity &) {
-            std::cout << "Clicked !" << std::endl;
-        },
-        "Asset/Background/SkinChoiceBackground.png",
-        "Yolo",
-        true);
+    preLoadGames();
 
     GUI::ButtonFactory::create(
         this->localEntities, resizer(35, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
