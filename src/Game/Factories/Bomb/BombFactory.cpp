@@ -107,7 +107,6 @@ void BombFactory::handlerBombCollision(const Engine::Entity fromEntity, const En
             Game::CoreData::entityManager->getComponent<Engine::Timer>(toEntity).script.trigger(toEntity);
         }
     }
-    // TODO stop moving
     (void) fromEntity;
     (void) toEntity;
 }

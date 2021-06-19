@@ -174,13 +174,11 @@ void BlockFactory::handlerBlastTimer(
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
 
     matrix.getData()->save({(size_t) indexOnMap.a, (size_t) indexOnMap.b}, entity, BlockType::BLOCK_AIR);
-    // TODO remove blast
     scene->localEntities.removeEntity(entity); // REMOVE BLAST
 }
 
 void BlockFactory::handlerCollision(const Engine::Entity &fromEntity, const Engine::Entity &toEntity)
 {
-    // TODO stop moving
     (void) fromEntity;
     (void) toEntity;
 }
