@@ -33,7 +33,6 @@ void GameScene::savePlayerConfig()
             CoreData::entityManager->saveManager.writeActFile(config[i]->getSkinPath());
             CoreData::entityManager->saveManager.writeActFile(config[i]->getXP());
             CoreData::entityManager->saveManager.writeActFile(config[i]->getStatus());
-            // TODO ajouter toutes les variables de playerConfig à la suite
             CoreData::entityManager->saveManager.closeWritingFile(my_filename);
         } catch (const std::filesystem::filesystem_error &my_e) {
             std::cerr << my_e.what() << std::endl;
@@ -43,7 +42,7 @@ void GameScene::savePlayerConfig()
 
 void GameScene::saveGame(const std::string &saveName)
 {
-    if (saveName.empty() || saveName == "Game name")
+    if (saveName.empty())
         return;
     try {
         if (!CoreData::entityManager->saveManager.directoryExistsInWD(saveName))
