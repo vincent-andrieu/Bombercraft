@@ -6,6 +6,7 @@
 */
 
 #include "CreditScene.hpp"
+#include "Utilities/ProportionUtilities.hpp"
 
 using namespace Game;
 
@@ -46,7 +47,7 @@ void CreditScene::CreditScene::open()
                 bgPos = bgPos + raylib::MyVector2(0, 10);
             pictureBg->setPosition(bgPos);
         });
-
+    const raylib::MyVector2 textShift = ProportionUtilities::getProportionWin(windowSize, raylib::MyVector2(7, 7));
     // CREDITS TEXT CONTENT
     for (const auto &line : creditText) {
         const Engine::Entity &txt = GUI::LabelFactory::createCentered(
@@ -69,7 +70,7 @@ void CreditScene::CreditScene::open()
                 if (line == creditText.back() && textPos.b + text->getSize().b < 0)
                     CoreData::sceneManager->setScene<MainMenuScene>();
             });
-        height += 50;
+        height += textShift.b;
     }
     //    KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
