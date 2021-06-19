@@ -111,11 +111,6 @@ void Game::NewGameMenuScene::init()
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
                 ->setText(nbPlayersLabel + toString(options.nbPlayers));
         });
-
-    // TODO set IA seed from text input
-    // TODO check if not a number
-    // TODO add eventHandler to textInputFactory
-    // TODO set textRec, to limit the input inside the borders
     GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
     labelConfig.fontColor = raylib::RColor::RDARKGRAY;
     GUI::TextInputFactory::create(localEntities,
