@@ -52,9 +52,11 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     int count = 0;
     int subCount = 0;
     std::string workingDirectory = GetWorkingDirectory();
+    std::string subWorkingDirectory = "";
 
     if (DirectoryExists(texturePath.data())) {
         filenames = goInDirectoryAndGetFileNames(texturePath, &count);
+        subWorkingDirectory = GetWorkingDirectory();
         for (size_t i = 0; i < (size_t) count; i++) {
             if (DirectoryExists(filenames[i].data())) {
                 _textures.push_back({});
@@ -63,7 +65,7 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
                     if (!DirectoryExists(subFilenames[i].data()))
                         _textures[_textures.size() - 1].push_back(raylib::Texture::_loaderManager->load(subFilenames[j]));
                 }
-                LeaveDirectoryAndClearFileNames(texturePath);
+                LeaveDirectoryAndClearFileNames(subWorkingDirectory);
             } else if (FileExists(filenames[i].data())) {
                 _textures.push_back({raylib::Texture::_loaderManager->load(filenames[i])});
             }
@@ -96,6 +98,7 @@ std::vector<std::string> raylib::Animation::goInDirectoryAndGetFileNames(const s
 void raylib::Animation::LeaveDirectoryAndClearFileNames(const std::string &oldDirectoryPath)
 {
     ClearDirectoryFiles();
+    std::cout << "OLD PATH = " << oldDirectoryPath << std::endl;
     ChangeDirectory(oldDirectoryPath.data());
 }
 
