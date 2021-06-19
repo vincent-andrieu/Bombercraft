@@ -64,11 +64,11 @@ void GameScene::open()
     CoreData::moveCamera(cameraPosition, cameraTarget);
     CoreData::camera->setUp(cameraUp);
 
+    CoreData::systemManager->getSystem<System::AudioSystem>().stopMusic();
     if (!CoreData::settings->getInt("SKIP_CAMERA_ANIMATION")) {
         cameraAnimation(cameraPosition, cameraUp, cameraTarget);
     }
-    const size_t randValue = std::rand() % 13;
-    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME" + toString(randValue), core->globalEntities);
+    CoreData::systemManager->getSystem<System::AudioSystem>().play("GAME", core->globalEntities);
     /// Chrono
     const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
     const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
