@@ -52,16 +52,18 @@ static void goGameScene(const Engine::Entity)
                 const std::string &texturePath = (*config[i]).getSkinPath();
                 modelList.setTexture(texturePath);
                 /// Update keybiding
-                const Engine::EntityBox &inventoryEntityBox =
-                    Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
-                const Component::PlayerInventory &inventory =
-                    Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
-                const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
-                if (info.config != nullptr) {
-                    const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
-                    Game::EventRequirement requirements(
-                        info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
-                    Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                if (Game::CoreData::entityManager->hasComponent<Component::KeyEvent>(player)) {
+                    const Engine::EntityBox &inventoryEntityBox =
+                        Game::CoreData::entityManager->getComponent<Engine::EntityBox>(player);
+                    const Component::PlayerInventory &inventory =
+                        Game::CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+                    const Component::PlayerInventoryInfo &info = inventory.getPlayerInventoryInfo();
+                    if (info.config != nullptr) {
+                        const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
+                        const Game::EventRequirement requirements(
+                            info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
+                        Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                    }
                 }
                 /// Update map textures
                 GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
