@@ -146,7 +146,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     auto mySize(conf.size);
     auto myPosition(centered ? position - ProportionUtilities::getProportionWin(mySize, raylib::MyVector2(50, 50)) : position);
     const Engine::Entity &entity = name.empty() ? pack.createAnonymousEntity() : pack.createEntity(name);
-    const raylib::MyVector2 screenSize((mySize.a * 20) / 100, mySize.b);
+    const raylib::MyVector2 screenSize((mySize.a * 25) / 100, mySize.b);
 
     std::cout << "screenSize: " << screenSize << std::endl;
     // Label
