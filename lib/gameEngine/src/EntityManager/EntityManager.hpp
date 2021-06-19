@@ -33,6 +33,7 @@ namespace Engine
 
         Entity createEntity();
         void removeEntity(Entity entity);
+        bool hasEntity(Entity entity);
 
         template <typename T> bool hasComponent(Entity entity);
 
@@ -53,14 +54,13 @@ namespace Engine
         void save(const std::string &saveName);
         void load(const std::string &saveName);
 
-        template <typename T, class Function>
-        void foreachComponent(Function fn);
+        template <typename T, class Function> void foreachComponent(Function fn);
 
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
-        //SaveManager _saver{"Engine_Save"};
+        // SaveManager _saver{"Engine_Save"};
 
         template <typename T> void checkComponentType() const;
 
@@ -110,7 +110,9 @@ namespace Engine
     {
         this->checkComponentTypes<Ts...>();
         if (this->hasComponents<Ts...>(entity) == false) {
-            ((std::cerr << "EntityManager::getComponents Entity " << entity << " request " << Ts::type << " component." << std::endl), ...);
+            ((std::cerr << "EntityManager::getComponents Entity " << entity << " request " << Ts::type << " component."
+                        << std::endl),
+                ...);
             throw std::invalid_argument("EntityManager::getComponents The entity don't have the requested components.");
         }
         return std::tie(this->getComponentContainer<Ts>()->get(entity)...);
@@ -123,7 +125,7 @@ namespace Engine
             throw std::invalid_argument("Invalid component type (not registered?)");
         }
         if (this->hasComponent<T>(entity)) {
-            std::cerr << "EntityManager::addComponent : Entity " << (uint)entity << " => Component N " << T::type << std::endl;
+            std::cerr << "EntityManager::addComponent : Entity " << (uint) entity << " => Component N " << T::type << std::endl;
             throw std::invalid_argument("EntityManager::addComponent, Same component added several time on an entity.");
         }
         this->getComponentContainer<T>()->add(entity, std::forward<Args>(args)...);
@@ -170,8 +172,7 @@ namespace Engine
         return static_cast<ComponentTypeRegister<T> *>(_componentRegisters[T::type].get());
     }
 
-    template <typename T, class Function>
-    void EntityManager::foreachComponent(Function fn)
+    template <typename T, class Function> void EntityManager::foreachComponent(Function fn)
     {
         this->checkComponentType<T>();
         std::vector<T> &components = this->getComponentContainer<T>()->getComponents();
