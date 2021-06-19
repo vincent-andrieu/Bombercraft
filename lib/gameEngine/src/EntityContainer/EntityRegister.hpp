@@ -30,6 +30,7 @@ namespace Engine
         const Signature &getSignature(Entity entity) const;
         Entity create();
         void remove(Entity entity);
+        bool isSet(Entity entity);
         // void save(SaveManager &saver) const;
         // void load(SaveManager &saver);
 

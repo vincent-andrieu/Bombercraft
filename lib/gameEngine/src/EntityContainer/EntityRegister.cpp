@@ -49,6 +49,17 @@ void EntityRegister::remove(Entity entity)
     _freeEntities.push_back(entity);
 }
 
+bool EntityRegister::isSet(Entity entity)
+{
+    if (std::find(_freeEntities.begin(), _freeEntities.end(), entity) != _freeEntities.end()) {
+        return false;
+    }
+    if (_entitySignatures.size() <= entity) {
+        return false;
+    }
+    return true;
+}
+
 // // void EntityRegister::save(SaveManager &saver) const
 // // {
 // //     saveFreeEntities(saver);
