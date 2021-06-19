@@ -24,6 +24,8 @@ namespace Component
 
         void trigger(Engine::Entity entity);
 
+        void setRequirements(const Game::EventRequirement &requirements);
+
       private:
         eventScript _handler;
         std::shared_ptr<Game::EventRequirement> _requirements;
