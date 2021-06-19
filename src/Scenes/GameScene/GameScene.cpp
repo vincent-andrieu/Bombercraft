@@ -99,7 +99,7 @@ void GameScene::open()
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
     if (!options.loadName.empty()) {
-        loadGame(options.saveName);
+        loadGame(options.loadName);
     }
 }
 

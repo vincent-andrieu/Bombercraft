@@ -43,18 +43,22 @@ void GameScene::savePlayerConfig()
 
 void GameScene::saveGame(const std::string &saveName)
 {
-    if (saveName.empty())
+    if (saveName.empty() || saveName == "Game name")
         return;
     try {
         if (!CoreData::entityManager->saveManager.directoryExistsInWD(saveName))
             CoreData::entityManager->saveManager.createDirectory(saveName);
         CoreData::entityManager->saveManager.setWorkingDirectory(saveName);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+        return;
+    }
+    try {
         std::filesystem::copy("Asset/ScreenShot/GameShot.png",
             CoreData::entityManager->saveManager.getWorkingDirectory(),
             std::filesystem::copy_options::update_existing);
     } catch (const std::filesystem::filesystem_error &my_e) {
         Engine::SaveManager::printException(my_e);
-        return;
     }
     savePlayerConfig();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
