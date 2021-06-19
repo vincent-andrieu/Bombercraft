@@ -306,7 +306,6 @@ void BlockFactory::blastPropagation(
     Engine::Entity entityMap = entityPack.getEntity("gameMap");
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
     const raylib::MyVector3 &blockSize = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    // TODO SPLIT INTO METHODS
     raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
     std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
 

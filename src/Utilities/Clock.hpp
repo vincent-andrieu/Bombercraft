@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** Clock.hpp
 ** File description:
-** TODO: add description
+** add description
 */
 #ifndef BOMBERMAN_CLOCK_HPP
 #define BOMBERMAN_CLOCK_HPP

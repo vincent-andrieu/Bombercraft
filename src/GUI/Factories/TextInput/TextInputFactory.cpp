@@ -118,32 +118,40 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
 };
 
 static Component::eventScript focusHandler = [](const Engine::Entity &childEntity) {
-    raylib::Texture *rectActual = dynamic_cast<raylib::Texture *>(
+    raylib::Texture *rectActual = static_cast<raylib::Texture *>(
         Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("rectangle").get());
 
     if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
-        raylib::Texture *rectangle = dynamic_cast<raylib::Texture *>(
-            Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("rectangle").get());
-
-        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>(
-            [rectangle](Component::ClickFocusEvent &focusEvent) {
-                rectangle->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
-                focusEvent.changeFocus(false);
-            });
+        Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
+            static_cast<raylib::Texture *>(
+                Game::CoreData::entityManager
+                    ->getComponent<Component::Render2D>(Game::CoreData::entityManager->getOwner(focusEvent))
+                    .get("rectangle")
+                    .get())
+                ->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
+            focusEvent.changeFocus(false);
+        });
         Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).changeFocus(true);
-        rectangle->setPath(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"));
+        rectActual->setPath(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"));
     }
 };
 
-void TextInputFactory::create(
-    Engine::EntityPack &pack, TextInputDynConf const &dynConf, TextInputConfig const &textInput, LabelConfig const &label)
+void TextInputFactory::create(Engine::EntityPack &pack,
+    TextInputDynConf const &dynConf,
+    TextInputConfig const &textInput,
+    LabelConfig const &label,
+    const bool centered)
 {
     if (dynConf.name.empty()) {
         throw std::invalid_argument("TextInputFactory::create empty entity name");
     }
     Engine::Entity entity = pack.createEntity(dynConf.name);
-    raylib::MyVector2 textPos = dynConf.position + textInput.textPositionOffset;
-    raylib::MyVector2 inputPosition(dynConf.position.a + textInput.borderSize, dynConf.position.b + textInput.borderSize);
+    raylib::MyVector2 position(dynConf.position);
+    if (centered) {
+        position = position - ProportionUtilities::getProportionWin(dynConf.size, raylib::MyVector2(50, 50));
+    }
+    raylib::MyVector2 textPos = position + textInput.textPositionOffset;
+    raylib::MyVector2 inputPosition(position.a + textInput.borderSize, position.b + textInput.borderSize);
     raylib::MyVector2 inputSize(dynConf.size.a - textInput.borderSize * 2, dynConf.size.b - textInput.borderSize * 2);
     auto textModel =
         std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos + 5, label.fontSize, label.fontColor);
@@ -153,7 +161,7 @@ void TextInputFactory::create(
             {"border",
                 std::make_shared<raylib::Texture>(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"),
                     dynConf.size,
-                    dynConf.position,
+                    position,
                     textInput.borderColor)},
             {"rectangle",
                 std::make_shared<raylib::Texture>(
@@ -166,9 +174,10 @@ void TextInputFactory::create(
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
 }
 
-void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label)
+void TextInputFactory::create(
+    Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label, const bool centered)
 {
     TextInputConfig const &textInput = TextInputFactory::getStandardConfig();
 
-    TextInputFactory::create(pack, dynConf, textInput, label);
+    TextInputFactory::create(pack, dynConf, textInput, label, centered);
 }

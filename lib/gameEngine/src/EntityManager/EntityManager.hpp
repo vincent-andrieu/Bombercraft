@@ -33,6 +33,7 @@ namespace Engine
 
         Entity createEntity();
         void removeEntity(Entity entity);
+        bool hasEntity(Entity entity);
 
         template <typename T> bool hasComponent(Entity entity);
 

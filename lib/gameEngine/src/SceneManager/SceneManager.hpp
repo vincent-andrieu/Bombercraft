@@ -95,7 +95,6 @@ namespace Engine
 
     template <typename T> void SceneManager::setScene(const bool close, const bool open)
     {
-        // TODO lksjdfklj
         std::size_t index = 0;
         const std::type_info &type = typeid(T);
         auto type_it = std::find_if(_types.begin(), _types.end(), [&type](auto &sceneType) {

@@ -17,8 +17,10 @@ TimerSystem::TimerSystem(EntityManager &entityManager) : AbstractSystem(entityMa
 void TimerSystem::update()
 {
     for (const Entity &entity : this->getManagedEntities()) {
-        auto &timer = this->_entityManager.getComponent<Timer>(entity);
-        timer.eval(entity);
+        if (_entityManager.hasEntity(entity)) {
+            auto &timer = this->_entityManager.getComponent<Timer>(entity);
+            timer.eval(entity);
+        }
     }
 }
 
