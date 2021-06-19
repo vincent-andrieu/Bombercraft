@@ -61,6 +61,20 @@ void Game::NewGameMenuScene::init()
     setStandardOptions(options);
     GUI::ImageFactory::create(
         localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+
+    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
+    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
+    // InComing with save menu
+    // GUI::TextInputFactory::create(this->localEntities,
+    //     {
+    //         my_utility(50, 20),
+    //         my_utility(GUI::ButtonFactory::LargeProportions),
+    //         "gameInputName",
+    //         "Game name",
+    //     },
+    //     labelConfig,
+    //     true);
+
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion(67, 85),
         my_button_prefix + "cancel",
@@ -111,8 +125,7 @@ void Game::NewGameMenuScene::init()
                 Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
                 ->setText(nbPlayersLabel + toString(options.nbPlayers));
         });
-    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
-    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
+
     GUI::TextInputFactory::create(localEntities,
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
