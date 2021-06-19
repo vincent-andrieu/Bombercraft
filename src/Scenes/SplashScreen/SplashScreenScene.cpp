@@ -45,8 +45,8 @@ void SplashScreenScene::open()
             {"text",
                 std::make_shared<raylib::Text>("Press SPACE to start",
                     "Asset/Font/Code-Bold.ttf",
-                    ProportionUtilities::getProportionWin(windowSize, {50, 90}, {50, 10}),
-                    40,
+                    ProportionUtilities::getProportionWin(windowSize, {2, 96}),
+                    30,
                     raylib::RColor::RBLACK)},
         }));
 }
