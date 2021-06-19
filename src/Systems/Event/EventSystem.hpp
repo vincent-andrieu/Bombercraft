@@ -33,7 +33,6 @@ namespace System
 
                     event.trigger(entity);
                 } catch (std::invalid_argument const &) {
-                    this->onEntityRemoved(entity);
                     std::cerr << "Warning: EventSystem::update invalid entity components. Unregister entity." << std::endl;
                 }
             }
