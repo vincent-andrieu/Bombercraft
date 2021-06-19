@@ -61,6 +61,19 @@ void Game::NewGameMenuScene::init()
     setStandardOptions(options);
     GUI::ImageFactory::create(
         localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+
+    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
+    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
+    GUI::TextInputFactory::create(this->localEntities,
+        {
+            my_utility(50, 20),
+            my_utility(GUI::ButtonFactory::LargeProportions),
+            "gameInputName",
+            "Game name",
+        },
+        labelConfig,
+        true);
+
     GUI::ButtonFactory::create(localEntities,
         my_utility.getProportion(67, 85),
         my_button_prefix + "cancel",
@@ -113,11 +126,8 @@ void Game::NewGameMenuScene::init()
         });
 
     // TODO set IA seed from text input
-    // TODO check if not a number
     // TODO add eventHandler to textInputFactory
     // TODO set textRec, to limit the input inside the borders
-    GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
-    labelConfig.fontColor = raylib::RColor::RDARKGRAY;
     GUI::TextInputFactory::create(localEntities,
         {my_utility.getProportion({20, 65}),
             my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
