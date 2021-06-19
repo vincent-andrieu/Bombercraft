@@ -134,7 +134,7 @@ void MainMenuScene::open()
     // TEXT
     raylib::MyVector2 bottomLeftPos(my_utility(1, 94));
     raylib::MyVector2 bottomRightPos(my_utility(71, 94));
-    raylib::MyVector2 splashPos(my_utility({65, 30}));
+    raylib::MyVector2 splashPos(my_utility(65, 30));
     GUI::LabelFactory::create(this->localEntities,
         bottomLeftPos,
         my_utility.getProportion(GUI::ButtonFactory::SmallProportions),
