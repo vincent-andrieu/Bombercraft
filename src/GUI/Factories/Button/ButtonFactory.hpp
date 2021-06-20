@@ -54,10 +54,14 @@ namespace GUI
             const Component::eventScript clickAction,
             bool centered = false);
 
-        static Engine::Entity create(Engine::EntityPack &pack,
+        static Engine::Entity create(
+            Engine::EntityPack &pack,
             const raylib::MyVector2 &position,
             ButtonConfig const &conf,
             const Component::eventScript clickAction,
+            const Component::eventScript righClickAction =
+                [](Engine::Entity) {
+                },
             const string &screenPath = "",
             const string &label = "",
             bool centered = false,

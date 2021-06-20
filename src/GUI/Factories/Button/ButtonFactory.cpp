@@ -17,6 +17,7 @@ using namespace GUI;
 extern std::unique_ptr<Game::Core> core;
 
 static const Game::EventRequirement clickHandlerRequirements(Game::CLK_LEFT);
+static const Game::EventRequirement clicksHandlerRequirements(Game::CLK_LEFT | Game::CLK_RIGHT);
 
 const raylib::MyVector2 ButtonFactory::SmallProportions(13, 8);
 const raylib::MyVector2 ButtonFactory::MediumProportions(24.5, 8);
@@ -144,6 +145,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 &position,
     ButtonConfig const &conf,
     const Component::eventScript clickAction,
+    const Component::eventScript rightClickAction,
     const string &screenPath,
     const string &label,
     bool centered,
@@ -189,8 +191,14 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
             }
         }
     };
-    Component::eventScript my_clickHandler = [myPosition, mySize, clickAction](const Engine::Entity entity) {
-        const auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
+    Component::eventScript my_clickHandler = [myPosition, mySize, clickAction, rightClickAction](const Engine::Entity entity) {
+        auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
+
+        if (Game::CoreData::eventManager->MouseIsOverRightClicked(myPosition, mySize) && !my_render.isSetToDraw("unavailable")) {
+            Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("ButtonClick", core->globalEntities);
+
+            rightClickAction(entity);
+        }
 
         if (Game::CoreData::eventManager->MouseIsOverClicked(myPosition, mySize) && !my_render.isSetToDraw("unavailable")) {
             Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("ButtonClick", core->globalEntities);
@@ -198,7 +206,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
             clickAction(entity);
         }
     };
-    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, conf.requirements);
+    Game::CoreData::entityManager->addComponent<Component::ClickEvent>(entity, my_clickHandler, clicksHandlerRequirements);
     Game::CoreData::entityManager->addComponent<Component::MouseMoveEvent>(entity, my_moveHandler);
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, my_models);
     const raylib::MyVector2 buttonBorder((mySize.a * 0.6f) / 100, (mySize.b * 5) / 100);

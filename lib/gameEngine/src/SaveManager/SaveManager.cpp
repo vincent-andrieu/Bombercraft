@@ -99,6 +99,13 @@ std::filesystem::directory_iterator SaveManager::listWD()
     return std::filesystem::directory_iterator(_workingDirectory);
 }
 
+void SaveManager::removeDirInWD(const std::string &dirname)
+{
+    std::filesystem::path my_dirname(getFileDir(dirname));
+
+    std::filesystem::remove_all(my_dirname);
+}
+
 void SaveManager::unsetWorkingDirectory()
 {
     _workingDirectory.replace_filename("");
