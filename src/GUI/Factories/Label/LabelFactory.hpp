@@ -50,7 +50,7 @@ namespace GUI
             LabelConfig const &config,
             const std::string &name = "");
 
-        static void create(Engine::EntityPack &pack,
+        static Engine::Entity create(Engine::EntityPack &pack,
             raylib::MyVector2 position,
             raylib::MyVector2 size,
             std::string const &label,

@@ -132,24 +132,27 @@ void MainMenuScene::open()
         });
 
     // TEXT
-    raylib::MyVector2 bottomLeftPos(my_utility(1, 94));
-    raylib::MyVector2 bottomRightPos(my_utility(71, 94));
+    raylib::MyVector2 bottomLeftPos(my_utility(0, 94));
+    raylib::MyVector2 bottomRightPos(my_utility(100, 97));
     raylib::MyVector2 splashPos(my_utility(65, 30));
+    const auto labelConfig = GUI::LabelFactory::getStandardLabelConfig(fontSize);
     GUI::LabelFactory::create(this->localEntities,
         bottomLeftPos,
-        my_utility.getProportion(GUI::ButtonFactory::SmallProportions),
+        my_utility(GUI::ButtonFactory::SmallProportions),
         bottomLeftText,
-        GUI::LabelFactory::getStandardLabelConfig(fontSize),
+        labelConfig,
         "bottomleft");
-    GUI::LabelFactory::create(this->localEntities,
+    const auto &bottomRightEntity = GUI::LabelFactory::create(this->localEntities,
         bottomRightPos,
-        my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
+        my_utility(GUI::ButtonFactory::MediumProportions),
         bottomRightText,
-        GUI::LabelFactory::getStandardLabelConfig(fontSize),
+        labelConfig,
         "bottomright");
-    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
-    if (!audioSystem.isPlaying("MENU", core->globalEntities))
-        audioSystem.play("MENU", core->globalEntities);
+    raylib::Text *bottomRightTextModel = static_cast<raylib::Text *>(
+        CoreData::entityManager->getComponent<Component::Render2D>(bottomRightEntity).get("text").get());
+    bottomRightPos.a -= bottomRightTextModel->getSize().a + 10;
+    bottomRightTextModel->setPosition(bottomRightPos);
+
     GUI::LabelFactory::create(this->localEntities, splashPos, splashMsg[splashMsgIdx], splashConf, "splash");
     Engine::Entity splashTxt = localEntities.getEntity("splash");
     CoreData::entityManager->addComponent<Engine::Timer>(splashTxt,
@@ -174,6 +177,10 @@ void MainMenuScene::open()
             }
         });
 
+    // Audio
+    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
+    if (!audioSystem.isPlaying("MENU", core->globalEntities))
+        audioSystem.play("MENU", core->globalEntities);
     //    KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
     my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {

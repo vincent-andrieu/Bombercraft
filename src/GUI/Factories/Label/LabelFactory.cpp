@@ -79,7 +79,7 @@ void LabelFactory::create(
                 toString(static_cast<std::size_t>(label * 10)), config.fontPath, position, config.fontSize, config.fontColor)}}));
 }
 
-void LabelFactory::create(Engine::EntityPack &pack,
+Engine::Entity LabelFactory::create(Engine::EntityPack &pack,
     const raylib::MyVector2 position,
     const raylib::MyVector2 size,
     string const &label,
@@ -100,6 +100,8 @@ void LabelFactory::create(Engine::EntityPack &pack,
         entity = pack.createEntity(name);
     }
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity, Component::render2dMapModels({{"text", my_text}}));
+
+    return entity;
 }
 
 Engine::Entity LabelFactory::createCentered(
