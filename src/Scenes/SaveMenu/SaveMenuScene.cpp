@@ -32,6 +32,11 @@ Game::SaveMenuScene::SaveMenuScene(Engine::SystemManager &systemManager)
 
 void Game::SaveMenuScene::open()
 {
+    if (this->getNbrSaves() == 0) {
+        CoreData::sceneManager->setScene<NewGameMenuScene>();
+        CoreData::sceneManager->updateScene();
+        return;
+    }
     const MyVector2 &window_size = CoreData::settings->getMyVector2("WIN_SIZE");
     const ProportionUtilities resizer(window_size);
     GUI::ButtonConfig menuButtons = GUI::ButtonFactory::getMediumButtonConfig();
@@ -39,12 +44,10 @@ void Game::SaveMenuScene::open()
     GUI::ImageFactory::create(
         this->localEntities, MyVector2(0, 0), window_size, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
     GUI::LabelFactory::createCentered(this->localEntities, resizer(50, 4), "Saves", GUI::LabelFactory::getStandardLabelConfig());
-    preLoadGames();
+    this->_preLoadGames();
 
-    GUI::ButtonFactory::create(
-        this->localEntities, resizer(35, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
-    GUI::ButtonFactory::create(
-        this->localEntities, resizer(65, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
+    GUI::ButtonFactory::create(this->localEntities, resizer(35, 90), "newGame", menuButtons, "New Game", newGameButtonHandler, true);
+    GUI::ButtonFactory::create(this->localEntities, resizer(65, 90), "cancelButton", menuButtons, "Cancel", cancelButtonHandler, true);
 
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
