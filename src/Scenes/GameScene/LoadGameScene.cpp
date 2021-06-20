@@ -20,7 +20,7 @@ void GameScene::setOptions(const Component::OptionComponent &options)
 
     audioSystem.setVolumeEffects(options.volumeEffects);
     audioSystem.setVolumeMusic(options.volumeMusic);
-    GUI::MapFactory::updateMapTextures(options.ressourcePack, map);
+    MapFactory::updateMapTextures(options.ressourcePack, map);
     Game::CoreData::camera->setFovy((float) options.fov);
 }
 

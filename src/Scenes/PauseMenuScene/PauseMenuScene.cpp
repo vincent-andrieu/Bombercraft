@@ -68,7 +68,7 @@ static void goGameScene(const Engine::Entity)
                         }
                     }
                     /// Update map textures
-                    GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
+                    Game::MapFactory::updateMapTextures(resourcePackRoot, map);
                 }
             }
         }
