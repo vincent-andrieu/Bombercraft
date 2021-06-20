@@ -119,6 +119,8 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
     for (size_t i = 0; i < 4; i++) {
+        if (config[i]->getStatus() == Component::PlayerStatus::DEAD)
+            continue;
         entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
             Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(
