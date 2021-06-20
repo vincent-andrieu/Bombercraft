@@ -106,7 +106,7 @@ void GameScene::open()
             return;
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
         CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
-        Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
+        Game::CoreData::camera->setFovy(CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
