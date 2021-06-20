@@ -37,6 +37,7 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
             auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
             options.loadName = dir.filename();
+            options.saveName = dir.filename();
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         },

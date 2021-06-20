@@ -74,10 +74,14 @@ void GameScene::open()
     const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
     const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
 
-    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
+    GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
         handlerGameTimeout);
+    /// LOAD
+    if (!options.loadName.empty()) {
+        loadGame(options.loadName);
+    }
     /// CHARACTERS
     this->createCharacters();
     /// MOUSE WHEEL FOV
@@ -100,9 +104,6 @@ void GameScene::open()
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
     }));
     Game::KeyManagementFactory::create(localEntities, my_keyTriggers);
-    if (!options.loadName.empty()) {
-        loadGame(options.loadName);
-    }
 }
 
 void GameScene::createCharacters()

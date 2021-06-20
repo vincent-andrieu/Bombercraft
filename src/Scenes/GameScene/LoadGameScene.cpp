@@ -6,10 +6,45 @@
 */
 
 #include "GameScene.hpp"
+#include "Game/Factories/Map/MapFactory.hpp"
 
 using namespace Game;
 
 extern std::unique_ptr<Game::Core> core;
+
+void GameScene::setOptions(const Component::OptionComponent &options)
+{
+    auto &audioSystem = CoreData::systemManager->getSystem<System::AudioSystem>();
+    const auto map = localEntities.getEntity("gameMap");
+
+    audioSystem.setVolumeEffects(options.volumeEffects);
+    audioSystem.setVolumeMusic(options.volumeMusic);
+    GUI::MapFactory::updateMapTextures(options.ressourcePack, map);
+    Game::CoreData::camera->setFovy((float) options.fov);
+}
+
+void GameScene::loadOptions()
+{
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    const auto my_filename("options");
+
+    try {
+        CoreData::entityManager->saveManager.setReadingFile(my_filename);
+        CoreData::entityManager->saveManager.readActFile(options.volumeEffects);
+        CoreData::entityManager->saveManager.readActFile(options.volumeMusic);
+        CoreData::entityManager->saveManager.readActFile(options.ressourcePack);
+        CoreData::entityManager->saveManager.readActFile(options.fov);
+        CoreData::entityManager->saveManager.readActFile(options.nbPlayers);
+        CoreData::entityManager->saveManager.readActFile(options.IARandomProb);
+        CoreData::entityManager->saveManager.readActFile(options.smoothMode);
+        CoreData::entityManager->saveManager.closeReadingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+        return;
+    }
+    setOptions(options);
+}
 
 void GameScene::loadPlayerConfig()
 {
@@ -27,11 +62,10 @@ void GameScene::loadPlayerConfig()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(
             core->globalEntities.getEntity(configName_prefix + toString(4)))};
 
-    Engine::Entity character;
-    const std::vector<Component::PlayerID> ids = {Component::ALPHA, Component::BRAVO, Component::CHARLIE, Component::DELTA};
-
     for (size_t i = 0; i < 4; i++) {
+        my_skinPath = "";
         my_xp = 0;
+        my_status = Component::PlayerStatus::ALIVE;
         my_filename = configName_prefix + toString(i + 1);
         try {
             if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename)) {
@@ -49,9 +83,6 @@ void GameScene::loadPlayerConfig()
         config[i]->setSkinPath(my_skinPath);
         config[i]->setXP(my_xp);
         config[i]->setStatus(my_status);
-        character = localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
-        auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(character);
-        modelList.setTexture(my_skinPath);
     }
 }
 
@@ -68,5 +99,6 @@ void GameScene::loadGame(const std::string &loadName)
         return;
     }
     loadPlayerConfig();
+    loadOptions();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
 }

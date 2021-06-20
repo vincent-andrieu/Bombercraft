@@ -11,6 +11,29 @@ using namespace Game;
 
 extern std::unique_ptr<Game::Core> core;
 
+void GameScene::saveOptions()
+{
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    const auto my_filename("options");
+
+    try {
+        if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
+            CoreData::entityManager->saveManager.createFile(my_filename);
+        CoreData::entityManager->saveManager.setWritingFile(my_filename);
+        CoreData::entityManager->saveManager.writeActFile(options.volumeEffects);
+        CoreData::entityManager->saveManager.writeActFile(options.volumeMusic);
+        CoreData::entityManager->saveManager.writeActFile(options.ressourcePack);
+        CoreData::entityManager->saveManager.writeActFile(options.fov);
+        CoreData::entityManager->saveManager.writeActFile(options.nbPlayers);
+        CoreData::entityManager->saveManager.writeActFile(options.IARandomProb);
+        CoreData::entityManager->saveManager.writeActFile(options.smoothMode);
+        CoreData::entityManager->saveManager.closeWritingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
+}
+
 void GameScene::savePlayerConfig()
 {
     const auto configName_prefix("config");
@@ -60,5 +83,6 @@ void GameScene::saveGame(const std::string &saveName)
         Engine::SaveManager::printException(my_e);
     }
     savePlayerConfig();
+    saveOptions();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
 }

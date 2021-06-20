@@ -40,6 +40,9 @@ namespace Game
 
         void loadPlayerConfig();
         void savePlayerConfig();
+        void setOptions(const Component::OptionComponent &options);
+        void loadOptions();
+        void saveOptions();
     };
 } // namespace Game
 
