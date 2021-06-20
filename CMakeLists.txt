@@ -82,7 +82,6 @@ set(SRCS
         src/Systems/PlayerConfig/PlayerConfigSystem.cpp
         src/Systems/ModelList/ModelListSystem.cpp
         # SCENES
-        src/Scenes/DebugScene/DebugScene.cpp
         src/Scenes/MainMenu/MainMenuScene.cpp
         src/Scenes/SkinChoice/SkinChoiceScene.cpp
         src/Scenes/OptionsMenu/OptionsMenuScene.cpp

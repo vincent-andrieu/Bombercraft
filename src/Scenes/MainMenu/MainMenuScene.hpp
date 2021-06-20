@@ -13,7 +13,6 @@
 
 #include "Scenes/SceneWithEvents/SceneWithEvents.hpp"
 #include "Scenes/OptionsMenu/OptionsMenuScene.hpp"
-#include "Scenes/DebugScene/DebugScene.hpp"
 #include "Scenes/GameScene/GameScene.hpp"
 #include "Scenes/SaveMenu/SaveMenuScene.hpp"
 

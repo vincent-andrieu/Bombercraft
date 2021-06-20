@@ -99,7 +99,6 @@ void Core::createSystems()
 void Core::createScenes()
 {
     /// SCENES - CREATION
-    CoreData::sceneManager->createScene<DebugScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<MainMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<SkinChoiceScene>();
     CoreData::sceneManager->createScene<SplashScreenScene>(*CoreData::systemManager);
