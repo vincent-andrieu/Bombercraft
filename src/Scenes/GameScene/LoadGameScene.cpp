@@ -104,6 +104,11 @@ void GameScene::loadGameMap()
             return;
         }
         CoreData::entityManager->saveManager.setReadingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+        return;
+    }
+    try {
         CoreData::entityManager->saveManager
             .readActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
         CoreData::entityManager->saveManager.closeReadingFile(my_filename);
