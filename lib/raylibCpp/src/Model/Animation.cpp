@@ -13,9 +13,11 @@ raylib::Animation::Animation(const std::string &texturePath,
     const MyVector3 position,
     const RColor color,
     bool isLooping,
-    std::size_t speed)
-    : _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color), _textures({}),
-      _texturePath(texturePath), _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()), _isLooping(isLooping)
+    std::size_t speed,
+    bool disableCache)
+    : _disableCache(disableCache), _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color),
+      _textures({}), _texturePath(texturePath), _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()),
+      _isLooping(isLooping)
 {
     std::vector<std::string> filenames = {};
     int count = 0;
@@ -29,7 +31,7 @@ raylib::Animation::Animation(const std::string &texturePath,
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
             if (IsFileExtension(filenames[i].data(), ".obj")) {
-                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, true);
+                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, disableCache);
                 _models.push_back(tmp);
             }
         }
@@ -195,7 +197,7 @@ void raylib::Animation::setPath(const string &path)
     this->_models.clear();
     filenames = GetDirectoryFiles(this->_path.data(), &count);
     for (size_t i = 0; i < (size_t) count; i++) {
-        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, true));
+        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, _disableCache));
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {
