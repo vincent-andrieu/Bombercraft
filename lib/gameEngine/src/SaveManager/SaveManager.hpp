@@ -121,7 +121,7 @@ namespace Engine
         {
             write(_writingFiles.begin()->first.string(), value);
         }
-        template <typename T, typename E> void writeActFile(const E data)
+        template <typename T, typename E> void writeActFile(const E &data)
         {
             write<T>(_writingFiles.begin()->first, data);
         }
