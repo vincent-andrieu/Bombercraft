@@ -114,7 +114,7 @@ void GUI::InventoryFactory::CreatePlayerXpbar(
     if (position.b < windowSize.b / 2) { // Upper bar
         xpBarPosition.b += boxSize.b;
     } else { // Lower bar
-        xpBarPosition.b -= (boxSize.b * 0.12);
+        xpBarPosition.b -= (boxSize.b * 0.12f);
     }
      GUI::XPBarFactory::create(xpBarPosition, xpBarSize, Game::CoreData::settings->getTabString("XP_BAR"), id, pack,
      "");
