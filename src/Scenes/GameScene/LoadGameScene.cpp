@@ -27,12 +27,16 @@ void GameScene::loadPlayerConfig()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(
             core->globalEntities.getEntity(configName_prefix + toString(4)))};
 
+    Engine::Entity character;
+    const std::vector<Component::PlayerID> ids = {Component::ALPHA, Component::BRAVO, Component::CHARLIE, Component::DELTA};
+
     for (size_t i = 0; i < 4; i++) {
         my_xp = 0;
         my_filename = configName_prefix + toString(i + 1);
         try {
-            if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
+            if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename)) {
                 continue;
+            }
             CoreData::entityManager->saveManager.setReadingFile(my_filename);
             CoreData::entityManager->saveManager.readActFile(my_skinPath);
             CoreData::entityManager->saveManager.readActFile(my_xp);
@@ -45,9 +49,9 @@ void GameScene::loadPlayerConfig()
         config[i]->setSkinPath(my_skinPath);
         config[i]->setXP(my_xp);
         config[i]->setStatus(my_status);
-        std::cout << "my_skinPath loaded : " << my_skinPath << std::endl;
-        std::cout << "my_xp loaded : " << my_xp << std::endl;
-        std::cout << "my_status loaded : " << my_status << std::endl;
+        character = localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
+        auto &modelList = Game::CoreData::entityManager->getComponent<Component::ModelList>(character);
+        modelList.setTexture(my_skinPath);
     }
 }
 
