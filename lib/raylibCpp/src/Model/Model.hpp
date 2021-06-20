@@ -44,6 +44,7 @@ namespace raylib
 
         static RModel myModelLoad(const std::tuple<std::string, std::string> &str);
         static void myModelUnload(RModel &model);
+        static std::tuple<std::string, std::string> myModelUnique(std::size_t forced);
 
       private:
         MyVector3 _position;

@@ -43,7 +43,7 @@ const RModel &loadModel(const std::tuple<std::string, std::string> &toLoad)
     if (!raylib::Model::_loaderManager)
         raylib::Model::_loaderManager =
             std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
-                raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+                raylib::Model::myModelLoad, raylib::Model::myModelUnload, raylib::Model::myModelUnique);
     return raylib::Model::_loaderManager->load(toLoad);
 }
 
