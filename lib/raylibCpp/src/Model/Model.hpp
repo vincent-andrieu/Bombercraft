@@ -21,7 +21,8 @@ namespace raylib
             const string &filepath,
             const MyVector3 &position = MyVector3(0, 0, 0),
             const RColor color = RColor::RWHITE,
-            const MyVector3 &rotation = MyVector3(0, 0, 0));
+            const MyVector3 &rotation = MyVector3(0, 0, 0),
+            bool forced = false);
         ~Model();
 
         void draw();
