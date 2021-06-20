@@ -182,7 +182,6 @@ void ConfigFile::objInline(char start, char end)
             cnt = 1;
             do {
                 next = it + 1;
-                //std:: cout << "|" << *next << "|" << std::endl;
                 if (next == this->_fileContent.end())
                     throw ParserExceptions("The file incorrect: not find }");
                 if (next->back() == start)

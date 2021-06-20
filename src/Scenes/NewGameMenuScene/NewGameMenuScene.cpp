@@ -177,7 +177,7 @@ void Game::NewGameMenuScene::init()
         0,
         100,
         (int) options.IARandomProb,
-        false); // TODO apply it gameScene
+        false);
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
     keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {

@@ -43,10 +43,8 @@ bool ObjectCircle::checkCollisionWith(const ObjectRectangle &rectangle)
     return Collision::checkCollision(*this, rectangle);
 }
 
-bool ObjectCircle::boxCollider(const ObjectBox &box)
+bool ObjectCircle::boxCollider([[maybe_unused]] const ObjectBox &box)
 {
-    //return this->checkCollisionWith(box);
-    (void) box;
     throw std::bad_function_call();
     return false;
 }

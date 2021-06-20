@@ -33,45 +33,10 @@ bool Timer::eval(Entity entity)
     return false;
 }
 
-[[nodiscard]] double Timer::getDelta() const
+double Timer::getDelta() const
 {
     return (NOW - this->startTime);
 }
-
-// bool Timer::save(SaveManager &saver) const
-// {
-//     if (!Component::save(saver))
-//         return false;
-//     try {
-//         saver.createFile(COMP_SAVE_FILE);
-//         saver.setWritingFile(COMP_SAVE_FILE);
-//         saver.writeActFile(interval);
-//         saver.writeActFile(startTime);
-//         //                saver.writeActFile(script); // TODO handle script ?
-//         saver.closeWritingFile();
-//     } catch (const std::filesystem::filesystem_error &my_e) {
-//         SaveManager::printException(my_e);
-//         return false;
-//     }
-//     return true;
-// }
-
-// bool Timer::load(SaveManager &saver)
-// {
-//     if (!Component::load(saver))
-//         return false;
-//     try {
-//         saver.setReadingFile(COMP_SAVE_FILE);
-//         saver.readActFile(interval);
-//         saver.readActFile(startTime);
-//         //                saver.writeActFile(script); // TODO handle script ?
-//         saver.closeReadingFile();
-//     } catch (const std::filesystem::filesystem_error &my_e) {
-//         SaveManager::printException(my_e);
-//         return false;
-//     }
-//     return true;
-// }
 
 void Timer::pause()
 {

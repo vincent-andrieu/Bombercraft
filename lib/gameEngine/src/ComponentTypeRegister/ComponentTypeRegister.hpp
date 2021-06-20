@@ -61,9 +61,6 @@ namespace Engine
         virtual bool tryRemove(Entity entity) override;
         Entity getOwner(const T &component);
 
-        // void save(Engine::SaveManager &saver) const override;
-        // void load(Engine::SaveManager &saver) override;
-
         std::vector<T> &getComponents();
 
       private:
@@ -71,18 +68,6 @@ namespace Engine
         std::vector<Entity> _componentOwners;
         std::unordered_map<Entity, Index> _ownersIndex;
         std::vector<Signature> &_entitySignatures;
-
-        // void saveEntities(Engine::SaveManager &saver) const;
-        // void saveEntity(Engine::SaveManager &saver, Entity owner) const;
-        // void saveEntitySignature(Engine::SaveManager &saver, Entity owner) const;
-        //        void saveEntityComponentIndex(Engine::SaveManager &saver, Entity owner) const;
-        // void saveEntityComponents(Engine::SaveManager &saver, Entity owner) const;
-
-        // void loadEntities(Engine::SaveManager &saver);
-        // void loadEntity(Engine::SaveManager &saver, Entity owner);
-        // void loadEntitySignature(Engine::SaveManager &saver, Entity owner);
-        //        void loadEntityComponentIndex(Engine::SaveManager &saver, Entity owner) ;
-        // void loadEntityComponents(Engine::SaveManager &saver, Entity owner);
     };
 
     template <typename T>

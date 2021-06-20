@@ -38,10 +38,8 @@ bool ObjectLine::checkCollisionWith(const ObjectLine &line)
     return Collision::checkCollision(*this, line);
 }
 
-bool ObjectLine::boxCollider(const ObjectBox &box)
+bool ObjectLine::boxCollider([[maybe_unused]] const ObjectBox &box)
 {
-    //return this->checkCollisionWith(box);
-    (void) box;
     throw std::bad_function_call();
     return false;
 }
