@@ -116,7 +116,7 @@ void OptionsMenuScene::open()
     GUI::SliderFactory::create(
         this->localEntities,
         buttonPosition[5],
-        [](const Engine::Entity entity, GUI::sliderValue &value) {
+        [](const Engine::Entity, GUI::sliderValue &value) {
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
