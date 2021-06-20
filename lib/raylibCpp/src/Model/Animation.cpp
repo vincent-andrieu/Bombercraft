@@ -14,7 +14,7 @@ raylib::Animation::Animation(const std::string &texturePath,
     const RColor color,
     bool isLooping,
     std::size_t speed,
-    bool disableCache)
+    std::string disableCache)
     : _disableCache(disableCache), _speed(speed), _position(position), _rotation({0.0f, 0.0f, 0.0f}), _scale(1.0f), _color(color),
       _textures({}), _texturePath(texturePath), _path(dirpath), _currentFrame(0), _start(std::chrono::system_clock::now()),
       _isLooping(isLooping)
@@ -26,12 +26,12 @@ raylib::Animation::Animation(const std::string &texturePath,
     if (!raylib::Model::_loaderManager)
         raylib::Model::_loaderManager =
             std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
-                raylib::Model::myModelLoad, raylib::Model::myModelUnload, raylib::Model::myModelUnique);
+                raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     if (DirectoryExists(_path.data())) {
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
             if (IsFileExtension(filenames[i].data(), ".obj")) {
-                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, disableCache);
+                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, filenames[i] + disableCache);
                 _models.push_back(tmp);
             }
         }
@@ -197,7 +197,7 @@ void raylib::Animation::setPath(const string &path)
     this->_models.clear();
     filenames = GetDirectoryFiles(this->_path.data(), &count);
     for (size_t i = 0; i < (size_t) count; i++) {
-        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, _disableCache));
+        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, filenames[i] + _disableCache));
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {

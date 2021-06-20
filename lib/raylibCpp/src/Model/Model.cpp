@@ -15,7 +15,7 @@ raylib::Model::Model(const std::string &texturePath,
     const MyVector3 &position,
     const RColor color,
     const MyVector3 &rotation,
-    bool forced)
+    std::string forced)
 {
     char **filenames = nullptr;
     int count = 0;
@@ -155,11 +155,11 @@ void raylib::Model::setLoaderManager()
 {
     if (!this->_loaderManager) {
         this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
-            raylib::Model::myModelLoad, raylib::Model::myModelUnload, raylib::Model::myModelUnique);
+            raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     } else {
         this->_loaderManager.reset();
         this->_loaderManager = std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
-            raylib::Model::myModelLoad, raylib::Model::myModelUnload, raylib::Model::myModelUnique);
+            raylib::Model::myModelLoad, raylib::Model::myModelUnload);
     }
 }
 
@@ -175,9 +175,4 @@ void raylib::Model::myModelUnload(RModel &model)
 
 void raylib::Model::restartAnimation()
 {
-}
-
-std::tuple<std::string, std::string> raylib::Model::myModelUnique(std::size_t forced)
-{
-    return {std::to_string(forced), std::to_string(forced)};
 }

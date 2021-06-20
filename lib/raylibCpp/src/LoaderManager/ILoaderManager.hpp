@@ -17,7 +17,7 @@ namespace raylib
     {
         public:
             virtual ~ILoaderManager() = default;
-            virtual const toLoadType &load(const stringType &loadIn, bool forceLoad) = 0;
+            virtual const toLoadType &load(const stringType &loadIn, std::string unique = "") = 0;
     };
 };
 

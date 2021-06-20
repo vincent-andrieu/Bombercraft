@@ -221,7 +221,7 @@ Engine::Entity Game::CharacterFactory::create(
         Component::ModelListMap({
             {"idle",
                 std::make_shared<raylib::Model>(
-                    texturePath, modelPath, characterPos, raylib::RColor::RWHITE, raylib::MyVector3(0, 0, 0), true)},
+                    texturePath, modelPath, characterPos, raylib::RColor::RWHITE, raylib::MyVector3(0, 0, 0), std::to_string(id))},
             {"death",
                 std::make_shared<raylib::Animation>(deathTexturePath,
                     CoreData::settings->getString("CHARA_ANIM_DEATH"),
@@ -229,7 +229,7 @@ Engine::Entity Game::CharacterFactory::create(
                     raylib::RColor::RWHITE,
                     false,
                     50,
-                    true)},
+                    std::to_string(id))},
             {"walk",
                 std::make_shared<raylib::Animation>(texturePath,
                     CoreData::settings->getString("CHARA_ANIM_WALK"),
@@ -237,7 +237,7 @@ Engine::Entity Game::CharacterFactory::create(
                     raylib::RColor::RWHITE,
                     true,
                     50,
-                    true)},
+                    std::to_string(id))},
             {"setBomb",
                 std::make_shared<raylib::Animation>(texturePath,
                     CoreData::settings->getString("CHARA_ANIM_SET_BOMB"),
@@ -245,7 +245,7 @@ Engine::Entity Game::CharacterFactory::create(
                     raylib::RColor::RWHITE,
                     false,
                     50,
-                    true)},
+                    std::to_string(id))},
         }),
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
