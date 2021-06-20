@@ -66,10 +66,10 @@ static void resetPlayerConfigs()
 
 void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &options)
 {
-    size_t nbPlayers;
-    size_t gameTimerDuration;
-    uint seed;
-    size_t IARandomProb;
+    size_t nbPlayers = 1;
+    size_t gameTimerDuration = 300;
+    uint seed = 0;
+    size_t IARandomProb = 0;
 
     if (Game::CoreData::settings->isSetInFile("NB_PLAYERS")) {
         nbPlayers = (uint) CoreData::settings->getInt("NB_PLAYERS");
