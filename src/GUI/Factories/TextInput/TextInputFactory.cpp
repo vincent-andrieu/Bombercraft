@@ -104,8 +104,8 @@ static Component::eventScript inputHandler = [](const Engine::Entity &childEntit
     const bool focusState = Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).getFocus();
     const size_t maxChar = Game::CoreData::entityManager->getComponent<Component::TextInputConfig>(childEntity).getMaxChar();
     std::string stringActual;
-    raylib::Text *textActual = dynamic_cast<raylib::Text *>(
-        Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
+    raylib::Text *textActual =
+        dynamic_cast<raylib::Text *>(Game::CoreData::entityManager->getComponent<Component::Render2D>(childEntity).get("text").get());
 
     if (!focusState)
         return;
@@ -134,8 +134,7 @@ static Component::eventScript focusHandler = [](const Engine::Entity &childEntit
     if (Game::CoreData::eventManager->MouseIsOverClicked(rectActual->getPosition(), rectActual->getSize())) {
         Game::CoreData::entityManager->foreachComponent<Component::ClickFocusEvent>([](Component::ClickFocusEvent &focusEvent) {
             static_cast<raylib::Texture *>(
-                Game::CoreData::entityManager
-                    ->getComponent<Component::Render2D>(Game::CoreData::entityManager->getOwner(focusEvent))
+                Game::CoreData::entityManager->getComponent<Component::Render2D>(Game::CoreData::entityManager->getOwner(focusEvent))
                     .get("rectangle")
                     .get())
                 ->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
@@ -143,6 +142,9 @@ static Component::eventScript focusHandler = [](const Engine::Entity &childEntit
         });
         Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).changeFocus(true);
         rectActual->setPath(Game::CoreData::settings->getString("STANDARD_HOVER_BUTTON_TEXTURE"));
+    } else {
+        Game::CoreData::entityManager->getComponent<Component::ClickFocusEvent>(childEntity).changeFocus(false);
+        rectActual->setPath(Game::CoreData::settings->getString("STANDARD_UNAVAILABLE_BUTTON_TEXTURE"));
     }
 };
 
@@ -163,8 +165,7 @@ void TextInputFactory::create(Engine::EntityPack &pack,
     raylib::MyVector2 textPos = position + textInput.textPositionOffset;
     raylib::MyVector2 inputPosition(position.a + textInput.borderSize, position.b + textInput.borderSize);
     raylib::MyVector2 inputSize(dynConf.size.a - textInput.borderSize * 2, dynConf.size.b - textInput.borderSize * 2);
-    auto textModel =
-        std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos + 5, label.fontSize, label.fontColor);
+    auto textModel = std::make_shared<raylib::Text>(dynConf.placeholder, label.fontPath, textPos + 5, label.fontSize, label.fontColor);
 
     Game::CoreData::entityManager->addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
@@ -184,8 +185,7 @@ void TextInputFactory::create(Engine::EntityPack &pack,
     Game::CoreData::entityManager->addComponent<Component::ClickFocusEvent>(entity, focusHandler, clickFocusRequirement);
 }
 
-void TextInputFactory::create(
-    Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label, const bool centered)
+void TextInputFactory::create(Engine::EntityPack &pack, TextInputDynConf const &dynConf, LabelConfig const &label, const bool centered)
 {
     TextInputConfig const &textInput = TextInputFactory::getStandardConfig();
 
