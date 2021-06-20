@@ -14,9 +14,8 @@
 #include "Systems/Render2D/Render2DSystem.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Game/ProceduralMap/ProceduralMap.hpp"
-#include "../Block/BlockFactory.hpp"
 
-namespace GUI
+namespace Game
 {
     class MapFactory {
       public:
@@ -33,6 +32,6 @@ namespace GUI
         static GameModule::MapType getProceduralMap(std::pair<size_t, size_t> &sizeDest);
         static GUI::BlockFactory::BlockType blockTypeSinceTile(GameModule::TileType tile);
     };
-} // namespace GUI
+} // namespace Game
 
 #endif

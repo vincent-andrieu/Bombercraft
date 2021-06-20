@@ -63,11 +63,12 @@ static void goGameScene(const Engine::Entity)
                             const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
                             const Game::EventRequirement requirements(
                                 info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
-                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(
+                                requirements);
                         }
                     }
                     /// Update map textures
-                    GUI::MapFactory::updateMapTextures(resourcePackRoot, map);
+                    Game::MapFactory::updateMapTextures(resourcePackRoot, map);
                 }
             }
         }

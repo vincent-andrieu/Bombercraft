@@ -7,7 +7,7 @@
 
 #include "MapFactory.hpp"
 
-using namespace GUI;
+using namespace Game;
 
 void MapFactory::create(
     Engine::EntityPack &entityPack, const std::string &ressourcePackRoot, const std::string &name, unsigned int seed)
@@ -16,13 +16,13 @@ void MapFactory::create(
     GUI::BlockFactory::BlockType tmpBlockType = GUI::BlockFactory::BlockType::BLOCK_SOFT;
     std::pair<size_t, size_t> sizeDest;
     GameModule::MapType map = MapFactory::getProceduralMap(sizeDest);
-    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+    const raylib::MyVector3 &size = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
     const Engine::Entity &entity = (name.size()) ? entityPack.createEntity(name) : entityPack.createAnonymousEntity();
 
-    Game::CoreData::entityManager->addComponent<Component::Matrix2D>(entity, sizeDest);
-    const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entity);
-    if (Game::CoreData::settings->isSetInFile("SEED") && seed == 0) {
-        seed = (unsigned int) Game::CoreData::settings->getInt("SEED");
+    CoreData::entityManager->addComponent<Component::Matrix2D>(entity, sizeDest);
+    const Component::Matrix2D &matrix = CoreData::entityManager->getComponent<Component::Matrix2D>(entity);
+    if (CoreData::settings->isSetInFile("SEED") && seed == 0) {
+        seed = (unsigned int) CoreData::settings->getInt("SEED");
         std::srand((seed) ? seed : (unsigned int) std::time(nullptr));
     } else
         std::srand((seed) ? seed : (unsigned int) std::time(nullptr));
@@ -38,7 +38,7 @@ void MapFactory::create(
                 matrix.getData()->save({x, y}, tmpEntityId, GUI::BlockFactory::BlockType::BLOCK_AIR);
             }
             tmpEntityId = GUI::BlockFactory::create(
-                entityPack, {x * size.a, -1 * size.b, y * size.c}, BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
+                entityPack, {x * size.a, -1 * size.b, y * size.c}, GUI::BlockFactory::BlockType::BLOCK_FLOOR, ressourcePackRoot);
         }
     }
 }
@@ -47,7 +47,7 @@ GameModule::MapType MapFactory::getProceduralMap(std::pair<size_t, size_t> &size
 {
     GameModule::MapType endMap;
     GameModule::ProceduralMap map;
-    std::vector<std::vector<int>> tab = Game::CoreData::settings->getTabTabInt("MAP_CONFIG");
+    std::vector<std::vector<int>> tab = CoreData::settings->getTabTabInt("MAP_CONFIG");
     std::vector<std::vector<TileDisponibility>> settings;
     std::vector<TileDisponibility> tmp;
     MapType end;
@@ -61,9 +61,9 @@ GameModule::MapType MapFactory::getProceduralMap(std::pair<size_t, size_t> &size
     }
     map.setMapModel(settings);
     map.setModelSettings({
-        {TileType::TILE_BONUS, Game::CoreData::settings->getInt("BONUS_POURCENT")},
-        {TileType::TILE_EMPTY, Game::CoreData::settings->getInt("EMPTY_POURCENT")},
-        {TileType::TILE_SOFT, Game::CoreData::settings->getInt("SOFT__POURCENT")},
+        {TileType::TILE_BONUS, CoreData::settings->getInt("BONUS_POURCENT")},
+        {TileType::TILE_EMPTY, CoreData::settings->getInt("EMPTY_POURCENT")},
+        {TileType::TILE_SOFT, CoreData::settings->getInt("SOFT__POURCENT")},
     });
     endMap = map.getProceduralMap();
     sizeDest = map.getSize();
@@ -84,8 +84,8 @@ GUI::BlockFactory::BlockType MapFactory::blockTypeSinceTile(GameModule::TileType
 }
 void MapFactory::updateMapTextures(const std::string &resourcePackRoot, Engine::Entity mapEntity)
 {
-    const raylib::MyVector3 size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
-    auto &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(mapEntity);
+    const raylib::MyVector3 size = CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+    auto &matrix = CoreData::entityManager->getComponent<Component::Matrix2D>(mapEntity);
     const raylib::MyVector2 &mapSize = matrix.getMapSize();
     const std::shared_ptr<DataMatrix> &dataMatrix = matrix.getData();
 
@@ -93,19 +93,20 @@ void MapFactory::updateMapTextures(const std::string &resourcePackRoot, Engine::
     for (size_t y = 0; y < mapSize.b; y++) {
         for (size_t x = 0; x < mapSize.a; x++) {
             if (dataMatrix->getCategory({x, y}) == GUI::BlockFactory::BlockType::BLOCK_SOFT) {
-                std::string const &path = BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_SOFT, resourcePackRoot);
-                auto &render = Game::CoreData::entityManager->getComponent<Component::Render3D>(dataMatrix->getEntity({x, y}));
+                std::string const &path =
+                    GUI::BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_SOFT, resourcePackRoot);
+                auto &render = CoreData::entityManager->getComponent<Component::Render3D>(dataMatrix->getEntity({x, y}));
                 static_cast<raylib::IModel *>(render.modele.get())->setTexture(path);
             }
         }
     }
     // Update Floor blocks Texture
-    const std::string path = BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_FLOOR, resourcePackRoot);
-    Game::CoreData::entityManager->foreachComponent<Engine::Position>([path, size](Engine::Position const &position) {
+    const std::string path = GUI::BlockFactory::getTexturePath(GUI::BlockFactory::BlockType::BLOCK_FLOOR, resourcePackRoot);
+    CoreData::entityManager->foreachComponent<Engine::Position>([path, size](Engine::Position const &position) {
         if (position.y == (size.b * -1)) { // IS A TILE BLOCK
-            Engine::Entity entity = Game::CoreData::entityManager->getOwner<Engine::Position>(position);
-            if (Game::CoreData::entityManager->hasComponent<Component::Render3D>(entity)) {
-                auto &render = Game::CoreData::entityManager->getComponent<Component::Render3D>(entity);
+            Engine::Entity entity = CoreData::entityManager->getOwner<Engine::Position>(position);
+            if (CoreData::entityManager->hasComponent<Component::Render3D>(entity)) {
+                auto &render = CoreData::entityManager->getComponent<Component::Render3D>(entity);
                 static_cast<raylib::IModel *>(render.modele.get())->setTexture(path);
             }
         }

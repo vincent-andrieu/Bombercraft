@@ -166,7 +166,7 @@ void DebugScene::open()
             std::cout << "Hello " << entity << std::endl;
         });
     // Map
-    //    GUI::MapFactory::create(this->localEntities); // DIPLAY MAP
+    //    Game::MapFactory::create(this->localEntities); // DIPLAY MAP
     /*
         "CAM_POSITION": {
             "a": 32
