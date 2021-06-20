@@ -56,7 +56,7 @@ Language: Cpp
 #--------#
 
 # F3 - Maximum columns count
-ColumnLimit: 130
+ColumnLimit: 135
 
 # F3 - Column limit wrapping for comments
 ReflowComments: true

@@ -17,6 +17,34 @@ static const string nbPlayersLabel("Number of Players: ");
 
 extern std::unique_ptr<Game::Core> core;
 
+static const Component::eventScript cancelButtonHandler = [](const Engine::Entity &) {
+    Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
+};
+
+static const Component::eventScript startButtonHandler = [](const Engine::Entity) {
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    Engine::Entity textInputSeed = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputIASeed");
+    Engine::Entity textInputName = Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputGameName");
+    auto &textInputRender2DSeed = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputSeed);
+    auto &textInputRender2DName = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputName);
+    auto &textSeed = *dynamic_cast<raylib::IText *>(textInputRender2DSeed.get("text").get());
+    auto &textName = *dynamic_cast<raylib::IText *>(textInputRender2DName.get("text").get());
+    std::string string = "";
+
+    for (auto c : textSeed.getText())
+        if (c != ' ')
+            string += c;
+    try {
+        options.seed = std::stoul(string, nullptr, 36);
+    } catch (...) {
+        options.seed = 42;
+    }
+    options.saveName = textName.getText();
+    Game::CoreData::sceneManager->popLastScene();
+    Game::CoreData::sceneManager->setScene<Game::GameScene>();
+};
+
 Game::NewGameMenuScene::NewGameMenuScene(Engine::SystemManager &systemManager)
     : Engine::AbstractScene(systemManager, *CoreData::entityManager)
 {
@@ -67,122 +95,85 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
 
 void Game::NewGameMenuScene::init()
 {
-    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
     auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
     const auto &windowSize(Game::CoreData::settings->getMyVector2("WIN_SIZE"));
-    ProportionUtilities my_utility(windowSize);
-    GUI::ButtonConfig my_smallButtonConfig(GUI::ButtonFactory::getSmallButtonConfig());
-    GUI::ButtonConfig my_mediumButtonConfig(GUI::ButtonFactory::getMediumButtonConfig());
+    const auto &buttonConfig = GUI::ButtonFactory::getMediumButtonConfig();
+    const ProportionUtilities resizer(windowSize);
 
     setStandardOptions(options);
     GUI::ImageFactory::create(
         localEntities, raylib::MyVector2(0, 0), windowSize, CoreData::settings->getString("STANDARD_BACKGROUND"), false);
+    GUI::LabelFactory::createCentered(this->localEntities, resizer(50, 4), "New game", GUI::LabelFactory::getStandardLabelConfig());
 
     GUI::LabelConfig labelConfig = GUI::LabelFactory::getStandardLabelConfig((size_t) windowSize.a / 32);
     labelConfig.fontColor = raylib::RColor::RDARKGRAY;
-    // InComing with save menu
     GUI::TextInputFactory::create(this->localEntities,
         {
-            my_utility(50, 20),
-            my_utility(GUI::ButtonFactory::LargeProportions),
+            resizer(50, 20),
+            resizer(GUI::ButtonFactory::LargeProportions),
             "textInputGameName",
             "GameName",
         },
         labelConfig,
         true);
 
-    GUI::ButtonFactory::create(localEntities,
-        my_utility.getProportion(67, 85),
-        my_button_prefix + "cancel",
-        my_smallButtonConfig,
-        "Cancel",
-        [](const Engine::Entity) {
-            CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
-        });
+    GUI::ButtonFactory::create(
+        localEntities, resizer(65, 90), my_button_prefix + "cancel", buttonConfig, "Cancel", cancelButtonHandler, true);
 
-    GUI::ButtonFactory::create(localEntities,
-        my_utility.getProportion({55.5, 75}),
-        my_button_prefix + "newGame",
-        my_mediumButtonConfig,
-        "Start",
-        [](const Engine::Entity) {
-            Engine::Entity optionEntity = core->globalEntities.getEntity("options");
-            auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
-            Engine::Entity textInputSeed =
-                Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputIASeed");
-            Engine::Entity textInputName =
-                Game::CoreData::sceneManager->getCurrentScene()->localEntities.getEntity("textInputGameName");
-            auto &textInputRender2DSeed = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputSeed);
-            auto &textInputRender2DName = Game::CoreData::entityManager->getComponent<Component::Render2D>(textInputName);
-            auto &textSeed = *dynamic_cast<raylib::IText *>(textInputRender2DSeed.get("text").get());
-            auto &textName = *dynamic_cast<raylib::IText *>(textInputRender2DName.get("text").get());
-            std::string string = "";
-
-            for (auto c : textSeed.getText())
-                if (c != ' ')
-                    string += c;
-            try {
-                options.seed = std::stoul(string, nullptr, 36);
-            } catch (...) {
-                options.seed = 42;
-            }
-            options.saveName = textName.getText();
-            CoreData::sceneManager->popLastScene();
-            CoreData::sceneManager->setScene<GameScene>();
-        });
-    GUI::ButtonFactory::create(localEntities,
-        my_utility.getProportion({20, 55}),
+    GUI::ButtonFactory::create(
+        localEntities, resizer(35, 90), my_button_prefix + "newGame", buttonConfig, "Start", startButtonHandler, true);
+    GUI::ButtonFactory::create(
+        localEntities,
+        resizer(30, 40),
         my_button_prefix + "nb_players",
-        my_mediumButtonConfig,
-        nbPlayersLabel + std::to_string(options.nbPlayers),
+        buttonConfig,
+        nbPlayersLabel + toString(options.nbPlayers),
         [&](const Engine::Entity entity) {
             options.nbPlayers++;
             if (options.nbPlayers > 4)
                 options.nbPlayers = 1;
 
             // Change button label
-            static_cast<raylib::Text *>(
-                Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
+            static_cast<raylib::Text *>(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity).get("label").get())
                 ->setText(nbPlayersLabel + toString(options.nbPlayers));
-        });
+        },
+        true);
 
     GUI::TextInputFactory::create(localEntities,
-        {my_utility.getProportion({20, 65}),
-            my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
-            "textInputIASeed",
-            "Seed"},
+        {resizer(30, 55), resizer(GUI::ButtonFactory::MediumProportions), "textInputIASeed", "Seed"},
         GUI::TextInputFactory::getStandardConfig(),
-        labelConfig);
+        labelConfig,
+        true);
     GUI::SliderFactory::create(
         localEntities,
-        my_utility.getProportion({20, 75}),
+        resizer(70, 40),
         [&](const Engine::Entity &, GUI::sliderValue gameDuration) {
             options.gameTimerDuration = gameDuration * 60;
         },
         "Game Duration: ",
-        my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
+        resizer(GUI::ButtonFactory::MediumProportions),
         0,
         60,
-        (int) options.gameTimerDuration / 60,
-        false);
+        (GUI::sliderValue) options.gameTimerDuration / 60,
+        true);
     GUI::SliderFactory::create(
         localEntities,
-        my_utility.getProportion({20, 85}),
+        resizer(70, 55),
         [&](const Engine::Entity &, GUI::sliderValue IARandomProb) {
             options.IARandomProb = IARandomProb;
             options.smoothMode = IARandomProb < 90;
         },
         "AI difficulty: ",
-        my_utility.getProportion(GUI::ButtonFactory::MediumProportions),
+        resizer(GUI::ButtonFactory::MediumProportions),
         0,
         100,
-        (int) options.IARandomProb,
-        false);
+        (GUI::sliderValue) options.IARandomProb,
+        true);
     // KEYS
     std::unordered_map<raylib::KeyBoard, Component::eventScript> keyTriggers;
-    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
-        CoreData::sceneManager->setScene(CoreData::sceneManager->peekLastScene());
-    }));
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, cancelButtonHandler));
+    keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ENTER, cancelButtonHandler));
     Game::KeyManagementFactory::create(this->localEntities, keyTriggers);
 }
 

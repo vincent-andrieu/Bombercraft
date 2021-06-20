@@ -13,7 +13,7 @@
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "raylib.hpp"
-#include "../../../Components/PlayerConfig/PlayerConfig.hpp"
+#include "Components/PlayerConfig/PlayerConfig.hpp"
 
 namespace Game
 {
@@ -28,6 +28,7 @@ namespace Game
 
         static Engine::Entity create(
             Engine::EntityPack &pack, Component::PlayerConfig &config, Component::Matrix2D &map, bool isAI);
+        static bool endGame();
 
       private:
         /**
@@ -41,7 +42,8 @@ namespace Game
 
         static Engine::Entity createPlayer(Engine::Entity entity, Component::PlayerConfig &config);
         static Engine::Entity createAI(Engine::Entity entity);
-        static void handlerAITimer(Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
+        static void handlerAITimer(
+            Engine::EntityManager &entityManager, Engine::SceneManager &sceneManager, const Engine::Entity &entity);
     };
 } // namespace Game
 

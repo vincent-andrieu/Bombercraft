@@ -20,7 +20,7 @@ using namespace Game;
 extern std::unique_ptr<Core> core;
 extern const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NAME;
 
-static bool endGame()
+bool CharacterFactory::endGame()
 {
     uint counter = 0;
 
@@ -65,8 +65,8 @@ static void handlerHitboxCharacterDeath(
                 scene->localEntities.removeEntity(playerName); // REMOVE PLAYER
 
                 // End game detection
-                if (endGame()) {
-                    Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getFloat("STANDARD_CAMERA_FOV")));
+                if (CharacterFactory::endGame()) {
+                    Game::CoreData::camera->setFovy(CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
                     CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
                     CoreData::sceneManager->setScene<EndGameScene>();
                 }
@@ -218,22 +218,35 @@ Engine::Entity Game::CharacterFactory::create(
     }
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     CoreData::entityManager->addComponent<Component::ModelList>(entity,
-        Component::ModelListMap({{"idle",
-                                     std::make_shared<raylib::Model>(texturePath,
-                                         modelPath,
-                                         characterPos,
-                                         raylib::RColor::RWHITE,
-                                         raylib::MyVector3(0, 0, 0),
-                                         true)},
+        Component::ModelListMap({
+            {"idle",
+                std::make_shared<raylib::Model>(
+                    texturePath, modelPath, characterPos, raylib::RColor::RWHITE, raylib::MyVector3(0, 0, 0), true)},
             {"death",
-                std::make_shared<raylib::Animation>(
-                    deathTexturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE, false, 50, true)},
+                std::make_shared<raylib::Animation>(deathTexturePath,
+                    CoreData::settings->getString("CHARA_ANIM_DEATH"),
+                    characterPos,
+                    raylib::RColor::RWHITE,
+                    false,
+                    50,
+                    true)},
             {"walk",
-                std::make_shared<raylib::Animation>(
-                    texturePath, CoreData::settings->getString("CHARA_ANIM_WALK"), characterPos, raylib::RColor::RWHITE, true, 50, true)},
+                std::make_shared<raylib::Animation>(texturePath,
+                    CoreData::settings->getString("CHARA_ANIM_WALK"),
+                    characterPos,
+                    raylib::RColor::RWHITE,
+                    true,
+                    50,
+                    true)},
             {"setBomb",
-                std::make_shared<raylib::Animation>(
-                    texturePath, CoreData::settings->getString("CHARA_ANIM_SET_BOMB"), characterPos, raylib::RColor::RWHITE, false, 50, true)}}),
+                std::make_shared<raylib::Animation>(texturePath,
+                    CoreData::settings->getString("CHARA_ANIM_SET_BOMB"),
+                    characterPos,
+                    raylib::RColor::RWHITE,
+                    false,
+                    50,
+                    true)},
+        }),
         "idle");
     auto &modelList = CoreData::entityManager->getComponent<Component::ModelList>(entity);
     modelList.setScale(CoreData::settings->getFloat("CHARACTER_SCALE"));
