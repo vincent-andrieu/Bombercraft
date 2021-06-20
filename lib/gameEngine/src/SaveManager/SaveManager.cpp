@@ -62,7 +62,7 @@ bool SaveManager::fileExistsInWD(const string &filename)
     return fileExists(my_filename);
 }
 
-inline void SaveManager::createDirectory(const string &dirname)
+void SaveManager::createDirectory(const string &dirname)
 {
     std::filesystem::path my_path(getFileDir(dirname));
 
