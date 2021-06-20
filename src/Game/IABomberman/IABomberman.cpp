@@ -361,6 +361,7 @@ IA::Movement IABomberman::getIAMovement()
 {
     std::pair<size_t, size_t> nextPos;
     IA::Movement tmp;
+    bool status = false;
 
     if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
         this->setRunnableTile(TileType::TILE_DANGER);
@@ -379,9 +380,12 @@ IA::Movement IABomberman::getIAMovement()
         return IA::Movement::IA_MOVE_NONE;
     }
     this->_prevPos = this->_pos;
+    status = this->isCorrectMove(nextPos);
     if (this->_env[this->_pos.second][this->_pos.first] == TileType::TILE_DANGER)
         this->unsetRunnableTile(TileType::TILE_DANGER);
-    return tmp;
+    if (status)
+        return tmp;
+    return IA::Movement::IA_MOVE_NONE;
 }
 
 void IABomberman::randomMove(
@@ -547,4 +551,9 @@ void IABomberman::attackBusy(
     const std::pair<size_t, size_t> &pos, const std::vector<std::vector<TileType>> &env, std::queue<IA::Movement> &list)
 {
     this->randomMove(pos, env, list);
+}
+
+bool IABomberman::isCorrectMove(const std::pair<size_t, size_t> &nextpos) const
+{
+    return this->isRunnable(this->_env[nextpos.second][nextpos.first]);
 }
