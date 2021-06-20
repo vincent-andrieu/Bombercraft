@@ -117,7 +117,6 @@ void OptionsMenuScene::open()
         this->localEntities,
         buttonPosition[5],
         [](const Engine::Entity entity, GUI::sliderValue &value) {
-            std::cout << "Slider: entity=" << entity << ", value=" << value << std::endl;
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
