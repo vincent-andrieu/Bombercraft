@@ -61,13 +61,16 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
 
 void Game::SaveMenuScene::preLoadGames()
 {
-    const auto my_dir(CoreData::entityManager->saveManager.listWD());
-    size_t entryNb(0);
+    try {
+        size_t entryNb(0);
 
-    for (const auto &entry : my_dir) {
-        if (entry.is_directory()) {
-            createButtonGamePreload(entry, entryNb);
-            entryNb++;
+        for (const auto &entry : CoreData::entityManager->saveManager.listWD()) {
+            if (entry.is_directory()) {
+                createButtonGamePreload(entry, entryNb);
+                entryNb++;
+            }
         }
+    } catch (std::exception const &e) {
+        std::cerr << "SaveMenuScene::preLoadGames " << e.what() << std::endl;
     }
 }
