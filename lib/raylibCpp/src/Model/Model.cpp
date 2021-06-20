@@ -14,7 +14,8 @@ raylib::Model::Model(const std::string &texturePath,
     const string &filepath,
     const MyVector3 &position,
     const RColor color,
-    const MyVector3 &rotation)
+    const MyVector3 &rotation,
+    bool forced)
 {
     char **filenames = nullptr;
     int count = 0;
@@ -47,7 +48,7 @@ raylib::Model::Model(const std::string &texturePath,
         }
     }
     this->_path = filepath;
-    this->_model = raylib::Model::_loaderManager->load({filepath.data(), this->_texturePath.data()});
+    this->_model = raylib::Model::_loaderManager->load({filepath.data(), this->_texturePath.data()}, forced);
     if (_textures.size() == 0)
         return;
     for (size_t i = 0; i < _model.materialCount; i++) {

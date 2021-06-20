@@ -218,7 +218,7 @@ Engine::Entity Game::CharacterFactory::create(
     }
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     CoreData::entityManager->addComponent<Component::ModelList>(entity,
-        Component::ModelListMap({{"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos)},
+        Component::ModelListMap({{"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos, raylib::RColor::RWHITE, raylib::MyVector3(0, 0, 0), true)},
             {"death",
                 std::make_shared<raylib::Animation>(
                     deathTexturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE)},
