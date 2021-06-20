@@ -14,7 +14,10 @@
 
 namespace Engine
 {
-    #define NOW (((double)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / 1000.0f)
+#define NOW                                                                                                               \
+    (((double) std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()) \
+             .count())                                                                                                    \
+        / 1000.0f)
 
     class Timer : public Component<Timer> {
       public:
@@ -31,12 +34,9 @@ namespace Engine
 
         [[nodiscard]] double getDelta() const;
 
-        // bool save(SaveManager &saver) const override;
-        // bool load(SaveManager &saver) override;
-
       public:
-        double interval;    // in seconds
-        double startTime;   // in seconds
+        double interval;  // in seconds
+        double startTime; // in seconds
         Script script;
 
       private:

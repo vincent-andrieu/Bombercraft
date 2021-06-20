@@ -39,10 +39,8 @@ MyVector2 ObjectTriangle::getPointC() const
     return this->_c;
 }
 
-bool ObjectTriangle::boxCollider(const ObjectBox &box)
+bool ObjectTriangle::boxCollider([[maybe_unused]] const ObjectBox &box)
 {
-    //return this->checkCollisionWith(box);
-    (void) box;
     throw std::bad_function_call();
     return false;
 }

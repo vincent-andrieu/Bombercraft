@@ -21,15 +21,13 @@ namespace Component
 
     class Hitbox : public Engine::Component<Hitbox> {
       public:
-        Hitbox(const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType typeEntity);
+        Hitbox(
+            const raylib::MyVector3 &origin, const raylib::MyVector3 &size, hitboxHandler handler, Game::EntityType typeEntity);
         virtual ~Hitbox() = default;
 
         void trigger(const Engine::Entity &fromEntity, const Engine::Entity &toEntity);
 
         void debugRender();
-
-        // bool save(Engine::SaveManager &saver) const override;
-        // bool load(Engine::SaveManager &saver) override;
 
         std::shared_ptr<ObjectBox> objectBox;
         Game::EntityType entityType;

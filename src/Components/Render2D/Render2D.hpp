@@ -19,7 +19,6 @@
 namespace Component
 {
     using render2dMapModels = std::vector<std::pair<std::string, std::shared_ptr<raylib::IRenderable>>>;
-    //    using render2dMapModels = std::map<std::string, std::shared_ptr<raylib::IRenderable>>;
 
     class Render2D : public Engine::Component<Render2D> {
       public:
@@ -38,9 +37,6 @@ namespace Component
         void setToDrawFirst(const std::string &label);
         void setToDrawLast(const std::string &label);
         bool isSetToDraw(const std::string &label) const;
-
-        // bool save(Engine::SaveManager &saver) const override;
-        // bool load(Engine::SaveManager &saver) override;
 
       protected:
         std::vector<std::shared_ptr<raylib::IRenderable>> _models;
