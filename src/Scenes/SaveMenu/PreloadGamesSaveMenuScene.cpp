@@ -60,14 +60,16 @@ void Game::SaveMenuScene::_createButtonGamePreload(const std::filesystem::path &
 
 size_t Game::SaveMenuScene::_preLoadGames()
 {
-    const auto my_dir(CoreData::entityManager->saveManager.listWD());
     size_t entryNb(0);
 
-    for (const auto &entry : my_dir) {
-        if (entry.is_directory()) {
-            this->_createButtonGamePreload(entry, entryNb);
-            entryNb++;
-        }
+    try {
+        for (const auto &entry : CoreData::entityManager->saveManager.listWD())
+            if (entry.is_directory()) {
+                this->_createButtonGamePreload(entry, entryNb);
+                entryNb++;
+            }
+    } catch (std::exception const &e) {
+        std::cerr << "SaveMenuScene::preLoadGames " << e.what() << std::endl;
     }
 
     return entryNb;
@@ -75,12 +77,15 @@ size_t Game::SaveMenuScene::_preLoadGames()
 
 size_t Game::SaveMenuScene::getNbrSaves()
 {
-    const auto my_dir(CoreData::entityManager->saveManager.listWD());
     size_t entryNb(0);
 
-    for (const auto &entry : my_dir)
-        if (entry.is_directory())
-            entryNb++;
+    try {
+        for (const auto &entry : CoreData::entityManager->saveManager.listWD())
+            if (entry.is_directory())
+                entryNb++;
+    } catch (std::exception const &e) {
+        std::cerr << "SaveMenuScene::getNbrSaves " << e.what() << std::endl;
+    }
 
     return entryNb;
 }
