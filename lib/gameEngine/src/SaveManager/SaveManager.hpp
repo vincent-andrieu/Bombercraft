@@ -108,19 +108,19 @@ namespace Engine
 
         template <typename T> void writeActFile(const T value)
         {
-            write(_writingFiles.begin()->first, value);
+            write(_writingFiles.begin()->first.string(), value);
         }
         template <typename T, typename N> void writeActFile(const T value, const N size)
         {
-            write(_writingFiles.begin()->first, value, size);
+            write(_writingFiles.begin()->first.string(), value, size);
         }
         template <typename T> void readActFile(T &value)
         {
-            read(_readingFiles.begin()->first, value);
+            read(_readingFiles.begin()->first.string(), value);
         }
         template <typename T, typename N> void readActFile(T value, const N size)
         {
-            read(_readingFiles.begin()->first, value, size);
+            read(_readingFiles.begin()->first.string(), value, size);
         }
 
         static void printException(const std::filesystem::filesystem_error &except);
