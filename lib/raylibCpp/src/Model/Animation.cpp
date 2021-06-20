@@ -54,6 +54,7 @@ void raylib::Animation::getNewTexture(const std::string &texturePath)
     std::string workingDirectory = GetWorkingDirectory();
     std::string subWorkingDirectory = "";
 
+    this->_textures.clear();
     if (DirectoryExists(texturePath.data())) {
         filenames = goInDirectoryAndGetFileNames(texturePath, &count);
         subWorkingDirectory = GetWorkingDirectory();
