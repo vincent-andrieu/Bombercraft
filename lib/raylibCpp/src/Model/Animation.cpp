@@ -24,7 +24,7 @@ raylib::Animation::Animation(const std::string &texturePath,
     if (!raylib::Model::_loaderManager)
         raylib::Model::_loaderManager =
             std::make_shared<raylib::LoaderManager<RModel, std::tuple<std::string, std::string>, tuple_hash>>(
-                raylib::Model::myModelLoad, raylib::Model::myModelUnload);
+                raylib::Model::myModelLoad, raylib::Model::myModelUnload, raylib::Model::myModelUnique);
     if (DirectoryExists(_path.data())) {
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
