@@ -152,7 +152,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
     auto mySize(conf.size);
     auto myPosition(centered ? position - ProportionUtilities::getProportionWin(mySize, raylib::MyVector2(50, 50)) : position);
     const Engine::Entity &entity = name.empty() ? pack.createAnonymousEntity() : pack.createEntity(name);
-    const raylib::MyVector2 screenSize((mySize.a * 0.33), mySize.b);
+    const raylib::MyVector2 screenSize((mySize.a * 0.33f), mySize.b);
 
     // Label
     raylib::MyVector2 labelSize(mySize);
@@ -163,7 +163,7 @@ Engine::Entity ButtonFactory::create(Engine::EntityPack &pack,
         std::shared_ptr<raylib::Font>(std::make_shared<raylib::Font>(conf.fontPath))));
     labelSize.a -= screenSize.a;
     labelSize = (labelSize.a < 20 && labelSize.b < 20) ? labelSize : labelSize - 20;
-    labelSize = labelSize * 0.85;
+    labelSize = labelSize * 0.85f;
     auto my_labelPosition(
         myPosition + raylib::MyVector2(screenSize.a, 0) + ProportionUtilities::getProportionWin(labelSize, {15, 15}));
     myLabel->setPosition(my_labelPosition);
