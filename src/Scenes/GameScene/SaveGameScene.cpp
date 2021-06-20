@@ -104,7 +104,7 @@ void GameScene::saveGame(const std::string &saveName)
         return;
     }
     try {
-        std::filesystem::copy("Asset/ScreenShot/GameShot.png",
+        std::filesystem::copy(Game::CoreData::settings->getString("GAME_SCREENSHOT"),
             CoreData::entityManager->saveManager.getWorkingDirectory(),
             std::filesystem::copy_options::update_existing);
     } catch (const std::filesystem::filesystem_error &my_e) {

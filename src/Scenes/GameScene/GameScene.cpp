@@ -38,7 +38,7 @@ const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NA
 static void handlerGameTimeout()
 {
     Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
-    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+    CoreData::window->takeScreenshot(CoreData::settings->getString("GAME_SCREENSHOT"));
     CoreData::sceneManager->setScene<EndGameScene>();
 }
 
@@ -98,7 +98,7 @@ void GameScene::open()
         if (CoreData::sceneManager->getCurrentScene() != CoreData::sceneManager->getScene<GameScene>())
             return;
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
-        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
         Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
