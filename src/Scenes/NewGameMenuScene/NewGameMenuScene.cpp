@@ -22,6 +22,20 @@ Game::NewGameMenuScene::NewGameMenuScene(Engine::SystemManager &systemManager)
 {
 }
 
+static void resetPlayerConfigs()
+{
+    Component::PlayerConfig *config[MAX_PLAYERS] = {
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
+
+    for (uint i = 0; i < MAX_PLAYERS; ++i) {
+        config[i]->setStatus(Component::PlayerStatus::ALIVE);
+        config[i]->setXP(0);
+    }
+}
+
 void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &options)
 {
     size_t nbPlayers;
@@ -47,6 +61,8 @@ void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &opti
         IARandomProb = (size_t) CoreData::settings->getInt("IA_RANDOM_PROB");
         options.IARandomProb = (IARandomProb * -1) + 100;
     }
+    resetPlayerConfigs();
+    options.loadName = "";
 }
 
 void Game::NewGameMenuScene::init()

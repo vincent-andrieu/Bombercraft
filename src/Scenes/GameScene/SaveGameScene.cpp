@@ -47,7 +47,7 @@ void GameScene::savePlayerConfig()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(
             core->globalEntities.getEntity(configName_prefix + toString(4)))};
 
-    for (size_t i = 0; i < 4; i++) {
+    for (size_t i = 0; i < MAX_PLAYERS; i++) {
         my_filename = configName_prefix + toString(i + 1);
         try {
             if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))

@@ -45,7 +45,7 @@ static void goGameScene(const Engine::Entity)
         if (scene->localEntities.entityIsSet("gameMap")) {
             const std::string &resourcePackRoot = options.ressourcePack;
             Engine::Entity map = scene->localEntities.getEntity("gameMap");
-            for (size_t i = 0; i < 4; i++) {
+            for (size_t i = 0; i < MAX_PLAYERS; i++) {
                 if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
                     Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
                     /// Update skin
@@ -63,7 +63,8 @@ static void goGameScene(const Engine::Entity)
                             const Component::PlayerKeyBindings &keys = info.config->getPlayerKeyBindings();
                             const Game::EventRequirement requirements(
                                 info.config->getPlayerKeyList(), {keys.moveRight, keys.moveLeft, keys.moveDown, keys.moveUp});
-                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(requirements);
+                            Game::CoreData::entityManager->getComponent<Component::KeyEvent>(player).setRequirements(
+                                requirements);
                         }
                     }
                     /// Update map textures

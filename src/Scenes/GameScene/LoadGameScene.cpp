@@ -62,7 +62,7 @@ void GameScene::loadPlayerConfig()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(
             core->globalEntities.getEntity(configName_prefix + toString(4)))};
 
-    for (size_t i = 0; i < 4; i++) {
+    for (size_t i = 0; i < MAX_PLAYERS; i++) {
         my_skinPath = "";
         my_xp = 0;
         my_status = Component::PlayerStatus::ALIVE;
