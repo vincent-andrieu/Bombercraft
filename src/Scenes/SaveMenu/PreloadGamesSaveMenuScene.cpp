@@ -42,7 +42,7 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
             CoreData::sceneManager->setScene<GameScene>();
         },
         my_screenshotPath,
-        dir.filename(),
+        dir.filename().string(),
         true);
 }
 
