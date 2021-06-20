@@ -11,10 +11,11 @@
 #include "Utilities/ProportionUtilities.hpp"
 #include "GUI/Factories/Countdown/CountdownFactory.hpp"
 #include "Utilities/ProportionUtilities.hpp"
+#include "Game/CoreData/CoreData.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
 #include "Game/Factories/Character/CharacterFactory.hpp"
 #include "Game/Factories/MouseWheel/MouseWheelFactory.hpp"
-#include "Game/CoreData/CoreData.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 #include "Systems/Render3D/Render3DSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
 #include "Systems/PhysicsSystem/PhysicsSystem.hpp"
@@ -22,7 +23,6 @@
 #include "Components/PlayerConfig/PlayerConfig.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
 #include "Components/Option/OptionComponent.hpp"
-#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 using namespace Game;
 
@@ -84,6 +84,13 @@ void GameScene::open()
     }
     /// CHARACTERS
     this->createCharacters();
+    /// END GAME DETECTION
+    if (CharacterFactory::endGame()) {
+        Game::CoreData::camera->setFovy(CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
+        CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
+        CoreData::sceneManager->setScene<EndGameScene>();
+        CoreData::sceneManager->updateScene();
+    }
     /// MOUSE WHEEL FOV
     Game::MouseWheelFactory::create(this->localEntities, [](const float &value) {
         const Engine::Entity &optionEntity = core->globalEntities.getEntity("options");
