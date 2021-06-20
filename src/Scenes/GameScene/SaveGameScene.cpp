@@ -59,7 +59,7 @@ void GameScene::savePlayerConfig()
             CoreData::entityManager->saveManager.writeActFile(config[i]->getStatus());
             CoreData::entityManager->saveManager.closeWritingFile(my_filename);
         } catch (const std::filesystem::filesystem_error &my_e) {
-            std::cerr << my_e.what() << std::endl;
+            Engine::SaveManager::printException(my_e);
         }
     }
 }
@@ -72,9 +72,14 @@ void GameScene::saveGameMap()
     const raylib::MyVector2 &mapSize = map.getMapSize();
     const std::shared_ptr<DataMatrix> &dataMatrix = map.getData();
 
-    if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
-        CoreData::entityManager->saveManager.createFile(my_filename);
-    CoreData::entityManager->saveManager.setWritingFile(my_filename);
+    try {
+        if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
+            CoreData::entityManager->saveManager.createFile(my_filename);
+        CoreData::entityManager->saveManager.setWritingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+        return;
+    }
     // Read type matrix
     std::vector<std::vector<GUI::BlockFactory::BlockType>> typeMatrix;
     typeMatrix.reserve(mapSize.b);
@@ -86,9 +91,13 @@ void GameScene::saveGameMap()
         }
     }
     // Save
-    CoreData::entityManager->saveManager
-        .writeActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
-    CoreData::entityManager->saveManager.closeWritingFile(my_filename);
+    try {
+        CoreData::entityManager->saveManager
+            .writeActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
+        CoreData::entityManager->saveManager.closeWritingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+    }
 }
 
 void GameScene::saveGame(const std::string &saveName)
@@ -113,5 +122,9 @@ void GameScene::saveGame(const std::string &saveName)
     this->saveOptions();
     this->savePlayerConfig();
     this->saveGameMap();
-    CoreData::entityManager->saveManager.unsetWorkingDirectory();
+    try {
+        CoreData::entityManager->saveManager.unsetWorkingDirectory();
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        Engine::SaveManager::printException(my_e);
+    }
 }

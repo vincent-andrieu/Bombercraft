@@ -108,7 +108,7 @@ void GameScene::loadGameMap()
             .readActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
         CoreData::entityManager->saveManager.closeReadingFile(my_filename);
     } catch (const std::filesystem::filesystem_error &my_e) {
-        std::cerr << my_e.what() << std::endl;
+        Engine::SaveManager::printException(my_e);
         return;
     }
     if (typeMatrix.empty() || typeMatrix[0].empty())

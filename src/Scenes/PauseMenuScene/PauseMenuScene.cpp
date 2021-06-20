@@ -119,6 +119,7 @@ void Game::PauseMenuScene::open()
             auto my_gameScene(std::dynamic_pointer_cast<GameScene>(CoreData::sceneManager->getLastScene()));
             Engine::Entity optionEntity = core->globalEntities.getEntity("options");
             const auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+
             if (!options.saveName.empty())
                 my_gameScene->saveGame(options.saveName);
             CoreData::sceneManager->closeLastUnclosedScene();
