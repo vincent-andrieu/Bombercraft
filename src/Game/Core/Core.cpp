@@ -14,6 +14,8 @@
 #include "Scenes/MainMenu/MainMenuScene.hpp"
 #include "Scenes/CreditScene/CreditScene.hpp"
 #include "Scenes/RessourcePackMenu/RessourcePackMenuScene.hpp"
+#include "Scenes/SaveMenu/SaveMenuScene.hpp"
+#include "Scenes/NewGameMenuScene/NewGameMenuScene.hpp"
 
 #include "Components/Chrono/Chrono.hpp"
 #include "Components/Sound/Sound.hpp"
@@ -21,12 +23,13 @@
 #include "Components/ModelList/ModelList.hpp"
 #include "Components/StringChoice/StringChoice.hpp"
 #include "Components/Matrix2D/Matrix2D.hpp"
-#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
+#include "Components/PlayerIdBox.hpp"
 
 #include "Systems/Audio/AudioSystem.hpp"
 #include "Systems/ModelList/ModelListSystem.hpp"
 
 #include "Game/Factories/Sound/AudioFactory.hpp"
+#include "Game/Factories/Character/AIComponent/AIComponent.hpp"
 
 using namespace Game;
 
@@ -73,6 +76,7 @@ void Core::registerComponents()
     CoreData::entityManager->registerComponent<Component::PlayerInventory>();
     CoreData::entityManager->registerComponent<Component::ModelList>();
     CoreData::entityManager->registerComponent<Component::AIComponent>();
+    CoreData::entityManager->registerComponent<Component::PlayerIdBox>();
 }
 
 void Core::createSystems()
@@ -105,6 +109,7 @@ void Core::createScenes()
     CoreData::sceneManager->createScene<PauseMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<GameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<SoundOptionScene>();
+    CoreData::sceneManager->createScene<SaveMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<NewGameMenuScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<EndGameScene>(*CoreData::systemManager);
     CoreData::sceneManager->createScene<CreditScene>(*CoreData::systemManager);

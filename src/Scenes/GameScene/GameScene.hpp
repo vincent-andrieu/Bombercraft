@@ -25,6 +25,8 @@ namespace Game
         GameScene(Engine::SystemManager &systemManager);
         ~GameScene() = default;
 
+        void loadGame(const std::string &loadName);
+        void saveGame(const std::string &saveName);
         void cameraAnimation(const raylib::MyVector3 &toCameraPosition,
             const raylib::MyVector3 &toCameraUp,
             const raylib::MyVector3 &toCameraTarget);
@@ -35,6 +37,15 @@ namespace Game
 
       private:
         void createCharacters();
+
+        void loadPlayerConfig();
+        void savePlayerConfig();
+        void setOptions(const Component::OptionComponent &options);
+        void loadOptions();
+        void saveOptions();
+
+        void loadGameMap();
+        void saveGameMap();
     };
 } // namespace Game
 

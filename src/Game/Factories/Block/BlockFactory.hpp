@@ -38,11 +38,13 @@ namespace GUI
         static Engine::Entity create(Engine::EntityPack &entityPack,
             const raylib::MyVector3 position,
             BlockType type,
+            Engine::Entity creator,
             const std::string &ressourcePackRoot = "",
             const std::string &name = "");
 
         // TOOLS
-        static void blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius);
+        static void blastPropagation(
+            const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius, Engine::Entity player);
 
         static std::string getTexturePath(BlockType type, std::string const &resourcePackRoot);
       private:

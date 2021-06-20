@@ -45,13 +45,13 @@ namespace Component
 
         PlayerConfig &operator=(const PlayerConfig &src);
 
-        const PlayerID &getPlayerId() const;
-        const PlayerKeyBindings &getPlayerKeyBindings() const;
+        [[nodiscard]] const PlayerID &getPlayerId() const;
+        [[nodiscard]] const PlayerKeyBindings &getPlayerKeyBindings() const;
         [[nodiscard]] std::vector<raylib::KeyBoard> getPlayerKeyList() const;
-        const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
-        const string &getSkinPath() const;
-        const size_t &getXP() const;
-        const PlayerStatus &getStatus() const;
+        [[nodiscard]] const PlayerKeyBindings &getPlayerDefaultKeyBindings() const;
+        [[nodiscard]] const string &getSkinPath() const;
+        [[nodiscard]] const size_t &getXP() const;
+        [[nodiscard]] const PlayerStatus &getStatus() const;
 
         void resetAllKeyBindings();
         void setKeyMoveUp(const raylib::KeyBoard &key);

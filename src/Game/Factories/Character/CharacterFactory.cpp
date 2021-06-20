@@ -67,11 +67,35 @@ static void handlerHitboxCharacterDeath(
                 // End game detection
                 if (endGame()) {
                     Game::CoreData::camera->setFovy(static_cast<float>(CoreData::settings->getFloat("STANDARD_CAMERA_FOV")));
-                    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+                    CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
                     CoreData::sceneManager->setScene<EndGameScene>();
                 }
             });
     }
+}
+
+static void rewardXP(const Engine::Entity character, const std::string &xpType)
+{
+    const Engine::EntityBox &inventoryEntityBox(CoreData::entityManager->getComponent<Engine::EntityBox>(character));
+    const auto &inventory = CoreData::entityManager->getComponent<Component::PlayerInventory>(inventoryEntityBox.entity);
+    const Component::PlayerID &id = inventory.getPlayerId();
+    Component::PlayerConfig &playerConfig(
+        Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id));
+    const auto nbXP((CoreData::settings->isSetInFile("XP_PER_" + xpType) ? CoreData::settings->getInt("XP_PER_" + xpType) : 1));
+
+    playerConfig.setXP(playerConfig.getXP() + nbXP);
+}
+
+static void killRewardXP(const Engine::Entity blast)
+{
+    auto player(Game::CoreData::entityManager->getComponent<Engine::EntityBox>(blast).entity);
+
+    rewardXP(player, "KILL");
+}
+
+static void bonusRewardXP(const Engine::Entity character)
+{
+    rewardXP(character, "BONUS");
 }
 
 static void handlerHitbox(const Engine::Entity character, const Engine::Entity other)
@@ -93,9 +117,11 @@ static void handlerHitbox(const Engine::Entity character, const Engine::Entity o
         Component::PlayerConfig *playerConfig =
             &Game::CoreData::systemManager->getSystem<System::PlayerConfigSystem>().getPlayerFromID(id);
         playerConfig->setStatus(Component::PlayerStatus::DEAD);
+        killRewardXP(other);
     } else if (type == EntityType::POWERUP) {
         Game::CoreData::systemManager->getSystem<System::AudioSystem>().play("PowerUpTaken");
         /// Note : bonus are given by the power-up collision handlers
+        bonusRewardXP(character);
     } else if (type != EntityType::CHARACTER
         && !((type == EntityType::SOFTBLOCK || type == EntityType::SOFTBONUSBLOCK) && info.wallPass == true)) {
         Component::Render3D &otherRender = CoreData::entityManager->getComponent<Component::Render3D>(other);
@@ -192,7 +218,13 @@ Engine::Entity Game::CharacterFactory::create(
     }
     const std::string &modelPath = CoreData::settings->getString("CHARACTER_MODEL");
     CoreData::entityManager->addComponent<Component::ModelList>(entity,
-        Component::ModelListMap({{"idle", std::make_shared<raylib::Model>(texturePath, modelPath, characterPos, raylib::RColor::RWHITE, raylib::MyVector3(0, 0, 0), true)},
+        Component::ModelListMap({{"idle",
+                                     std::make_shared<raylib::Model>(texturePath,
+                                         modelPath,
+                                         characterPos,
+                                         raylib::RColor::RWHITE,
+                                         raylib::MyVector3(0, 0, 0),
+                                         true)},
             {"death",
                 std::make_shared<raylib::Animation>(
                     deathTexturePath, CoreData::settings->getString("CHARA_ANIM_DEATH"), characterPos, raylib::RColor::RWHITE, false, 50, true)},

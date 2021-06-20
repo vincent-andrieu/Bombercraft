@@ -31,6 +31,7 @@ std::unordered_map<BlockFactory::BlockType,
 Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
     const raylib::MyVector3 position,
     BlockType type,
+    const Engine::Entity creator,
     const std::string &ressourcePackRoot,
     const std::string &name)
 {
@@ -47,6 +48,7 @@ Engine::Entity BlockFactory::create(Engine::EntityPack &entityPack,
     Game::CoreData::entityManager->addComponent<Engine::Position>(entity, position.a, position.b, position.c);
     Game::CoreData::entityManager->addComponent<Component::Render3D>(entity, model);
     BlockFactory::internalFactory(entity, type, position, size);
+    Game::CoreData::entityManager->addComponent<Engine::EntityBox>(entity, creator);
     return entity;
 }
 
@@ -215,7 +217,7 @@ void BlockFactory::handlerKillEntity(const Engine::Entity &fromEntity, const Eng
         texturePath = Game::CoreData::settings->getString("BLOCK_" + typeInStr + "_TEXTURE");
         scene->localEntities.removeEntity(toEntity);   // SOFT BONUS BLOCK
         scene->localEntities.removeEntity(fromEntity); // BLAST
-        GUI::BlockFactory::create(scene->localEntities, position, bonusType, texturePath);
+        GUI::BlockFactory::create(scene->localEntities, position, bonusType, fromEntity, texturePath);
     }
     if (hitboxFrom.entityType == Game::EntityType::BLAST && hitboxTo.entityType == Game::EntityType::CHARACTER) {
         std::cout << "Should kill user" << std::endl;
@@ -300,7 +302,8 @@ void BlockFactory::handlerWallPass(const Engine::Entity &fromEntity, const Engin
     }
 }
 
-void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius)
+void BlockFactory::blastPropagation(
+    const Engine::Position &pos, Engine::EntityPack &entityPack, const size_t blastRadius, const Engine::Entity player)
 {
     Engine::Entity entityMap = entityPack.getEntity("gameMap");
     const Component::Matrix2D &matrix = Game::CoreData::entityManager->getComponent<Component::Matrix2D>(entityMap);
@@ -308,12 +311,13 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
     raylib::MyVector2 vector2 = Component::Matrix2D::getMapIndex(raylib::MyVector3(pos.x, pos.x, pos.z));
     std::pair<Engine::Entity, GUI::BlockFactory::BlockType> blockTmp;
 
-    GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+    GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST, player);
     for (size_t i = 1; i < blastRadius; i++) {
         blockTmp = matrix.getData({(size_t) vector2.a + i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        GUI::BlockFactory::create(entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        GUI::BlockFactory::create(
+            entityPack, {pos.x + i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST, player);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT
             || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
@@ -322,7 +326,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a - i, (size_t) vector2.b});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        GUI::BlockFactory::create(entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        GUI::BlockFactory::create(
+            entityPack, {pos.x - i * blockSize.a, pos.y, pos.z}, GUI::BlockFactory::BlockType::BLOCK_BLAST, player);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT
             || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
@@ -331,7 +336,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b + i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        GUI::BlockFactory::create(
+            entityPack, {pos.x, pos.y, pos.z + i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST, player);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT
             || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;
@@ -340,7 +346,8 @@ void BlockFactory::blastPropagation(const Engine::Position &pos, Engine::EntityP
         blockTmp = matrix.getData({(size_t) vector2.a, (size_t) vector2.b - i});
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_HARD)
             break;
-        GUI::BlockFactory::create(entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST);
+        GUI::BlockFactory::create(
+            entityPack, {pos.x, pos.y, pos.z - i * blockSize.c}, GUI::BlockFactory::BlockType::BLOCK_BLAST, player);
         if (blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_SOFT
             || blockTmp.second == GUI::BlockFactory::BlockType::BLOCK_BONUS_SOFT)
             break;

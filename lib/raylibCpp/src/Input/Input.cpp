@@ -86,3 +86,11 @@ bool Input::MouseIsOverClicked(MyVector2 pos, MyVector2 size) const
 
     return isOver && isPressed;
 }
+
+bool Input::MouseIsOverRightClicked(MyVector2 pos, MyVector2 size) const
+{
+    bool isOver = this->MouseIsOver(pos, size);
+    bool isPressed = this->isMouseRightPressed();
+
+    return isOver && isPressed;
+}

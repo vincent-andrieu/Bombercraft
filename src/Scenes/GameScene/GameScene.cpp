@@ -38,7 +38,7 @@ const std::unordered_map<Component::PlayerID, std::string> Game::PLAYER_ID_TO_NA
 static void handlerGameTimeout()
 {
     Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
-    CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+    CoreData::window->takeScreenshot(CoreData::settings->getString("GAME_SCREENSHOT"));
     CoreData::sceneManager->setScene<EndGameScene>();
 }
 
@@ -56,6 +56,7 @@ void GameScene::open()
     const raylib::MyVector2 windowSize(CoreData::settings->getMyVector2("WIN_SIZE"));
     ProportionUtilities proportion(windowSize);
 
+    Game::CoreData::camera->setFovy(options.fov);
     /// OPTIONS
     /// MAP
     const string &ressourcePackRoot = options.ressourcePack;
@@ -73,10 +74,14 @@ void GameScene::open()
     const raylib::MyVector2 countdownProportion(CoreData::settings->getMyVector2("TIMER_PROPORTION"));
     const raylib::MyVector2 countdownSize = ProportionUtilities::getProportionWin(windowSize, countdownProportion);
 
-    /*countdownEntity = */ GUI::CountdownFactory::create(this->localEntities,
+    GUI::CountdownFactory::create(this->localEntities,
         proportion.getProportion({50, 0}, {countdownSize.a, 0}),
         options.gameTimerDuration,
         handlerGameTimeout);
+    /// LOAD
+    if (!options.loadName.empty()) {
+        loadGame(options.loadName);
+    }
     /// CHARACTERS
     this->createCharacters();
     /// MOUSE WHEEL FOV
@@ -93,7 +98,7 @@ void GameScene::open()
         if (CoreData::sceneManager->getCurrentScene() != CoreData::sceneManager->getScene<GameScene>())
             return;
         this->_systemManager.getSystem<Engine::TimerSystem>().pause();
-        CoreData::window->takeScreenshot("Asset/ScreenShot/GameShot.png");
+        CoreData::window->takeScreenshot(Game::CoreData::settings->getString("GAME_SCREENSHOT"));
         Game::CoreData::camera->setFovy((float) CoreData::settings->getFloat("STANDARD_CAMERA_FOV"));
         CoreData::sceneManager->pushLastScene();
         CoreData::sceneManager->setScene<PauseMenuScene>(false);
@@ -113,7 +118,9 @@ void GameScene::createCharacters()
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
         &CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
-    for (size_t i = 0; i < 4; i++) {
+    for (size_t i = 0; i < MAX_PLAYERS; i++) {
+        if (config[i]->getStatus() == Component::PlayerStatus::DEAD)
+            continue;
         entity = CharacterFactory::create(this->localEntities, *(config[i]), map, (i >= options.nbPlayers));
         if (i >= options.nbPlayers) {
             Game::CoreData::entityManager->getComponent<Component::AIComponent>(entity).setRandomness(

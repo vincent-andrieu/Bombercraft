@@ -92,11 +92,15 @@ set(SRCS
         src/Scenes/PauseMenuScene/PauseMenuScene.cpp
         src/Scenes/LoadingScreen/LoadingScreenScene.cpp
         src/Scenes/GameScene/GameScene.cpp
+        src/Scenes/GameScene/SaveGameScene.cpp
+        src/Scenes/GameScene/LoadGameScene.cpp
         src/Scenes/SoundOption/SoundOptionScene.cpp
         src/Scenes/NewGameMenuScene/NewGameMenuScene.cpp
         src/Scenes/EndGame/EndGameScene.cpp
         src/Scenes/CreditScene/CreditScene.cpp
         src/Scenes/RessourcePackMenu/RessourcePackMenuScene.cpp
+        src/Scenes/SaveMenu/SaveMenuScene.cpp
+        src/Scenes/SaveMenu/PreloadGamesSaveMenuScene.cpp
         # CONFIG
         src/ConfigFile/ConfigFile.cpp
         # EXCEPTION

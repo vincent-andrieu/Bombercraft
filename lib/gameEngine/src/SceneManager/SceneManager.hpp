@@ -33,6 +33,7 @@ namespace Engine
 
         void pushLastScene();
         void popLastScene();
+        std::shared_ptr<AbstractScene> getLastScene();
         std::shared_ptr<AbstractScene> peekLastScene();
         std::shared_ptr<AbstractScene> getCurrentScene();
         void updateScene();

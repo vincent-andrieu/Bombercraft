@@ -28,10 +28,7 @@ namespace GUI
             std::vector<std::string> const &texturesPath,
             Component::PlayerID id,
             Engine::EntityPack &pack,
-            Component::PlayerConfig &config,
             const std::string &name = "");
-
-        static Component::PlayerInventoryInfo getDefaultPlayerInventory();
     };
 } // namespace GUI
 

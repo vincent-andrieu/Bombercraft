@@ -6,7 +6,6 @@
  */
 
 #include "SaveManager.hpp"
-/*
 using namespace Engine;
 
 SaveManager::SaveManager(const std::string &dirname)
@@ -29,9 +28,9 @@ SaveManager::~SaveManager()
         file.second->close();
 }
 
-//TO REVIEW: https://en.cppreference.com/w/cpp/filesystem/exists
-// first arg of exists and is directory: const std::filesystem::path& p
-//inline bool SaveManager::directoryExists(const string &dirname)
+// TO REVIEW: https://en.cppreference.com/w/cpp/filesystem/exists
+//  first arg of exists and is directory: const std::filesystem::path& p
+// inline bool SaveManager::directoryExists(const string &dirname)
 inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_directory(dirname)) {
@@ -40,14 +39,27 @@ inline bool SaveManager::directoryExists(const std::filesystem::path &dirname)
     return false;
 }
 
-//TO REVIEW: SAME PROBLEME
-//inline bool SaveManager::fileExists(const string &dirname)
+bool SaveManager::directoryExistsInWD(const string &dirname)
+{
+    auto my_dirname(getFileDir(dirname));
+
+    return directoryExists(my_dirname);
+}
+
+// TO REVIEW: SAME PROBLEME
+// inline bool SaveManager::fileExists(const string &dirname)
 inline bool SaveManager::fileExists(const std::filesystem::path &dirname)
 {
     if (std::filesystem::exists(dirname) && std::filesystem::is_regular_file(dirname)) {
         return true;
     }
     return false;
+}
+
+bool SaveManager::fileExistsInWD(const string &filename)
+{
+    auto my_filename(getFileDir(filename));
+    return fileExists(my_filename);
 }
 
 inline void SaveManager::createDirectory(const string &dirname)
@@ -59,17 +71,42 @@ inline void SaveManager::createDirectory(const string &dirname)
 
 void SaveManager::setWorkingDirectory(const string &dirname)
 {
+    const auto oldWD(_workingDirectory);
+
     _workingDirectory /= dirname;
-    _workingDirectory = std::filesystem::canonical(_workingDirectory);
+    try {
+        _workingDirectory = std::filesystem::canonical(_workingDirectory);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        SaveManager::printException(my_e);
+        _workingDirectory = oldWD;
+        return;
+    }
 
     if (!directoryExists(_workingDirectory)) {
-        unsetWorkingDirectory();
+        _workingDirectory = oldWD;
         throw std::filesystem::filesystem_error(
             "Cannot use directory", _workingDirectory, std::make_error_code(std::errc(ENOENT)));
     }
 }
 
-inline void SaveManager::unsetWorkingDirectory()
+const std::filesystem::path &SaveManager::getWorkingDirectory() const
+{
+    return _workingDirectory;
+}
+
+std::filesystem::directory_iterator SaveManager::listWD()
+{
+    return std::filesystem::directory_iterator(_workingDirectory);
+}
+
+void SaveManager::removeDirInWD(const std::string &dirname)
+{
+    std::filesystem::path my_dirname(getFileDir(dirname));
+
+    std::filesystem::remove_all(my_dirname);
+}
+
+void SaveManager::unsetWorkingDirectory()
 {
     _workingDirectory.replace_filename("");
 }
@@ -91,11 +128,11 @@ void SaveManager::setWritingFile(const string &filename)
     std::filesystem::path my_tmp_path(getFileDir(filename));
 
     if (!fileExists(my_tmp_path))
-        throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
+        throw std::filesystem::filesystem_error(filename, std::make_error_code(std::errc(ENOENT)));
     _writingFiles.insert(std::make_pair(my_tmp_path, std::make_unique<ofstream>(my_tmp_path)));
     if (!_writingFiles.at(my_tmp_path)->is_open()) {
         _writingFiles.erase(my_tmp_path);
-        throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
+        throw std::filesystem::filesystem_error(filename, std::make_error_code(std::errc(EACCES)));
     }
 }
 
@@ -107,8 +144,14 @@ void SaveManager::closeWritingFile()
 
 void SaveManager::closeWritingFile(const string &filename)
 {
-    this->_writingFiles[filename]->close();
-    this->_writingFiles.erase(filename);
+    auto my_filename(getFileDir(filename));
+
+    try {
+        this->_writingFiles.at(my_filename)->close();
+        this->_writingFiles.erase(my_filename);
+    } catch (const std::out_of_range &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
 }
 
 void SaveManager::setReadingFile(const string &filename)
@@ -116,11 +159,11 @@ void SaveManager::setReadingFile(const string &filename)
     std::filesystem::path my_tmp_path(getFileDir(filename));
 
     if (!fileExists(my_tmp_path))
-        throw std::filesystem::filesystem_error("No such file", std::make_error_code(std::errc(ENOENT)));
+        throw std::filesystem::filesystem_error(filename, std::make_error_code(std::errc(ENOENT)));
     _readingFiles.insert(std::make_pair(my_tmp_path, std::make_unique<ifstream>(my_tmp_path)));
     if (!_readingFiles.at(my_tmp_path)->is_open()) {
         _readingFiles.erase(my_tmp_path);
-        throw std::filesystem::filesystem_error("File not accessible", std::make_error_code(std::errc(EACCES)));
+        throw std::filesystem::filesystem_error(filename, std::make_error_code(std::errc(EACCES)));
     }
     // TODO add magic number and header
 }
@@ -133,8 +176,14 @@ void SaveManager::closeReadingFile()
 
 void SaveManager::closeReadingFile(const string &filename)
 {
-    this->_readingFiles[filename]->close();
-    this->_readingFiles.erase(filename);
+    auto my_filename(getFileDir(filename));
+
+    try {
+        this->_readingFiles.at(my_filename)->close();
+        this->_readingFiles.erase(my_filename);
+    } catch (const std::out_of_range &my_e) {
+        std::cerr << my_e.what() << std::endl;
+    }
 }
 
 inline std::filesystem::path SaveManager::getFileDir(const string &filename)
@@ -206,4 +255,3 @@ void SaveManager::printException(const std::filesystem::filesystem_error &except
 {
     std::cerr << except.what() << std::endl;
 }
-*/

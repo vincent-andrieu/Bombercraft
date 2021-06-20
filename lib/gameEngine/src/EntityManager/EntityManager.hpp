@@ -25,7 +25,7 @@ namespace Engine
     class EntityManager {
       public:
         explicit EntityManager(SystemManager &sysManager);
-        ~EntityManager();
+        ~EntityManager() = default;
 
         template <typename T> void registerComponent();
 
@@ -51,16 +51,19 @@ namespace Engine
 
         template <typename T> Entity getOwner(const T &component) const;
 
-        void save(const std::string &saveName);
-        void load(const std::string &saveName);
-
         template <typename T, class Function> void foreachComponent(Function fn);
+
+        /**
+         * @brief Allow user to access low level save,
+         *  managing it as he wants,
+         *  not saving everything, for example
+         */
+        SaveManager saveManager{"Engine_Save"};
 
       private:
         std::array<std::shared_ptr<IComponentTypeRegister>, MAX_COMPONENT> _componentRegisters;
         EntityRegister _entities;
         SystemManager &_systemManager;
-        // SaveManager _saver{"Engine_Save"};
 
         template <typename T> void checkComponentType() const;
 

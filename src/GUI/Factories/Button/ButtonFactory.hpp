@@ -43,6 +43,7 @@ namespace GUI
         static ButtonConfig getLargeButtonConfig();
         static ButtonConfig getMediumButtonConfig();
         static ButtonConfig getBigButtonConfig();
+        static ButtonConfig getBighHighButtonConfig();
         static ButtonConfig getSmallButtonConfig();
 
         static Engine::Entity create(Engine::EntityPack &pack,
@@ -53,10 +54,24 @@ namespace GUI
             const Component::eventScript clickAction,
             bool centered = false);
 
+        static Engine::Entity create(
+            Engine::EntityPack &pack,
+            const raylib::MyVector2 &position,
+            ButtonConfig const &conf,
+            const Component::eventScript clickAction,
+            const Component::eventScript righClickAction =
+                [](Engine::Entity) {
+                },
+            const string &screenPath = "",
+            const string &label = "",
+            bool centered = false,
+            const string &name = "");
+
         static const raylib::MyVector2 SmallProportions;
         static const raylib::MyVector2 MediumProportions;
         static const raylib::MyVector2 BigProportions;
         static const raylib::MyVector2 LargeProportions;
+        static const raylib::MyVector2 BigHighProportions;
     };
 
 } // namespace GUI

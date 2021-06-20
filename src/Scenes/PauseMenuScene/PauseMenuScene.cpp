@@ -45,7 +45,7 @@ static void goGameScene(const Engine::Entity)
         if (scene->localEntities.entityIsSet("gameMap")) {
             const std::string &resourcePackRoot = options.ressourcePack;
             Engine::Entity map = scene->localEntities.getEntity("gameMap");
-            for (size_t i = 0; i < 4; i++) {
+            for (size_t i = 0; i < MAX_PLAYERS; i++) {
                 if (scene->localEntities.entityIsSet(Game::PLAYER_ID_TO_NAME.at(ids[i]))) {
                     Engine::Entity player = scene->localEntities.getEntity(Game::PLAYER_ID_TO_NAME.at(ids[i]));
                     /// Update skin
@@ -116,6 +116,11 @@ void Game::PauseMenuScene::open()
         my_buttonConfig,
         "Save and quit to title",
         [](const Engine::Entity) {
+            auto my_gameScene(std::dynamic_pointer_cast<GameScene>(CoreData::sceneManager->getLastScene()));
+            Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+            const auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+            if (!options.saveName.empty())
+                my_gameScene->saveGame(options.saveName);
             CoreData::sceneManager->closeLastUnclosedScene();
             CoreData::sceneManager->setScene<Game::MainMenuScene>();
         });

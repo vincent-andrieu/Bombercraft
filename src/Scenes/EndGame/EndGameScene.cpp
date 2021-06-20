@@ -101,7 +101,6 @@ void EndGameScene::open()
             CoreData::settings->getTabString("XP_BAR"),
             ids[i],
             this->localEntities,
-            *playerConfig,
             "XPBarEndGame" + toString(i + 1));
         xpBarPosition.b += xpBarSize.b * 2.0f;
     }
