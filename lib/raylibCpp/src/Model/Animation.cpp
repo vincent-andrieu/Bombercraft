@@ -31,7 +31,7 @@ raylib::Animation::Animation(const std::string &texturePath,
         filenames = goInDirectoryAndGetFileNames(_path, &count);
         for (size_t i = 0; i < (size_t) count; i++) {
             if (IsFileExtension(filenames[i].data(), ".obj")) {
-                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, disableCache);
+                auto tmp = raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, filenames[i] + disableCache);
                 _models.push_back(tmp);
             }
         }
@@ -197,7 +197,7 @@ void raylib::Animation::setPath(const string &path)
     this->_models.clear();
     filenames = GetDirectoryFiles(this->_path.data(), &count);
     for (size_t i = 0; i < (size_t) count; i++) {
-        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, _disableCache));
+        this->_models.push_back(raylib::Model::_loaderManager->load({filenames[i], this->_texturePath}, filenames[i] + _disableCache));
     }
     ClearDirectoryFiles();
     for (size_t i = 0; i < this->_models.size(); i++) {
