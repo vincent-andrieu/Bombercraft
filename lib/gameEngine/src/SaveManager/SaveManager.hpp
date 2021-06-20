@@ -110,6 +110,11 @@ namespace Engine
         {
             write(_writingFiles.begin()->first.string(), value);
         }
+        template <typename T, typename E> void writeActFile(const E data)
+        {
+            write<T>(_writingFiles.begin()->first, data);
+        }
+
         template <typename T, typename N> void writeActFile(const T value, const N size)
         {
             write(_writingFiles.begin()->first.string(), value, size);
@@ -117,6 +122,10 @@ namespace Engine
         template <typename T> void readActFile(T &value)
         {
             read(_readingFiles.begin()->first.string(), value);
+        }
+        template <typename T, typename E> void readActFile(E &data)
+        {
+            read<T>(_readingFiles.begin()->first, data);
         }
         template <typename T, typename N> void readActFile(T value, const N size)
         {
@@ -195,6 +204,21 @@ namespace Engine
             }
         }
 
+        template <typename T> void write(const string &filename, const std::vector<std::vector<T>> &value)
+        {
+            ofstream &file = this->_getWritingFile(filename);
+            size_t sizeY = value.size();
+            size_t sizeX = (sizeY > 0) ? value[0].size() : 0;
+
+            file.write((char *) &sizeY, sizeof(size_t));
+            file.write((char *) &sizeX, sizeof(size_t));
+            for (size_t y = 0; y < sizeY; y++) {
+                for (size_t x = 0; x < sizeX; x++) {
+                    file.write((char *) &value[y][x], sizeof(T));
+                }
+            }
+        }
+
         template <typename T> void read(const string &filename, T &value)
         {
             ifstream &file = this->_getReadingFile(filename);
@@ -220,6 +244,30 @@ namespace Engine
             for (size_t i = 0; i < size; i++) {
                 file.read((char *) &elem, sizeof(T));
                 value.push_back(elem);
+            }
+        }
+
+        template <typename T>
+        void read(const string &filename, std::vector<std::vector<T>> &value)
+        {
+            value.clear();
+            ifstream &file = this->_getReadingFile(filename);
+            size_t sizeY = 0;
+            size_t sizeX = 0;
+            T elem;
+
+            file.read((char *) &sizeY, sizeof(size_t));
+            file.read((char *) &sizeX, sizeof(size_t));
+            if (sizeX > 1000 || sizeY > 1000) {
+                std::cerr << "Warning: SaveManager::read too big matrix, abort." << std::endl;
+                return; // too big, abort. Maybe corrupted
+            }
+            for (size_t y = 0; y < sizeY; y++) {
+                value.push_back({});
+                for (size_t x = 0; x < sizeX; x++) {
+                    file.read((char *) &elem, sizeof(T));
+                    value[y].push_back(elem);
+                }
             }
         }
 

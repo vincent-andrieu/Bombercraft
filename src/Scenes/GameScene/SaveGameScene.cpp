@@ -6,6 +6,7 @@
 */
 
 #include "GameScene.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
 
 using namespace Game;
 
@@ -63,6 +64,33 @@ void GameScene::savePlayerConfig()
     }
 }
 
+void GameScene::saveGameMap()
+{
+    std::string my_filename("map");
+    Engine::Entity mapEntity = this->localEntities.getEntity("gameMap");
+    Component::Matrix2D &map = CoreData::entityManager->getComponent<Component::Matrix2D>(mapEntity);
+    const raylib::MyVector2 &mapSize = map.getMapSize();
+    const std::shared_ptr<DataMatrix> &dataMatrix = map.getData();
+
+    if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename))
+        CoreData::entityManager->saveManager.createFile(my_filename);
+    CoreData::entityManager->saveManager.setWritingFile(my_filename);
+    // Read type matrix
+    std::vector<std::vector<GUI::BlockFactory::BlockType>> typeMatrix;
+    typeMatrix.reserve(mapSize.b);
+    for (size_t y = 0; y < mapSize.b; y++) {
+        typeMatrix.push_back({});
+        for (size_t x = 0; x < mapSize.a; x++) {
+            GUI::BlockFactory::BlockType type = dataMatrix->getCategory({x, y});
+            typeMatrix[y].push_back(type);
+        }
+    }
+    // Save
+    CoreData::entityManager->saveManager
+        .writeActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
+    CoreData::entityManager->saveManager.closeWritingFile(my_filename);
+}
+
 void GameScene::saveGame(const std::string &saveName)
 {
     if (saveName.empty())
@@ -82,7 +110,8 @@ void GameScene::saveGame(const std::string &saveName)
     } catch (const std::filesystem::filesystem_error &my_e) {
         Engine::SaveManager::printException(my_e);
     }
-    savePlayerConfig();
-    saveOptions();
+    this->saveOptions();
+    this->savePlayerConfig();
+    this->saveGameMap();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
 }

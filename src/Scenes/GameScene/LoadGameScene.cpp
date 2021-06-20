@@ -6,6 +6,7 @@
 */
 
 #include "GameScene.hpp"
+#include "Components/Matrix2D/Matrix2D.hpp"
 #include "Game/Factories/Map/MapFactory.hpp"
 
 using namespace Game;
@@ -86,6 +87,58 @@ void GameScene::loadPlayerConfig()
     }
 }
 
+void GameScene::loadGameMap()
+{
+    std::string my_filename("map");
+    Engine::Entity mapEntity = this->localEntities.getEntity("gameMap");
+    Component::Matrix2D &map = CoreData::entityManager->getComponent<Component::Matrix2D>(mapEntity);
+    const raylib::MyVector2 &mapSize = map.getMapSize();
+    const std::shared_ptr<DataMatrix> &dataMatrix = map.getData();
+    std::vector<std::vector<GUI::BlockFactory::BlockType>> typeMatrix;
+    Engine::Entity optionEntity = core->globalEntities.getEntity("options");
+    auto &options = Game::CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
+    const raylib::MyVector3 &size = Game::CoreData::settings->getMyVector3("STANDARD_BLOCK_SIZE");
+
+    try {
+        if (!CoreData::entityManager->saveManager.fileExistsInWD(my_filename)) {
+            return;
+        }
+        CoreData::entityManager->saveManager.setReadingFile(my_filename);
+        CoreData::entityManager->saveManager
+            .readActFile<GUI::BlockFactory::BlockType, std::vector<std::vector<GUI::BlockFactory::BlockType>>>(typeMatrix);
+        CoreData::entityManager->saveManager.closeReadingFile(my_filename);
+    } catch (const std::filesystem::filesystem_error &my_e) {
+        std::cerr << my_e.what() << std::endl;
+        return;
+    }
+    if (typeMatrix.empty() || typeMatrix[0].empty())
+        return;
+    // Apply changes
+    for (size_t y = 0; y < mapSize.b; y++) {
+        for (size_t x = 0; x < mapSize.a; x++) {
+            if (dataMatrix->getCategory({x, y}) != typeMatrix[y][x]) {
+                if (dataMatrix->getCategory({x, y}) != GUI::BlockFactory::BlockType::BLOCK_AIR)
+                    this->localEntities.removeEntity(dataMatrix->getEntity({x, y})); // remove old block
+                if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_AIR) {
+                    dataMatrix->save({x, y}, 0, GUI::BlockFactory::BlockType::BLOCK_AIR); // update matrix
+                } else if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BOMB) {
+                    dataMatrix->save({x, y}, 0, GUI::BlockFactory::BlockType::BLOCK_AIR); // update matrix
+                    // TODO : reload bombs - need character id
+                    // const auto bombPosition(Component::Matrix2D::getPositionAbs(x, y);
+                    // BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
+                } else {
+                    Engine::Entity block = GUI::BlockFactory::create(this->localEntities,
+                        {x * size.a, 0, y * size.c},
+                        typeMatrix[y][x],
+                        mapEntity,
+                        options.ressourcePack);                        // create new block
+                    dataMatrix->save({x, y}, block, typeMatrix[y][x]); // update matrix
+                }
+            }
+        }
+    }
+}
+
 void GameScene::loadGame(const std::string &loadName)
 {
     if (loadName.empty())
@@ -98,7 +151,8 @@ void GameScene::loadGame(const std::string &loadName)
         std::cerr << my_e.what() << std::endl;
         return;
     }
-    loadPlayerConfig();
-    loadOptions();
+    this->loadPlayerConfig();
+    this->loadGameMap();
+    this->loadOptions();
     CoreData::entityManager->saveManager.unsetWorkingDirectory();
 }

@@ -43,6 +43,9 @@ namespace Game
         void setOptions(const Component::OptionComponent &options);
         void loadOptions();
         void saveOptions();
+
+        void loadGameMap();
+        void saveGameMap();
     };
 } // namespace Game
 
