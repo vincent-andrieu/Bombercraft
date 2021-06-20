@@ -123,7 +123,7 @@ namespace Engine
         }
         template <typename T, typename E> void writeActFile(const E data)
         {
-            write<T>(_writingFiles.begin()->first, data);
+            write<T>(_writingFiles.begin()->first.string(), data);
         }
 
         template <typename T, typename N> void writeActFile(const T value, const N size)
@@ -136,7 +136,7 @@ namespace Engine
         }
         template <typename T, typename E> void readActFile(E &data)
         {
-            read<T>(_readingFiles.begin()->first, data);
+            read<T>(_readingFiles.begin()->first.string(), data);
         }
         template <typename T, typename N> void readActFile(T value, const N size)
         {

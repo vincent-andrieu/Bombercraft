@@ -77,7 +77,7 @@ void GameScene::saveGameMap()
     CoreData::entityManager->saveManager.setWritingFile(my_filename);
     // Read type matrix
     std::vector<std::vector<GUI::BlockFactory::BlockType>> typeMatrix;
-    typeMatrix.reserve(mapSize.b);
+    typeMatrix.reserve((size_t)mapSize.b);
     for (size_t y = 0; y < mapSize.b; y++) {
         typeMatrix.push_back({});
         for (size_t x = 0; x < mapSize.a; x++) {
