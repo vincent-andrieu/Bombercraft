@@ -15,8 +15,6 @@
 
 using namespace Game;
 
-static const EventRequirement keyHandlerRequirements({raylib::KeyBoard::IKEY_SPACE}, {});
-
 static Component::eventScript keyHandler = [](const Engine::Entity) {
     CoreData::sceneManager->setScene<MainMenuScene>();
 };
@@ -32,13 +30,11 @@ void SplashScreenScene::open()
 
     GUI::ImageSequenceFactory::create(this->localEntities,
         {0, 0},
-        {windowSize.a, windowSize.b},
+        windowSize,
         "Asset/SplashScreen",
         "splashScreen",
         0.05f,
         false);
-    this->_entityManager.addComponent<Component::KeyEvent>(
-        this->localEntities.getEntity("splashScreen"), keyHandler, keyHandlerRequirements);
     Engine::Entity entity = this->localEntities.createEntity("Text");
     this->_entityManager.addComponent<Component::Render2D>(entity,
         Component::render2dMapModels({
@@ -49,6 +45,14 @@ void SplashScreenScene::open()
                     30,
                     raylib::RColor::RBLACK)},
         }));
+
+    // KEYS
+    std::unordered_map<raylib::KeyBoard, Component::eventScript> my_keyTriggers;
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_ESCAPE, [](Engine::Entity) {
+        CoreData::quit();
+    }));
+    my_keyTriggers.emplace(std::make_pair(raylib::KeyBoard::IKEY_SPACE, keyHandler));
+    Game::KeyManagementFactory::create(this->localEntities, my_keyTriggers);
 }
 
 void SplashScreenScene::update()
