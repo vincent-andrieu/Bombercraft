@@ -21,7 +21,6 @@
 #include "Systems/PlayerConfig/PlayerConfigSystem.hpp"
 
 #include "Scenes/KeyBindingMenu/KeyBindingMenuScene.hpp"
-#include "Scenes/DebugScene/DebugScene.hpp"
 #include "Scenes/SplashScreen/SplashScreenScene.hpp"
 #include "Scenes/PauseMenuScene/PauseMenuScene.hpp"
 #include "Scenes/MainMenu/MainMenuScene.hpp"
