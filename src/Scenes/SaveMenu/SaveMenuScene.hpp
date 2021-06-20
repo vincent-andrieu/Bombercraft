@@ -19,14 +19,15 @@ namespace Game
         SaveMenuScene(Engine::SystemManager &systemManager);
         ~SaveMenuScene() = default;
 
-        void preLoadGames();
+        static size_t getNbrSaves();
 
         void open() override;
 
         void update() override;
 
       private:
-        void createButtonGamePreload(const std::filesystem::path &dir, const size_t entryNb);
+        size_t _preLoadGames();
+        void _createButtonGamePreload(const std::filesystem::path &dir, const size_t entryNb);
     };
 } // namespace Game
 

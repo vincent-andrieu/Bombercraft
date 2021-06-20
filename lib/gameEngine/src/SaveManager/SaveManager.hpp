@@ -71,7 +71,7 @@ namespace Engine
          * @brief List files and directories in working directory
          * @return A container with the name and the type of each entry in the working directory
          */
-        [[nodiscard]] std::filesystem::directory_iterator listWD();
+        [[nodiscard]] std::filesystem::directory_iterator listWD() const;
 
         /**
          * @brief Remove directory contained in working directory

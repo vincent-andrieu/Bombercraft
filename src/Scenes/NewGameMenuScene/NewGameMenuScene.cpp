@@ -18,7 +18,12 @@ static const string nbPlayersLabel("Number of Players: ");
 extern std::unique_ptr<Game::Core> core;
 
 static const Component::eventScript cancelButtonHandler = [](const Engine::Entity &) {
-    Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
+    const auto &lastScene = Game::CoreData::sceneManager->peekLastScene();
+
+    if (lastScene == Game::CoreData::sceneManager->getScene<Game::SaveMenuScene>() && Game::SaveMenuScene::getNbrSaves() == 0)
+        Game::CoreData::sceneManager->setScene(Game::CoreData::sceneManager->peekLastScene());
+    else
+        Game::CoreData::sceneManager->setScene(lastScene);
 };
 
 static const Component::eventScript startButtonHandler = [](const Engine::Entity) {
@@ -66,10 +71,10 @@ static void resetPlayerConfigs()
 
 void Game::NewGameMenuScene::setStandardOptions(Component::OptionComponent &options)
 {
-    size_t nbPlayers;
-    size_t gameTimerDuration;
-    uint seed;
-    size_t IARandomProb;
+    size_t nbPlayers = 1;
+    size_t gameTimerDuration = 300;
+    uint seed = 0;
+    size_t IARandomProb = 0;
 
     if (Game::CoreData::settings->isSetInFile("NB_PLAYERS")) {
         nbPlayers = (uint) CoreData::settings->getInt("NB_PLAYERS");

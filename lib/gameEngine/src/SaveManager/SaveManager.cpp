@@ -84,8 +84,7 @@ void SaveManager::setWorkingDirectory(const string &dirname)
 
     if (!directoryExists(_workingDirectory)) {
         _workingDirectory = oldWD;
-        throw std::filesystem::filesystem_error(
-            "Cannot use directory", _workingDirectory, std::make_error_code(std::errc(ENOENT)));
+        throw std::filesystem::filesystem_error("Cannot use directory", _workingDirectory, std::make_error_code(std::errc(ENOENT)));
     }
 }
 
@@ -94,7 +93,7 @@ const std::filesystem::path &SaveManager::getWorkingDirectory() const
     return _workingDirectory;
 }
 
-std::filesystem::directory_iterator SaveManager::listWD()
+std::filesystem::directory_iterator SaveManager::listWD() const
 {
     return std::filesystem::directory_iterator(_workingDirectory);
 }
