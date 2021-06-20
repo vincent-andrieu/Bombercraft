@@ -121,7 +121,8 @@ void GameScene::loadGameMap()
                     this->localEntities.removeEntity(dataMatrix->getEntity({x, y})); // remove old block
                 if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_AIR) {
                     dataMatrix->save({x, y}, 0, GUI::BlockFactory::BlockType::BLOCK_AIR); // update matrix
-                } else if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BOMB) {
+                } else if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BOMB
+                    || typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BLAST) {
                     dataMatrix->save({x, y}, 0, GUI::BlockFactory::BlockType::BLOCK_AIR); // update matrix
                     // TODO : reload bombs - need character id
                     // const auto bombPosition(Component::Matrix2D::getPositionAbs(x, y);
