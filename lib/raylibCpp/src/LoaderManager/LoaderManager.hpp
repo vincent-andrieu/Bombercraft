@@ -38,7 +38,7 @@ namespace raylib
     class LoaderManager : public ILoaderManager<toLoadType, stringType>
     {
         public:
-            LoaderManager(std::function<toLoadType (const stringType &)> load, std::function<void (toLoadType &)> unload = nullptr, std::function<stringType (std::size_t)> unique = nullptr) : _loadingFunc(load), _unloadingFunc(unload)
+            LoaderManager(std::function<toLoadType (const stringType &)> load, std::function<void (toLoadType &)> unload = nullptr) : _loadingFunc(load), _unloadingFunc(unload)
             {
             }
 
