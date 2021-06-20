@@ -124,9 +124,6 @@ void GameScene::loadGameMap()
                 } else if (typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BOMB
                     || typeMatrix[y][x] == GUI::BlockFactory::BlockType::BLOCK_BLAST) {
                     dataMatrix->save({x, y}, 0, GUI::BlockFactory::BlockType::BLOCK_AIR); // update matrix
-                    // TODO : reload bombs - need character id
-                    // const auto bombPosition(Component::Matrix2D::getPositionAbs(x, y);
-                    // BombFactory::create(Game::Core::sceneManager->getCurrentScene()->localEntities, bombPosition, character);
                 } else {
                     Engine::Entity block = GUI::BlockFactory::create(this->localEntities,
                         {x * size.a, 0, y * size.c},

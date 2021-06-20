@@ -19,9 +19,6 @@ namespace Component
         Render3D(std::shared_ptr<raylib::I3DObject> object);
         virtual ~Render3D() = default;
 
-        // bool save(Engine::SaveManager &saver) const override;
-        // bool load(Engine::SaveManager &saver) override;
-
         std::shared_ptr<raylib::I3DObject> modele;
     };
 } // namespace Component

@@ -63,10 +63,9 @@ namespace Engine
         /**
          * @brief Get the actual working directory
          * @details In order to place independent files (such as screenshots, infos...)
-         * // TODO save screenshot (preview), name and date of save
          * @return A path to the actual working directory
          */
-        [[nodiscard]] const std::filesystem::path &getWorkingDirectory() const; // TODO implement
+        [[nodiscard]] const std::filesystem::path &getWorkingDirectory() const;
 
         /**
          * @brief List files and directories in working directory
@@ -121,9 +120,9 @@ namespace Engine
         {
             write(_writingFiles.begin()->first.string(), value);
         }
-        template <typename T, typename E> void writeActFile(const E data)
+        template <typename T, typename E> void writeActFile(const E &data)
         {
-            write<T>(_writingFiles.begin()->first, data);
+            write<T>(_writingFiles.begin()->first.string(), data);
         }
 
         template <typename T, typename N> void writeActFile(const T value, const N size)
@@ -136,7 +135,7 @@ namespace Engine
         }
         template <typename T, typename E> void readActFile(E &data)
         {
-            read<T>(_readingFiles.begin()->first, data);
+            read<T>(_readingFiles.begin()->first.string(), data);
         }
         template <typename T, typename N> void readActFile(T value, const N size)
         {
@@ -258,8 +257,7 @@ namespace Engine
             }
         }
 
-        template <typename T>
-        void read(const string &filename, std::vector<std::vector<T>> &value)
+        template <typename T> void read(const string &filename, std::vector<std::vector<T>> &value)
         {
             value.clear();
             ifstream &file = this->_getReadingFile(filename);

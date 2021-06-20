@@ -18,7 +18,7 @@ void System::HitboxSystem::update()
 {
     for (const Engine::Entity &fromEntity : this->getManagedEntities()) {
         if (this->_entityManager.hasComponent<Engine::Velocity>(fromEntity)) {
-            Component::Hitbox &fromHitboxComp = this->_entityManager.getComponent<Component::Hitbox>(fromEntity); // DEBUG
+            Component::Hitbox &fromHitboxComp = this->_entityManager.getComponent<Component::Hitbox>(fromEntity);
             for (const Engine::Entity &toEntity : this->getManagedEntities())
                 if (fromEntity != toEntity) {
                     Component::Hitbox &toHitboxComp = this->_entityManager.getComponent<Component::Hitbox>(toEntity);

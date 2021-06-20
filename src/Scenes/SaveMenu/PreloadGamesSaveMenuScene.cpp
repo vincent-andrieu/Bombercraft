@@ -45,7 +45,7 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
             auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
 
             try {
-                CoreData::entityManager->saveManager.removeDirInWD(dir);
+                CoreData::entityManager->saveManager.removeDirInWD(dir.string());
             } catch (const std::filesystem::filesystem_error &my_e) {
                 Engine::SaveManager::printException(my_e);
                 return;

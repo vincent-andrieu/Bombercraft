@@ -119,7 +119,6 @@ void EndGameScene::update()
         this->eventDispatcher(this->_systemManager);
     } catch (std::invalid_argument const &e) {
         std::cerr << e.what() << std::endl;
-        exit(84); // TEMPORARY
     }
 }
 
