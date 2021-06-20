@@ -21,11 +21,25 @@ EndGameScene::EndGameScene(Engine::SystemManager &systemManager) : AbstractScene
 {
 }
 
+static void resetPlayerConfigs()
+{
+    Component::PlayerConfig *config[MAX_PLAYERS] = {
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config1")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config2")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config3")),
+        &Game::CoreData::entityManager->getComponent<Component::PlayerConfig>(core->globalEntities.getEntity("config4"))};
+
+    for (uint i = 0; i < MAX_PLAYERS; ++i) {
+        config[i]->setStatus(Component::PlayerStatus::ALIVE);
+    }
+}
 static void goToGameScene(const Engine::Entity)
 {
     Engine::Entity optionEntity = core->globalEntities.getEntity("options");
     auto &options = CoreData::entityManager->getComponent<Component::OptionComponent>(optionEntity);
 
+    resetPlayerConfigs();
+    options.loadName = "";
     Game::CoreData::camera->setFovy((float) options.fov);
     Game::CoreData::sceneManager->setScene<Game::GameScene>();
 }
