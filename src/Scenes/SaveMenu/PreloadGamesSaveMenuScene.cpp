@@ -41,6 +41,19 @@ void Game::SaveMenuScene::createButtonGamePreload(const std::filesystem::path &d
             CoreData::sceneManager->popLastScene();
             CoreData::sceneManager->setScene<GameScene>();
         },
+        [dir](Engine::Entity entity) {
+            auto &my_render(Game::CoreData::entityManager->getComponent<Component::Render2D>(entity));
+
+            try {
+                CoreData::entityManager->saveManager.removeDirInWD(dir);
+            } catch (const std::filesystem::filesystem_error &my_e) {
+                Engine::SaveManager::printException(my_e);
+                return;
+            }
+            my_render.unsetToDraw("hover");
+            my_render.unsetToDraw("idle");
+            my_render.setToDrawFirst("unavailable");
+        },
         my_screenshotPath,
         dir.filename().string(),
         true);

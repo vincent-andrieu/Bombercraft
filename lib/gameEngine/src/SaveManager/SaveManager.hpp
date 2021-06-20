@@ -53,11 +53,13 @@ namespace Engine
          * @param dirname The name of the directory to be created
          */
         void createDirectory(const string &dirname);
+
         /**
          * @brief Set working directory
          * @param dirname The name of the new working directory
          */
         void setWorkingDirectory(const string &dirname);
+
         /**
          * @brief Get the actual working directory
          * @details In order to place independent files (such as screenshots, infos...)
@@ -71,22 +73,31 @@ namespace Engine
          * @return A container with the name and the type of each entry in the working directory
          */
         [[nodiscard]] std::filesystem::directory_iterator listWD();
+
+        /**
+         * @brief Remove directory contained in working directory
+         */
+        void removeDirInWD(const std::string &dirname);
+
         /**
          * @brief Remove the actual working directory from the stack of actual writing directories,
          * so the last working directory is now the actual
          */
         void unsetWorkingDirectory();
+
         /**
          * @brief Create a file in the current working directory
          * @param filename The name of the file to be created
          */
         void createFile(const string &filename);
+
         /**
          * @brief Push the file given as parameter on top of the stack of writing files, so when writeActFile is called, it uses
          * this file
          * @param filename The name of the file
          */
         void setWritingFile(const string &filename);
+
         /**
          * @brief Remove the actual writing file from the stack of actual writing files,
          * so the last writing file is now the actual

@@ -27,6 +27,7 @@ namespace raylib
         [[nodiscard]] float getMouseWheel() const override;
         [[nodiscard]] bool MouseIsOver(MyVector2 pos, MyVector2 size) const override;
         [[nodiscard]] bool MouseIsOverClicked(MyVector2 pos, MyVector2 size) const override;
+        [[nodiscard]] bool MouseIsOverRightClicked(MyVector2 pos, MyVector2 size) const;
 
       private:
         MyVector2 _previousMousePos;
