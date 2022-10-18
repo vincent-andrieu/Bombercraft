@@ -11,7 +11,8 @@ cmake-build-debug
 bomberman
 Engine_Save
 Asset/ScreenShot/GameShot.png
- 
+dockerVolume/
+
 ### C ###
 # Prerequisites
 *.d

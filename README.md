@@ -7,12 +7,15 @@ Bomberman with minecraft style - Epitech 2nd Year Project
 * AI character
 
 # Usage
-Linux
+## Docker
+- `docker build -t bombercraft`  
+- `docker run --rm --volume $PWD/dockerVolume:/app/shared bombercraft`
+- `./dockerVolume/bomberman`
 
+## Linux
    `mkdir build && cd build && cmake .. && make && cd .. && ./bomberman`
 
-Windows
-
+## Windows
 `cmake .. && cmake --build && ./bomberman.exe`
 
 # Trailer
