@@ -9,6 +9,8 @@ build
 .idea
 cmake-build-debug
 bomberman
+bombercraft-linux
+bombercraft-mac
 Engine_Save
 Asset/ScreenShot/GameShot.png
 dockerVolume/

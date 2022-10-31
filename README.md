@@ -8,9 +8,16 @@ Bomberman with minecraft style - Epitech 2nd Year Project
 
 # Usage
 ## Docker
-- `docker build -t bombercraft`  
-- `docker run --rm --volume $PWD/dockerVolume:/app/shared bombercraft`
-- `./dockerVolume/bomberman`
+### Linux
+- `docker build -f Dockerfile-linux -t bombercraft-linux .`
+- `docker run --rm --name bombercraft-linux bombercraft-linux`
+- `docker cp bombercraft-linux:/app/bomberman bombercraft-linux`
+- `./bombercraft-linux`
+### Mac
+- `docker build -f Dockerfile-mac -t bombercraft-mac .`
+- `docker run --rm --name bombercraft-mac bombercraft-mac`
+- `docker cp bombercraft-mac:/app/bomberman bombercraft-mac`
+- `./bombercraft-mac`
 
 ## Linux
    `mkdir build && cd build && cmake .. && make && cd .. && ./bomberman`
