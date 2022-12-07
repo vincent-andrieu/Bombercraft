@@ -155,3 +155,83 @@ jobs:
       - name: Check if binary exist
         working-directory: build
         run: ls bomberman.sln
+
+
+  macos-raylibcpp:
+    runs-on: macos-12
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: cmake ..
+
+      - name: Run make
+        working-directory: ${{ env.PROJECT_RAYLIBCPP }}/build
+        run: make
+
+      - name: Check if binary exist
+        run: ls libraylibcpp.a
+
+  macos-gameengine:
+    runs-on: macos-12
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: cmake ..
+
+      - name: Run make
+        working-directory: ${{ env.PROJECT_GAMEENGINE }}/build
+        run: make
+
+      - name: Check if binary exist
+        run: ls libgameEngine.a
+
+  macos-bomberman:
+    runs-on: macos-12
+    needs: [macos-raylibcpp, macos-gameengine]
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Run cmake
+        working-directory: build
+        run: cmake ..
+
+      - name: Build Project
+        working-directory: build
+        run: cmake --build .
+
+      - name: Check if binary exist
+        run: ls bomberman
+
+      - name: Upload bombercraft binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: bombercraft
+          path: bomberman
